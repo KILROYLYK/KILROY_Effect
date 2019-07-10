@@ -6,7 +6,7 @@ import { w, d } from '../../../_Base/js/window';
 /**
  * Three
  */
-import Three from 'three';
+const Three = require('three');
 
 //场景
 const scene = new Three.Scene();
@@ -26,6 +26,7 @@ console.log('renderer:', renderer);
 
 /**
  * 动画
+ * @return {void}
  */
 const animate = () => {
     requestAnimationFrame(animate);
