@@ -1,7 +1,12 @@
 /**
  * Public
  */
-import { w, d, Three } from '../../../_Base/js/window';
+import { w, d } from '../../../_Base/js/window';
+
+/**
+ * Three
+ */
+import Three from 'three';
 
 //场景
 const scene = new Three.Scene();
