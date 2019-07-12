@@ -14,6 +14,8 @@ class Scene {
     constructor() {
         const _this = this;
         
+        _this.object = null;
+        
         return _this.init();
     }
     
@@ -24,7 +26,9 @@ class Scene {
     init() {
         const _this = this;
         
-        return new THREE.Scene();
+        _this.object = new THREE.Scene();
+        
+        return _this.object;
     }
 }
 

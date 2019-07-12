@@ -19,10 +19,12 @@ class Camera {
         
         _this.config = {
             fov: 45, //摄像机视锥体垂直视野角度
-            aspect: dom.clientWidth / dom.clientHeight, //摄像机视锥体长宽比
+            aspect: _this.dom.clientWidth / _this.dom.clientHeight, //摄像机视锥体长宽比
             near: 1, //摄像机视锥体近端面
             far: 5000 // 摄像机视锥体远端面
         };
+        
+        _this.object = null;
         
         return _this.init();
     }
@@ -34,12 +36,16 @@ class Camera {
     init() {
         const _this = this;
         
-        return new THREE.PerspectiveCamera(
+        _this.object = new THREE.PerspectiveCamera(
             _this.config.fov,
             _this.config.aspect,
             _this.config.near,
             _this.config.far
         );
+        _this.object.position.set(10000, 500, 0);
+        _this.object.lookAt(new THREE.Vector3(0, 0, 0));
+        
+        return _this.object;
     }
 }
 
