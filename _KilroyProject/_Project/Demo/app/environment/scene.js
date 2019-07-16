@@ -1,18 +1,24 @@
 /**
  * Three
  */
-const THREE = require('three');
+import * as THREE from '../../../$Three/build/three.module.js';
 
 /**
  * 场景
  */
 class Scene {
     /**
-     * Scene原型对象
+     * 原型对象
      * @constructor Scene
      */
     constructor() {
-        const _this = this;
+        const _this = this,
+            color = '#cccccc';
+        
+        _this.config = {
+            background: new THREE.Color(color),
+            fog: new THREE.FogExp2(color, 0.003)
+        };
         
         _this.object = null;
         
@@ -27,6 +33,8 @@ class Scene {
         const _this = this;
         
         _this.object = new THREE.Scene();
+        _this.object.background = _this.config.background;
+        _this.object.fog = _this.config.fog;
         
         return _this.object;
     }

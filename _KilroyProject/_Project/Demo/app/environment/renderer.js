@@ -6,14 +6,14 @@ import { Base } from '../../../_Base/js/window';
 /**
  * Three
  */
-const THREE = require('three');
+import * as THREE from '../../../$Three/build/three.module.js';
 
 /**
  * 渲染器
  */
 class Renderer {
     /**
-     * Renderer原型对象
+     * 原型对象
      * @constructor Renderer
      * @param {object} dom 父级Dom
      */
@@ -39,16 +39,16 @@ class Renderer {
     init() {
         const _this = this;
         
-        _this.object = new THREE.WebGLRenderer();
-        
+        _this.object = new THREE.WebGLRenderer({
+            antialias: true
+        });
+        _this.object.setPixelRatio(window.devicePixelRatio);
         _this.object.setSize(
             _this.config.width,
             _this.config.height
         );
-    
-        _this.resizeUpdate();
-        
         _this.dom.appendChild(_this.object.domElement);
+        _this.resizeUpdate();
         
         return _this.object;
     }
