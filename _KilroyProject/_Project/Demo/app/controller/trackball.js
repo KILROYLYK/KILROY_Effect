@@ -9,7 +9,7 @@ import { Base } from '../../../_Base/js/window';
 import { TrackballControls } from '../../../$Three/examples/jsm/controls/TrackballControls';
 
 /**
- * 移动
+ * 轨迹球
  */
 class trackball {
     /**

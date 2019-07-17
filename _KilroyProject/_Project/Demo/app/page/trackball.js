@@ -6,7 +6,7 @@ import { d } from '../../../_Base/js/window';
 /**
  * Three
  */
-import * as THREE from '../../../$Three/build/three.module.js';
+const THREE = require('three');
 
 /**
  * Controller
@@ -55,8 +55,6 @@ scene.add(light.object.light1);
 scene.add(light.object.light2);
 
 const trackball = new Trackball(scene, camera, renderer);
-
-renderer.render(scene, camera);
 
 new Animate(() => {
     trackball.update();

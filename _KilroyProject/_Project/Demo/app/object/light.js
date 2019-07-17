@@ -45,7 +45,7 @@ class Light {
     createLightAmbient() {
         const _this = this;
         
-        _this.object.ambient = new THREE.AmbientLight(_this.config.color[0], 0.5);
+        _this.object.ambient = new THREE.AmbientLight(_this.config.color[0], 0.3);
     }
     
     /**
