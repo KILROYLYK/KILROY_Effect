@@ -6,7 +6,7 @@ import { Base } from '../../../_Base/js/window';
 /**
  * Three
  */
-import * as THREE from '../../../$Three/build/three.module.js';
+const THREE = require('three');
 
 /**
  * 渲染器

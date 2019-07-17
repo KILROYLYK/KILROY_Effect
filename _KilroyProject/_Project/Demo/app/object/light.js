@@ -14,7 +14,14 @@ class Light {
     constructor() {
         const _this = this;
         
-        _this.config = {};
+        _this.config = {
+            color: [
+                '#ffffff',
+                '#002288'
+            ]
+        };
+        
+        _this.object = {};
         
         _this.init();
     }
@@ -26,17 +33,41 @@ class Light {
     init() {
         const _this = this;
         
-        _this.createLight0();
+        _this.createLightAmbient();
+        _this.createLight1();
+        _this.createLight2();
     }
     
     /**
-     * 创建灯光0
+     * 创建自然光
      * @return {void}
      */
-    createLight0() {
+    createLightAmbient() {
         const _this = this;
         
-        _this[0] = new THREE.AmbientLight('#ffffff', 1);
+        _this.object.ambient = new THREE.AmbientLight(_this.config.color[0], 0.5);
+    }
+    
+    /**
+     * 创建光1
+     * @return {void}
+     */
+    createLight1() {
+        const _this = this;
+        
+        _this.object.light1 = new THREE.DirectionalLight(_this.config.color[0]);
+        _this.object.light1.position.set(1, 1, 1);
+    }
+    
+    /**
+     * 创建光2
+     * @return {void}
+     */
+    createLight2() {
+        const _this = this;
+        
+        _this.object.light2 = new THREE.DirectionalLight(_this.config.color[1]);
+        _this.object.light2.position.set(-1, -1, -1);
     }
 }
 

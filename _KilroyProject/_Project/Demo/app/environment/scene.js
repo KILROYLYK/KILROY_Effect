@@ -1,7 +1,7 @@
 /**
  * Three
  */
-import * as THREE from '../../../$Three/build/three.module.js';
+const THREE = require('three');
 
 /**
  * 场景

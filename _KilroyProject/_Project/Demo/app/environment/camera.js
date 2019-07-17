@@ -6,7 +6,7 @@ import { Base } from '../../../_Base/js/window';
 /**
  * Three
  */
-import * as THREE from '../../../$Three/build/three.module.js';
+const THREE = require('three');
 
 /**
  * 相机
@@ -29,7 +29,7 @@ class Camera {
             far: 1000, //摄像机视锥体远端面
             x: 0,
             y: 0,
-            z: 500
+            z: 0
         };
         
         _this.object = null;

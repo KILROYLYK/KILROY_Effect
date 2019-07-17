@@ -6,15 +6,15 @@ import { Base } from '../../../_Base/js/window';
 /**
  * Three
  */
-import { TrackballControls } from '../../../$Three/examples/jsm/controls/TrackballControls.js';
+import { TrackballControls } from '../../../$Three/examples/jsm/controls/TrackballControls';
 
 /**
  * 移动
  */
-class move {
+class trackball {
     /**
      * 原型对象
-     * @constructor Move
+     * @constructor Trackball
      * @param {object} scene 场景
      * @param {object} camera 相机
      * @param {object} renderer 渲染器
@@ -83,4 +83,4 @@ class move {
     }
 }
 
-export default move;
+export default trackball;
