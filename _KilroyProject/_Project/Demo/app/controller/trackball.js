@@ -64,6 +64,7 @@ class trackball {
         _this.object.addEventListener('change', () => {
             _this.renderer.render(_this.scene, _this.camera);
         });
+        _this.renderer.render(_this.scene, _this.camera);
         _this.resizeUpdate();
         
         return _this.object;

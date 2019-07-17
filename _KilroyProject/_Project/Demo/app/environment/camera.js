@@ -16,20 +16,21 @@ class Camera {
      * 原型对象
      * @constructor Camera
      * @param {object} dom 父级Dom
+     * @param {object} config 配置
      */
-    constructor(dom) {
+    constructor(dom, config = {}) {
         const _this = this;
         
         _this.dom = dom;
         
         _this.config = {
-            fov: 60, //摄像机视锥体垂直视野角度
-            aspect: _this.dom.clientWidth / _this.dom.clientHeight, //摄像机视锥体长宽比
-            near: 1, //摄像机视锥体近端面
-            far: 1000, //摄像机视锥体远端面
-            x: 0,
-            y: 0,
-            z: 0
+            fov: config.fov || 60, //摄像机视锥体垂直视野角度
+            aspect: config.aspect || _this.dom.clientWidth / _this.dom.clientHeight, //摄像机视锥体长宽比
+            near: config.near || 1, //摄像机视锥体近端面
+            far: config.far || 1000, //摄像机视锥体远端面
+            x: config.x || 0,
+            y: config.y || 0,
+            z: config.z || 0
         };
         
         _this.object = null;
@@ -68,7 +69,7 @@ class Camera {
         const _this = this;
         
         Base.resizeWindow(() => {
-            _this.object.aspect = window.innerWidth / window.innerHeight;
+            _this.object.aspect = _this.dom.clientWidth / _this.dom.clientHeight;
             _this.object.updateProjectionMatrix();
         });
     }

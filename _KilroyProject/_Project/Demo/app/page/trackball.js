@@ -30,9 +30,27 @@ import light from '../object/light';
  * Main
  */
 const app = d.getElementById('app'),
-    scene = new Scene(),
-    camera = new Camera(app),
+    scene = new Scene({
+        color: '#cccccc',
+        opacity: 0.005
+    }),
+    camera = new Camera(app, {
+        z: 500
+    }),
     renderer = new Renderer(app);
+
+const lightList = [
+    light.createLightAmbient({
+        color: '#cccccc'
+    }),
+    light.createLightDirectiona(),
+    light.createLightDirectiona({
+        color: '#002288',
+        x: -1,
+        y: -1,
+        z: -1
+    })
+];
 
 const geometry = new THREE.CylinderBufferGeometry(0, 10, 30, 4, 1);
 const material = new THREE.MeshPhongMaterial({
@@ -50,9 +68,9 @@ for (let i = 0; i < 500; i++) {
     scene.add(mesh);
 }
 
-scene.add(light.object.ambient);
-scene.add(light.object.light1);
-scene.add(light.object.light2);
+scene.add(lightList[0]);
+scene.add(lightList[1]);
+scene.add(lightList[2]);
 
 const trackball = new Trackball(scene, camera, renderer);
 

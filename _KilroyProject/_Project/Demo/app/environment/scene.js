@@ -10,14 +10,18 @@ class Scene {
     /**
      * 原型对象
      * @constructor Scene
+     * @param {object} config 配置
      */
-    constructor() {
+    constructor(config = {}) {
         const _this = this,
-            color = '#cccccc';
+            color = config.color || '#ffffff';
         
         _this.config = {
             background: new THREE.Color(color),
-            fog: new THREE.FogExp2(color, 0.003)
+            fog: new THREE.FogExp2(
+                color,
+                config.opacity || 0.001
+            )
         };
         
         _this.object = null;

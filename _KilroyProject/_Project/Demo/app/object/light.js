@@ -13,17 +13,6 @@ class Light {
      */
     constructor() {
         const _this = this;
-        
-        _this.config = {
-            color: [
-                '#ffffff',
-                '#002288'
-            ]
-        };
-        
-        _this.object = {};
-        
-        _this.init();
     }
     
     /**
@@ -32,42 +21,38 @@ class Light {
      */
     init() {
         const _this = this;
-        
-        _this.createLightAmbient();
-        _this.createLight1();
-        _this.createLight2();
     }
     
     /**
      * 创建自然光
-     * @return {void}
+     * @param {object} config 配置
+     * @return {object} 光对象
      */
-    createLightAmbient() {
-        const _this = this;
+    createLightAmbient(config = {}) {
+        const _this = this,
+            color = config.color || '#ffffff',
+            opacity = config.opacity || 0.3;
         
-        _this.object.ambient = new THREE.AmbientLight(_this.config.color[0], 0.3);
+        return new THREE.AmbientLight(color, opacity);
     }
     
     /**
-     * 创建光1
-     * @return {void}
+     * 创建角度自然光
+     * @param {object} config 配置
+     * @return {object} 光对象
      */
-    createLight1() {
-        const _this = this;
+    createLightDirectiona(config = {}) {
+        const _this = this,
+            color = config.color || '#ffffff',
+            opacity = config.opacity || 0.3,
+            x = config.x || 1,
+            y = config.y || 1,
+            z = config.z || 1,
+            lightObj = new THREE.DirectionalLight(color, opacity);
         
-        _this.object.light1 = new THREE.DirectionalLight(_this.config.color[0]);
-        _this.object.light1.position.set(1, 1, 1);
-    }
-    
-    /**
-     * 创建光2
-     * @return {void}
-     */
-    createLight2() {
-        const _this = this;
+        lightObj.position.set(x, y, z);
         
-        _this.object.light2 = new THREE.DirectionalLight(_this.config.color[1]);
-        _this.object.light2.position.set(-1, -1, -1);
+        return lightObj;
     }
 }
 
