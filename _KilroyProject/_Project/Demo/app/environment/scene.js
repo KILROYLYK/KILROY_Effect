@@ -14,13 +14,13 @@ class Scene {
      */
     constructor(config = {}) {
         const _this = this,
-            color = config.color || '#ffffff';
+            color = config.color || '#000000';
         
         _this.config = {
             background: new THREE.Color(color),
             fog: new THREE.FogExp2(
                 color,
-                config.opacity || 0.001
+                config.opacity || 0
             )
         };
         

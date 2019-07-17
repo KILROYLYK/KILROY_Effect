@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { d } from '../../../_Base/js/window';
+import { w, d } from '../../../_Base/js/window';
 
 /**
  * Three
@@ -39,9 +39,11 @@ const app = d.getElementById('app'),
     }),
     renderer = new Renderer(app);
 
+renderer.setPixelRatio(w.devicePixelRatio);
+
 const lightList = [
     light.createLightAmbient({
-        color: '#cccccc'
+        color: '#ffffff'
     }),
     light.createLightDirectiona(),
     light.createLightDirectiona({
