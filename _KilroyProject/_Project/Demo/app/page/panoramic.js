@@ -44,8 +44,7 @@ scene.object.add(lightList[0]);
 
 const panoramic = new Panoramic(
     scene.object,
-    camera.object,
-    renderer.object
+    camera.object
 );
 
 update.autoUpdate(() => {
@@ -57,7 +56,6 @@ update.autoUpdate(() => {
 });
 
 update.resizeUpdate(() => {
-    panoramic.resizeUpdate();
     camera.resizeUpdate();
     renderer.resizeUpdate();
     renderer.object.render(

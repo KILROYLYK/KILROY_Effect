@@ -1,14 +1,14 @@
 /**
  * Three
  */
-import * as THREE from '../../../$Three/build/three.module.js';
+const THREE = require('three');
 
 /**
  * 灯光
  */
 class Light {
     /**
-     * Light原型对象
+     * 原型对象
      * @constructor Light
      */
     constructor() {

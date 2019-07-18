@@ -8,7 +8,7 @@ const THREE = require('three');
  */
 class Ground {
     /**
-     * Ground原型对象
+     * 原型对象
      * @constructor Ground
      */
     constructor() {
