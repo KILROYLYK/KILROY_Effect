@@ -1,9 +1,4 @@
 /**
- * Public
- */
-import { Base } from '../../../_Base/js/window';
-
-/**
  * Three
  */
 const THREE = require('three');
@@ -35,7 +30,7 @@ class Camera {
         
         _this.object = null;
         
-        return _this.init();
+        _this.init();
     }
     
     /**
@@ -56,22 +51,24 @@ class Camera {
             _this.config.y,
             _this.config.z
         );
-        _this.resizeUpdate();
-        
-        return _this.object;
     }
     
     /**
-     * Resize自动更新
+     * 更新
+     * @return {void}
+     */
+    update() {
+        const _this = this;
+    }
+    
+    /**
+     * 调整更新
      * @return {void}
      */
     resizeUpdate() {
         const _this = this;
-        
-        Base.resizeWindow(() => {
-            _this.object.aspect = _this.dom.clientWidth / _this.dom.clientHeight;
-            _this.object.updateProjectionMatrix();
-        });
+        _this.object.aspect = _this.dom.clientWidth / _this.dom.clientHeight;
+        _this.object.updateProjectionMatrix();
     }
 }
 

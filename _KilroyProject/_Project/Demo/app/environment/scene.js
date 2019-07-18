@@ -26,7 +26,7 @@ class Scene {
         
         _this.object = null;
         
-        return _this.init();
+        _this.init();
     }
     
     /**
@@ -39,8 +39,22 @@ class Scene {
         _this.object = new THREE.Scene();
         _this.object.background = _this.config.background;
         _this.object.fog = _this.config.fog;
-        
-        return _this.object;
+    }
+    
+    /**
+     * 更新
+     * @return {void}
+     */
+    update() {
+        const _this = this;
+    }
+    
+    /**
+     * 调整更新
+     * @return {void}
+     */
+    resizeUpdate() {
+        const _this = this;
     }
 }
 

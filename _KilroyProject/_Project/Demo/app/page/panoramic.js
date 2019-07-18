@@ -14,7 +14,7 @@ import Panoramic from '../controller/panoramic';
 import Scene from '../environment/scene';
 import Camera from '../environment/camera';
 import Renderer from '../environment/renderer';
-import Animate from '../environment/animate';
+import Update from '../environment/update';
 
 /**
  * Object
@@ -31,7 +31,8 @@ const app = d.getElementById('app'),
     }),
     renderer = new Renderer(app, {
         type: 'CSS3D'
-    });
+    }),
+    update = new Update();
 
 const lightList = [
     light.createLightAmbient({
@@ -39,11 +40,28 @@ const lightList = [
     })
 ];
 
-scene.add(lightList[0]);
+scene.object.add(lightList[0]);
 
-const panoramic = new Panoramic(scene, camera, renderer);
+const panoramic = new Panoramic(
+    scene.object,
+    camera.object,
+    renderer.object
+);
 
-new Animate(() => {
+update.autoUpdate(() => {
     panoramic.update();
-    renderer.render(scene, camera);
+    renderer.object.render(
+        scene.object,
+        camera.object
+    );
+});
+
+update.resizeUpdate(() => {
+    panoramic.resizeUpdate();
+    camera.resizeUpdate();
+    renderer.resizeUpdate();
+    renderer.object.render(
+        scene.object,
+        camera.object
+    );
 });

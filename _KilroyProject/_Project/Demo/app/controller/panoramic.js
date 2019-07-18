@@ -85,7 +85,7 @@ class panoramic {
         
         _this.object = null;
         
-        return _this.init();
+        _this.init();
     }
     
     /**
@@ -105,6 +105,30 @@ class panoramic {
         
         _this.resizeUpdate();
         _this.update();
+    }
+    
+    /**
+     * 更新
+     * @return {void}
+     */
+    update() {
+        const _this = this;
+        
+        _this.config.lat = Math.max(-85, Math.min(85, _this.config.lat));
+        _this.config.phi = THREE.Math.degToRad(90 - _this.config.lat);
+        _this.config.theta = THREE.Math.degToRad(_this.config.lon);
+        _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta);
+        _this.config.target.y = Math.cos(_this.config.phi);
+        _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta);
+        _this.camera.lookAt(_this.config.target);
+    }
+    
+    /**
+     * 调整更新
+     * @return {void}
+     */
+    resizeUpdate() {
+        const _this = this;
     }
     
     /**
@@ -150,7 +174,6 @@ class panoramic {
             
             d.addEventListener('mousemove', onMouseMove, false);
             d.addEventListener('mouseup', onMouseUp, false);
-            
         }
         
         /**
@@ -193,7 +216,6 @@ class panoramic {
             
             _this.camera.fov = THREE.Math.clamp(fov, 45, 95);
             _this.camera.updateProjectionMatrix();
-            
         }
     }
     
@@ -219,7 +241,6 @@ class panoramic {
             const touch = e.touches[0];
             _this.config.position.touchX = touch.screenX;
             _this.config.position.touchY = touch.screenY;
-            
         }
         
         /**
@@ -237,32 +258,7 @@ class panoramic {
             
             _this.config.position.touchX = touch.screenX;
             _this.config.position.touchY = touch.screenY;
-            
         }
-    }
-    
-    /**
-     * 自动更新
-     * @return {void}
-     */
-    update() {
-        const _this = this;
-        
-        _this.config.lat = Math.max(-85, Math.min(85, _this.config.lat));
-        _this.config.phi = THREE.Math.degToRad(90 - _this.config.lat);
-        _this.config.theta = THREE.Math.degToRad(_this.config.lon);
-        _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta);
-        _this.config.target.y = Math.cos(_this.config.phi);
-        _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta);
-        _this.camera.lookAt(_this.config.target);
-    }
-    
-    /**
-     * Resize自动更新
-     * @return {void}
-     */
-    resizeUpdate() {
-        const _this = this;
     }
 }
 

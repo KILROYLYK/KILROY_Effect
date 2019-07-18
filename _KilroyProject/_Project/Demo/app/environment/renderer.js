@@ -1,9 +1,4 @@
 /**
- * Public
- */
-import { Base } from '../../../_Base/js/window';
-
-/**
  * Three
  */
 const THREE = require('three');
@@ -32,7 +27,7 @@ class Renderer {
         
         _this.object = null;
         
-        return _this.init();
+        _this.init();
     }
     
     /**
@@ -51,9 +46,27 @@ class Renderer {
             _this.config.height
         );
         _this.dom.appendChild(_this.object.domElement);
-        _this.resizeUpdate();
-        
-        return _this.object;
+    }
+    
+    /**
+     * 更新
+     * @return {void}
+     */
+    update() {
+        const _this = this;
+        _this.object.update();
+    }
+    
+    /**
+     * 调整更新
+     * @return {void}
+     */
+    resizeUpdate() {
+        const _this = this;
+        _this.object.setSize(
+            _this.dom.clientWidth,
+            _this.dom.clientHeight
+        );
     }
     
     /**
@@ -70,21 +83,6 @@ class Renderer {
         } else {
             return THREE.WebGLRenderer;
         }
-    }
-    
-    /**
-     * Resize自动更新
-     * @return {void}
-     */
-    resizeUpdate() {
-        const _this = this;
-        
-        Base.resizeWindow(() => {
-            _this.object.setSize(
-                _this.dom.clientWidth,
-                _this.dom.clientHeight
-            );
-        });
     }
 }
 

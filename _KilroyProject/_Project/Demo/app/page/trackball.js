@@ -19,7 +19,7 @@ import Trackball from '../controller/trackball';
 import Scene from '../environment/scene';
 import Camera from '../environment/camera';
 import Renderer from '../environment/renderer';
-import Animate from '../environment/animate';
+import Update from '../environment/update';
 
 /**
  * Object
@@ -32,14 +32,15 @@ import light from '../object/light';
 const app = d.getElementById('app'),
     scene = new Scene({
         color: '#cccccc',
-        opacity: 0.005
+        opacity: 0.003
     }),
     camera = new Camera(app, {
         z: 500
     }),
-    renderer = new Renderer(app);
+    renderer = new Renderer(app),
+    update = new Update();
 
-renderer.setPixelRatio(w.devicePixelRatio);
+renderer.object.setPixelRatio(w.devicePixelRatio);
 
 const lightList = [
     light.createLightAmbient({
@@ -56,7 +57,7 @@ const lightList = [
 
 const geometry = new THREE.CylinderBufferGeometry(0, 10, 30, 4, 1);
 const material = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
+    color: '#ffffff',
     flatShading: true
 });
 
@@ -67,15 +68,33 @@ for (let i = 0; i < 500; i++) {
     mesh.position.z = (Math.random() - 0.5) * 1000;
     mesh.updateMatrix();
     mesh.matrixAutoUpdate = false;
-    scene.add(mesh);
+    scene.object.add(mesh);
 }
 
-scene.add(lightList[0]);
-scene.add(lightList[1]);
-scene.add(lightList[2]);
+scene.object.add(lightList[0]);
+scene.object.add(lightList[1]);
+scene.object.add(lightList[2]);
 
-const trackball = new Trackball(scene, camera, renderer);
+const trackball = new Trackball(
+    scene.object,
+    camera.object,
+    renderer.object
+);
 
-new Animate(() => {
+update.autoUpdate(() => {
     trackball.update();
+    renderer.object.render(
+        scene.object,
+        camera.object
+    );
+});
+
+update.resizeUpdate(() => {
+    trackball.resizeUpdate();
+    camera.resizeUpdate();
+    renderer.resizeUpdate();
+    renderer.object.render(
+        scene.object,
+        camera.object
+    );
 });

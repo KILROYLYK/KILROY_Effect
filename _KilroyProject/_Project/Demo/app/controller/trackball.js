@@ -1,9 +1,4 @@
 /**
- * Public
- */
-import { Base } from '../../../_Base/js/window';
-
-/**
  * Three
  */
 import { TrackballControls } from '../../../$Three/examples/jsm/controls/TrackballControls';
@@ -39,7 +34,7 @@ class trackball {
         
         _this.object = null;
         
-        return _this.init();
+        _this.init();
     }
     
     /**
@@ -61,26 +56,25 @@ class trackball {
         _this.object.staticMoving = _this.config.staticMoving;
         _this.object.dynamicDampingFactor = _this.config.dynamicDampingFactor;
         _this.object.keys = _this.config.keys;
-        _this.object.addEventListener('change', () => {
-            _this.renderer.render(_this.scene, _this.camera);
-        });
-        _this.renderer.render(_this.scene, _this.camera);
-        _this.resizeUpdate();
-        
-        return _this.object;
     }
     
     /**
-     * Resize自动更新
+     * 更新
+     * @return {void}
+     */
+    update() {
+        const _this = this;
+        _this.object.update();
+    }
+    
+    /**
+     * 调整更新
      * @return {void}
      */
     resizeUpdate() {
         const _this = this;
-        
-        Base.resizeWindow(() => {
-            _this.object.handleResize();
-            _this.renderer.render(_this.scene, _this.camera);
-        });
+        _this.object.handleResize();
+        _this.renderer.render(_this.scene, _this.camera);
     }
 }
 
