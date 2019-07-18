@@ -1,7 +1,7 @@
 /**
  * Three
  */
-import { TrackballControls } from '../../../$Three/examples/jsm/controls/TrackballControls';
+import { TrackballControls } from '../../../$Plugin/Three/examples/jsm/controls/TrackballControls';
 
 /**
  * 轨迹球

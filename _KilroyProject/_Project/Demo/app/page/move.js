@@ -25,6 +25,7 @@ import Update from '../environment/update';
  * Object
  */
 import light from '../object/light';
+import ground from '../object/ground';
 
 /**
  * Main
@@ -52,21 +53,15 @@ const lightList = [
     })
 ];
 
+const groundList = [
+    ground.create({
+        img: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'
+    })
+];
+
 scene.object.add(lightList[0]);
 scene.object.add(lightList[1]);
-
-var loader = new THREE.TextureLoader();
-var groundTexture = loader.load('https://image.gaeamobile.net/image/20190718/130858/grassland.jpg');
-groundTexture.wrapS = THREE.RepeatWrapping;
-groundTexture.wrapT = THREE.RepeatWrapping;
-groundTexture.repeat.set(25, 25);
-groundTexture.anisotropy = 16;
-var groundMaterial = new THREE.MeshLambertMaterial({map: groundTexture});
-var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(20000, 20000), groundMaterial);
-mesh.position.y = -250;
-mesh.rotation.x = -Math.PI / 2;
-mesh.receiveShadow = true;
-scene.object.add(mesh);
+scene.object.add(groundList[0]);
 
 const move = new Move(camera.object);
 

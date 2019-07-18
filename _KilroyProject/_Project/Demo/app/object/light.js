@@ -13,6 +13,8 @@ class Light {
      */
     constructor() {
         const _this = this;
+    
+        _this.init();
     }
     
     /**
@@ -24,7 +26,7 @@ class Light {
     }
     
     /**
-     * 创建自然光
+     * 自然光
      * @param {object} config 配置
      * @return {object} 光对象
      */
@@ -37,7 +39,7 @@ class Light {
     }
     
     /**
-     * 创建角度自然光
+     * 角度自然光
      * @param {object} config 配置
      * @return {object} 光对象
      */

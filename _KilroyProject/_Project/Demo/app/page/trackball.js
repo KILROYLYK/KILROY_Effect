@@ -25,6 +25,7 @@ import Update from '../environment/update';
  * Object
  */
 import light from '../object/light';
+import ground from '../object/ground';
 
 /**
  * Main
@@ -32,7 +33,7 @@ import light from '../object/light';
 const app = d.getElementById('app'),
     scene = new Scene({
         color: '#cccccc',
-        opacity: 0.003
+        opacity: 0.0005
     }),
     camera = new Camera(app, {
         z: 500
@@ -55,6 +56,14 @@ const lightList = [
     })
 ];
 
+
+const groundList = [
+    ground.create({
+        img: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'
+    })
+];
+
+
 const geometry = new THREE.CylinderBufferGeometry(0, 10, 30, 4, 1);
 const material = new THREE.MeshPhongMaterial({
     color: '#ffffff',
@@ -74,6 +83,7 @@ for (let i = 0; i < 500; i++) {
 scene.object.add(lightList[0]);
 scene.object.add(lightList[1]);
 scene.object.add(lightList[2]);
+scene.object.add(groundList[0]);
 
 const trackball = new Trackball(
     scene.object,
