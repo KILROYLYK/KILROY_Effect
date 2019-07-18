@@ -18,5 +18,16 @@ body {
 
 div#app {
   .position();
+  
+  &.mobile {
+    canvas {
+      .transform(translate(-50%, -50%) scale(1/2));
+    }
+  }
+  
+  canvas {
+    .position(absolute, 50%, auto, auto, 50%);
+    .transform(translate(-50%, -50%));
+  }
 }
 
