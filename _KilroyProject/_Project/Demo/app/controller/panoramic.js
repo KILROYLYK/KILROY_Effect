@@ -22,19 +22,22 @@ class panoramic {
      * @constructor Panoramic
      * @param {object} scene 场景
      * @param {object} camera 相机
+     * @param {object} config 配置
      */
-    constructor(scene, camera) {
+    constructor(scene, camera, config = {}) {
         const _this = this;
         
         _this.scene = scene;
         _this.camera = camera;
         
-        _this.move = new Move(_this.camera);
+        _this.move = new Move(_this.camera, {
+            walk: false
+        });
         
         _this.img = {
-            width: 1024,
-            height: 1024,
-            src: 'https://image.gaeamobile.net/image/20190717/181948/'
+            src: config.img,
+            width: config.width || 1024,
+            height: config.width || 1024
         };
         
         _this.config = {

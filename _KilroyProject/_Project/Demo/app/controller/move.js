@@ -16,16 +16,21 @@ class move {
      * 原型对象
      * @constructor Move
      * @param {object} camera 相机
+     * @param {object} config 配置
      */
-    constructor(camera) {
+    constructor(camera, config = {}) {
         const _this = this;
         
         _this.camera = camera;
         
         _this.config = {
+            flag: {
+                turn: true,
+                walk: true
+            },
             target: new THREE.Vector3(),
-            lon: 90, //经度
-            lat: 0, //维度
+            lon: config.lon || 90, //经度
+            lat: config.lat || 0, //维度
             phi: 0, //弧度
             theta: 0, //弧度
             position: {
@@ -33,11 +38,21 @@ class move {
                 touchY: 0
             },
             speed: {
-                click: 0.0015,
-                touch: 0.1,
-                wheel: 0.008
+                click: config.speedClick || 0.0015,
+                touch: config.speedTouch || 0.1,
+                wheel: config.speedWheel || 0.008,
+                walk: config.speedWalk || 1
+            },
+            key: {
+                top: config.keyTop || 87,
+                left: config.keyLeft || 65,
+                right: config.keyRight || 68,
+                bottom: config.keyBottom || 83
             }
         };
+        
+        if (config.turn === false) _this.config.flag.turn = false;
+        if (config.walk === false) _this.config.flag.walk = false;
         
         _this.init();
     }
@@ -109,6 +124,8 @@ class move {
             e.preventDefault();
             e.stopPropagation();
             
+            if (!_this.config.flag.turn) return;
+            
             d.addEventListener('mousemove', onMouseMove, false);
             d.addEventListener('mouseup', onMouseUp, false);
         }
@@ -121,6 +138,8 @@ class move {
         function onMouseMove(e) {
             e.preventDefault();
             e.stopPropagation();
+            
+            if (!_this.config.flag.turn) return;
             
             const movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0,
                 movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0,
@@ -164,7 +183,6 @@ class move {
         const _this = this;
         
         d.addEventListener('touchstart', onTouchStart, false);
-        d.addEventListener('touchmove', onTouchMove, false);
         
         /**
          * 触摸开始
@@ -175,9 +193,14 @@ class move {
             e.preventDefault();
             e.stopPropagation();
             
+            if (!_this.config.flag.turn) return;
+            
             const touch = e.touches[0];
             _this.config.position.touchX = touch.screenX;
             _this.config.position.touchY = touch.screenY;
+            
+            d.addEventListener('touchmove', onTouchMove, false);
+            d.addEventListener('touchend', onTouchEnd, false);
         }
         
         /**
@@ -189,12 +212,27 @@ class move {
             e.preventDefault();
             e.stopPropagation();
             
+            if (!_this.config.flag.turn) return;
+            
             const touch = e.touches[0];
             _this.config.lon -= (touch.screenX - _this.config.position.touchX) * _this.config.speed.touch;
             _this.config.lat += (touch.screenY - _this.config.position.touchY) * _this.config.speed.touch;
             
             _this.config.position.touchX = touch.screenX;
             _this.config.position.touchY = touch.screenY;
+        }
+        
+        /**
+         * 触摸抬起
+         * @param {object} e 焦点对象
+         * @return {void}
+         */
+        function onTouchEnd(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            d.removeEventListener('touchmove', onTouchMove);
+            d.removeEventListener('touchend', onTouchEnd);
         }
     }
 }

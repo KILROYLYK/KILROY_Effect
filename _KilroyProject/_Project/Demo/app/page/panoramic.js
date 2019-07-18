@@ -17,34 +17,24 @@ import Renderer from '../environment/renderer';
 import Update from '../environment/update';
 
 /**
- * Object
- */
-import light from '../object/light';
-
-/**
  * Main
  */
 const app = d.getElementById('app'),
     scene = new Scene(),
     camera = new Camera(app, {
-        fov: 75
+        fov: 70
     }),
     renderer = new Renderer(app, {
         type: 'CSS3D'
     }),
     update = new Update();
 
-const lightList = [
-    light.createLightAmbient({
-        color: '#ffffff'
-    })
-];
-
-scene.object.add(lightList[0]);
-
 const panoramic = new Panoramic(
     scene.object,
-    camera.object
+    camera.object,
+    {
+        img: 'https://image.gaeamobile.net/image/20190717/181948/'
+    }
 );
 
 update.autoUpdate(() => {
