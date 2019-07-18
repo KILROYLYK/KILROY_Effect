@@ -43,11 +43,11 @@ const app = d.getElementById('app'),
 renderer.object.setPixelRatio(w.devicePixelRatio);
 
 const lightList = [
-    light.createLightAmbient({
+    light.ambient({
         color: '#ffffff'
     }),
-    light.createLightDirectiona(),
-    light.createLightDirectiona({
+    light.directiona(),
+    light.directiona({
         color: '#002288',
         x: -1,
         y: -1,

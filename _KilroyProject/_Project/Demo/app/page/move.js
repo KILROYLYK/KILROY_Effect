@@ -32,22 +32,28 @@ import light from '../object/light';
 const app = d.getElementById('app'),
     scene = new Scene({
         color: '#69abff',
-        opacity: 0.0015
+        opacity: 0.0007
     }),
     camera = new Camera(app, {
-        fov: 45,
-        z: 100
+        fov: 45
     }),
     renderer = new Renderer(app),
     update = new Update();
 
 const lightList = [
-    light.createLightAmbient({
+    light.ambient({
         color: '#ffffff'
+    }),
+    light.directiona({
+        color: '#ffffff',
+        x: 1,
+        y: 1,
+        z: 1
     })
 ];
 
 scene.object.add(lightList[0]);
+scene.object.add(lightList[1]);
 
 var loader = new THREE.TextureLoader();
 var groundTexture = loader.load('https://image.gaeamobile.net/image/20190718/130858/grassland.jpg');
@@ -62,12 +68,7 @@ mesh.rotation.x = -Math.PI / 2;
 mesh.receiveShadow = true;
 scene.object.add(mesh);
 
-const move = new Move(
-    camera.object,
-    {
-        speedClick: 0.5
-    }
-);
+const move = new Move(camera.object);
 
 update.autoUpdate(() => {
     move.update();

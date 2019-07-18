@@ -28,7 +28,7 @@ class Light {
      * @param {object} config 配置
      * @return {object} 光对象
      */
-    createLightAmbient(config = {}) {
+    ambient(config = {}) {
         const _this = this,
             color = config.color || '#ffffff',
             opacity = config.opacity || 0.3;
@@ -41,7 +41,7 @@ class Light {
      * @param {object} config 配置
      * @return {object} 光对象
      */
-    createLightDirectiona(config = {}) {
+    directiona(config = {}) {
         const _this = this,
             color = config.color || '#ffffff',
             opacity = config.opacity || 0.3,
