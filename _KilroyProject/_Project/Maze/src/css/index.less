@@ -13,21 +13,31 @@ body {
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI',
   Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
   'Segoe UI Emoji', 'Segoe UI Symbol';
-  background: @color_1;
+  background: @color_2;
 }
 
-div#app {
+#app {
   .position();
   
   &.mobile {
-    canvas#appMaze {
+    #appMaze {
       .transform(translate(-50%, -50%) scale(1/2));
+    }
+    
+    #appKeyboard {
+      .transform(translate(-50%, 0) scale(1/2));
     }
   }
   
-  canvas#appMaze {
-    .position(absolute, 50%, auto, auto, 50%);
+  #appMaze {
+    .position(absolute, 40%, auto, auto, 50%);
     .transform(translate(-50%, -50%));
+  }
+  
+  #appKeyboard {
+    .position(absolute, auto, auto, 4%, 50%);
+    .transform(translate(-50%, 0));
+    .transformOrigin(center, bottom);
   }
 }
 

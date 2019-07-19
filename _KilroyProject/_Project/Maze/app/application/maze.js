@@ -21,7 +21,7 @@ const appMaze = new PIXI.Application({
     preserveDrawingBuffer: true, //开启绘图缓冲
     resolution: px, //设置分辨率 PC:1|Mobile:2
     forceCanvas: false, //强制Canvas渲染器
-    backgroundColor: 0x000000, //背景
+    backgroundColor: 0xFFFFFF, //背景
     clearBeforeRender: true, //渲染前清除画布
     forceFXAA: false, //强制FXAA抗锯齿
     // powerPreference: '', //增加双显卡性能
