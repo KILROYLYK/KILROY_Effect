@@ -9,19 +9,17 @@ const PIXI = require('pixi.js');
 import { app, px } from '../controller/window';
 
 /**
- * Environment
+ * Application
  */
-import Application from '../environment/application';
+import appMaze from '../application/maze';
 
 /**
  * Object
  */
-import Ground from '../object/ground';
+import Map from '../object/map';
 
 /**
  * Main
  */
-
-Application.stage.addChild(Ground);
-
-Application.start();
+appMaze.stage.addChild(Map);
+appMaze.start();

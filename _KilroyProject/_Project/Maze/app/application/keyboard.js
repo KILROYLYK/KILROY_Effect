@@ -11,7 +11,7 @@ import { app, px } from '../controller/window';
 /**
  * 应用
  */
-const Application = new PIXI.Application({
+const keyboardMap = new PIXI.Application({
     autoStart: false, //自动开始
     width: app.clientWidth,
     height: app.clientHeight,
@@ -30,6 +30,6 @@ const Application = new PIXI.Application({
     resizeTo: app //自动调节大小
 });
 
-app.appendChild(Application.view);
+app.appendChild(keyboardMap.view);
 
-export default Application;
+export default keyboardMap;
