@@ -30,16 +30,6 @@ class Panoramic {
         _this.scene = scene;
         _this.camera = camera;
         
-        _this.move = new Move(_this.camera, {
-            walk: false
-        });
-        
-        _this.img = {
-            src: config.img,
-            width: config.width || 1024,
-            height: config.width || 1024
-        };
-        
         _this.config = {
             side: [
                 {
@@ -76,6 +66,16 @@ class Panoramic {
         };
         
         _this.object = null;
+    
+        _this.move = new Move(_this.camera, {
+            walk: false
+        });
+    
+        _this.img = {
+            src: config.img,
+            width: config.width || 1024,
+            height: config.width || 1024
+        };
         
         _this.init();
     }

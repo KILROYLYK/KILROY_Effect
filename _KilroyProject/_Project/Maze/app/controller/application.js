@@ -14,7 +14,7 @@ import { app, px } from '../controller/window';
 class Application {
     /**
      * 原型对象
-     * @constructor application
+     * @constructor Application
      */
     constructor() {
         const _this = this;
