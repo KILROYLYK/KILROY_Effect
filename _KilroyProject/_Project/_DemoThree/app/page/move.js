@@ -24,8 +24,8 @@ import Update from '../environment/update';
 /**
  * Object
  */
-import light from '../object/light';
-import ground from '../object/ground';
+import Light from '../object/light';
+import Ground from '../object/ground';
 
 /**
  * Main
@@ -42,10 +42,10 @@ const app = d.getElementById('app'),
     update = new Update();
 
 const lightList = [
-    light.ambient({
+    Light.ambient({
         color: '#ffffff'
     }),
-    light.directiona({
+    Light.directiona({
         color: '#ffffff',
         x: 1,
         y: 1,
@@ -54,7 +54,7 @@ const lightList = [
 ];
 
 const groundList = [
-    ground.create({
+    Ground.create({
         img: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'
     })
 ];

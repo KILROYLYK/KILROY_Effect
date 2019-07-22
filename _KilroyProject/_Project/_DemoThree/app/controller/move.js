@@ -11,7 +11,7 @@ const THREE = require('three');
 /**
  * 移动
  */
-class move {
+class Move {
     /**
      * 原型对象
      * @constructor Move
@@ -237,4 +237,4 @@ class move {
     }
 }
 
-export default move;
+export default Move;

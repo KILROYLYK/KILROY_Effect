@@ -6,7 +6,7 @@ import { Base } from '../../../_Base/js/window';
 /**
  * 更新
  */
-class update {
+class Update {
     /**
      * 原型对象
      * @constructor Update
@@ -57,4 +57,4 @@ class update {
     }
 }
 
-export default update;
+export default Update;

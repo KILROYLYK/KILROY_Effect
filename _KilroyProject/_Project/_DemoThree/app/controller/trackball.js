@@ -6,7 +6,7 @@ import { TrackballControls } from '../../../$Plugin/Three/examples/jsm/controls/
 /**
  * 轨迹球
  */
-class trackball {
+class Trackball {
     /**
      * 原型对象
      * @constructor Trackball
@@ -78,4 +78,4 @@ class trackball {
     }
 }
 
-export default trackball;
+export default Trackball;

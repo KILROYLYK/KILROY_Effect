@@ -13,7 +13,15 @@ class Light {
      */
     constructor() {
         const _this = this;
-    
+        
+        _this.config = {
+            color: '#ffffff',
+            opacity: 0.3,
+            x: 1,
+            y: 1,
+            z: 1
+        };
+        
         _this.init();
     }
     
@@ -32,8 +40,8 @@ class Light {
      */
     ambient(config = {}) {
         const _this = this,
-            color = config.color || '#ffffff',
-            opacity = config.opacity || 0.3;
+            color = config.color || _this.config.color,
+            opacity = config.opacity || _this.config.opacity;
         
         return new THREE.AmbientLight(color, opacity);
     }
@@ -45,16 +53,16 @@ class Light {
      */
     directiona(config = {}) {
         const _this = this,
-            color = config.color || '#ffffff',
-            opacity = config.opacity || 0.3,
-            x = config.x || 1,
-            y = config.y || 1,
-            z = config.z || 1,
-            lightObj = new THREE.DirectionalLight(color, opacity);
+            color = config.color || _this.config.color,
+            opacity = config.opacity || _this.config.opacity,
+            x = config.x || _this.config.x,
+            y = config.y || _this.config.y,
+            z = config.z || _this.config.z,
+            light = new THREE.DirectionalLight(color, opacity);
         
-        lightObj.position.set(x, y, z);
+        light.position.set(x, y, z);
         
-        return lightObj;
+        return light;
     }
 }
 

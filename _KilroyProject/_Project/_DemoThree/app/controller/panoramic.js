@@ -16,7 +16,7 @@ import Move from '../controller/move';
 /**
  * 全景
  */
-class panoramic {
+class Panoramic {
     /**
      * 原型对象
      * @constructor Panoramic
@@ -131,4 +131,4 @@ class panoramic {
     }
 }
 
-export default panoramic;
+export default Panoramic;

@@ -9,8 +9,8 @@ const PIXI = require('pixi.js');
 const ArrowKey = new PIXI.Container(),
     Panel = {
         origin: 100,
-        radius: 70,
-        alpha: 0.5,
+        radius: 65,
+        alpha: 0.3,
         color: 0xCCCCCC,
         object: new PIXI.Graphics()
     },
@@ -30,7 +30,7 @@ const ArrowKey = new PIXI.Container(),
         width: 60,
         height: 30,
         position: '',
-        alpha: 0.5,
+        alpha: 0.3,
         color: 0xCCCCCC,
         object: {
             top: new PIXI.Graphics(),
@@ -49,6 +49,7 @@ Rocker.object.lineStyle(0);
 Rocker.object.beginFill(Rocker.color, Rocker.alpha);
 Rocker.object.drawCircle(Rocker.origin, Rocker.origin, Rocker.radius);
 Rocker.object.endFill();
+Rocker.object.alpha = 0;
 Rocker.object.interactive = true;
 Rocker.object.buttonMode = true;
 Rocker.object
@@ -108,7 +109,7 @@ function rockerDragStart(e) {
     
     Rocker.flag = true;
     Rocker.position = e.data.getLocalPosition(ArrowKey);
-    Rocker.alpha = 0.75;
+    Rocker.object.alpha = 1;
 }
 
 /**
@@ -151,7 +152,7 @@ function rockerDragEnd(e) {
     };
     Rocker.object.x = 0;
     Rocker.object.y = 0;
-    Rocker.alpha = 1;
+    Rocker.object.alpha = 0;
     
     moveStop();
 }
