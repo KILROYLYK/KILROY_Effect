@@ -7,16 +7,30 @@ const PIXI = require('pixi.js');
  * 方向键
  */
 const ArrowKey = new PIXI.Container(),
-    Keyboard = {
-        color: 0xCCCCCC,
-        zIndex: 1,
-        radius: 70,
+    Panel = {
         origin: 100,
+        radius: 70,
+        alpha: 0.5,
+        color: 0xCCCCCC,
         object: new PIXI.Graphics()
     },
-    Key = {
+    Rocker = {
+        origin: 100,
+        position: {
+            x: 0,
+            y: 0
+        },
+        radius: 30,
+        alpha: 0.3,
         color: 0xCCCCCC,
-        zIndex: 1,
+        flag: false,
+        object: new PIXI.Graphics()
+    },
+    Arrow = {
+        width: 60,
+        height: 30,
+        alpha: 0,
+        color: 0xCCCCCC,
         object: {
             top: new PIXI.Graphics(),
             left: new PIXI.Graphics(),
@@ -25,36 +39,113 @@ const ArrowKey = new PIXI.Container(),
         }
     };
 
-Keyboard.object.lineStyle(0);
-Keyboard.object.beginFill(Keyboard.color, Keyboard.zIndex);
-Keyboard.object.drawCircle(Keyboard.origin, Keyboard.origin, Keyboard.radius);
-Keyboard.object.endFill();
+Panel.object.lineStyle(0);
+Panel.object.beginFill(Panel.color, Panel.alpha);
+Panel.object.drawCircle(Panel.origin, Panel.origin, Panel.radius);
+Panel.object.endFill();
 
-Key.object.top.beginFill(Key.color);
-Key.object.top.lineStyle(0);
-Key.object.top.moveTo(100, 0);
-Key.object.top.lineTo(70, 30);
-Key.object.top.lineTo(100, 20);
-Key.object.top.lineTo(130, 30);
-Key.object.top.lineTo(100, 0);
-Key.object.top.closePath();
-Key.object.top.endFill();
+Rocker.object.lineStyle(0);
+Rocker.object.beginFill(Rocker.color, Rocker.alpha);
+Rocker.object.drawCircle(Rocker.origin, Rocker.origin, Rocker.radius);
+Rocker.object.endFill();
+Rocker.object.interactive = true;
+Rocker.object.buttonMode = true;
+Rocker.object
+    .on('pointerdown', rockerDragStart)
+    .on('pointermove', rockerDragMove)
+    .on('pointerup', rockerDragEnd)
+    .on('pointerupoutside', rockerDragEnd);
 
-Key.object.bottom.beginFill(Key.color);
-Key.object.bottom.lineStyle(0);
-Key.object.bottom.moveTo(100, 200);
-Key.object.bottom.lineTo(70, 170);
-Key.object.bottom.lineTo(100, 180);
-Key.object.bottom.lineTo(130, 170);
-Key.object.bottom.lineTo(100, 200);
-Key.object.bottom.closePath();
-Key.object.bottom.endFill();
+for (const key in Arrow.object) {
+    Arrow.object[key].beginFill(Arrow.color, Arrow.alpha);
+    Arrow.object[key].lineStyle(0);
+    
+    if (key === 'top') {
+        Arrow.object[key].moveTo(100, 0);
+        Arrow.object[key].lineTo(70, 30);
+        Arrow.object[key].lineTo(100, 20);
+        Arrow.object[key].lineTo(130, 30);
+        Arrow.object[key].lineTo(100, 0);
+    } else if (key === 'left') {
+        Arrow.object[key].moveTo(0, 100);
+        Arrow.object[key].lineTo(30, 70);
+        Arrow.object[key].lineTo(20, 100);
+        Arrow.object[key].lineTo(30, 130);
+        Arrow.object[key].lineTo(0, 100);
+    } else if (key === 'right') {
+        Arrow.object[key].moveTo(200, 100);
+        Arrow.object[key].lineTo(170, 70);
+        Arrow.object[key].lineTo(180, 100);
+        Arrow.object[key].lineTo(170, 130);
+        Arrow.object[key].lineTo(200, 100);
+    } else if (key === 'bottom') {
+        Arrow.object[key].moveTo(100, 200);
+        Arrow.object[key].lineTo(70, 170);
+        Arrow.object[key].lineTo(100, 180);
+        Arrow.object[key].lineTo(130, 170);
+        Arrow.object[key].lineTo(100, 200);
+    }
+    
+    Arrow.object[key].closePath();
+    Arrow.object[key].endFill();
+    ArrowKey.addChild(Arrow.object[key]);
+}
 
-Keyboard.object.addChild(Key.object.top);
-Keyboard.object.addChild(Key.object.left);
-Keyboard.object.addChild(Key.object.right);
-Keyboard.object.addChild(Key.object.bottom);
-
-ArrowKey.addChild(Keyboard.object);
+ArrowKey.addChild(Panel.object);
+ArrowKey.addChild(Rocker.object);
 
 export default ArrowKey;
+
+/**
+ * 摇杆拖动开始
+ * @param {object} e 焦点对象
+ * @return {void}
+ */
+function rockerDragStart(e) {
+    if (!Rocker) return;
+    
+    Rocker.flag = true;
+    Rocker.position = e.data.getLocalPosition(ArrowKey);
+    Rocker.alpha = 0.75;
+}
+
+/**
+ * 摇杆拖动移动
+ * @param {object} e 焦点对象
+ * @return {void}
+ */
+function rockerDragMove(e) {
+    if (!Rocker || !Rocker.flag) return;
+    
+    const position = e.data.getLocalPosition(ArrowKey),
+        limit = Panel.radius - 10;
+    
+    let x = position.x - Rocker.position.x,
+        y = position.y - Rocker.position.y;
+    
+    if (x < -limit) x = -limit;
+    if (x > limit) x = limit;
+    if (y < -limit) y = -limit;
+    if (y > limit) y = limit;
+    
+    Rocker.object.x = x;
+    Rocker.object.y = y;
+}
+
+/**
+ * 摇杆拖动结束
+ * @param {object} e 焦点对象
+ * @return {void}
+ */
+function rockerDragEnd(e) {
+    if (!Rocker) return;
+    
+    Rocker.flag = true;
+    Rocker.position = {
+        x: 0,
+        y: 0
+    };
+    Rocker.object.x = 0;
+    Rocker.object.y = 0;
+    Rocker.alpha = 1;
+}

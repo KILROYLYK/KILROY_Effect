@@ -20,12 +20,12 @@ const time = 3,
     Map = new PIXI.Container(),
     Border = {
         color: 0x000000,
-        zIndex: 1,
+        alpha: 1,
         wh: 1
     },
     Maze = {
         color: 0xFFFFFF,
-        zIndex: 1,
+        alpha: 1,
         wh: WH * time,
         map: mazeList[0],
         object: new PIXI.Graphics()
@@ -33,13 +33,13 @@ const time = 3,
     Grid = {
         row: 10 * time,
         color: 0xCCCCCC,
-        zIndex: 1,
+        alpha: 1,
         wh: Maze.wh / (10 * time),
         x: 0,
         y: 0
     };
 
-Maze.object.beginFill(Maze.color, Maze.zIndex);
+Maze.object.beginFill(Maze.color, Maze.alpha);
 Maze.object.drawRect(0, 0, Maze.wh, Maze.wh);
 Maze.object.endFill();
 
@@ -51,12 +51,12 @@ for (let i = 0, n = Math.pow(Grid.row, 2); i < n; i++) {
     grid.y = Grid.y;
     grid.wall = mazeWay[Maze.map[i]];
     
-    fill.beginFill(Grid.color, Grid.zIndex);
+    fill.beginFill(Grid.color, Grid.alpha);
     fill.drawRect(0, 0, Grid.wh, Grid.wh);
     fill.endFill();
     fill.interactive = true;
     fill.buttonMode = true;
-    fill.on('click', () => {
+    fill.on('pointertap', () => {
         console.log(i, grid.wall);
     });
     
@@ -64,7 +64,7 @@ for (let i = 0, n = Math.pow(Grid.row, 2); i < n; i++) {
     
     if ((/top/i).test(mazeWay[Maze.map[i]])) {
         const border = new PIXI.Graphics();
-        border.beginFill(Border.color, Border.zIndex);
+        border.beginFill(Border.color, Border.alpha);
         border.drawRect(0, 0, Grid.wh, Border.wh);
         border.endFill();
         grid.addChild(border);
@@ -72,7 +72,7 @@ for (let i = 0, n = Math.pow(Grid.row, 2); i < n; i++) {
     
     if ((/left/i).test(mazeWay[Maze.map[i]])) {
         const border = new PIXI.Graphics();
-        border.beginFill(Border.color, Border.zIndex);
+        border.beginFill(Border.color, Border.alpha);
         border.drawRect(0, 0, Border.wh, Grid.wh);
         border.endFill();
         grid.addChild(border);
@@ -80,7 +80,7 @@ for (let i = 0, n = Math.pow(Grid.row, 2); i < n; i++) {
     
     if ((/right/i).test(mazeWay[Maze.map[i]])) {
         const border = new PIXI.Graphics();
-        border.beginFill(Border.color, Border.zIndex);
+        border.beginFill(Border.color, Border.alpha);
         border.drawRect(Grid.wh - Border.wh, 0, Border.wh, Grid.wh);
         border.endFill();
         grid.addChild(border);
@@ -88,7 +88,7 @@ for (let i = 0, n = Math.pow(Grid.row, 2); i < n; i++) {
     
     if ((/bottom/i).test(mazeWay[Maze.map[i]])) {
         const border = new PIXI.Graphics();
-        border.beginFill(Border.color, Border.zIndex);
+        border.beginFill(Border.color, Border.alpha);
         border.drawRect(0, Grid.wh - Border.wh, Grid.wh, Border.wh);
         border.endFill();
         grid.addChild(border);
