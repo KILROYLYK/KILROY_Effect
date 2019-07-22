@@ -29,7 +29,8 @@ const ArrowKey = new PIXI.Container(),
     Arrow = {
         width: 60,
         height: 30,
-        alpha: 0,
+        position: '',
+        alpha: 0.5,
         color: 0xCCCCCC,
         object: {
             top: new PIXI.Graphics(),
@@ -88,6 +89,7 @@ for (const key in Arrow.object) {
     
     Arrow.object[key].closePath();
     Arrow.object[key].endFill();
+    Arrow.object[key].alpha = 0;
     ArrowKey.addChild(Arrow.object[key]);
 }
 
@@ -130,6 +132,8 @@ function rockerDragMove(e) {
     
     Rocker.object.x = x;
     Rocker.object.y = y;
+    
+    fixDirection(x, y);
 }
 
 /**
@@ -148,4 +152,89 @@ function rockerDragEnd(e) {
     Rocker.object.x = 0;
     Rocker.object.y = 0;
     Rocker.alpha = 1;
+    
+    moveStop();
+}
+
+/**
+ * 判断方向
+ * @param {number} x X
+ * @param {number} y Y
+ * @return {void}
+ */
+function fixDirection(x, y) {
+    if (y < -Panel.radius / 2 &&
+        Math.abs(x) < Panel.radius &&
+        Math.abs(y) > Math.abs(x)) {
+        moveTop();
+    } else if (y > Panel.radius / 2 &&
+        Math.abs(x) < Panel.radius &&
+        Math.abs(y) > Math.abs(x)) {
+        moveBottom();
+    } else if (x < -Panel.radius / 2 &&
+        Math.abs(y) < Panel.radius &&
+        Math.abs(x) > Math.abs(y)) {
+        moveLeft();
+    } else if (x > Panel.radius / 2 &&
+        Math.abs(y) < Panel.radius &&
+        Math.abs(x) > Math.abs(y)) {
+        moveRight();
+    } else {
+        moveStop();
+    }
+}
+
+/**
+ * 没有移动
+ * @return {void}
+ */
+function moveStop() {
+    Arrow.object.top.alpha = 0;
+    Arrow.object.left.alpha = 0;
+    Arrow.object.right.alpha = 0;
+    Arrow.object.bottom.alpha = 0;
+}
+
+/**
+ * 向上移动
+ * @return {void}
+ */
+function moveTop() {
+    Arrow.object.top.alpha = 1;
+    Arrow.object.left.alpha = 0;
+    Arrow.object.right.alpha = 0;
+    Arrow.object.bottom.alpha = 0;
+}
+
+/**
+ * 向左移动
+ * @return {void}
+ */
+function moveLeft() {
+    Arrow.object.top.alpha = 0;
+    Arrow.object.left.alpha = 1;
+    Arrow.object.right.alpha = 0;
+    Arrow.object.bottom.alpha = 0;
+}
+
+/**
+ * 向右移动
+ * @return {void}
+ */
+function moveRight() {
+    Arrow.object.top.alpha = 0;
+    Arrow.object.left.alpha = 0;
+    Arrow.object.right.alpha = 1;
+    Arrow.object.bottom.alpha = 0;
+}
+
+/**
+ * 向下移动
+ * @return {void}
+ */
+function moveBottom() {
+    Arrow.object.top.alpha = 0;
+    Arrow.object.left.alpha = 0;
+    Arrow.object.right.alpha = 0;
+    Arrow.object.bottom.alpha = 1;
 }
