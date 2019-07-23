@@ -68,13 +68,13 @@ ArrowKey.config.callback.bottom = () => {
  * @return {void}
  */
 function move(direction) {
-    const time = 60,
+    const time = 30,
         speed = Maze.grid.wh / time;
     
     let position = 0,
         callback = null;
     
-    if (!flag) return;
+    if (!flag || direction === '') return;
     
     flag = false;
     
@@ -85,6 +85,7 @@ function move(direction) {
             if (Maze.object.y >= position) {
                 flag = true;
                 appGame.ticker.remove(callback);
+                move(ArrowKey.config.position);
             }
         };
     }
@@ -96,6 +97,7 @@ function move(direction) {
             if (Maze.object.x >= position) {
                 flag = true;
                 appGame.ticker.remove(callback);
+                move(ArrowKey.config.position);
             }
         };
     }
@@ -107,6 +109,7 @@ function move(direction) {
             if (Maze.object.x <= position) {
                 flag = true;
                 appGame.ticker.remove(callback);
+                move(ArrowKey.config.position);
             }
         };
     }
@@ -118,6 +121,7 @@ function move(direction) {
             if (Maze.object.y <= position) {
                 flag = true;
                 appGame.ticker.remove(callback);
+                move(ArrowKey.config.position);
             }
         };
     }

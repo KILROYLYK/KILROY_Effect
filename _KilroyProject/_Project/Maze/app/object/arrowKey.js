@@ -15,6 +15,7 @@ class ArrowKey {
         const _this = this;
         
         _this.config = {
+            position: '',
             callback: {
                 top: null,
                 left: null,
@@ -249,6 +250,7 @@ class ArrowKey {
     directionStop() {
         const _this = this;
         
+        _this.config.position = '';
         _this.arrow.object.top.alpha = 0;
         _this.arrow.object.left.alpha = 0;
         _this.arrow.object.right.alpha = 0;
@@ -261,7 +263,8 @@ class ArrowKey {
      */
     directionTop() {
         const _this = this;
-        
+    
+        _this.config.position = 'top';
         _this.arrow.object.top.alpha = 1;
         _this.arrow.object.left.alpha = 0;
         _this.arrow.object.right.alpha = 0;
@@ -275,7 +278,8 @@ class ArrowKey {
      */
     directionLeft() {
         const _this = this;
-        
+    
+        _this.config.position = 'left';
         _this.arrow.object.top.alpha = 0;
         _this.arrow.object.left.alpha = 1;
         _this.arrow.object.right.alpha = 0;
@@ -289,7 +293,8 @@ class ArrowKey {
      */
     directionRight() {
         const _this = this;
-        
+    
+        _this.config.position = 'right';
         _this.arrow.object.top.alpha = 0;
         _this.arrow.object.left.alpha = 0;
         _this.arrow.object.right.alpha = 1;
@@ -303,7 +308,8 @@ class ArrowKey {
      */
     directionBottom() {
         const _this = this;
-        
+    
+        _this.config.position = 'bottom';
         _this.arrow.object.top.alpha = 0;
         _this.arrow.object.left.alpha = 0;
         _this.arrow.object.right.alpha = 0;
