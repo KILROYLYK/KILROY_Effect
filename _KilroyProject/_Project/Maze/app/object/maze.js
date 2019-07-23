@@ -6,7 +6,7 @@ const PIXI = require('pixi.js');
 /**
  * Controller
  */
-import { app } from '../controller/window';
+import { mazeWH } from '../controller/window';
 
 /**
  * Constant
@@ -27,8 +27,10 @@ class Maze {
         
         _this.config = {
             flag: true,
-            time: 3,
-            row: 10,
+            // time: 3,
+            // row: 10,
+            time: 1,
+            row: 30,
             enter: maze.enter,
             out: maze.out
         };
@@ -40,7 +42,7 @@ class Maze {
             alpha: 0.3,
             x: 0,
             y: 0,
-            wh: app.clientWidth * _this.config.time,
+            wh: mazeWH * _this.config.time,
             way: way,
             matrix: maze.map,
             object: new PIXI.Graphics()
@@ -75,8 +77,8 @@ class Maze {
         _this.createMap();
         _this.createGrid();
         
-        _this.object.x = _this.grid.wh * 4.5;
-        _this.object.y = _this.grid.wh * 5 - _this.map.wh;
+        // _this.object.x = _this.grid.wh * 4.5;
+        // _this.object.y = _this.grid.wh * 5 - _this.map.wh;
     }
     
     /**

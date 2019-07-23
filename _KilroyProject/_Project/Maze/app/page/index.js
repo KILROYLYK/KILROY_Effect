@@ -1,7 +1,7 @@
 /**
  * Controller
  */
-import { app } from '../controller/window';
+import { mazeWH,keyboardWH } from '../controller/window';
 import Application from '../controller/application';
 
 /**
@@ -19,11 +19,6 @@ const user = {
         },
         position: Maze.config.enter.grid
     },
-    appWidth = app.clientWidth,
-    appHeight = app.clientHeight,
-    mazeMargin = 10,
-    mazeWH = (appWidth >= appHeight ? appHeight : appWidth) - mazeMargin * 2,
-    keyboardWH = 200,
     appGame = Application.create('appGame', {
         width: mazeWH,
         height: mazeWH,
