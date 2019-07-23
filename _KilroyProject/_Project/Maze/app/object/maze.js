@@ -25,10 +25,12 @@ class Maze {
         const _this = this;
         
         _this.config = {
+            flag: true,
             time: 3,
-            row: 10
+            row: 10,
+            speed: 500
         };
-    
+        
         _this.object = new PIXI.Container();
         
         _this.map = {
@@ -71,7 +73,7 @@ class Maze {
         _this.createGrid();
         
         _this.object.x = _this.grid.wh * 4.5;
-        _this.object.y = _this.grid.wh * 5.5 - _this.map.wh;
+        _this.object.y = _this.grid.wh * 5 - _this.map.wh;
     }
     
     /**
@@ -110,6 +112,7 @@ class Maze {
             fill.on('pointertap', () => {
                 console.log(i, grid.wall);
             });
+            
             grid.addChild(fill);
             _this.createWall(grid);
             _this.map.object.addChild(grid);
@@ -138,7 +141,7 @@ class Maze {
             wall.endFill();
             grid.addChild(wall);
         }
-    
+        
         if ((/left/i).test(grid.wall)) {
             const wall = new PIXI.Graphics();
             wall.beginFill(_this.wall.color, _this.wall.alpha);
@@ -146,7 +149,7 @@ class Maze {
             wall.endFill();
             grid.addChild(wall);
         }
-    
+        
         if ((/right/i).test(grid.wall)) {
             const wall = new PIXI.Graphics();
             wall.beginFill(_this.wall.color, _this.wall.alpha);
@@ -154,7 +157,7 @@ class Maze {
             wall.endFill();
             grid.addChild(wall);
         }
-    
+        
         if ((/bottom/i).test(grid.wall)) {
             const wall = new PIXI.Graphics();
             wall.beginFill(_this.wall.color, _this.wall.alpha);

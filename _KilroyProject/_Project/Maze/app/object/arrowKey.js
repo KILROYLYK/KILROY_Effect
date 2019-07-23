@@ -14,7 +14,14 @@ class ArrowKey {
     constructor() {
         const _this = this;
         
-        _this.config = {};
+        _this.config = {
+            callback: {
+                top: null,
+                left: null,
+                right: null,
+                bottom: null
+            }
+        };
         
         _this.object = new PIXI.Container();
         
@@ -259,6 +266,7 @@ class ArrowKey {
         _this.arrow.object.left.alpha = 0;
         _this.arrow.object.right.alpha = 0;
         _this.arrow.object.bottom.alpha = 0;
+        _this.config.callback.top();
     }
     
     /**
@@ -272,6 +280,7 @@ class ArrowKey {
         _this.arrow.object.left.alpha = 1;
         _this.arrow.object.right.alpha = 0;
         _this.arrow.object.bottom.alpha = 0;
+        _this.config.callback.left();
     }
     
     /**
@@ -285,6 +294,7 @@ class ArrowKey {
         _this.arrow.object.left.alpha = 0;
         _this.arrow.object.right.alpha = 1;
         _this.arrow.object.bottom.alpha = 0;
+        _this.config.callback.right();
     }
     
     /**
@@ -298,6 +308,7 @@ class ArrowKey {
         _this.arrow.object.left.alpha = 0;
         _this.arrow.object.right.alpha = 0;
         _this.arrow.object.bottom.alpha = 1;
+        _this.config.callback.bottom();
     }
 }
 

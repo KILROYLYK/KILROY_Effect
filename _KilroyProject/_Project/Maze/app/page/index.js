@@ -38,8 +38,89 @@ const appWidth = app.clientWidth,
         clearBeforeRender: true
     });
 
+let flag = true;
+
 appGame.stage.addChild(Maze.object);
 appKeyboard.stage.addChild(ArrowKey.object);
 
 appGame.start();
 appKeyboard.start();
+
+ArrowKey.config.callback.top = () => {
+    move('top');
+};
+
+ArrowKey.config.callback.left = () => {
+    move('left');
+};
+
+ArrowKey.config.callback.right = () => {
+    move('right');
+};
+
+ArrowKey.config.callback.bottom = () => {
+    move('bottom');
+};
+
+/**
+ * 移动
+ * @param {string} direction 方向
+ * @return {void}
+ */
+function move(direction) {
+    const time = 60,
+        speed = Maze.grid.wh / time;
+    
+    let position = 0,
+        callback = null;
+    
+    if (!flag) return;
+    
+    flag = false;
+    
+    if (direction === 'top') {
+        position = Maze.object.y + Maze.grid.wh;
+        callback = () => {
+            Maze.object.y += speed;
+            if (Maze.object.y >= position) {
+                flag = true;
+                appGame.ticker.remove(callback);
+            }
+        };
+    }
+    
+    if (direction === 'left') {
+        position = Maze.object.x + Maze.grid.wh;
+        callback = () => {
+            Maze.object.x += speed;
+            if (Maze.object.x >= position) {
+                flag = true;
+                appGame.ticker.remove(callback);
+            }
+        };
+    }
+    
+    if (direction === 'right') {
+        position = Maze.object.x - Maze.grid.wh;
+        callback = () => {
+            Maze.object.x -= speed;
+            if (Maze.object.x <= position) {
+                flag = true;
+                appGame.ticker.remove(callback);
+            }
+        };
+    }
+    
+    if (direction === 'bottom') {
+        position = Maze.object.y - Maze.grid.wh;
+        callback = () => {
+            Maze.object.y -= speed;
+            if (Maze.object.y <= position) {
+                flag = true;
+                appGame.ticker.remove(callback);
+            }
+        };
+    }
+    
+    appGame.ticker.add(callback);
+}
