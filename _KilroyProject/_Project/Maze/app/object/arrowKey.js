@@ -9,7 +9,7 @@ const PIXI = require('pixi.js');
 class ArrowKey {
     /**
      * 原型对象
-     * @constructor Application
+     * @constructor ArrowKey
      */
     constructor() {
         const _this = this;
@@ -224,11 +224,11 @@ class ArrowKey {
         
         if (y < -_this.panel.radius / 2 &&
             Math.abs(x) < _this.panel.radius &&
-            Math.abs(y) >= Math.abs(x)) {
+            Math.abs(y) > Math.abs(x)) {
             _this.directionTop();
         } else if (y > _this.panel.radius / 2 &&
             Math.abs(x) < _this.panel.radius &&
-            Math.abs(y) >= Math.abs(x)) {
+            Math.abs(y) > Math.abs(x)) {
             _this.directionBottom();
         } else if (x < -_this.panel.radius / 2 &&
             Math.abs(y) < _this.panel.radius &&

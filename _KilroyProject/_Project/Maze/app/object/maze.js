@@ -6,7 +6,7 @@ const PIXI = require('pixi.js');
 /**
  * Controller
  */
-import { mazeWH } from '../controller/window';
+import { mazeWH, time, row } from '../controller/window';
 
 /**
  * Constant
@@ -19,7 +19,7 @@ import { way, matrix } from '../constant/maze';
 class Maze {
     /**
      * 原型对象
-     * @constructor Application
+     * @constructor Maze
      */
     constructor() {
         const _this = this,
@@ -27,10 +27,8 @@ class Maze {
         
         _this.config = {
             flag: true,
-            // time: 3,
-            // row: 10,
-            time: 1,
-            row: 30,
+            time: time,
+            row: row,
             enter: maze.enter,
             out: maze.out
         };
@@ -61,7 +59,7 @@ class Maze {
         _this.wall = {
             color: 0x000000,
             alpha: 0.8,
-            wh: 1
+            wh: 2
         };
         
         _this.init();
@@ -77,8 +75,8 @@ class Maze {
         _this.createMap();
         _this.createGrid();
         
-        // _this.object.x = _this.grid.wh * 4.5;
-        // _this.object.y = _this.grid.wh * 5 - _this.map.wh;
+        _this.object.x = _this.grid.wh * 4.5;
+        _this.object.y = _this.grid.wh * 5.5 - _this.map.wh;
     }
     
     /**

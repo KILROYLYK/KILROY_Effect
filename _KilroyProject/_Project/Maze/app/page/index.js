@@ -1,7 +1,7 @@
 /**
  * Controller
  */
-import { mazeWH,keyboardWH } from '../controller/window';
+import { mazeWH, keyboardWH } from '../controller/window';
 import Application from '../controller/application';
 
 /**
@@ -9,6 +9,7 @@ import Application from '../controller/application';
  */
 import Maze from '../object/maze';
 import ArrowKey from '../object/arrowKey';
+import Character from '../object/character';
 
 /**
  * Main
@@ -40,6 +41,7 @@ const user = {
     });
 
 appGame.stage.addChild(Maze.object);
+appGame.stage.addChild(Character.object);
 appKeyboard.stage.addChild(ArrowKey.object);
 
 appGame.start();
@@ -85,6 +87,7 @@ function move(direction) {
         callback = () => {
             Maze.object.y += speed;
             if (Maze.object.y >= position) {
+                Maze.object.y = position;
                 user.flag.move = true;
                 appGame.ticker.remove(callback);
                 move(ArrowKey.config.position);
@@ -98,6 +101,7 @@ function move(direction) {
         callback = () => {
             Maze.object.x += speed;
             if (Maze.object.x >= position) {
+                Maze.object.x = position;
                 user.flag.move = true;
                 appGame.ticker.remove(callback);
                 move(ArrowKey.config.position);
@@ -111,6 +115,7 @@ function move(direction) {
         callback = () => {
             Maze.object.x -= speed;
             if (Maze.object.x <= position) {
+                Maze.object.x = position;
                 user.flag.move = true;
                 appGame.ticker.remove(callback);
                 move(ArrowKey.config.position);
@@ -124,6 +129,7 @@ function move(direction) {
         callback = () => {
             Maze.object.y -= speed;
             if (Maze.object.y <= position) {
+                Maze.object.y = position;
                 user.flag.move = true;
                 appGame.ticker.remove(callback);
                 move(ArrowKey.config.position);
@@ -158,5 +164,3 @@ function hitWall(direction) {
         return true;
     }
 }
-
-

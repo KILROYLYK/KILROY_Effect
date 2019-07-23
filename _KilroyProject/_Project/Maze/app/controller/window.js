@@ -13,3 +13,5 @@ export const mazeMargin = 10;
 export const mazeWH = (appWidth >= appHeight ? appHeight : appWidth) - mazeMargin * 2;
 export const keyboardWH = 200;
 export const px = Base.isPSB.platform() === 'PC' ? 1 : 2;
+export const time = 3;
+export const row = 10;
