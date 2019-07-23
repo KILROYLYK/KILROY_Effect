@@ -22,13 +22,15 @@ class Maze {
      * @constructor Application
      */
     constructor() {
-        const _this = this;
+        const _this = this,
+            maze = matrix[0];
         
         _this.config = {
             flag: true,
             time: 3,
             row: 10,
-            speed: 500
+            enter: maze.enter,
+            out: maze.out
         };
         
         _this.object = new PIXI.Container();
@@ -40,7 +42,7 @@ class Maze {
             y: 0,
             wh: app.clientWidth * _this.config.time,
             way: way,
-            matrix: matrix,
+            matrix: maze.map,
             object: new PIXI.Graphics()
         };
         
@@ -50,7 +52,8 @@ class Maze {
             x: 0,
             y: 0,
             wh: _this.map.wh / (_this.config.row * _this.config.time),
-            row: _this.config.row * _this.config.time
+            row: _this.config.row * _this.config.time,
+            object: new PIXI.Graphics()
         };
         
         _this.wall = {
@@ -115,7 +118,7 @@ class Maze {
             
             grid.addChild(fill);
             _this.createWall(grid);
-            _this.map.object.addChild(grid);
+            _this.grid.object.addChild(grid);
             
             _this.grid.x += _this.grid.wh;
             
@@ -124,6 +127,8 @@ class Maze {
                 _this.grid.y += _this.grid.wh;
             }
         }
+        
+        _this.map.object.addChild(_this.grid.object);
     }
     
     /**

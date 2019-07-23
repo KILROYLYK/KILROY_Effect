@@ -13,7 +13,13 @@ import ArrowKey from '../object/arrowKey';
 /**
  * Main
  */
-const appWidth = app.clientWidth,
+const user = {
+        flag: {
+            move: true
+        },
+        position: Maze.config.enter.grid
+    },
+    appWidth = app.clientWidth,
     appHeight = app.clientHeight,
     mazeMargin = 10,
     mazeWH = (appWidth >= appHeight ? appHeight : appWidth) - mazeMargin * 2,
@@ -37,8 +43,6 @@ const appWidth = app.clientWidth,
         backgroundColor: 0x000000,
         clearBeforeRender: true
     });
-
-let flag = true;
 
 appGame.stage.addChild(Maze.object);
 appKeyboard.stage.addChild(ArrowKey.object);
@@ -74,16 +78,19 @@ function move(direction) {
     let position = 0,
         callback = null;
     
-    if (!flag || direction === '') return;
+    if (!user.flag.move || direction === '') return;
     
-    flag = false;
+    if (!hitWall(direction)) return;
+    
+    user.flag.move = false;
     
     if (direction === 'top') {
+        user.position -= Maze.config.row * Maze.config.time;
         position = Maze.object.y + Maze.grid.wh;
         callback = () => {
             Maze.object.y += speed;
             if (Maze.object.y >= position) {
-                flag = true;
+                user.flag.move = true;
                 appGame.ticker.remove(callback);
                 move(ArrowKey.config.position);
             }
@@ -91,11 +98,12 @@ function move(direction) {
     }
     
     if (direction === 'left') {
+        user.position -= 1;
         position = Maze.object.x + Maze.grid.wh;
         callback = () => {
             Maze.object.x += speed;
             if (Maze.object.x >= position) {
-                flag = true;
+                user.flag.move = true;
                 appGame.ticker.remove(callback);
                 move(ArrowKey.config.position);
             }
@@ -103,11 +111,12 @@ function move(direction) {
     }
     
     if (direction === 'right') {
+        user.position += 1;
         position = Maze.object.x - Maze.grid.wh;
         callback = () => {
             Maze.object.x -= speed;
             if (Maze.object.x <= position) {
-                flag = true;
+                user.flag.move = true;
                 appGame.ticker.remove(callback);
                 move(ArrowKey.config.position);
             }
@@ -115,11 +124,12 @@ function move(direction) {
     }
     
     if (direction === 'bottom') {
+        user.position += Maze.config.row * Maze.config.time;
         position = Maze.object.y - Maze.grid.wh;
         callback = () => {
             Maze.object.y -= speed;
             if (Maze.object.y <= position) {
-                flag = true;
+                user.flag.move = true;
                 appGame.ticker.remove(callback);
                 move(ArrowKey.config.position);
             }
@@ -128,3 +138,30 @@ function move(direction) {
     
     appGame.ticker.add(callback);
 }
+
+/**
+ * 判断是否撞墙
+ * @param {string} direction 方向
+ * @return {boolean} 是否撞墙
+ */
+function hitWall(direction) {
+    const reg = new RegExp(direction, 'ig'),
+        wall = Maze.grid.object.children[user.position].wall;
+    
+    if (user.position === Maze.config.enter.grid && direction === Maze.config.enter.door) {
+        console.log('只可到此，不可越过！');
+        return false;
+    }
+    if (user.position === Maze.config.out.grid && direction === Maze.config.out.door) {
+        console.log('恭喜您，走出来了！');
+        return false;
+    }
+    
+    if (reg.test(wall)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
