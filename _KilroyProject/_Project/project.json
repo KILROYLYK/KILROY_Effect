@@ -1,5 +1,5 @@
 {
-  "Three": "$DemoThree/",
-  "Pixi": "$DemoPixi/",
+  "Three": "_DemoThree/",
+  "Pixi": "_DemoPixi/",
   "Maze": "Maze/"
 }

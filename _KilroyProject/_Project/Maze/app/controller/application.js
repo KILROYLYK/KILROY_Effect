@@ -6,7 +6,7 @@ const PIXI = require('pixi.js');
 /**
  * Controller
  */
-import { app, px } from 'window';
+import { app, px } from './window';
 
 /**
  * 应用
