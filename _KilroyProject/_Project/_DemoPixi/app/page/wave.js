@@ -35,7 +35,7 @@ const appWave = Application.create('appWave', {
         resize: false
     };
 
-Preload.process([imgWave + 'wave.jpg'],{
+Preload.process([imgWave + 'wave.jpg'], {
     loading_callback: (index, num, progress) => {
         // console.log(index, num, progress + '%');
     },
@@ -44,10 +44,10 @@ Preload.process([imgWave + 'wave.jpg'],{
         const wave = new Wave({
             url: imgWave + 'wave.jpg'
         });
-    
+        
         appWave.stage.addChild(wave.object);
-        appWave.stage.filters = [wave.filter.ripple_1];
-    
+        appWave.stage.filters = [wave.sprite.filter];
+        
         appWave.ticker.add(() => {
             wave.update();
             if (flag.resize) {
@@ -55,11 +55,17 @@ Preload.process([imgWave + 'wave.jpg'],{
                 wave.resizeUpdate();
             }
         });
-    
+        
         Base.resizeWindow(() => {
             flag.resize = true;
         });
-    
+        
         appWave.start();
+    
+        appWave.stage.interactive = true;
+        appWave.stage.buttonMode = true;
+        appWave.stage.on('pointerdown', () => {
+            wave.move();
+        });
     }
 });

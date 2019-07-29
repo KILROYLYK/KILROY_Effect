@@ -38,25 +38,13 @@ class Wave {
         
         _this.sprite = {
             wh: 2048,
-            flag: {
-                r_1: true,
-                r_2: false
-            },
-            speed: {
-                r_1: 2,
-                r_2: 2
-            },
-            size: {
-                r_1: 0,
-                r_2: 0
-            },
-            ripple_1: PIXI.Sprite.from(_this.config.img.ripple_2),
-            ripple_2: PIXI.Sprite.from(_this.config.img.ripple_2)
-        };
-        
-        _this.filter = {
-            ripple_1: null,
-            ripple_2: null
+            flag: false,
+            speed: 5,
+            size: 0,
+            scale: 30,
+            time: 2000,
+            filter: null,
+            object: PIXI.Sprite.from(_this.config.img.ripple_2)
         };
         
         _this.object = new PIXI.Container();
@@ -75,7 +63,7 @@ class Wave {
         _this.object.y = 0;
         
         _this.createImg();
-        _this.createRipple1();
+        _this.createRipple();
         _this.resizeUpdate();
     }
     
@@ -113,13 +101,13 @@ class Wave {
      * 创建波纹1
      * @return {void}
      */
-    createRipple1() {
+    createRipple() {
         const _this = this;
         
-        _this.filter.ripple_1 = new PIXI.filters.DisplacementFilter(_this.sprite.ripple_1);
-        _this.filter.ripple_1.scale.x = 20;
-        _this.filter.ripple_1.scale.y = 20;
-        _this.object.addChild(_this.sprite.ripple_1);
+        _this.sprite.filter = new PIXI.filters.DisplacementFilter(_this.sprite.object);
+        _this.sprite.filter.scale.x = 0;
+        _this.sprite.filter.scale.y = 0;
+        _this.object.addChild(_this.sprite.object);
     }
     
     /**
@@ -130,7 +118,7 @@ class Wave {
         const _this = this;
         
         _this.imgCover(_this.img.object, _this.img.width, _this.img.height);
-        _this.imgCover(_this.sprite.ripple_1, _this.sprite.wh, _this.sprite.wh);
+        _this.imgCover(_this.sprite.object, _this.sprite.wh, _this.sprite.wh);
     }
     
     /**
@@ -171,20 +159,35 @@ class Wave {
     }
     
     /**
+     * 开启波浪动画
+     * @return {void}
+     */
+    move() {
+        const _this = this;
+        
+        _this.sprite.flag = true;
+        _this.sprite.size = 0;
+        _this.imgCover(_this.sprite.object, _this.sprite.wh, _this.sprite.wh);
+        _this.sprite.filter.scale.x = _this.sprite.scale;
+        _this.sprite.filter.scale.y = _this.sprite.scale;
+    }
+    
+    /**
      * 波浪循环放大
      * @return {void}
      */
     waveMove() {
         const _this = this;
         
-        if (_this.sprite.flag.r_1) {
-            _this.sprite.size.r_1 += 1;
-            _this.sprite.ripple_1.width += 2 * _this.sprite.speed.r_1;
-            _this.sprite.ripple_1.height += 2 * _this.sprite.speed.r_1;
-            _this.sprite.ripple_1.x -= _this.sprite.speed.r_1;
-            _this.sprite.ripple_1.y -= _this.sprite.speed.r_1;
-            if (_this.sprite.size.r_1 > 1000) {
-                _this.sprite.flag.r_1 = false;
+        if (_this.sprite.flag) {
+            _this.sprite.size += 1;
+            _this.sprite.object.width += 2 * _this.sprite.speed;
+            _this.sprite.object.height += 2 * _this.sprite.speed;
+            _this.sprite.object.x -= _this.sprite.speed;
+            _this.sprite.object.y -= _this.sprite.speed;
+            if (_this.sprite.size >= _this.sprite.time) {
+                _this.sprite.flag = false;
+                _this.move();
             }
         }
     }
