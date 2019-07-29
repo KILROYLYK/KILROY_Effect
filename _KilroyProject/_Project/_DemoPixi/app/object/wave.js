@@ -38,11 +38,11 @@ class Wave {
         
         _this.sprite = {
             wh: 2048,
-            flag: false,
-            speed: 5,
+            flag: true,
+            speed: 2,
             size: 0,
-            scale: 30,
-            time: 2000,
+            scale: 20,
+            time: 500,
             filter: null,
             object: PIXI.Sprite.from(_this.config.img.ripple_2)
         };
@@ -187,7 +187,6 @@ class Wave {
             _this.sprite.object.y -= _this.sprite.speed;
             if (_this.sprite.size >= _this.sprite.time) {
                 _this.sprite.flag = false;
-                _this.move();
             }
         }
     }
