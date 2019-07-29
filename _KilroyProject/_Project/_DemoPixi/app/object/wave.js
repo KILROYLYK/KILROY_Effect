@@ -25,23 +25,25 @@ class Wave {
             speed: config.speed || 1,
             img: {
                 url: config.url || '',
+                width: config.width || 0,
+                height: config.height || 0,
                 ripple_1: imgFilter.PC + 'ripple_1.jpg',
                 ripple_2: imgFilter.PC + 'ripple_2.jpg'
             }
         };
         
         _this.img = {
-            width: 3840,
-            height: 2160,
+            width: _this.config.img.width,
+            height: _this.config.img.height,
             object: PIXI.Sprite.from(_this.config.img.url)
         };
         
         _this.sprite = {
             wh: 2048,
-            flag: true,
+            flag: false,
             speed: 2,
             size: 0,
-            scale: 20,
+            scale: 30,
             time: 500,
             filter: null,
             object: PIXI.Sprite.from(_this.config.img.ripple_2)
