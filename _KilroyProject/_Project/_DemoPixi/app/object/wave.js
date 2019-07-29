@@ -39,18 +39,18 @@ class Wave {
         _this.sprite = {
             wh: 2048,
             flag: {
-                r_1: false,
-                r_2: true
+                r_1: true,
+                r_2: false
             },
             speed: {
-                r_1: 5,
+                r_1: 2,
                 r_2: 2
             },
             size: {
                 r_1: 0,
                 r_2: 0
             },
-            ripple_1: PIXI.Sprite.from(_this.config.img.ripple_1),
+            ripple_1: PIXI.Sprite.from(_this.config.img.ripple_2),
             ripple_2: PIXI.Sprite.from(_this.config.img.ripple_2)
         };
         
@@ -76,7 +76,6 @@ class Wave {
         
         _this.createImg();
         _this.createRipple1();
-        _this.createRipple2();
         _this.resizeUpdate();
     }
     
@@ -87,7 +86,7 @@ class Wave {
     update() {
         const _this = this;
         
-        _this.waveScale();
+        _this.waveMove();
     }
     
     /**
@@ -118,18 +117,9 @@ class Wave {
         const _this = this;
         
         _this.filter.ripple_1 = new PIXI.filters.DisplacementFilter(_this.sprite.ripple_1);
+        _this.filter.ripple_1.scale.x = 20;
+        _this.filter.ripple_1.scale.y = 20;
         _this.object.addChild(_this.sprite.ripple_1);
-    }
-    
-    /**
-     * 创建波纹2
-     * @return {void}
-     */
-    createRipple2() {
-        const _this = this;
-        
-        _this.filter.ripple_2 = new PIXI.filters.DisplacementFilter(_this.sprite.ripple_2);
-        _this.object.addChild(_this.sprite.ripple_2);
     }
     
     /**
@@ -139,11 +129,8 @@ class Wave {
     setImgPosition() {
         const _this = this;
         
-        _this.sprite.size.r_1 = 0;
-        _this.sprite.size.r_2 = 0;
         _this.imgCover(_this.img.object, _this.img.width, _this.img.height);
         _this.imgCover(_this.sprite.ripple_1, _this.sprite.wh, _this.sprite.wh);
-        _this.imgCover(_this.sprite.ripple_2, _this.sprite.wh, _this.sprite.wh);
     }
     
     /**
@@ -187,7 +174,7 @@ class Wave {
      * 波浪循环放大
      * @return {void}
      */
-    waveScale() {
+    waveMove() {
         const _this = this;
         
         if (_this.sprite.flag.r_1) {
@@ -196,24 +183,8 @@ class Wave {
             _this.sprite.ripple_1.height += 2 * _this.sprite.speed.r_1;
             _this.sprite.ripple_1.x -= _this.sprite.speed.r_1;
             _this.sprite.ripple_1.y -= _this.sprite.speed.r_1;
-            if (_this.sprite.size.r_1 > 250) {
-                _this.sprite.speed.r_1 -= 0.1;
-            }
-            if (_this.sprite.speed.r_1 <= 0) {
+            if (_this.sprite.size.r_1 > 1000) {
                 _this.sprite.flag.r_1 = false;
-                _this.sprite.speed.r_1 = 5;
-            }
-        }
-        
-        if (_this.sprite.flag.r_2) {
-            _this.sprite.size.r_2 += _this.sprite.speed.r_2;
-            _this.sprite.ripple_2.width += 2 * _this.sprite.speed.r_2;
-            _this.sprite.ripple_2.height += 2 * _this.sprite.speed.r_2;
-            _this.sprite.ripple_2.x -= _this.sprite.speed.r_2;
-            _this.sprite.ripple_2.y -= _this.sprite.speed.r_2;
-            if (_this.sprite.size.r_2 > 150) {
-                _this.sprite.size.r_2 = 0;
-                _this.imgCover(_this.sprite.ripple_2, _this.sprite.wh, _this.sprite.wh);
             }
         }
     }

@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { Base } from '../../../_Base/js/window';
+import { Base, Preload } from '../../../_Base/js/window';
 
 /**
  * Constant
@@ -35,27 +35,31 @@ const appWave = Application.create('appWave', {
         resize: false
     };
 
-const wave = new Wave({
-    url: imgWave + 'wave.jpg'
-});
-
-appWave.stage.addChild(wave.object);
-appWave.stage.filters = [
-    wave.filter.ripple_1,
-    wave.filter.ripple_2
-];
-
-appWave.ticker.add((delta) => {
-    // console.log(delta);
-    wave.update();
-    if (flag.resize) {
-        flag.resize = false;
-        wave.resizeUpdate();
+Preload.process([imgWave + 'wave.jpg'],{
+    loading_callback: (index, num, progress) => {
+        // console.log(index, num, progress + '%');
+    },
+    finish_callback: () => {
+        // console.log('完成');
+        const wave = new Wave({
+            url: imgWave + 'wave.jpg'
+        });
+    
+        appWave.stage.addChild(wave.object);
+        appWave.stage.filters = [wave.filter.ripple_1];
+    
+        appWave.ticker.add(() => {
+            wave.update();
+            if (flag.resize) {
+                flag.resize = false;
+                wave.resizeUpdate();
+            }
+        });
+    
+        Base.resizeWindow(() => {
+            flag.resize = true;
+        });
+    
+        appWave.start();
     }
 });
-
-Base.resizeWindow(() => {
-    flag.resize = true;
-});
-
-appWave.start();
