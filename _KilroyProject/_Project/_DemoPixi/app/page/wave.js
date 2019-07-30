@@ -1,12 +1,7 @@
 /**
  * Public
  */
-import { Base, Preload } from '../../../_Base/js/window';
-
-/**
- * Constant
- */
-import { imgWave } from '../constant/img';
+import { w, Base, Preload } from '../../../_Base/js/window';
 
 /**
  * Controller
@@ -65,10 +60,6 @@ Preload.process([img], {
         
         appWave.start();
         
-        appWave.stage.interactive = true;
-        appWave.stage.buttonMode = true;
-        appWave.stage.on('pointerdown', () => {
-            wave.move();
-        });
+        w.wave = wave;
     }
 });
