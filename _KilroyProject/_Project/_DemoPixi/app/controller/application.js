@@ -20,22 +20,23 @@ class Application {
         const _this = this;
         
         _this.config = {
-            autoStart: false, //自动开始
-            width: app.clientWidth, //宽
-            height: app.clientHeight, //高
-            transparent: false, //透明
-            autoDensity: false, //自动分辨率
-            antialias: false, //开启抗锯齿
-            preserveDrawingBuffer: false, //开启绘图缓冲
-            resolution: px, //设置分辨率 PC:1|Mobile:2
-            forceCanvas: false, //强制Canvas渲染器
-            backgroundColor: 0x000000, //背景
-            clearBeforeRender: false, //渲染前清除画布
-            forceFXAA: false, //强制FXAA抗锯齿
-            powerPreference: null, //增加双显卡性能
-            sharedTicker: false, //使用PIXI.Ticker.shared
-            sharedLoader: false, //使用PIXI.Loader.shared
-            resizeTo: null //自动调节大小
+            app: app, // 框架
+            autoStart: false, // 自动开始
+            width: app.clientWidth, // 宽
+            height: app.clientHeight, // 高
+            transparent: false, // 透明
+            autoDensity: false, // 自动分辨率
+            antialias: false, // 开启抗锯齿
+            preserveDrawingBuffer: false, // 开启绘图缓冲
+            resolution: px, // 设置分辨率 PC:1|Mobile:2
+            forceCanvas: false, // 强制Canvas渲染器
+            backgroundColor: 0x000000, // 背景
+            clearBeforeRender: false, // 渲染前清除画布
+            forceFXAA: false, // 强制FXAA抗锯齿
+            powerPreference: null, // 增加双显卡性能
+            sharedTicker: false, // 使用PIXI.Ticker.shared
+            sharedLoader: false, // 使用PIXI.Loader.shared
+            resizeTo: null // 自动调节大小
         };
     }
     
@@ -77,7 +78,7 @@ class Application {
         
         application.view.setAttribute('id', id);
         
-        app.appendChild(application.view);
+        _this.config.app.appendChild(application.view);
         
         return application;
     }

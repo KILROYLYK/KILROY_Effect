@@ -43,7 +43,7 @@ class Wave {
             flag: false,
             speed: 2,
             size: 0,
-            scale: 30,
+            scale: 60,
             time: 1200,
             filter: null,
             object: PIXI.Sprite.from(_this.config.img.ripple_2)

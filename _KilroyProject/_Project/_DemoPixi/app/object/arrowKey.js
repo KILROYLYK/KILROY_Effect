@@ -76,7 +76,7 @@ class ArrowKey {
     }
     
     /**
-     * 创建底座
+     * 创建面板
      * @return {void}
      */
     createPanel() {

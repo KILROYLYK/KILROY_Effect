@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { w, Base, Preload } from '../../../_Base/js/window';
+import { Base, Preload } from '../../../_Base/js/window';
 
 /**
  * Controller
@@ -31,13 +31,15 @@ const appWave = Application.create('appWave', {
     },
     img = 'https://image.gaeamobile.net/image/20190729/194701/bg.jpg';
 
+let wave = null;
+
 Preload.process([img], {
     loading_callback: (index, num, progress) => {
         // console.log(index, num, progress + '%');
     },
     finish_callback: () => {
         // console.log('完成');
-        const wave = new Wave({
+        wave = new Wave({
             url: img,
             width: 750,
             height: 1334
@@ -59,7 +61,12 @@ Preload.process([img], {
         });
         
         appWave.start();
-        
-        w.wave = wave;
     }
 });
+
+/**
+ * 激活
+ */
+setTimeout(() => {
+    if (wave) wave.move();
+}, 1000);
