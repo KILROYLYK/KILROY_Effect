@@ -6,13 +6,16 @@ import Application from '../controller/application';
 /**
  * Object
  */
+import App from '../controller/app';
 import Ability from '../object/ability';
 
 /**
  * Main
  */
-const abilityWH = 530,
-    appAbility = Application.create('appAbility', {
+const app = new App(),
+    abilityWH = app.clientWidth,
+    appAbility = Application.create('canvasAbility', {
+        app: app,
         width: abilityWH,
         height: abilityWH,
         transparent: true,

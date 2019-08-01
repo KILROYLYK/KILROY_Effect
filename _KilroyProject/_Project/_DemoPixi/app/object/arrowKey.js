@@ -10,17 +10,19 @@ class ArrowKey {
     /**
      * 原型对象
      * @constructor ArrowKey
+     * @param {object} config 配置
      */
-    constructor() {
+    constructor(config = {}) {
         const _this = this;
         
         _this.config = {
             position: '',
+            wh: config.wh || 200,
             callback: {
-                top: null,
-                left: null,
-                right: null,
-                bottom: null
+                top: config.topCallback || null,
+                left: config.leftCallback || null,
+                right: config.rightCallback || null,
+                bottom: config.bottomCallback || null
             }
         };
         
@@ -29,16 +31,16 @@ class ArrowKey {
         _this.panel = {
             color: 0xCCCCCC,
             alpha: 0.5,
-            origin: 100,
-            radius: 65,
+            origin: _this.config.wh / 2,
+            radius: _this.config.wh / 2 * 0.6,
             object: new PIXI.Graphics()
         };
         
         _this.arrow = {
             color: 0xCCCCCC,
             alpha: 0.3,
-            width: 60,
-            height: 30,
+            width: _this.config.wh * 0.4,
+            height: _this.config.wh * 0.2,
             object: {
                 top: new PIXI.Graphics(),
                 left: new PIXI.Graphics(),
@@ -263,7 +265,7 @@ class ArrowKey {
      */
     directionTop() {
         const _this = this;
-    
+        
         _this.config.position = 'top';
         _this.arrow.object.top.alpha = 1;
         _this.arrow.object.left.alpha = 0;
@@ -278,7 +280,7 @@ class ArrowKey {
      */
     directionLeft() {
         const _this = this;
-    
+        
         _this.config.position = 'left';
         _this.arrow.object.top.alpha = 0;
         _this.arrow.object.left.alpha = 1;
@@ -293,7 +295,7 @@ class ArrowKey {
      */
     directionRight() {
         const _this = this;
-    
+        
         _this.config.position = 'right';
         _this.arrow.object.top.alpha = 0;
         _this.arrow.object.left.alpha = 0;
@@ -308,7 +310,7 @@ class ArrowKey {
      */
     directionBottom() {
         const _this = this;
-    
+        
         _this.config.position = 'bottom';
         _this.arrow.object.top.alpha = 0;
         _this.arrow.object.left.alpha = 0;
@@ -318,4 +320,4 @@ class ArrowKey {
     }
 }
 
-export default new ArrowKey();
+export default ArrowKey;

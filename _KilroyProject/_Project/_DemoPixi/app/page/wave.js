@@ -6,7 +6,7 @@ import { Base, Preload } from '../../../_Base/js/window';
 /**
  * Controller
  */
-import { app } from '../controller/window';
+import App from '../controller/app';
 import Application from '../controller/application';
 
 /**
@@ -17,7 +17,10 @@ import Wave from '../object/wave';
 /**
  * Main
  */
-const appWave = Application.create('appWave', {
+const app = new App(),
+    waveWH = app.clientWidth,
+    appWave = Application.create('canvasWave', {
+        app: app,
         transparent: true,
         autoDensity: true,
         antialias: true,
@@ -40,9 +43,10 @@ Preload.process([img], {
     finish_callback: () => {
         // console.log('完成');
         wave = new Wave({
-            url: img,
-            width: 750,
-            height: 1334
+            app: app,
+            imgUrl: img,
+            imgWidth: 750,
+            imgHeight: 1334
         });
         
         appWave.stage.addChild(wave.object);

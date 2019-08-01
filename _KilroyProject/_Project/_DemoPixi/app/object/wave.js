@@ -1,7 +1,6 @@
 /**
  * Constant
  */
-import { app } from '../controller/window';
 import { imgFilter } from '../constant/img';
 
 /**
@@ -22,11 +21,12 @@ class Wave {
         const _this = this;
         
         _this.config = {
+            app: config.app,
             speed: config.speed || 1,
             img: {
-                url: config.url || '',
-                width: config.width || 0,
-                height: config.height || 0,
+                url: config.imgUrl || '',
+                width: config.imgWidth || 0,
+                height: config.imgHeight || 0,
                 ripple_1: imgFilter.PC + 'ripple_1.jpg',
                 ripple_2: imgFilter.PC + 'ripple_2.jpg'
             }
@@ -132,8 +132,8 @@ class Wave {
      */
     imgCover(img, imgWidth, imgHeight) {
         const _this = this,
-            appWidth = app.clientWidth,
-            appHeight = app.clientHeight,
+            appWidth = _this.config.app.clientWidth,
+            appHeight = _this.config.app.clientHeight,
             appRatio = appWidth / appHeight,
             imgRatio = imgWidth / imgHeight;
         

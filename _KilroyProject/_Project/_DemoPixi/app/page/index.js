@@ -1,12 +1,12 @@
 /**
  * Public
  */
-import { w, d, Base, Preload } from '../../../_Base/js/window';
+import { w, Base, Preload } from '../../../_Base/js/window';
 
 /**
  * Controller
  */
-import { app } from '../controller/window';
+import App from '../controller/app';
 import Application from '../controller/application';
 
 /**
@@ -22,8 +22,9 @@ import Ability from '../object/ability';
     /**
      * Wave
      */
-    const appWave = Application.create('appWave', {
-            app: d.getElementById('app1'),
+    const app = new App('appWave'),
+        appWave = Application.create('canvasWave', {
+            app: app,
             transparent: true,
             autoDensity: true,
             antialias: true,
@@ -44,9 +45,10 @@ import Ability from '../object/ability';
         finish_callback: () => {
             // console.log('完成');
             const wave = new Wave({
-                url: img,
-                width: 750,
-                height: 1334
+                app: app,
+                imgUrl: img,
+                imgWidth: 750,
+                imgHeight: 1334
             });
             
             appWave.stage.addChild(wave.object);
@@ -75,11 +77,11 @@ import Ability from '../object/ability';
     /**
      * Ability
      */
-    const abilityWH = 530,
-        appAbility = Application.create('appAbility', {
-            app: d.getElementById('app2'),
-            width: abilityWH,
-            height: abilityWH,
+    const app = new App('appAbility'),
+        appAbility = Application.create('canvasAbility', {
+            app: app,
+            width: app.clientWidth,
+            height: app.clientHeight,
             transparent: true,
             autoDensity: true,
             antialias: true,
@@ -89,7 +91,7 @@ import Ability from '../object/ability';
         });
     
     const ability = new Ability({
-        wh: abilityWH
+        wh: app.clientWidth
     });
     
     appAbility.stage.addChild(ability.object);

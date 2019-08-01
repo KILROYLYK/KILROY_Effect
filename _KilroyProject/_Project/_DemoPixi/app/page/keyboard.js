@@ -6,41 +6,44 @@ import Application from '../controller/application';
 /**
  * Object
  */
+import App from '../controller/app';
 import ArrowKey from '../object/arrowKey';
 
 /**
  * Main
  */
-const appKeyboard = Application.create('appKeyboard', {
-    width: 200,
-    height: 200,
-    transparent: true,
-    autoDensity: true,
-    antialias: true,
-    preserveDrawingBuffer: true,
-    backgroundColor: 0x000000,
-    clearBeforeRender: true
-});
+const app = new App(),
+    keyboardWH = app.clientWidth,
+    appKeyboard = Application.create('canvasKeyboard', {
+        app: app,
+        width: keyboardWH,
+        height: keyboardWH,
+        transparent: true,
+        autoDensity: true,
+        antialias: true,
+        preserveDrawingBuffer: true,
+        backgroundColor: 0x000000,
+        clearBeforeRender: true
+    }),
+    arrowKey = new ArrowKey({
+        wh: keyboardWH,
+        topCallback:() => {
+            move('top');
+        },
+        leftCallback:() => {
+            move('left');
+        },
+        rightCallback:() => {
+            move('right');
+        },
+        bottomCallback:() => {
+            move('bottom');
+        }
+    });
 
-appKeyboard.stage.addChild(ArrowKey.object);
+appKeyboard.stage.addChild(arrowKey.object);
 
 appKeyboard.start();
-
-ArrowKey.config.callback.top = () => {
-    move('top');
-};
-
-ArrowKey.config.callback.left = () => {
-    move('left');
-};
-
-ArrowKey.config.callback.right = () => {
-    move('right');
-};
-
-ArrowKey.config.callback.bottom = () => {
-    move('bottom');
-};
 
 /**
  * 移动

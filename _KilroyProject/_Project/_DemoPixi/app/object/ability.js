@@ -16,18 +16,34 @@ class Ability {
         const _this = this;
         
         _this.config = {
-            wh: config.wh || 520,
+            wh: config.wh || 530,
             floor: config.floor || 5,
             speed: config.speed || 0.02,
             position: config.position || [0, 0, 0, 0, 0, 0]
+        };
+        
+        _this.point = {
+            color: 0xA49956,
+            alpha: 1,
+            wh: 6,
+            zIndex: 2,
+            position: [],
+            border: {
+                color: 0xA49956,
+                alpha: 1,
+                wh: 1,
+                padding: 2
+            },
+            object: new PIXI.Container()
         };
         
         _this.panel = {
             color: 0x1B334C,
             alpha: 0.3,
             origin: _this.config.wh / 2,
+            zIndex: 1,
             floor: _this.config.floor,
-            padding: 15,
+            padding: _this.point.wh / 2 + _this.point.border.padding + _this.point.border.wh,
             border: {
                 color: 0xA49956,
                 alpha: 0.7,
@@ -37,19 +53,11 @@ class Ability {
             object: new PIXI.Container()
         };
         
-        _this.point = {
-            color: 0xA49956,
-            alpha: 1,
-            wh: 10,
-            padding: 2,
-            position: [],
-            object: new PIXI.Container()
-        };
-        
         _this.capability = {
             color: 0xA49956,
             alpha: 0.5,
             wh: 2,
+            zIndex: 0,
             object: new PIXI.Graphics()
         };
         
@@ -136,6 +144,7 @@ class Ability {
             border.lineTo(coordinate.x, coordinate.y);
             border.endFill();
             
+            _this.panel.object.zIndex = _this.panel.zIndex;
             _this.panel.object.addChild(border);
         }
         
@@ -161,11 +170,11 @@ class Ability {
             point.drawCircle(0, 0, _this.point.wh);
             point.endFill();
             
-            point.lineStyle(1, _this.point.color, _this.point.alpha);
+            point.lineStyle(_this.point.border.wh, _this.point.border.color, _this.point.border.alpha);
             point.beginFill(_this.point.color, 0);
-            point.drawCircle(0, 0, _this.point.wh + _this.point.padding);
+            point.drawCircle(0, 0, _this.point.wh + _this.point.border.padding);
             point.endFill();
-            point.zIndex = 2;
+            point.zIndex = _this.point.zIndex;
             point.x = coordinate.x;
             point.y = coordinate.y;
             
@@ -182,7 +191,7 @@ class Ability {
     createCapability() {
         const _this = this;
         
-        _this.capability.object.zIndex = 1;
+        _this.capability.object.zIndex = _this.capability.zIndex;
         
         _this.object.addChild(_this.capability.object);
     }
