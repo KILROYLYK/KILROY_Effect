@@ -18,7 +18,7 @@ class Ability {
         _this.config = {
             wh: config.wh || 530,
             floor: config.floor || 5,
-            speed: config.speed || 0.02,
+            speed: config.speed || 0.04,
             position: config.position || [0, 0, 0, 0, 0, 0]
         };
         
