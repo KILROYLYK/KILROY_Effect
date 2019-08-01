@@ -101,4 +101,6 @@ import Ability from '../object/ability';
     appAbility.ticker.add(() => {
         ability.update();
     });
+    
+    w.ability = ability;
 })();
