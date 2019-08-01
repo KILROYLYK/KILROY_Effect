@@ -10,13 +10,13 @@ class App {
     /**
      * 原型对象
      * @constructor App
-     * @param {object} config 配置
+     * @param {string} id 框架ID
      */
-    constructor(config = {}) {
+    constructor(id = '') {
         const _this = this;
         
         _this.config = {
-            id: config.id || 'app',
+            id: id || 'app',
             object: null
         };
         

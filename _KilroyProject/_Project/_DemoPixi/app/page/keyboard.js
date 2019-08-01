@@ -27,16 +27,16 @@ const app = new App(),
     }),
     arrowKey = new ArrowKey({
         wh: keyboardWH,
-        topCallback:() => {
+        topCallback: () => {
             move('top');
         },
-        leftCallback:() => {
+        leftCallback: () => {
             move('left');
         },
-        rightCallback:() => {
+        rightCallback: () => {
             move('right');
         },
-        bottomCallback:() => {
+        bottomCallback: () => {
             move('bottom');
         }
     });
