@@ -31,6 +31,8 @@ class Wave {
                 ripple_2: imgFilter.PC + 'ripple_2.jpg'
             }
         };
+    
+        _this.object = new PIXI.Container();
         
         _this.img = {
             width: _this.config.img.width,
@@ -48,8 +50,6 @@ class Wave {
             filter: null,
             object: PIXI.Sprite.from(_this.config.img.ripple_2)
         };
-        
-        _this.object = new PIXI.Container();
         
         _this.init();
     }

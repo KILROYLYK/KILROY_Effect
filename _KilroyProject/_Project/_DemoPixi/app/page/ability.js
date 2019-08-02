@@ -12,7 +12,7 @@ import Ability from '../object/ability';
 /**
  * Main
  */
-const app = new App(),
+const app = new App('appAbility'),
     abilityWH = app.clientWidth,
     appAbility = Application.create('canvasAbility', {
         app: app,
@@ -41,5 +41,5 @@ appAbility.ticker.add(() => {
 /**
  * 激活
  */
-ability.showCapability([0, 2, 4, 6, 8, 10]);
+ability.showCapability([10, 2, 4, 6, 8, 10]);
 

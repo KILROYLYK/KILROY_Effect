@@ -21,6 +21,8 @@ class Ability {
             speed: config.speed || 20,
             position: config.position || [0, 0, 0, 0, 0, 0]
         };
+    
+        _this.object = new PIXI.Container();
         
         _this.point = {
             color: 0xA49956,
@@ -53,7 +55,7 @@ class Ability {
             origin: _this.config.wh / 2,
             zIndex: 0,
             floor: _this.config.floor,
-            padding: _this.point.wh / 2 + _this.point.border.padding + _this.point.border.wh,
+            padding: _this.point.wh / 2 + _this.point.border.padding + _this.point.border.wh + 5,
             border: {
                 color: 0xA49956,
                 alpha: 0.7,
@@ -62,8 +64,6 @@ class Ability {
             },
             object: new PIXI.Container()
         };
-        
-        _this.object = new PIXI.Container();
         
         _this.init();
     }
@@ -148,13 +148,16 @@ class Ability {
             
             border.lineStyle(_this.panel.border.width, _this.panel.border.color, _this.panel.border.alpha);
             border.beginFill(_this.panel.border.color, _this.panel.border.alpha);
-            border.moveTo(_this.panel.origin, _this.panel.origin);
+            border.moveTo(0, 0);
             border.lineTo(coordinate.x, coordinate.y);
             border.endFill();
             
             _this.panel.object.zIndex = _this.panel.zIndex;
             _this.panel.object.addChild(border);
         }
+        
+        _this.panel.object.x = _this.panel.origin;
+        _this.panel.object.y = _this.panel.origin;
         
         _this.object.addChild(_this.panel.object);
     }
@@ -191,6 +194,9 @@ class Ability {
             _this.point.object.addChild(point);
         }
         
+        _this.point.object.x = _this.panel.origin;
+        _this.point.object.y = _this.panel.origin;
+        
         _this.object.addChild(_this.point.object);
     }
     
@@ -201,6 +207,8 @@ class Ability {
     createCapability() {
         const _this = this;
         
+        _this.capability.object.x = _this.panel.origin;
+        _this.capability.object.y = _this.panel.origin;
         _this.capability.object.zIndex = _this.capability.zIndex;
         
         _this.drawCapability();
@@ -239,8 +247,8 @@ class Ability {
     getCoordinate(n, ability) {
         const _this = this,
             coordinate = {
-                x: _this.panel.origin,
-                y: _this.panel.origin
+                x: 0,
+                y: 0
             },
             angle = Math.atan(0.6),
             spacing = _this.panel.origin - _this.panel.padding,

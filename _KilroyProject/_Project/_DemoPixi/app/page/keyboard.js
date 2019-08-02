@@ -12,7 +12,7 @@ import ArrowKey from '../object/arrowKey';
 /**
  * Main
  */
-const app = new App(),
+const app = new App('appKeyboard'),
     keyboardWH = app.clientWidth,
     appKeyboard = Application.create('canvasKeyboard', {
         app: app,
@@ -27,17 +27,9 @@ const app = new App(),
     }),
     arrowKey = new ArrowKey({
         wh: keyboardWH,
-        topCallback: () => {
-            move('top');
-        },
-        leftCallback: () => {
-            move('left');
-        },
-        rightCallback: () => {
-            move('right');
-        },
-        bottomCallback: () => {
-            move('bottom');
+        direction: 8,
+        callback: (direction) => {
+            move(direction);
         }
     });
 
@@ -51,19 +43,5 @@ appKeyboard.start();
  * @return {void}
  */
 function move(direction) {
-    if (direction === 'top') {
-        console.log('top');
-    }
-    
-    if (direction === 'left') {
-        console.log('left');
-    }
-    
-    if (direction === 'right') {
-        console.log('right');
-    }
-    
-    if (direction === 'bottom') {
-        console.log('bottom');
-    }
+    console.log(direction);
 }
