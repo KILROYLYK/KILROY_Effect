@@ -18,7 +18,7 @@ class Ability {
         _this.config = {
             wh: config.wh || 530,
             floor: config.floor || 5,
-            speed: config.speed || 0.04,
+            speed: config.speed || 20,
             position: config.position || [0, 0, 0, 0, 0, 0]
         };
         
@@ -28,6 +28,8 @@ class Ability {
             wh: 6,
             zIndex: 2,
             position: [],
+            speed: [],
+            time: _this.config.speed,
             border: {
                 color: 0xA49956,
                 alpha: 1,
@@ -37,11 +39,19 @@ class Ability {
             object: new PIXI.Container()
         };
         
+        _this.capability = {
+            color: 0xA49956,
+            alpha: 0.5,
+            wh: 2,
+            zIndex: 1,
+            object: new PIXI.Graphics()
+        };
+        
         _this.panel = {
             color: 0x1B334C,
             alpha: 0.3,
             origin: _this.config.wh / 2,
-            zIndex: 1,
+            zIndex: 0,
             floor: _this.config.floor,
             padding: _this.point.wh / 2 + _this.point.border.padding + _this.point.border.wh,
             border: {
@@ -51,14 +61,6 @@ class Ability {
                 surface: 6
             },
             object: new PIXI.Container()
-        };
-        
-        _this.capability = {
-            color: 0xA49956,
-            alpha: 0.5,
-            wh: 2,
-            zIndex: 0,
-            object: new PIXI.Graphics()
         };
         
         _this.object = new PIXI.Container();
@@ -85,17 +87,23 @@ class Ability {
     update() {
         const _this = this;
         
+        if (_this.point.time <= 0) {
+            _this.point.time = 0;
+            return;
+        }
+        
+        _this.point.time--;
+        
         for (let i = 0, n = _this.panel.border.surface; i < n; i++) {
-            if (_this.config.position[i] > _this.point.position[i]) {
-                const position = parseInt(_this.point.position[i] * 1000 + _this.config.speed * 1000) / 1000;
+            if (_this.point.position[i] !== _this.config.position[i]) {
+                const position = _this.point.position[i] + _this.point.speed[i];
                 _this.movePoint(i, position);
-            } else if (_this.config.position[i] < _this.point.position[i]) {
-                const position = parseInt(_this.point.position[i] * 1000 - _this.config.speed * 1000) / 1000;
-                _this.movePoint(i, position);
+            } else {
+                _this.point.speed[i] = 0;
             }
         }
         
-        _this.drawPolygon();
+        _this.drawCapability();
     }
     
     /**
@@ -152,16 +160,19 @@ class Ability {
     }
     
     /**
-     * 创建点
+     * 创建能力点
      * @return {void}
      */
     createPoint() {
         const _this = this;
         
+        _this.point.object.zIndex = _this.point.zIndex;
+        
         for (let i = 0, n = _this.panel.border.surface; i < n; i++) {
             const point = new PIXI.Graphics();
             
             _this.point.position[i] = _this.config.position[i];
+            _this.point.speed[i] = _this.config.position[i];
             
             const coordinate = _this.getCoordinate(i, _this.point.position[i]);
             
@@ -174,7 +185,6 @@ class Ability {
             point.beginFill(_this.point.color, 0);
             point.drawCircle(0, 0, _this.point.wh + _this.point.border.padding);
             point.endFill();
-            point.zIndex = _this.point.zIndex;
             point.x = coordinate.x;
             point.y = coordinate.y;
             
@@ -193,7 +203,31 @@ class Ability {
         
         _this.capability.object.zIndex = _this.capability.zIndex;
         
+        _this.drawCapability();
+        
         _this.object.addChild(_this.capability.object);
+    }
+    
+    /**
+     * 绘制能力图
+     * @return {void}
+     */
+    drawCapability() {
+        const _this = this,
+            polygon = [];
+        
+        _this.capability.object.clear();
+        _this.capability.object.lineStyle(_this.capability.wh, _this.capability.color, 1);
+        _this.capability.object.beginFill(_this.capability.color, _this.capability.alpha);
+        
+        for (let i = 0, n = _this.panel.border.surface; i < n; i++) {
+            const coordinate = _this.getCoordinate(i, _this.point.position[i]);
+            polygon.push(coordinate.x);
+            polygon.push(coordinate.y);
+        }
+        
+        _this.capability.object.drawPolygon(polygon);
+        _this.capability.object.endFill();
     }
     
     /**
@@ -267,28 +301,6 @@ class Ability {
     }
     
     /**
-     * 绘制多边形
-     * @return {void}
-     */
-    drawPolygon() {
-        const _this = this,
-            polygon = [];
-        
-        _this.capability.object.clear();
-        _this.capability.object.lineStyle(_this.capability.wh, _this.capability.color, 1);
-        _this.capability.object.beginFill(_this.capability.color, _this.capability.alpha);
-        
-        for (let i = 0, n = _this.panel.border.surface; i < n; i++) {
-            const coordinate = _this.getCoordinate(i, _this.point.position[i]);
-            polygon.push(coordinate.x);
-            polygon.push(coordinate.y);
-        }
-        
-        _this.capability.object.drawPolygon(polygon);
-        _this.capability.object.endFill();
-    }
-    
-    /**
      * 显示能力图
      * @param {array} capability 能力值
      * @return {void}
@@ -299,11 +311,14 @@ class Ability {
         
         if (capability.length !== 6) return;
         
+        _this.point.time = _this.config.speed;
+        
         for (let i = 0; i < length; i++) {
             let value = parseInt(capability[i]);
             if (value <= 0) value = 0;
             if (value >= 10) value = 10;
             _this.config.position[i] = value / 10;
+            _this.point.speed[i] = (_this.config.position[i] - _this.point.position[i]) / _this.config.speed;
         }
     }
 }

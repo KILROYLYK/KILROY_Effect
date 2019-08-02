@@ -104,3 +104,5 @@ import Ability from '../object/ability';
     
     w.ability = ability;
 })();
+
+
