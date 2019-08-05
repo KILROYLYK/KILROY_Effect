@@ -18,7 +18,8 @@ class ArrowKey {
         _this.config = {
             wh: config.wh || 200,
             direction: config.direction || 8,
-            callback: config.callback || {}
+            callback: config.callback || {},
+            flag: false
         };
         
         _this.object = new PIXI.Container();
@@ -38,9 +39,9 @@ class ArrowKey {
             origin: _this.panel.origin,
             radius: _this.panel.radius * 0.55,
             zIndex: 1,
-            flag: true,
+            radina: 0,
+            maxRadina: 1.6,
             angle: 0,
-            maxAngle: 1.6,
             sensitivity: _this.panel.radius * 0.2,
             position: {
                 x: 0,
@@ -114,8 +115,7 @@ class ArrowKey {
         const _this = this,
             position = e.data.getLocalPosition(_this.object);
         
-        if (!_this.rocker.flag) return;
-        
+        _this.config.flag = true;
         _this.rocker.position = position;
         _this.rocker.object.alpha = 0.7;
     }
@@ -130,10 +130,12 @@ class ArrowKey {
             position = e.data.getLocalPosition(_this.object),
             x = position.x - _this.rocker.position.x,
             y = position.y - _this.rocker.position.y;
+    
+        if (!_this.config.flag) return;
         
-        if (!_this.rocker.flag) return;
+        _this.rocker.radina = Math.atan(x / y);
+        _this.rocker.angle = _this.getAngle(x, y);
         
-        _this.rocker.angle = Math.atan(x / y);
         _this.rockerMove(x, y);
         _this.directionMove(x, y);
     }
@@ -146,6 +148,7 @@ class ArrowKey {
     rockerDragEnd(e) {
         const _this = this;
         
+        _this.config.flag = false;
         _this.rocker.position = {
             x: 0,
             y: 0
@@ -164,22 +167,22 @@ class ArrowKey {
     rockerMove(x, y) {
         const _this = this,
             range = _this.panel.radius,
-            angle = _this.rocker.angle,
-            maxAngle = _this.rocker.maxAngle,
-            X = Math.cos(angle),
-            Y = Math.sin(angle),
+            radina = _this.rocker.radina,
+            maxRadina = _this.rocker.maxRadina,
+            X = Math.cos(radina),
+            Y = Math.sin(radina),
             position = {
                 x: x,
                 y: y
             };
         
         if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) >= range) {
-            if (x >= 0 && angle < 0 && angle > -maxAngle ||
-                x < 0 && angle > 0 && angle < maxAngle) {
+            if (x >= 0 && radina < 0 && radina > -maxRadina ||
+                x < 0 && radina > 0 && radina < maxRadina) {
                 position.x = -range * Y;
                 position.y = -range * X;
-            } else if (x >= 0 && angle > 0 && angle < maxAngle ||
-                x < 0 && angle < 0 && angle > -maxAngle) {
+            } else if (x >= 0 && radina > 0 && radina < maxRadina ||
+                x < 0 && radina < 0 && radina > -maxRadina) {
                 position.x = range * Y;
                 position.y = range * X;
             } else {
@@ -200,52 +203,76 @@ class ArrowKey {
      */
     directionMove(x, y) {
         const _this = this,
-            angle = _this.rocker.angle,
-            maxAngle = _this.rocker.maxAngle,
-            absAngle = Math.abs(angle),
-            sheet = maxAngle / 4;
+            piece = 360 / _this.config.direction,
+            angle = _this.rocker.angle;
         
-        let direction = '';
+        let direction = 0;
         
         if (!_this.config.callback) return;
         
-        if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) < _this.rocker.sensitivity) return;
+        if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) <
+            _this.rocker.sensitivity) {
+            return;
+        }
         
-        if (x >= 0 && angle < 0 && angle > -maxAngle) {
-            if (absAngle > 0 && absAngle <= sheet) {
-                direction = 'top';
-            } else if (absAngle > sheet && absAngle < sheet * 3) {
-                direction = 'top right';
-            } else if (absAngle >= sheet * 3 && absAngle < sheet * 4) {
-                direction = 'right';
-            }
-        } else if (x >= 0 && angle > 0 && angle < maxAngle) {
-            if (absAngle > 0 && absAngle <= sheet) {
-                direction = 'bottom';
-            } else if (absAngle > sheet && absAngle < sheet * 3) {
-                direction = 'bottom right';
-            } else if (absAngle >= sheet * 3 && absAngle < sheet * 4) {
-                direction = 'right';
-            }
-        } else if (x < 0 && angle > 0 && angle < maxAngle) {
-            if (absAngle > 0 && absAngle <= sheet) {
-                direction = 'top';
-            } else if (absAngle > sheet && absAngle < sheet * 3) {
-                direction = 'top left';
-            } else if (absAngle >= sheet * 3 && absAngle < sheet * 4) {
-                direction = 'left';
-            }
-        } else if (x < 0 && angle < 0 && angle > -maxAngle) {
-            if (absAngle > 0 && absAngle <= sheet) {
-                direction = 'bottom';
-            } else if (absAngle > sheet && absAngle < sheet * 3) {
-                direction = 'bottom left';
-            } else if (absAngle >= sheet * 3 && absAngle < sheet * 4) {
-                direction = 'left';
+        for (let i = 0, n = _this.config.direction; i < n; i++) {
+            if (angle >= piece * i && angle < piece * (i + 1)) {
+                direction = i + 1;
             }
         }
         
-        if (direction) _this.config.callback(direction);
+        _this.config.callback(direction);
+    }
+    
+    /**
+     * 获取角度
+     * @param {number} x X
+     * @param {number} y Y
+     * @return {number} 角度
+     */
+    getAngle(x, y) {
+        const _this = this,
+            radina = _this.rocker.radina;
+        
+        let angle = 180 / (Math.PI / radina);
+        
+        if (x === 0 && y === 0) {
+            angle = 0;
+        }
+        
+        if (x === 0 && y < 0) {
+            angle = 0;
+        }
+        
+        if (x === 0 && y > 0) {
+            angle = 180;
+        }
+        
+        if (x > 0 && y === 0) {
+            angle = 90;
+        }
+        
+        if (x < 0 && y === 0) {
+            angle = 270;
+        }
+        
+        if (x > 0 && y < 0) {
+            angle = -angle;
+        }
+        
+        if (x > 0 && y > 0) {
+            angle = 180 - angle;
+        }
+        
+        if (x < 0 && y > 0) {
+            angle = 180 - angle;
+        }
+        
+        if (x < 0 && y < 0) {
+            angle = 360 - angle;
+        }
+        
+        return angle;
     }
 }
 
