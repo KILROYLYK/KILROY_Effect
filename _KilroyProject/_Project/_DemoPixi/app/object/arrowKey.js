@@ -130,7 +130,7 @@ class ArrowKey {
             position = e.data.getLocalPosition(_this.object),
             x = position.x - _this.rocker.position.x,
             y = position.y - _this.rocker.position.y;
-    
+        
         if (!_this.config.flag) return;
         
         _this.rocker.radina = Math.atan(x / y);
@@ -216,10 +216,12 @@ class ArrowKey {
         }
         
         for (let i = 0, n = _this.config.direction; i < n; i++) {
-            if (angle >= piece * i && angle < piece * (i + 1)) {
+            if (angle >= piece * i - piece / 2 && angle < piece * (i + 1) - piece / 2) {
                 direction = i + 1;
             }
         }
+        
+        if (direction === 0) direction = 1;
         
         _this.config.callback(direction);
     }
