@@ -23,7 +23,7 @@ import Ability from '../object/ability';
      * Wave
      */
     const app = new App('appWave'),
-        appWave = Application.create('canvasWave', {
+        appWave = Application.create('appWaveCanvas', {
             app: app,
             transparent: true,
             autoDensity: true,
@@ -78,7 +78,7 @@ import Ability from '../object/ability';
      * Ability
      */
     const app = new App('appAbility'),
-        appAbility = Application.create('canvasAbility', {
+        appAbility = Application.create('appAbilityCanvas', {
             app: app,
             width: app.clientWidth,
             height: app.clientHeight,

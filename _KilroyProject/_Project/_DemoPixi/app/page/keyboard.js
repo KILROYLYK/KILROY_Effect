@@ -14,7 +14,7 @@ import ArrowKey from '../object/arrowKey';
  */
 const app = new App('appKeyboard'),
     keyboardWH = app.clientWidth,
-    appKeyboard = Application.create('canvasKeyboard', {
+    appKeyboard = Application.create('appKeyboardCanvas', {
         app: app,
         width: keyboardWH,
         height: keyboardWH,

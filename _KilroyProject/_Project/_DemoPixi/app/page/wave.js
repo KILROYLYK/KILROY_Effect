@@ -17,9 +17,9 @@ import Wave from '../object/wave';
 /**
  * Main
  */
-const app = new App(),
+const app = new App('appWave'),
     waveWH = app.clientWidth,
-    appWave = Application.create('canvasWave', {
+    appWave = Application.create('appWaveCanvas', {
         app: app,
         transparent: true,
         autoDensity: true,

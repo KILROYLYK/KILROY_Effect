@@ -14,7 +14,7 @@ import Ability from '../object/ability';
  */
 const app = new App('appAbility'),
     abilityWH = app.clientWidth,
-    appAbility = Application.create('canvasAbility', {
+    appAbility = Application.create('appAbilityCanvas', {
         app: app,
         width: abilityWH,
         height: abilityWH,
