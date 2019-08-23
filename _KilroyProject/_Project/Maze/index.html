@@ -12,8 +12,44 @@
     <title>迷宫H5</title>
     
     <link rel="icon" type="image/x-icon" href="https://image.gaeamobile.net/image/20190318/105515/favicon.png" />
+    <script type="text/javascript">
+        /**
+         * 配置Rem
+         */
+        (function (w, d, psdWidth, scale) {
+            var resizeTime = null,
+                waitTime = 300;
+            
+            /**
+             * 改变Rem
+             * @fontSize {number} 根据屏幕宽度计算Rem
+             * @return {void}
+             */
+            function changeRem() {
+                var width = d.documentElement.clientWidth,
+                    height = d.documentElement.clientHeight,
+                    fontSize = width / psdWidth * 100;
+                
+                if (fontSize > 100) fontSize = 100;
+                if (scale && width / height >= 0.75) fontSize = 85;
+                d.documentElement.style.fontSize = fontSize + 'px';
+            }
+            
+            //监听屏幕
+            d.addEventListener('DOMContentLoaded', changeRem, false);
+            w.addEventListener('onorientationchange' in w ? 'orientationchange' : 'resize', function () {
+                clearTimeout(resizeTime);
+                resizeTime = setTimeout(changeRem, waitTime);
+            }, false);
+            w.addEventListener('pageshow', function (e) {
+                if (e.persisted) {
+                    clearTimeout(resizeTime);
+                    resizeTime = setTimeout(changeRem, waitTime);
+                }
+            }, false);
+        })(window, document, 750, false);
+    </script>
 </head>
 <body>
-<div id="app"></div>
 </body>
 </html>

@@ -22,28 +22,20 @@ body {
   margin: 0 auto;
 }
 
-#app {
+#appMaze {
   .position();
-  
-  &.mobile {
-    #appGame {
-      .transform(translate(-50%, -50%) scale(1/2));
-    }
-    
-    #appKeyboard {
-      .transform(translate(-50%, 0) scale(1/2));
-    }
-  }
-  
-  #appGame {
-    .position(absolute, 35%, auto, auto, 50%);
-    .transform(translate(-50%, -50%));
-  }
-  
-  #appKeyboard {
-    .position(absolute, auto, auto, 2%, 50%);
-    .transform(translate(-50%, 0));
-    .transformOrigin(center, bottom);
-  }
+}
+
+#appArrowKey {
+  .position(bottom, 30*@px);
+  width: 200*@px;
+  height: 200*@px;
+  margin: 0 auto;
+}
+
+#canvasMaze {
+}
+
+#canvasArrowKey {
 }
 

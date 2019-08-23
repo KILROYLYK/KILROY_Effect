@@ -6,7 +6,7 @@ const PIXI = require('pixi.js');
 /**
  * Controller
  */
-import { app, px } from './window';
+import { px } from './window';
 
 /**
  * 应用
@@ -20,22 +20,21 @@ class Application {
         const _this = this;
         
         _this.config = {
-            autoStart: false, //自动开始
-            width: app.clientWidth, //宽
-            height: app.clientHeight, //高
-            transparent: false, //透明
-            autoDensity: false, //自动分辨率
-            antialias: false, //开启抗锯齿
-            preserveDrawingBuffer: false, //开启绘图缓冲
-            resolution: px, //设置分辨率 PC:1|Mobile:2
-            forceCanvas: false, //强制Canvas渲染器
-            backgroundColor: 0x000000, //背景
-            clearBeforeRender: false, //渲染前清除画布
-            forceFXAA: false, //强制FXAA抗锯齿
-            powerPreference: null, //增加双显卡性能
-            sharedTicker: false, //使用PIXI.Ticker.shared
-            sharedLoader: false, //使用PIXI.Loader.shared
-            resizeTo: null //自动调节大小
+            app: null,
+            autoStart: false, // 自动开始
+            transparent: false, // 透明
+            autoDensity: false, // 自动分辨率
+            antialias: false, // 开启抗锯齿
+            preserveDrawingBuffer: false, // 开启绘图缓冲
+            resolution: px, // 设置分辨率 PC:1|Mobile:2
+            forceCanvas: false, // 强制Canvas渲染器
+            backgroundColor: 0x000000, // 背景
+            clearBeforeRender: false, // 渲染前清除画布
+            forceFXAA: false, // 强制FXAA抗锯齿
+            powerPreference: null, // 增加双显卡性能
+            sharedTicker: false, // 使用PIXI.Ticker.shared
+            sharedLoader: false, // 使用PIXI.Loader.shared
+            resizeTo: null // 自动调节大小
         };
     }
     
@@ -56,10 +55,14 @@ class Application {
     create(id, config = {}) {
         const _this = this;
         
+        if (!config.app) return alert('App不存在');
+        
+        _this.config.app = config.app;
+        
         const application = new PIXI.Application({
             autoStart: config.autoStart || _this.config.autoStart,
-            width: config.width || _this.config.width,
-            height: config.height || _this.config.height,
+            width: _this.config.app.clientWidth,
+            height: _this.config.app.clientHeight,
             transparent: config.transparent || _this.config.transparent,
             autoDensity: config.autoDensity || _this.config.autoDensity,
             antialias: config.antialias || _this.config.antialias,
@@ -77,7 +80,7 @@ class Application {
         
         application.view.setAttribute('id', id);
         
-        app.appendChild(application.view);
+        _this.config.app.appendChild(application.view);
         
         return application;
     }
