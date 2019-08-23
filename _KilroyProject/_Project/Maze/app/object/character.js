@@ -6,7 +6,6 @@ const PIXI = require('pixi.js');
 /**
  * Controller
  */
-import { mazeWH, row } from '../controller/window';
 
 /**
  * 角色
@@ -78,4 +77,4 @@ class Character {
     }
 }
 
-export default new Character();
+export default Character;

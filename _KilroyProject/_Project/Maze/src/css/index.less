@@ -22,14 +22,18 @@ body {
   margin: 0 auto;
 }
 
+@wh: 200*@px;
+@margin: 0*@px;
+
 #appMaze {
   .position();
+  height: calc(100% - @wh - @margin * 2);
 }
 
 #appArrowKey {
-  .position(bottom, 30*@px);
-  width: 200*@px;
-  height: 200*@px;
+  .position(bottom, @margin);
+  width: @wh;
+  height: @wh;
   margin: 0 auto;
 }
 

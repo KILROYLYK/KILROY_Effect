@@ -25,7 +25,7 @@ class Maze {
             flag: true,
             wh: config.wh || 500,
             time: config.time || 3,
-            row: config.time || 10,
+            row: config.row || 10,
             enter: maze.enter,
             out: maze.out
         };
@@ -44,18 +44,18 @@ class Maze {
         };
         
         _this.grid = {
-            color: 0xCCCCCC,
+            color: 0xFFFFFF,
             alpha: 0.3,
             x: 0,
             y: 0,
-            wh: _this.map.wh / (_this.config.row * _this.config.time),
+            wh: _this.map.wh / _this.config.row,
             row: _this.config.row * _this.config.time,
             object: new PIXI.Graphics()
         };
         
         _this.wall = {
-            color: 0x000000,
-            alpha: 0.8,
+            color: 0xFF000A,
+            alpha: 1,
             wh: 2
         };
         
@@ -71,9 +71,6 @@ class Maze {
         
         _this.createMap();
         _this.createGrid();
-        
-        _this.object.x = _this.grid.wh * 4.5;
-        _this.object.y = _this.grid.wh * 5.5 - _this.map.wh;
     }
     
     /**
@@ -103,6 +100,12 @@ class Maze {
             grid.x = _this.grid.x;
             grid.y = _this.grid.y;
             grid.wall = _this.map.way[_this.map.matrix[i]];
+            
+            if (i % 2 === 1) {
+                _this.grid.color = 0xFFFFFF;
+            } else {
+                _this.grid.color = 0x000000;
+            }
             
             fill.beginFill(_this.grid.color, _this.grid.alpha);
             fill.drawRect(0, 0, _this.grid.wh, _this.grid.wh);

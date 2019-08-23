@@ -8,7 +8,7 @@ import Application from '../controller/application';
  * Object
  */
 import Maze from '../object/maze';
-import Character from '../object/character';
+// import Character from '../object/character';
 import ArrowKey from '../object/arrowKey';
 
 /**
@@ -25,7 +25,7 @@ const appMaze = new App('appMaze'),
         autoDensity: true,
         antialias: true,
         preserveDrawingBuffer: true,
-        backgroundColor: 0xFFFFFF,
+        backgroundColor: 0x000000,
         clearBeforeRender: true
     }),
     appKeyboard = Application.create('canvasArrowKey', {
@@ -41,8 +41,8 @@ const appMaze = new App('appMaze'),
     }),
     maze = new Maze({
         wh: appMazeWH,
-        time: 3,
-        row: 10
+        time: 10,
+        row: 30
     }),
     arrowKey = new ArrowKey({
         wh: appArrowKeyWH,
@@ -54,12 +54,11 @@ const appMaze = new App('appMaze'),
     user = {
         flag: {
             move: true
-        },
-        position: 0
+        }
     };
 
 appGame.stage.addChild(maze.object);
-appGame.stage.addChild(Character.object);
+// appGame.stage.addChild(Character.object);
 appKeyboard.stage.addChild(arrowKey.object);
 
 appGame.start();
