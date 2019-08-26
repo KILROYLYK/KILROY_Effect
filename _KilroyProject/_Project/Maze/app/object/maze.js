@@ -23,8 +23,9 @@ class Maze {
         
         _this.config = {
             wh: config.wh || 500,
+            margin: config.margin || 50,
             row: maze.grid,
-            multiple: config.multiple || 3,
+            multiple: config.multiple || 5,
             enter: maze.enter,
             out: maze.out
         };
@@ -32,29 +33,28 @@ class Maze {
         _this.object = new PIXI.Container();
         
         _this.map = {
-            color: 0xCCCCCC,
+            color: 0xEAD8A0,
             alpha: 1,
-            x: 0,
-            y: 0,
-            margin: 10,
-            wh: _this.config.wh * _this.config.multiple,
+            x: -_this.config.margin,
+            y: -_this.config.margin,
+            wh: _this.config.wh * _this.config.multiple + _this.config.margin * 2,
             way: way,
             matrix: maze.map,
             object: new PIXI.Graphics()
         };
         
         _this.grid = {
-            color: 0xFFFFFF,
-            alpha: 0.3,
+            color: 0x85B211,
+            alpha: 1,
             x: 0,
             y: 0,
-            wh: _this.map.wh / _this.config.row,
+            wh: _this.config.wh * _this.config.multiple / _this.config.row,
             row: _this.config.row,
             object: new PIXI.Graphics()
         };
         
         _this.wall = {
-            color: 0xFF000A,
+            color: 0x1C403B,
             alpha: 1,
             wh: 2
         };
@@ -97,6 +97,11 @@ class Maze {
             const grid = new PIXI.Container(),
                 fill = new PIXI.Graphics();
             
+            if (i !== 0 && i % 30 === 0) {
+                _this.grid.x = 0;
+                _this.grid.y += _this.grid.wh;
+            }
+            
             grid.x = _this.grid.x;
             grid.y = _this.grid.y;
             grid.wall = _this.map.way[_this.map.matrix[i]];
@@ -115,11 +120,6 @@ class Maze {
             _this.grid.object.addChild(grid);
             
             _this.grid.x += _this.grid.wh;
-            
-            if (_this.grid.x > _this.map.wh - 1) {
-                _this.grid.x = 0;
-                _this.grid.y += _this.grid.wh;
-            }
         }
         
         _this.map.object.addChild(_this.grid.object);
