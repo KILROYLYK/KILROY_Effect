@@ -4,10 +4,6 @@
 const PIXI = require('pixi.js');
 
 /**
- * Controller
- */
-
-/**
  * 角色
  */
 class Character {
@@ -31,12 +27,12 @@ class Character {
             object: new PIXI.Graphics()
         };
         
-        _this.arrow = {
-            color: 0xCCCCCC,
-            alpha: 0.3,
-            width: _this.chassis.radius / 2,
-            height: _this.chassis.radius / 2
-        };
+        // _this.arrow = {
+        //     color: 0xCCCCCC,
+        //     alpha: 0.3,
+        //     width: _this.chassis.radius / 2,
+        //     height: _this.chassis.radius / 2
+        // };
         
         _this.object = new PIXI.Container();
         
@@ -51,9 +47,6 @@ class Character {
         const _this = this;
         
         _this.createChassis();
-        
-        _this.object.x = _this.chassis.origin;
-        _this.object.y = _this.chassis.origin;
     }
     
     /**
@@ -65,7 +58,7 @@ class Character {
         
         _this.chassis.object.lineStyle(0);
         _this.chassis.object.beginFill(_this.chassis.color, _this.chassis.alpha);
-        _this.chassis.object.drawCircle(0, 0, _this.chassis.radius);
+        _this.chassis.object.drawCircle(_this.chassis.origin, _this.chassis.origin, _this.chassis.radius);
         _this.chassis.object.endFill();
         _this.object.addChild(_this.chassis.object);
     }

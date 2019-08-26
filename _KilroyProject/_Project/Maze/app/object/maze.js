@@ -4,6 +4,12 @@
 const PIXI = require('pixi.js');
 
 /**
+ * Src
+ */
+import imgLawn from '../../src/img/lawn.jpg';
+import imgGrass from '../../src/img/grass.png';
+
+/**
  * Constant
  */
 import { way, matrix } from '../constant/maze';
@@ -54,9 +60,12 @@ class Maze {
         };
         
         _this.wall = {
-            color: 0x1C403B,
-            alpha: 1,
-            wh: 2
+            wh: _this.grid.wh * 0.2
+        };
+        
+        _this.img = {
+            lawn: new PIXI.Texture.from(imgLawn),
+            grass: new PIXI.Texture.from(imgGrass)
         };
         
         _this.init();
@@ -95,25 +104,21 @@ class Maze {
         
         for (let i = 0, n = Math.pow(_this.grid.row, 2); i < n; i++) {
             const grid = new PIXI.Container(),
-                fill = new PIXI.Graphics();
+                fill = PIXI.Sprite.from(_this.img.lawn);
             
             if (i !== 0 && i % 30 === 0) {
                 _this.grid.x = 0;
                 _this.grid.y += _this.grid.wh;
             }
             
+            grid.wall = _this.map.way[_this.map.matrix[i]];
             grid.x = _this.grid.x;
             grid.y = _this.grid.y;
-            grid.wall = _this.map.way[_this.map.matrix[i]];
             
-            fill.beginFill(_this.grid.color, _this.grid.alpha);
-            fill.drawRect(0, 0, _this.grid.wh, _this.grid.wh);
-            fill.endFill();
-            fill.interactive = true;
-            fill.buttonMode = true;
-            fill.on('pointertap', () => {
-                console.log(i, grid.wall);
-            });
+            fill.width = _this.grid.wh;
+            fill.height = _this.grid.wh;
+            fill.x = 0;
+            fill.y = 0;
             
             grid.addChild(fill);
             _this.createWall(grid);
@@ -131,39 +136,62 @@ class Maze {
      * @return {void}
      */
     createWall(grid) {
-        const _this = this;
+        const _this = this,
+            grass = new PIXI.Sprite.from(_this.img.grass);
+        
+        grass.width = _this.wall.wh;
+        grass.height = _this.wall.wh;
         
         if ((/top/i).test(grid.wall)) {
-            const wall = new PIXI.Graphics();
-            wall.beginFill(_this.wall.color, _this.wall.alpha);
-            wall.drawRect(0, 0, _this.grid.wh, _this.wall.wh);
-            wall.endFill();
+            const wall = new PIXI.Container();
+            
+            // const wall = new PIXI.TilingSprite(
+            //     _this.img.grass,
+            //     _this.grid.wh,
+            //     _this.wall.wh
+            // );
+            // wall.name = 'top';
+            // wall.x = 0;
+            // wall.y = 0;
+    
             grid.addChild(wall);
         }
         
-        if ((/left/i).test(grid.wall)) {
-            const wall = new PIXI.Graphics();
-            wall.beginFill(_this.wall.color, _this.wall.alpha);
-            wall.drawRect(0, 0, _this.wall.wh, _this.grid.wh);
-            wall.endFill();
-            grid.addChild(wall);
-        }
-        
-        if ((/right/i).test(grid.wall)) {
-            const wall = new PIXI.Graphics();
-            wall.beginFill(_this.wall.color, _this.wall.alpha);
-            wall.drawRect(_this.grid.wh - _this.wall.wh, 0, _this.wall.wh, _this.grid.wh);
-            wall.endFill();
-            grid.addChild(wall);
-        }
-        
-        if ((/bottom/i).test(grid.wall)) {
-            const wall = new PIXI.Graphics();
-            wall.beginFill(_this.wall.color, _this.wall.alpha);
-            wall.drawRect(0, _this.grid.wh - _this.wall.wh, _this.grid.wh, _this.wall.wh);
-            wall.endFill();
-            grid.addChild(wall);
-        }
+        // if ((/left/i).test(grid.wall)) {
+        //     const wall = new PIXI.TilingSprite(
+        //         _this.img.grass,
+        //         _this.wall.wh,
+        //         _this.grid.wh
+        //     );
+        //     wall.name = 'left';
+        //     wall.x = 0;
+        //     wall.y = 0;
+        //     grid.addChild(wall);
+        // }
+        //
+        // if ((/right/i).test(grid.wall)) {
+        //     const wall = new PIXI.TilingSprite(
+        //         _this.img.grass,
+        //         _this.wall.wh,
+        //         _this.grid.wh
+        //     );
+        //     wall.name = 'right';
+        //     wall.x = _this.grid.wh - _this.wall.wh;
+        //     wall.y = 0;
+        //     grid.addChild(wall);
+        // }
+        //
+        // if ((/bottom/i).test(grid.wall)) {
+        //     const wall = new PIXI.TilingSprite(
+        //         _this.img.grass,
+        //         _this.grid.wh,
+        //         _this.wall.wh
+        //     );
+        //     wall.name = 'bottom';
+        //     wall.x = 0;
+        //     wall.y = _this.grid.wh - _this.wall.wh;
+        //     grid.addChild(wall);
+        // }
     }
 }
 

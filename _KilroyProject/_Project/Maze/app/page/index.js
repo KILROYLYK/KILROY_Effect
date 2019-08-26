@@ -1,4 +1,9 @@
 /**
+ * Plugin
+ */
+import Bump from '../../../$Plugin/Pixi/bump';
+
+/**
  * Controller
  */
 import App from '../controller/app';
@@ -15,13 +20,9 @@ import ArrowKey from '../object/arrowKey';
  * Main
  */
 const config = {
-        multiple: 4,
+        multiple: 6,
         speed: 2,
-        margin: 50,
-        flag: {
-            userMove: true,
-            mazeMove: false
-        }
+        margin: 10 * 6
     },
     appMaze = new App('appMaze'),
     appArrowKey = new App('appArrowKey'),
@@ -55,7 +56,7 @@ const config = {
         multiple: config.multiple
     }),
     character = new Character({
-        radius: maze.grid.wh * 0.7 / 2
+        radius: maze.grid.wh * 0.4 / 2
     }),
     arrowKey = new ArrowKey({
         wh: appArrowKeyWH,
@@ -118,8 +119,8 @@ function initialPosition() {
     maze.object.x = -grid.x + config.margin;
     maze.object.y = -grid.y + appMaze.clientHeight - gridWH - config.margin;
     
-    character.object.x = config.margin + gridWH / 2;
-    character.object.y = appMaze.clientHeight - config.margin - gridWH / 2;
+    character.object.x = config.margin + gridWH / 2 - character.config.radius;
+    character.object.y = appMaze.clientHeight - config.margin - gridWH / 2 - character.config.radius;
 }
 
 /**
@@ -129,43 +130,62 @@ function initialPosition() {
  * @return {void}
  */
 function move(x, y) {
-    const appW = appMaze.clientWidth,
+    const grid = maze.grid.object.children,
+        appW = appMaze.clientWidth,
         appH = appMaze.clientHeight,
-        centerX = appW / 2 * 0.95,
-        centerY = appH / 2 * 0.95;
+        centerX = appW / 2 * 0.99 - character.config.radius,
+        centerY = appH / 2 * 0.99 - character.config.radius;
+    
+    let newX = x,
+        newY = y;
+    
+    for (let i = 0, n = grid.length; i < n; i++) {
+        if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
+            const wall = grid[i].children;
+            for (let ii = 1, nn = wall.length; ii < nn; ii++) {
+                const collision = Bump.hitTestCircleRectangle(character.chassis.object, wall[ii], true);
+                // console.log(i, wall[ii].name, collision);
+                if (collision) {
+                    // if (collision === 'topMiddle' && newY < 0) newY = 0;
+                    // if (collision === 'leftMiddle' && newX < 0) newX = 0;
+                    // if (collision === 'rightMiddle' && newX > 0) newX = 0;
+                    // if (collision === 'bottomMiddle' && newX < 0) newY = 0;
+                    if (wall[ii].name === 'top' && newY < 0) newY = 0;
+                    if (wall[ii].name === 'left' && newX < 0) newX = 0;
+                    if (wall[ii].name === 'right' && newX > 0) newX = 0;
+                    if (wall[ii].name === 'bottom' && newY > 0) newY = 0;
+                }
+            }
+        }
+    }
     
     let mazeX = 0,
         mazeY = 0,
-        characterX = 0,
-        characterY = 0;
-    
-    if (config.flag.userMove) {
-        characterX = x;
-        characterY = y;
-    }
+        characterX = newX,
+        characterY = newY;
     
     if (character.object.x >= centerX &&
         character.object.x <= appW - centerX) {
         characterX = 0;
-        mazeX = x;
+        mazeX = newX;
     }
     
     if (character.object.y >= centerY &&
         character.object.y <= appH - centerY) {
         characterY = 0;
-        mazeY = y;
+        mazeY = newY;
     }
     
     if (maze.object.x - mazeX >= config.margin ||
         maze.object.x - mazeX <= -(maze.map.wh - config.margin - appW)) {
+        characterX = newX;
         mazeX = 0;
-        characterX = x;
     }
     
     if (maze.object.y - mazeY >= config.margin ||
         maze.object.y - mazeY <= -(maze.map.wh - config.margin - appH)) {
+        characterY = newY;
         mazeY = 0;
-        characterY = y;
     }
     
     maze.object.x -= mazeX;
