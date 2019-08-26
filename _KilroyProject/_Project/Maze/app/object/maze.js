@@ -19,13 +19,12 @@ class Maze {
      */
     constructor(config = {}) {
         const _this = this,
-            maze = matrix[0];
+            maze = matrix[config.map || 0];
         
         _this.config = {
-            flag: true,
             wh: config.wh || 500,
-            time: config.time || 3,
-            row: config.row || 10,
+            row: maze.grid,
+            multiple: config.multiple || 3,
             enter: maze.enter,
             out: maze.out
         };
@@ -34,10 +33,11 @@ class Maze {
         
         _this.map = {
             color: 0xCCCCCC,
-            alpha: 0.3,
+            alpha: 1,
             x: 0,
             y: 0,
-            wh: _this.config.wh * _this.config.time,
+            margin: 10,
+            wh: _this.config.wh * _this.config.multiple,
             way: way,
             matrix: maze.map,
             object: new PIXI.Graphics()
@@ -49,7 +49,7 @@ class Maze {
             x: 0,
             y: 0,
             wh: _this.map.wh / _this.config.row,
-            row: _this.config.row * _this.config.time,
+            row: _this.config.row,
             object: new PIXI.Graphics()
         };
         
@@ -100,12 +100,6 @@ class Maze {
             grid.x = _this.grid.x;
             grid.y = _this.grid.y;
             grid.wall = _this.map.way[_this.map.matrix[i]];
-            
-            if (i % 2 === 1) {
-                _this.grid.color = 0xFFFFFF;
-            } else {
-                _this.grid.color = 0x000000;
-            }
             
             fill.beginFill(_this.grid.color, _this.grid.alpha);
             fill.drawRect(0, 0, _this.grid.wh, _this.grid.wh);

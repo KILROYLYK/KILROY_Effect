@@ -18,8 +18,9 @@ class ArrowKey {
         _this.config = {
             wh: config.wh || 200,
             direction: config.direction || 8,
-            callback: config.callback || {},
-            flag: false
+            flag: false,
+            move: 0,
+            callback: config.callback || {}
         };
         
         _this.object = new PIXI.Container();
@@ -65,6 +66,16 @@ class ArrowKey {
         
         _this.object.x = _this.panel.origin;
         _this.object.y = _this.panel.origin;
+    }
+    
+    /**
+     * 运动
+     * @return {void}
+     */
+    move() {
+        const _this = this;
+        
+        _this.config.callback(_this.config.move);
     }
     
     /**
@@ -149,6 +160,7 @@ class ArrowKey {
         const _this = this;
         
         _this.config.flag = false;
+        _this.config.move = 0;
         _this.rocker.position = {
             x: 0,
             y: 0
@@ -223,7 +235,7 @@ class ArrowKey {
         
         if (direction === 0) direction = 1;
         
-        _this.config.callback(direction);
+        _this.config.move = direction;
     }
     
     /**

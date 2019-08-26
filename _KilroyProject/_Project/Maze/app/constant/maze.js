@@ -24,6 +24,8 @@ export const way = [
  */
 export const matrix = [
     {
+        name: '校招地图',
+        grid: 30,
         enter: {
             grid: 870,
             door: 'bottom'
