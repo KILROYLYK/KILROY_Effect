@@ -9,7 +9,7 @@ const PIXI = require('pixi.js');
 import { px } from './window';
 
 /**
- * 应用
+ * Application
  */
 class Application {
     /**

@@ -4,11 +4,9 @@
 const PIXI = require('pixi.js');
 
 /**
- * Src
+ * Controller
  */
-import imgBorder from '../../src/img/border.png';
-import imgLawn from '../../src/img/lawn.jpg';
-import imgGrass from '../../src/img/grass.png';
+import { imgBorder, imgLawn, imgGrass } from '../controller/image';
 
 /**
  * Constant
