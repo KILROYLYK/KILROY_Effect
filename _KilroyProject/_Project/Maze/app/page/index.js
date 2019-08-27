@@ -24,8 +24,8 @@ const config = {
         speed: 3,
         margin: 10 * 6,
         flag: {
-            character: true,
-            maze: true
+            mazeX: false,
+            mazeY: false
         }
     },
     appMaze = new App('appMaze'),
@@ -138,30 +138,35 @@ function move(x, y) {
         appW = appMaze.clientWidth,
         appH = appMaze.clientHeight,
         centerX = appW / 2 * 0.99 - character.config.radius,
-        centerY = appH / 2 * 0.99 - character.config.radius;
+        centerY = appH / 2 * 0.99 - character.config.radius,
+        cX = character.object.x,
+        cY = character.object.y;
     
     let mazeX = 0,
         mazeY = 0;
     
-    if (!config.flag.character) return;
-    
     if (character.object.getGlobalPosition().x >= centerX &&
         character.object.getGlobalPosition().x <= appW - centerX) {
-        mazeX = x;
+        config.flag.mazeX = true;
     }
     
     if (character.object.getGlobalPosition().y >= centerY &&
         character.object.getGlobalPosition().y <= appH - centerY) {
-        mazeY = y;
+        config.flag.mazeY = true;
     }
+    
+    if (config.flag.mazeX) mazeX = x;
+    if (config.flag.mazeY) mazeY = y;
     
     if (maze.object.x - mazeX >= config.margin ||
         maze.object.x - mazeX <= -(maze.map.wh - config.margin - appW)) {
+        config.flag.mazeX = false;
         mazeX = 0;
     }
     
     if (maze.object.y - mazeY >= config.margin ||
         maze.object.y - mazeY <= -(maze.map.wh - config.margin - appH)) {
+        config.flag.mazeY = false;
         mazeY = 0;
     }
     
@@ -170,8 +175,10 @@ function move(x, y) {
             Bump.hit(
                 character.object, grid[i].children[1].children,
                 true, false, true,
-                (c, p) => {
+                (collision, platform) => {
                     // console.log(c, p);
+                    if (Math.abs(cX - character.object.x) > 0) mazeX = 0;
+                    if (Math.abs(cY - character.object.y) > 0) mazeY = 0;
                 }
             );
         }

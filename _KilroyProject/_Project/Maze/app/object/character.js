@@ -48,6 +48,8 @@ class Character {
         
         _this.createChassis();
         _this.object.circular = true;
+        _this.object.width = _this.chassis.object.width;
+        _this.object.height = _this.chassis.object.height;
     }
     
     /**
