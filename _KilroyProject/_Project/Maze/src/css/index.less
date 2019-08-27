@@ -10,10 +10,8 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-  Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
-  'Segoe UI Emoji', 'Segoe UI Symbol';
-  background: @color_2;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  background: #ead8a0;
 }
 
 body {
@@ -23,15 +21,39 @@ body {
 }
 
 @wh: 200*@px;
-@margin: 0*@px;
+
+.keyboard {
+  .position(bottom);
+  z-index: 1;
+  height: @wh+10*@px;
+  .bg('lawn.jpg');
+  background-size: 50*@px;
+  background-repeat: repeat;
+  
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+  }
+  
+  &:before {
+    .position(top, -10*@px);
+    height: 20*@px;
+    .bg('border.png');
+    background-size: auto 20*@px;
+    background-repeat: repeat-x;
+  }
+}
 
 #appMaze {
-  .position();
-  height: calc(100% - @wh - @margin * 2);
+  .position(top);
+  z-index: 1;
+  height: calc(100% - @wh);
 }
 
 #appArrowKey {
-  .position(bottom, @margin);
+  .position(bottom);
+  z-index: 1;
   width: @wh;
   height: @wh;
   margin: 0 auto;

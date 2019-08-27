@@ -26,8 +26,8 @@ class ArrowKey {
         _this.object = new PIXI.Container();
         
         _this.panel = {
-            color: 0xCCCCCC,
-            alpha: 0.5,
+            color: 0x000000,
+            alpha: 0.2,
             origin: _this.config.wh / 2,
             radius: _this.config.wh / 2 * 0.6,
             zIndex: 0,
@@ -35,8 +35,8 @@ class ArrowKey {
         };
         
         _this.rocker = {
-            color: 0xCCCCCC,
-            alpha: 0.5,
+            color: 0x000000,
+            alpha: 0.2,
             origin: _this.panel.origin,
             radius: _this.panel.radius * 0.55,
             zIndex: 1,
@@ -128,7 +128,7 @@ class ArrowKey {
         
         _this.config.flag = true;
         _this.rocker.position = position;
-        _this.rocker.object.alpha = 0.7;
+        _this.rocker.object.alpha = 0.5;
     }
     
     /**
