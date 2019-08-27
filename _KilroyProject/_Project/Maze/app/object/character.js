@@ -47,6 +47,7 @@ class Character {
         const _this = this;
         
         _this.createChassis();
+        _this.object.circular = true;
     }
     
     /**

@@ -21,8 +21,12 @@ import ArrowKey from '../object/arrowKey';
  */
 const config = {
         multiple: 6,
-        speed: 2,
-        margin: 10 * 6
+        speed: 3,
+        margin: 10 * 6,
+        flag: {
+            character: true,
+            maze: true
+        }
     },
     appMaze = new App('appMaze'),
     appArrowKey = new App('appArrowKey'),
@@ -95,8 +99,8 @@ const config = {
         }
     });
 
+maze.object.addChild(character.object);
 appGame.stage.addChild(maze.object);
-appGame.stage.addChild(character.object);
 appKeyboard.stage.addChild(arrowKey.object);
 
 initialPosition();
@@ -119,8 +123,8 @@ function initialPosition() {
     maze.object.x = -grid.x + config.margin;
     maze.object.y = -grid.y + appMaze.clientHeight - gridWH - config.margin;
     
-    character.object.x = config.margin + gridWH / 2 - character.config.radius;
-    character.object.y = appMaze.clientHeight - config.margin - gridWH / 2 - character.config.radius;
+    character.object.x = grid.x + gridWH / 2 - character.config.radius;
+    character.object.y = grid.y + gridWH / 2 - character.config.radius;
 }
 
 /**
@@ -136,60 +140,45 @@ function move(x, y) {
         centerX = appW / 2 * 0.99 - character.config.radius,
         centerY = appH / 2 * 0.99 - character.config.radius;
     
-    let newX = x,
-        newY = y;
-    
-    for (let i = 0, n = grid.length; i < n; i++) {
-        if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
-            const wall = grid[i].children;
-            for (let ii = 1, nn = wall.length; ii < nn; ii++) {
-                const collision = Bump.hitTestCircleRectangle(character.chassis.object, wall[ii], true);
-                // console.log(i, wall[ii].name, collision);
-                if (collision) {
-                    // if (collision === 'topMiddle' && newY < 0) newY = 0;
-                    // if (collision === 'leftMiddle' && newX < 0) newX = 0;
-                    // if (collision === 'rightMiddle' && newX > 0) newX = 0;
-                    // if (collision === 'bottomMiddle' && newX < 0) newY = 0;
-                    if (wall[ii].name === 'top' && newY < 0) newY = 0;
-                    if (wall[ii].name === 'left' && newX < 0) newX = 0;
-                    if (wall[ii].name === 'right' && newX > 0) newX = 0;
-                    if (wall[ii].name === 'bottom' && newY > 0) newY = 0;
-                }
-            }
-        }
-    }
-    
     let mazeX = 0,
-        mazeY = 0,
-        characterX = newX,
-        characterY = newY;
+        mazeY = 0;
     
-    if (character.object.x >= centerX &&
-        character.object.x <= appW - centerX) {
-        characterX = 0;
-        mazeX = newX;
+    if (!config.flag.character) return;
+    
+    if (character.object.getGlobalPosition().x >= centerX &&
+        character.object.getGlobalPosition().x <= appW - centerX) {
+        mazeX = x;
     }
     
-    if (character.object.y >= centerY &&
-        character.object.y <= appH - centerY) {
-        characterY = 0;
-        mazeY = newY;
+    if (character.object.getGlobalPosition().y >= centerY &&
+        character.object.getGlobalPosition().y <= appH - centerY) {
+        mazeY = y;
     }
     
     if (maze.object.x - mazeX >= config.margin ||
         maze.object.x - mazeX <= -(maze.map.wh - config.margin - appW)) {
-        characterX = newX;
         mazeX = 0;
     }
     
     if (maze.object.y - mazeY >= config.margin ||
         maze.object.y - mazeY <= -(maze.map.wh - config.margin - appH)) {
-        characterY = newY;
         mazeY = 0;
+    }
+    
+    for (let i = 0, n = grid.length; i < n; i++) {
+        if (Bump.hitTestRectangle(character.object, grid[i], true)) {
+            Bump.hit(
+                character.object, grid[i].children[1].children,
+                true, false, true,
+                (c, p) => {
+                    // console.log(c, p);
+                }
+            );
+        }
     }
     
     maze.object.x -= mazeX;
     maze.object.y -= mazeY;
-    character.object.x += characterX;
-    character.object.y += characterY;
+    character.object.x += x;
+    character.object.y += y;
 }

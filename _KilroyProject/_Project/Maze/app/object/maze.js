@@ -60,7 +60,8 @@ class Maze {
         };
         
         _this.wall = {
-            wh: _this.grid.wh * 0.2
+            wh: _this.grid.wh * 0.25,
+            index: 4
         };
         
         _this.img = {
@@ -137,61 +138,73 @@ class Maze {
      */
     createWall(grid) {
         const _this = this,
-            grass = new PIXI.Sprite.from(_this.img.grass);
-        
-        grass.width = _this.wall.wh;
-        grass.height = _this.wall.wh;
+            wallGroup = new PIXI.Container(),
+            wh = _this.wall.wh,
+            n = _this.wall.index;
         
         if ((/top/i).test(grid.wall)) {
             const wall = new PIXI.Container();
-            
-            // const wall = new PIXI.TilingSprite(
-            //     _this.img.grass,
-            //     _this.grid.wh,
-            //     _this.wall.wh
-            // );
-            // wall.name = 'top';
-            // wall.x = 0;
-            // wall.y = 0;
-    
-            grid.addChild(wall);
+            wall.name = 'top';
+            wall.x = 0;
+            wall.y = 0;
+            for (let i = 0; i < n; i++) {
+                const grass = new PIXI.Sprite.from(_this.img.grass);
+                grass.width = wh;
+                grass.height = wh;
+                grass.x = i * wh;
+                grass.y = 0;
+                wall.addChild(grass);
+            }
+            wallGroup.addChild(wall);
         }
         
-        // if ((/left/i).test(grid.wall)) {
-        //     const wall = new PIXI.TilingSprite(
-        //         _this.img.grass,
-        //         _this.wall.wh,
-        //         _this.grid.wh
-        //     );
-        //     wall.name = 'left';
-        //     wall.x = 0;
-        //     wall.y = 0;
-        //     grid.addChild(wall);
-        // }
-        //
-        // if ((/right/i).test(grid.wall)) {
-        //     const wall = new PIXI.TilingSprite(
-        //         _this.img.grass,
-        //         _this.wall.wh,
-        //         _this.grid.wh
-        //     );
-        //     wall.name = 'right';
-        //     wall.x = _this.grid.wh - _this.wall.wh;
-        //     wall.y = 0;
-        //     grid.addChild(wall);
-        // }
-        //
-        // if ((/bottom/i).test(grid.wall)) {
-        //     const wall = new PIXI.TilingSprite(
-        //         _this.img.grass,
-        //         _this.grid.wh,
-        //         _this.wall.wh
-        //     );
-        //     wall.name = 'bottom';
-        //     wall.x = 0;
-        //     wall.y = _this.grid.wh - _this.wall.wh;
-        //     grid.addChild(wall);
-        // }
+        if ((/left/i).test(grid.wall)) {
+            const wall = new PIXI.Container();
+            wall.x = 0;
+            wall.y = 0;
+            for (let i = 0; i < n; i++) {
+                const grass = new PIXI.Sprite.from(_this.img.grass);
+                grass.width = wh;
+                grass.height = wh;
+                grass.x = 0;
+                grass.y = i * wh;
+                wall.addChild(grass);
+            }
+            wallGroup.addChild(wall);
+        }
+        
+        if ((/right/i).test(grid.wall)) {
+            const wall = new PIXI.Container();
+            wall.x = _this.grid.wh - _this.wall.wh;
+            wall.y = 0;
+            for (let i = 0; i < n; i++) {
+                const grass = new PIXI.Sprite.from(_this.img.grass);
+                grass.width = wh;
+                grass.height = wh;
+                grass.x = 0;
+                grass.y = i * wh;
+                wall.addChild(grass);
+            }
+            wallGroup.addChild(wall);
+        }
+        
+        if ((/bottom/i).test(grid.wall)) {
+            const wall = new PIXI.Container();
+            wall.name = 'bottom';
+            wall.x = 0;
+            wall.y = _this.grid.wh - _this.wall.wh;
+            for (let i = 0; i < n; i++) {
+                const grass = new PIXI.Sprite.from(_this.img.grass);
+                grass.width = wh;
+                grass.height = wh;
+                grass.x = i * wh;
+                grass.y = 0;
+                wall.addChild(grass);
+            }
+            wallGroup.addChild(wall);
+        }
+    
+        grid.addChild(wallGroup);
     }
 }
 
