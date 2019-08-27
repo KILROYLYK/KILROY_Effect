@@ -123,6 +123,10 @@ function initialPosition() {
     maze.object.x = -grid.x + config.margin;
     maze.object.y = -grid.y + appMaze.clientHeight - gridWH - config.margin;
     
+    if (appMaze.clientHeight > maze.map.wh) {
+        maze.object.y = (appMaze.clientHeight - appMaze.clientWidth) / 2 * 0.8;
+    }
+    
     character.object.x = grid.x + gridWH / 2 - character.config.radius;
     character.object.y = grid.y + gridWH / 2 - character.config.radius;
 }

@@ -6,6 +6,7 @@ const PIXI = require('pixi.js');
 /**
  * Src
  */
+import imgBorder from '../../src/img/border.png';
 import imgLawn from '../../src/img/lawn.jpg';
 import imgGrass from '../../src/img/grass.png';
 
@@ -29,7 +30,7 @@ class Maze {
         
         _this.config = {
             wh: config.wh || 500,
-            margin: config.margin || 50,
+            margin: config.margin || 0,
             row: maze.grid,
             multiple: config.multiple || 5,
             enter: maze.enter,
@@ -61,10 +62,17 @@ class Maze {
         
         _this.wall = {
             wh: _this.grid.wh * 0.25,
-            index: 4
+            num: 4
+        };
+        
+        _this.border = {
+            width: 2 * _this.config.multiple * 3.59,
+            height: 2 * _this.config.multiple,
+            num: 58
         };
         
         _this.img = {
+            border: new PIXI.Texture.from(imgBorder),
             lawn: new PIXI.Texture.from(imgLawn),
             grass: new PIXI.Texture.from(imgGrass)
         };
@@ -80,6 +88,7 @@ class Maze {
         const _this = this;
         
         _this.createMap();
+        _this.createBorder();
         _this.createGrid();
     }
     
@@ -94,6 +103,77 @@ class Maze {
         _this.map.object.drawRect(_this.map.x, _this.map.y, _this.map.wh, _this.map.wh);
         _this.map.object.endFill();
         _this.object.addChild(_this.map.object);
+    }
+    
+    /**
+     * 创建边界
+     * @return {void}
+     */
+    createBorder() {
+        const _this = this,
+            wh = _this.grid.wh * _this.grid.row,
+            paste = 0.35;
+        
+        for (let i = 0, n = 4; i < n; i++) {
+            const border = new PIXI.Container();
+            
+            border.width = _this.border.width * _this.border.index;
+            border.height = _this.border.height;
+            
+            if (i === 0) {
+                border.x = -_this.border.height * paste + _this.border.width / 2;
+                border.y = -_this.border.height * paste;
+            }
+            if (i === 1) {
+                border.x = -_this.border.height * paste;
+                border.y = -_this.border.height * paste + _this.border.width / 2;
+            }
+            if (i === 2) {
+                border.x = _this.border.height * paste + wh;
+                border.y = -_this.border.height * paste + _this.border.width / 2;
+            }
+            if (i === 3) {
+                border.x = -_this.border.height * paste + _this.border.width / 2;
+                border.y = _this.border.height * paste + wh;
+            }
+            
+            for (let ii = 0, nn = _this.border.num; ii < nn; ii++) {
+                const b = new PIXI.Sprite.from(_this.img.border);
+                b.width = _this.border.width;
+                b.height = _this.border.height;
+                if (i === 0) {
+                    b.anchor.x = 0.5;
+                    b.anchor.y = 0.5;
+                    b.rotation = 3.1;
+                }
+                if (i === 1) {
+                    b.anchor.x = 0.5;
+                    b.anchor.y = 0.5;
+                    b.rotation = 1.5;
+                }
+                if (i === 2) {
+                    b.anchor.x = 0.5;
+                    b.anchor.y = 0.5;
+                    b.rotation = 4.7;
+                }
+                if (i === 3) {
+                    b.anchor.x = 0.5;
+                    b.anchor.y = 0.5;
+                    b.rotation = 0;
+                }
+                if (i === 0 || i === 3) {
+                    b.x = ii * _this.border.width;
+                    b.y = 0;
+                }
+                if (i === 1 || i === 2) {
+                    b.x = 0;
+                    b.y = ii * _this.border.width;
+                }
+                border.addChild(b);
+            }
+            
+            _this.map.object.addChild(border);
+        }
     }
     
     /**
@@ -141,7 +221,7 @@ class Maze {
         const _this = this,
             wallGroup = new PIXI.Container(),
             wh = _this.wall.wh,
-            n = _this.wall.index;
+            n = _this.wall.num;
         
         if ((/top/i).test(grid.wall)) {
             const wall = new PIXI.Container();
@@ -202,7 +282,7 @@ class Maze {
             }
             wallGroup.addChild(wall);
         }
-    
+        
         if (index === _this.config.enter.grid) wallGroup.addChild(_this.createDoor('enter'));
         if (index === _this.config.out.grid) wallGroup.addChild(_this.createDoor('out'));
         
@@ -210,7 +290,7 @@ class Maze {
     }
     
     /**
-     * 创建门口
+     * 创建出入口
      * @param {object} name 出入口
      * @return {object} 门
      */
@@ -219,7 +299,7 @@ class Maze {
             door = new PIXI.Container(),
             children = door.children,
             wh = _this.wall.wh;
-    
+        
         if (name === 'enter') door.name = '入口';
         if (name === 'out') door.name = '出口';
         
