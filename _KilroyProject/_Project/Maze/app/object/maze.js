@@ -122,7 +122,7 @@ class Maze {
             fill.y = 0;
             
             grid.addChild(fill);
-            _this.createWall(grid);
+            _this.createWall(i, grid);
             _this.grid.object.addChild(grid);
             
             _this.grid.x += _this.grid.wh;
@@ -133,10 +133,11 @@ class Maze {
     
     /**
      * 创建墙壁
+     * @param {number} index 格子位置
      * @param {object} grid 格子
      * @return {void}
      */
-    createWall(grid) {
+    createWall(index, grid) {
         const _this = this,
             wallGroup = new PIXI.Container(),
             wh = _this.wall.wh,
@@ -144,7 +145,6 @@ class Maze {
         
         if ((/top/i).test(grid.wall)) {
             const wall = new PIXI.Container();
-            wall.name = 'top';
             wall.x = 0;
             wall.y = 0;
             for (let i = 0; i < n; i++) {
@@ -190,7 +190,6 @@ class Maze {
         
         if ((/bottom/i).test(grid.wall)) {
             const wall = new PIXI.Container();
-            wall.name = 'bottom';
             wall.x = 0;
             wall.y = _this.grid.wh - _this.wall.wh;
             for (let i = 0; i < n; i++) {
@@ -204,7 +203,81 @@ class Maze {
             wallGroup.addChild(wall);
         }
     
+        if (index === _this.config.enter.grid) wallGroup.addChild(_this.createDoor('enter'));
+        if (index === _this.config.out.grid) wallGroup.addChild(_this.createDoor('out'));
+        
         grid.addChild(wallGroup);
+    }
+    
+    /**
+     * 创建门口
+     * @param {object} name 出入口
+     * @return {object} 门
+     */
+    createDoor(name) {
+        const _this = this,
+            door = new PIXI.Container(),
+            children = door.children,
+            wh = _this.wall.wh;
+    
+        if (name === 'enter') door.name = '入口';
+        if (name === 'out') door.name = '出口';
+        
+        for (let i = 0; i < 4; i++) {
+            const grass = new PIXI.Sprite.from(_this.img.grass);
+            grass.width = wh;
+            grass.height = wh;
+            door.addChild(grass);
+        }
+        
+        children[0].x = 0;
+        children[0].y = 0;
+        
+        if (_this.config[name].door === 'top') {
+            door.x = 0;
+            door.y = 0;
+            children[1].x = 3 * wh;
+            children[1].y = 0;
+            children[2].x = 0;
+            children[2].y = -wh;
+            children[3].x = 3 * wh;
+            children[3].y = -wh;
+        }
+        
+        if (_this.config[name].door === 'left') {
+            door.x = 0;
+            door.y = 0;
+            children[1].x = 0;
+            children[1].y = 3 * wh;
+            children[2].x = -wh;
+            children[2].y = 0;
+            children[3].x = -wh;
+            children[3].y = 3 * wh;
+        }
+        
+        if (_this.config[name].door === 'right') {
+            door.x = _this.grid.wh - _this.wall.wh;
+            door.y = 0;
+            children[1].x = 0;
+            children[1].y = 3 * wh;
+            children[2].x = wh;
+            children[2].y = 0;
+            children[3].x = wh;
+            children[3].y = 3 * wh;
+        }
+        
+        if (_this.config[name].door === 'bottom') {
+            door.x = 0;
+            door.y = _this.grid.wh - _this.wall.wh;
+            children[1].x = 3 * wh;
+            children[1].y = 0;
+            children[2].x = 0;
+            children[2].y = wh;
+            children[3].x = 3 * wh;
+            children[3].y = wh;
+        }
+        
+        return door;
     }
 }
 
