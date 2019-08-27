@@ -180,7 +180,6 @@ function move(x, y) {
                 character.object, grid[i].children[1].children,
                 true, false, true,
                 (collision, platform) => {
-                    // console.log(collision, platform);
                     if (Math.abs(cX - character.object.x) > 0) mazeX = 0;
                     if (Math.abs(cY - character.object.y) > 0) mazeY = 0;
                     if (platform.name === '入口' || platform.name === '出口') {
