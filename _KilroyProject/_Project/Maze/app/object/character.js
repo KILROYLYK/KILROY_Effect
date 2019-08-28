@@ -21,29 +21,21 @@ class Character {
             wh: config.wh || 20
         };
         
-        _this.chassis = {
-            color: 0x000000,
-            alpha: 0.1,
-            origin: _this.config.wh / 2,
-            radius: _this.config.wh / 2,
-            object: new PIXI.Graphics()
-        };
-        
         _this.shadow = {
             color: 0x000000,
-            alpha: 0.3,
-            width: _this.config.wh / 2 * 0.8,
-            height: _this.config.wh * 0.15,
+            alpha: 0,
+            wh: _this.config.wh,
+            multiple: 0,
             object: new PIXI.Graphics()
         };
         
         _this.people = {
-            width: _this.config.wh * 0.6,
+            index: _this.config.index,
             sprite: _this.config.resources['character_' + _this.config.index].spritesheet,
-            object: null
+            object: new PIXI.Graphics()
         };
         
-        _this.object = new PIXI.Container();
+        _this.object = null;
         
         _this.init();
     }
@@ -55,26 +47,8 @@ class Character {
     init() {
         const _this = this;
         
-        _this.createChassis();
         _this.createShadow();
         _this.createPeople();
-        _this.object.circular = true;
-        _this.object.width = _this.config.wh;
-        _this.object.height = _this.config.wh;
-    }
-    
-    /**
-     * 创建底盘
-     * @return {void}
-     */
-    createChassis() {
-        const _this = this;
-        
-        _this.chassis.object.lineStyle(0);
-        _this.chassis.object.beginFill(_this.chassis.color, _this.chassis.alpha);
-        _this.chassis.object.drawCircle(_this.chassis.origin, _this.chassis.origin, _this.chassis.radius);
-        _this.chassis.object.endFill();
-        _this.object.addChild(_this.chassis.object);
     }
     
     /**
@@ -82,13 +56,15 @@ class Character {
      * @return {void}
      */
     createShadow() {
-        const _this = this;
+        const _this = this,
+            sprite = _this.config.resources.shadow.texture,
+            width = sprite.width,
+            height = sprite.height;
         
-        _this.shadow.object.lineStyle(0);
-        _this.shadow.object.beginFill(_this.shadow.color, _this.shadow.alpha);
-        _this.shadow.object.drawEllipse(_this.config.wh / 2, _this.config.wh - _this.shadow.height, _this.shadow.width, _this.shadow.height);
-        _this.shadow.object.endFill();
-        _this.object.addChild(_this.shadow.object);
+        _this.shadow.multiple = width / _this.shadow.wh;
+        _this.object = new PIXI.Sprite(sprite);
+        _this.object.width = _this.shadow.wh;
+        _this.object.height = _this.shadow.wh / (width / height);
     }
     
     /**
@@ -96,12 +72,22 @@ class Character {
      * @return {void}
      */
     createPeople() {
-        const _this = this;
+        const _this = this,
+            width = _this.object.width * _this.shadow.multiple,
+            spriteW = _this.people.sprite.data.meta.size.w,
+            spriteH = _this.people.sprite.data.meta.size.h,
+            animation = _this.people.sprite.animations['character_' + _this.people.index];
         
-        console.log(_this.config.resources['character_' + _this.config.index]);
-        console.log(_this.people.sprite);
-        // _this.people.object = new PIXI.AnimatedSprite(_this.people.sprite.textures['0.png']);
-        // _this.object.addChild(_this.people.object);
+        _this.people.object = new PIXI.AnimatedSprite(animation);
+        _this.people.object.width = width;
+        _this.people.object.height = width / (spriteW / (spriteH / 2));
+        _this.people.object.x = 0;
+        _this.people.object.y = -_this.people.object.height + _this.object.height * 0.8 * _this.shadow.multiple;
+        
+        _this.people.object.rotation = 10;
+        console.log(_this.people.object.rotation);
+        
+        _this.object.addChild(_this.people.object);
     }
 }
 

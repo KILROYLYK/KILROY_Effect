@@ -1,10 +1,10 @@
 {
   "frames": {
-    "character_1_00.png": {
+    "character_4_00.png": {
       "frame": {
         "x": 0,
         "y": 0,
-        "w": 108,
+        "w": 126,
         "h": 144
       },
       "rotated": false,
@@ -12,19 +12,19 @@
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 108,
+        "w": 126,
         "h": 144
       },
       "sourceSize": {
-        "w": 108,
+        "w": 126,
         "h": 144
       }
     },
-    "character_1_01.png": {
+    "character_4_01.png": {
       "frame": {
         "x": 0,
         "y": 144,
-        "w": 108,
+        "w": 126,
         "h": 144
       },
       "rotated": false,
@@ -32,31 +32,31 @@
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 108,
+        "w": 126,
         "h": 144
       },
       "sourceSize": {
-        "w": 108,
+        "w": 126,
         "h": 144
       }
     }
   },
   "animations": {
-    "character_1": [
-      "character_1_00.png",
-      "character_1_01.png"
+    "character_4": [
+      "character_4_00.png",
+      "character_4_01.png"
     ]
   },
   "meta": {
     "app": "",
     "version": "1.0",
-    "image": "https://image.gaeamobile.net/image/20190828/184344/character_1.png",
+    "image": "https://image.gaeamobile.net/image/20190828/184344/character_4.png",
     "format": "RGBA8888",
     "size": {
-      "w": 108,
+      "w": 126,
       "h": 288
     },
     "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:f5c0ab0e1f5c899085b91d1f528a60c4:8373c76dd4ed162b2ebb9916149c7f83:019efbe06f40286cfcb0846713d65d8d$"
+    "smartupdate": "$TexturePacker:SmartUpdate:2cfa5ed652d871f12dbd5c0669442adb:0ee4f3ddc3ad30e1a9e27dc83f98b4ca:26b2c100c83db4e1e207b5edffaaf22d$"
   }
 }

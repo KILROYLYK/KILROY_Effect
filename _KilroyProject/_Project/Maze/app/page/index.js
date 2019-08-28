@@ -27,8 +27,8 @@ import Character from '../object/character';
 import Rocker from '../tool/rocker';
 
 const config = {
-        multiple: 6,
-        speed: 3,
+        multiple: 8,
+        speed: 4,
         margin: 10 * 6,
         center: 0.99,
         flag: {
@@ -83,8 +83,56 @@ const config = {
             }
         },
         {
+            name: 'shadow',
+            url: src.img + 'shadow.png',
+            onComplete: () => {
+            }
+        },
+        {
             name: 'character_1',
             url: src.json + 'character_1.json',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_2',
+            url: src.json + 'character_2.json',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_3',
+            url: src.json + 'character_3.json',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_4',
+            url: src.json + 'character_4.json',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_5',
+            url: src.json + 'character_5.json',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_6',
+            url: src.json + 'character_6.json',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_7',
+            url: src.json + 'character_7.json',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'dust',
+            url: src.json + 'dust.json',
             onComplete: () => {
             }
         }
@@ -113,7 +161,7 @@ function main(load, resources) {
         character = new Character({
             resources: resources,
             index: 1,
-            wh: maze.grid.wh * 0.4
+            wh: maze.grid.wh * 0.3
         }),
         rocker = new Rocker({
             wh: appRockerWH,

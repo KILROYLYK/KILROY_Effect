@@ -1,0 +1,146 @@
+{
+  "frames": {
+    "dust_00000.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 68
+      }
+    },
+    "dust_00001.png": {
+      "frame": {
+        "x": 0,
+        "y": 68,
+        "w": 128,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 68
+      }
+    },
+    "dust_00002.png": {
+      "frame": {
+        "x": 0,
+        "y": 136,
+        "w": 128,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 68
+      }
+    },
+    "dust_00003.png": {
+      "frame": {
+        "x": 0,
+        "y": 204,
+        "w": 128,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 68
+      }
+    },
+    "dust_00004.png": {
+      "frame": {
+        "x": 0,
+        "y": 272,
+        "w": 128,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 68
+      }
+    },
+    "dust_00005.png": {
+      "frame": {
+        "x": 0,
+        "y": 340,
+        "w": 128,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 68
+      }
+    }
+  },
+  "animations": {
+    "dust": [
+      "dust_00000.png",
+      "dust_00001.png",
+      "dust_00002.png",
+      "dust_00003.png",
+      "dust_00004.png",
+      "dust_00005.png"
+    ]
+  },
+  "meta": {
+    "app": "",
+    "version": "1.0",
+    "image": "https://image.gaeamobile.net/image/20190828/184344/dust.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 128,
+      "h": 408
+    },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:94d1ec48d7fd9b1da8e632c5fe078f94:331f41c2b2e9f7202c2e1cda9e998d64:6102e2432638aae1387580555bbf3708$"
+  }
+}
