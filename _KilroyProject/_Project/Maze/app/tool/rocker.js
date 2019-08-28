@@ -4,12 +4,12 @@
 const PIXI = require('pixi.js');
 
 /**
- * 方向键
+ * 摇杆
  */
-class ArrowKey {
+class Rocker {
     /**
      * 原型对象
-     * @constructor ArrowKey
+     * @constructor Rocker
      * @param {object} config 配置
      */
     constructor(config = {}) {
@@ -34,16 +34,16 @@ class ArrowKey {
             object: new PIXI.Graphics()
         };
         
-        _this.rocker = {
+        _this.button = {
             color: 0x000000,
             alpha: 0.2,
             origin: _this.panel.origin,
             radius: _this.panel.radius * 0.55,
             zIndex: 1,
-            radina: 0,
-            maxRadina: 1.6,
+            radian: 0,
+            maxRadian: 1.6,
             angle: 0,
-            sensitivity: _this.panel.radius * 0.2,
+            sensitivity: _this.panel.radius * 0.3,
             position: {
                 x: 0,
                 y: 0
@@ -62,10 +62,8 @@ class ArrowKey {
         const _this = this;
         
         _this.createPanel();
-        _this.createRocker();
-        
-        _this.object.x = _this.panel.origin;
-        _this.object.y = _this.panel.origin;
+        _this.createButton();
+        _this.object.anchor = 0.5;
     }
     
     /**
@@ -87,10 +85,10 @@ class ArrowKey {
         
         _this.panel.object.lineStyle(0);
         _this.panel.object.beginFill(_this.panel.color, 1);
-        _this.panel.object.drawCircle(0, 0, _this.panel.radius);
+        _this.panel.object.drawCircle(_this.panel.origin, _this.panel.origin, _this.panel.radius);
         _this.panel.object.endFill();
-        _this.panel.object.alpha = _this.panel.alpha;
         _this.panel.object.zIndex = _this.panel.zIndex;
+        _this.panel.object.alpha = _this.panel.alpha;
         _this.object.addChild(_this.panel.object);
     }
     
@@ -98,56 +96,56 @@ class ArrowKey {
      * 创建摇杆
      * @return {void}
      */
-    createRocker() {
+    createButton() {
         const _this = this;
         
-        _this.rocker.object.lineStyle(0);
-        _this.rocker.object.beginFill(_this.rocker.color, 1);
-        _this.rocker.object.drawCircle(0, 0, _this.rocker.radius);
-        _this.rocker.object.endFill();
-        _this.rocker.object.alpha = _this.rocker.alpha;
-        _this.rocker.object.zIndex = _this.rocker.zIndex;
-        _this.rocker.object.interactive = true;
-        _this.rocker.object.buttonMode = true;
-        _this.rocker.object
-            .on('pointerdown', _this.rockerDragStart.bind(_this))
-            .on('pointermove', _this.rockerDragMove.bind(_this))
-            .on('pointerup', _this.rockerDragEnd.bind(_this))
-            .on('pointerupoutside', _this.rockerDragEnd.bind(_this));
-        _this.object.addChild(_this.rocker.object);
+        _this.button.object.lineStyle(0);
+        _this.button.object.beginFill(_this.button.color, 1);
+        _this.button.object.drawCircle(_this.panel.origin, _this.panel.origin, _this.button.radius);
+        _this.button.object.endFill();
+        _this.button.object.zIndex = _this.button.zIndex;
+        _this.button.object.alpha = _this.button.alpha;
+        _this.button.object.interactive = true;
+        _this.button.object.buttonMode = true;
+        _this.button.object
+            .on('pointerdown', _this.buttonDragStart.bind(_this))
+            .on('pointermove', _this.buttonDragMove.bind(_this))
+            .on('pointerup', _this.buttonDragEnd.bind(_this))
+            .on('pointerupoutside', _this.buttonDragEnd.bind(_this));
+        _this.object.addChild(_this.button.object);
     }
     
     /**
-     * 摇杆拖动开始
+     * 按钮拖动开始
      * @param {object} e 焦点对象
      * @return {void}
      */
-    rockerDragStart(e) {
+    buttonDragStart(e) {
         const _this = this,
             position = e.data.getLocalPosition(_this.object);
-        
+    
         _this.config.flag = true;
-        _this.rocker.position = position;
-        _this.rocker.object.alpha = 0.5;
+        _this.button.position = position;
+        _this.button.object.alpha = 0.5;
     }
     
     /**
-     * 摇杆拖动移动
+     * 按钮拖动移动
      * @param {object} e 焦点对象
      * @return {void}
      */
-    rockerDragMove(e) {
+    buttonDragMove(e) {
         const _this = this,
             position = e.data.getLocalPosition(_this.object),
-            x = position.x - _this.rocker.position.x,
-            y = position.y - _this.rocker.position.y;
+            x = position.x - _this.button.position.x,
+            y = position.y - _this.button.position.y;
         
         if (!_this.config.flag) return;
         
-        _this.rocker.radina = Math.atan(x / y);
-        _this.rocker.angle = _this.getAngle(x, y);
+        _this.button.radian = Math.atan(x / y);
+        _this.button.angle = _this.getAngle(x, y);
         
-        _this.rockerMove(x, y);
+        _this.buttonMove(x, y);
         _this.directionMove(x, y);
     }
     
@@ -156,18 +154,18 @@ class ArrowKey {
      * @param {object} e 焦点对象
      * @return {void}
      */
-    rockerDragEnd(e) {
+    buttonDragEnd(e) {
         const _this = this;
         
         _this.config.flag = false;
         _this.config.move = 0;
-        _this.rocker.position = {
+        _this.button.position = {
             x: 0,
             y: 0
         };
-        _this.rocker.object.x = 0;
-        _this.rocker.object.y = 0;
-        _this.rocker.object.alpha = _this.rocker.alpha;
+        _this.button.object.x = 0;
+        _this.button.object.y = 0;
+        _this.button.object.alpha = _this.button.alpha;
     }
     
     /**
@@ -176,25 +174,25 @@ class ArrowKey {
      * @param {number} y Y
      * @return {object} 范围内坐标
      */
-    rockerMove(x, y) {
+    buttonMove(x, y) {
         const _this = this,
             range = _this.panel.radius,
-            radina = _this.rocker.radina,
-            maxRadina = _this.rocker.maxRadina,
-            X = Math.cos(radina),
-            Y = Math.sin(radina),
+            radian = _this.button.radian,
+            maxRadian = _this.button.maxRadian,
+            X = Math.cos(radian),
+            Y = Math.sin(radian),
             position = {
                 x: x,
                 y: y
             };
         
         if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) >= range) {
-            if (x >= 0 && radina < 0 && radina > -maxRadina ||
-                x < 0 && radina > 0 && radina < maxRadina) {
+            if (x >= 0 && radian < 0 && radian > -maxRadian ||
+                x < 0 && radian > 0 && radian < maxRadian) {
                 position.x = -range * Y;
                 position.y = -range * X;
-            } else if (x >= 0 && radina > 0 && radina < maxRadina ||
-                x < 0 && radina < 0 && radina > -maxRadina) {
+            } else if (x >= 0 && radian > 0 && radian < maxRadian ||
+                x < 0 && radian < 0 && radian > -maxRadian) {
                 position.x = range * Y;
                 position.y = range * X;
             } else {
@@ -203,8 +201,8 @@ class ArrowKey {
             }
         }
         
-        _this.rocker.object.x = position.x;
-        _this.rocker.object.y = position.y;
+        _this.button.object.x = position.x;
+        _this.button.object.y = position.y;
     }
     
     /**
@@ -216,14 +214,15 @@ class ArrowKey {
     directionMove(x, y) {
         const _this = this,
             piece = 360 / _this.config.direction,
-            angle = _this.rocker.angle;
+            angle = _this.button.angle;
         
         let direction = 0;
         
         if (!_this.config.callback) return;
         
         if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) <
-            _this.rocker.sensitivity) {
+            _this.button.sensitivity) {
+            _this.config.move = direction;
             return;
         }
         
@@ -231,9 +230,8 @@ class ArrowKey {
             if (angle >= piece * i - piece / 2 && angle < piece * (i + 1) - piece / 2) {
                 direction = i + 1;
             }
+            if (direction === 0) direction = 1;
         }
-        
-        if (direction === 0) direction = 1;
         
         _this.config.move = direction;
     }
@@ -246,9 +244,9 @@ class ArrowKey {
      */
     getAngle(x, y) {
         const _this = this,
-            radina = _this.rocker.radina;
+            radian = _this.button.radian;
         
-        let angle = 180 / (Math.PI / radina);
+        let angle = 180 / (Math.PI / radian);
         
         if (x === 0 && y === 0) {
             angle = 0;
@@ -290,4 +288,4 @@ class ArrowKey {
     }
 }
 
-export default ArrowKey;
+export default Rocker;

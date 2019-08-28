@@ -27,13 +27,6 @@ class Character {
             object: new PIXI.Graphics()
         };
         
-        // _this.arrow = {
-        //     color: 0xCCCCCC,
-        //     alpha: 0.3,
-        //     width: _this.chassis.radius / 2,
-        //     height: _this.chassis.radius / 2
-        // };
-        
         _this.object = new PIXI.Container();
         
         _this.init();

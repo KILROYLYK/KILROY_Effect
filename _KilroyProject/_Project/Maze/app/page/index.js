@@ -14,7 +14,7 @@ import Application from '../controller/application';
  */
 import Maze from '../object/maze';
 import Character from '../object/character';
-import ArrowKey from '../object/arrowKey';
+import Rocker from '../tool/rocker';
 
 /**
  * Main
@@ -23,15 +23,16 @@ const config = {
         multiple: 6,
         speed: 3,
         margin: 10 * 6,
+        center: 0.99,
         flag: {
             mazeX: false,
             mazeY: false
         }
     },
     appMaze = new App('appMaze'),
-    appArrowKey = new App('appArrowKey'),
+    appRocker = new App('appRocker'),
     appMazeWH = appMaze.clientWidth,
-    appArrowKeyWH = appArrowKey.clientWidth,
+    appRockerWH = appRocker.clientWidth,
     appGame = Application.create('canvasMaze', {
         app: appMaze,
         width: appMazeWH,
@@ -42,10 +43,10 @@ const config = {
         backgroundColor: 0xEAD8A0,
         clearBeforeRender: true
     }),
-    appKeyboard = Application.create('canvasArrowKey', {
-        app: appArrowKey,
-        width: appArrowKeyWH,
-        height: appArrowKeyWH,
+    appKeyboard = Application.create('canvasRocker', {
+        app: appRocker,
+        width: appRockerWH,
+        height: appRockerWH,
         transparent: true,
         autoDensity: true,
         antialias: true,
@@ -56,14 +57,13 @@ const config = {
     maze = new Maze({
         map: 0,
         wh: appMazeWH,
-        margin: config.margin,
         multiple: config.multiple
     }),
     character = new Character({
         radius: maze.grid.wh * 0.4 / 2
     }),
-    arrowKey = new ArrowKey({
-        wh: appArrowKeyWH,
+    rocker = new Rocker({
+        wh: appRockerWH,
         direction: 8,
         callback: (direction) => {
             switch (direction) {
@@ -101,12 +101,12 @@ const config = {
 
 maze.object.addChild(character.object);
 appGame.stage.addChild(maze.object);
-appKeyboard.stage.addChild(arrowKey.object);
+appKeyboard.stage.addChild(rocker.object);
 
 initialPosition();
 
 appGame.ticker.add(() => {
-    arrowKey.move();
+    rocker.move();
 });
 
 appGame.start();
@@ -141,13 +141,13 @@ function move(x, y) {
     const grid = maze.grid.object.children,
         appW = appMaze.clientWidth,
         appH = appMaze.clientHeight,
-        centerX = appW / 2 * 0.99 - character.config.radius,
-        centerY = appH / 2 * 0.99 - character.config.radius,
-        cX = character.object.x,
-        cY = character.object.y;
+        centerX = appW / 2 * config.center - character.config.radius,
+        centerY = appH / 2 * config.center - character.config.radius,
+        characterNowX = character.object.x,
+        characterNowY = character.object.y;
     
-    let mazeX = 0,
-        mazeY = 0;
+    let mazeAddX = 0,
+        mazeAddY = 0;
     
     if (character.object.getGlobalPosition().x >= centerX &&
         character.object.getGlobalPosition().x <= appW - centerX) {
@@ -159,19 +159,19 @@ function move(x, y) {
         config.flag.mazeY = true;
     }
     
-    if (config.flag.mazeX) mazeX = x;
-    if (config.flag.mazeY) mazeY = y;
+    if (config.flag.mazeX) mazeAddX = x;
+    if (config.flag.mazeY) mazeAddY = y;
     
-    if (maze.object.x - mazeX >= config.margin ||
-        maze.object.x - mazeX <= -(maze.map.wh - config.margin - appW)) {
+    if (maze.object.x - mazeAddX >= config.margin ||
+        maze.object.x - mazeAddX <= -(maze.map.wh + config.margin - appW)) {
         config.flag.mazeX = false;
-        mazeX = 0;
+        mazeAddX = 0;
     }
     
-    if (maze.object.y - mazeY >= config.margin ||
-        maze.object.y - mazeY <= -(maze.map.wh - config.margin - appH)) {
+    if (maze.object.y - mazeAddY >= config.margin ||
+        maze.object.y - mazeAddY <= -(maze.map.wh + config.margin - appH)) {
         config.flag.mazeY = false;
-        mazeY = 0;
+        mazeAddY = 0;
     }
     
     for (let i = 0, n = grid.length; i < n; i++) {
@@ -180,18 +180,18 @@ function move(x, y) {
                 character.object, grid[i].children[1].children,
                 true, false, true,
                 (collision, platform) => {
-                    if (Math.abs(cX - character.object.x) > 0) mazeX = 0;
-                    if (Math.abs(cY - character.object.y) > 0) mazeY = 0;
+                    if (Math.abs(characterNowX - character.object.x) > 0) mazeAddX = 0;
+                    if (Math.abs(characterNowY - character.object.y) > 0) mazeAddY = 0;
                     if (platform.name === '入口' || platform.name === '出口') {
-                        console.log(platform.name);
+                        // console.log(platform.name);
                     }
                 }
             );
         }
     }
     
-    maze.object.x -= mazeX;
-    maze.object.y -= mazeY;
+    maze.object.x -= mazeAddX;
+    maze.object.y -= mazeAddY;
     character.object.x += x;
     character.object.y += y;
 }

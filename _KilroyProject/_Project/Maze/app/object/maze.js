@@ -4,14 +4,10 @@
 const PIXI = require('pixi.js');
 
 /**
- * Controller
- */
-import { imgBorder, imgLawn, imgGrass } from '../controller/image';
-
-/**
  * Constant
  */
 import { way, matrix } from '../constant/maze';
+import { imgBorder, imgLawn, imgGrass } from '../constant/image';
 
 /**
  * 迷宫
@@ -28,7 +24,6 @@ class Maze {
         
         _this.config = {
             wh: config.wh || 500,
-            margin: config.margin || 0,
             row: maze.grid,
             multiple: config.multiple || 5,
             enter: maze.enter,
@@ -40,9 +35,9 @@ class Maze {
         _this.map = {
             color: 0xEAD8A0,
             alpha: 1,
-            x: -_this.config.margin,
-            y: -_this.config.margin,
-            wh: _this.config.wh * _this.config.multiple + _this.config.margin * 2,
+            x: 0,
+            y: 0,
+            wh: _this.config.wh * _this.config.multiple,
             way: way,
             matrix: maze.map,
             object: new PIXI.Graphics()
@@ -97,9 +92,9 @@ class Maze {
     createMap() {
         const _this = this;
         
-        _this.map.object.beginFill(_this.map.color, _this.map.alpha);
-        _this.map.object.drawRect(_this.map.x, _this.map.y, _this.map.wh, _this.map.wh);
-        _this.map.object.endFill();
+        // _this.map.object.beginFill(_this.map.color, _this.map.alpha);
+        // _this.map.object.drawRect(_this.map.x, _this.map.y, _this.map.wh, _this.map.wh);
+        // _this.map.object.endFill();
         _this.object.addChild(_this.map.object);
     }
     
@@ -109,7 +104,7 @@ class Maze {
      */
     createBorder() {
         const _this = this,
-            wh = _this.grid.wh * _this.grid.row,
+            wh = _this.map.wh,
             paste = 0.35;
         
         for (let i = 0, n = 4; i < n; i++) {
