@@ -7,7 +7,6 @@ const PIXI = require('pixi.js');
  * Constant
  */
 import { way, matrix } from '../constant/maze';
-import { imgBorder, imgLawn, imgGrass } from '../constant/image';
 
 /**
  * 迷宫
@@ -23,6 +22,7 @@ class Maze {
             maze = matrix[config.map || 0];
         
         _this.config = {
+            resources: config.resources,
             wh: config.wh || 500,
             row: maze.grid,
             multiple: config.multiple || 5,
@@ -65,9 +65,9 @@ class Maze {
         };
         
         _this.img = {
-            border: new PIXI.Texture.from(imgBorder),
-            lawn: new PIXI.Texture.from(imgLawn),
-            grass: new PIXI.Texture.from(imgGrass)
+            border: _this.config.resources.border.texture,
+            lawn: _this.config.resources.lawn.texture,
+            grass: _this.config.resources.grass.texture
         };
         
         _this.init();
