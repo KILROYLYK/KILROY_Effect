@@ -84,9 +84,6 @@ class Character {
         _this.people.object.x = 0;
         _this.people.object.y = -_this.people.object.height + _this.object.height * 0.8 * _this.shadow.multiple;
         
-        // _this.people.object.rotation = 10;
-        console.log(_this.people.object.rotation);
-        
         _this.object.addChild(_this.people.object);
     }
 }
