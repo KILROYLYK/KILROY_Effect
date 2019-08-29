@@ -24,7 +24,7 @@ body {
 
 .keyboard {
   .position(bottom);
-  z-index: 1;
+  z-index: 0;
   height: @wh;
   .bg('lawn.jpg');
   background-size: 50*@px;
@@ -47,13 +47,14 @@ body {
 
 #appMaze {
   .position(top);
-  z-index: 1;
+  z-index: 0;
   height: calc(100% - @wh);
+  pointer-events: none;
 }
 
 #appRocker {
   .position(bottom);
-  z-index: 1;
+  z-index: 0;
   width: @wh;
   height: @wh;
   margin: 0 auto;
