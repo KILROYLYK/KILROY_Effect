@@ -1,146 +1,112 @@
+{"frames": {
+
+"fireworks_l_00000.png":
 {
-  "frames": {
-    "dust_00000.png": {
-      "frame": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 68
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 68
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 68
-      }
-    },
-    "dust_00001.png": {
-      "frame": {
-        "x": 0,
-        "y": 68,
-        "w": 128,
-        "h": 68
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 68
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 68
-      }
-    },
-    "dust_00002.png": {
-      "frame": {
-        "x": 0,
-        "y": 136,
-        "w": 128,
-        "h": 68
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 68
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 68
-      }
-    },
-    "dust_00003.png": {
-      "frame": {
-        "x": 0,
-        "y": 204,
-        "w": 128,
-        "h": 68
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 68
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 68
-      }
-    },
-    "dust_00004.png": {
-      "frame": {
-        "x": 0,
-        "y": 272,
-        "w": 128,
-        "h": 68
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 68
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 68
-      }
-    },
-    "dust_00005.png": {
-      "frame": {
-        "x": 0,
-        "y": 340,
-        "w": 128,
-        "h": 68
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 128,
-        "h": 68
-      },
-      "sourceSize": {
-        "w": 128,
-        "h": 68
-      }
-    }
-  },
-  "animations": {
-    "dust": [
-      "dust_00000.png",
-      "dust_00001.png",
-      "dust_00002.png",
-      "dust_00003.png",
-      "dust_00004.png",
-      "dust_00005.png"
-    ]
-  },
-  "meta": {
-    "app": "",
-    "version": "1.0",
-    "image": "https://image.gaeamobile.net/image/20190828/184344/dust.png",
-    "format": "RGBA8888",
-    "size": {
-      "w": 128,
-      "h": 408
-    },
-    "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:94d1ec48d7fd9b1da8e632c5fe078f94:331f41c2b2e9f7202c2e1cda9e998d64:6102e2432638aae1387580555bbf3708$"
-  }
+	"frame": {"x":65,"y":127,"w":3,"h":3},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":3,"h":3},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_l_00001.png":
+{
+	"frame": {"x":1,"y":190,"w":68,"h":49},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":33,"y":19,"w":68,"h":49},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_l_00002.png":
+{
+	"frame": {"x":52,"y":217,"w":68,"h":49},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":33,"y":19,"w":68,"h":49},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_l_00003.png":
+{
+	"frame": {"x":71,"y":1,"w":74,"h":55},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":27,"y":13,"w":74,"h":55},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_l_00004.png":
+{
+	"frame": {"x":1,"y":127,"w":62,"h":61},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":27,"y":7,"w":62,"h":61},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_l_00005.png":
+{
+	"frame": {"x":1,"y":1,"w":68,"h":61},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":27,"y":7,"w":68,"h":61},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_r_00000.png":
+{
+	"frame": {"x":65,"y":127,"w":3,"h":3},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":3,"h":3},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_r_00001.png":
+{
+	"frame": {"x":1,"y":260,"w":68,"h":49},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":27,"y":19,"w":68,"h":49},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_r_00002.png":
+{
+	"frame": {"x":52,"y":268,"w":68,"h":49},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":27,"y":19,"w":68,"h":49},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_r_00003.png":
+{
+	"frame": {"x":71,"y":77,"w":74,"h":55},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":27,"y":13,"w":74,"h":55},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_r_00004.png":
+{
+	"frame": {"x":65,"y":153,"w":62,"h":61},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":39,"y":7,"w":62,"h":61},
+	"sourceSize": {"w":128,"h":68}
+},
+"fireworks_r_00005.png":
+{
+	"frame": {"x":1,"y":64,"w":68,"h":61},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":33,"y":7,"w":68,"h":61},
+	"sourceSize": {"w":128,"h":68}
+}},
+"animations": {
+	"fireworks_l": ["fireworks_l_00000.png","fireworks_l_00001.png","fireworks_l_00002.png","fireworks_l_00003.png","fireworks_l_00004.png","fireworks_l_00005.png"],
+	"fireworks_r": ["fireworks_r_00000.png","fireworks_r_00001.png","fireworks_r_00002.png","fireworks_r_00003.png","fireworks_r_00004.png","fireworks_r_00005.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "https://image.gaeamobile.net/image/20190829/150005/dust.png",
+	"format": "RGBA8888",
+	"size": {"w":127,"h":329},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:a9945883a260089484fb51c11b06b8f0:eb3dd2f9716bdb153282bbb908f1b0d9:6102e2432638aae1387580555bbf3708$"
+}
 }

@@ -154,7 +154,8 @@ function main(load, resources) {
         }),
         character = new Character({
             resources: resources,
-            index: 2,
+            index: 1,
+            type: 1,
             wh: maze.grid.wh * 0.35
         }),
         rocker = new Rocker({
@@ -163,31 +164,46 @@ function main(load, resources) {
             callback: (direction) => {
                 switch (direction) {
                     case 1:
+                        character.start();
                         move(0, -config.speed);
                         break;
                     case 2:
+                        character.animateRight();
+                        character.start();
                         move(config.speed, -config.speed);
                         break;
                     case 3:
+                        character.animateRight();
+                        character.start();
                         move(config.speed, 0);
                         break;
                     case 4:
+                        character.animateRight();
+                        character.start();
                         move(config.speed, config.speed);
                         break;
                     case 5:
+                        character.start();
                         move(0, config.speed);
                         break;
                     case 6:
+                        character.animateLeft();
+                        character.start();
                         move(-config.speed, config.speed);
                         break;
                     case 7:
+                        character.animateLeft();
+                        character.start();
                         move(-config.speed, 0);
                         break;
                     case 8:
+                        character.animateLeft();
+                        character.start();
                         move(-config.speed, -config.speed);
                         break;
                     case 0:
                     default:
+                        character.stop();
                         move(0, 0);
                         break;
                 }

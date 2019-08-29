@@ -18,6 +18,7 @@ class Character {
         _this.config = {
             resources: config.resources,
             index: config.index || 1,
+            type: config.type || 0,
             wh: config.wh || 20
         };
         
@@ -33,7 +34,7 @@ class Character {
         
         _this.shadow = {
             color: 0x000000,
-            alpha: 0.5,
+            alpha: 0.2,
             width: _this.config.wh * 0.6,
             height: _this.config.wh * 0.2,
             object: new PIXI.Graphics()
@@ -42,6 +43,12 @@ class Character {
         _this.people = {
             index: _this.config.index,
             width: _this.config.wh * 1.6,
+            speed: 1,
+            sprite: _this.config.resources['character_' + _this.config.index].spritesheet
+        };
+        
+        _this.dust = {
+            speed: 1,
             sprite: _this.config.resources['character_' + _this.config.index].spritesheet
         };
         
@@ -115,9 +122,76 @@ class Character {
         _this.people.object.height = height;
         _this.people.object.x = x;
         _this.people.object.y = y;
+        _this.people.object.animationSpeed = _this.people.speed;
         
         _this.object.addChild(_this.people.object);
     }
+    
+    /**
+     * 创建运动尘土
+     * @return {void}
+     */
+    createDust() {
+        const _this = this,
+            animation = _this.people.sprite.animations['character_' + _this.people.index + '_r'],
+            spriteW = _this.people.sprite.textures['character_' + _this.people.index + '_r_00.png'].width,
+            spriteH = _this.people.sprite.textures['character_' + _this.people.index + '_r_00.png'].height,
+            width = _this.people.width,
+            height = width / (spriteW / spriteH),
+            x = -(width - _this.config.wh) / 2,
+            y = -(height - _this.config.wh) - _this.shadow.height / 2;
+        
+        
+    }
+    
+    /**
+     * 开始运动
+     * @return {void}
+     */
+    start() {
+        const _this = this;
+        
+        _this.people.object.play();
+    }
+    
+    /**
+     * 停止运动
+     * @return {void}
+     */
+    stop() {
+        const _this = this;
+        
+        _this.people.object.gotoAndStop(0);
+    }
+    
+    /**
+     * 左运动
+     * @return {void}
+     */
+    animateLeft() {
+        const _this = this,
+            animation = _this.people.sprite.animations['character_' + _this.people.index + '_l'];
+        
+        if (_this.people.object.textures === animation) return;
+        
+        _this.people.object.texture = animation[0];
+        _this.people.object.textures = animation;
+    }
+    
+    /**
+     * 右运动
+     * @return {void}
+     */
+    animateRight() {
+        const _this = this,
+            animation = _this.people.sprite.animations['character_' + _this.people.index + '_r'];
+        
+        if (_this.people.object.textures === animation) return;
+        
+        _this.people.object.texture = animation[0];
+        _this.people.object.textures = animation;
+    }
+    
 }
 
 export default Character;
