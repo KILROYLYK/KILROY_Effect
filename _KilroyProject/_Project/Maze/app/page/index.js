@@ -27,7 +27,7 @@ import Character from '../object/character';
 import Rocker from '../tool/rocker';
 
 const config = {
-        multiple: 8,
+        multiple: 5,
         speed: 4,
         margin: 10 * 6,
         center: 0.99,
@@ -79,12 +79,6 @@ const config = {
         {
             name: 'grass',
             url: src.img + 'grass.png',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'shadow',
-            url: src.img + 'shadow.png',
             onComplete: () => {
             }
         },
@@ -161,7 +155,7 @@ function main(load, resources) {
         character = new Character({
             resources: resources,
             index: 1,
-            wh: maze.grid.wh * 0.3
+            wh: maze.grid.wh * 0.35
         }),
         rocker = new Rocker({
             wh: appRockerWH,
@@ -258,19 +252,21 @@ function main(load, resources) {
             appH = appMaze.clientHeight,
             centerX = appW / 2 * config.center - character.config.wh / 2,
             centerY = appH / 2 * config.center - character.config.wh / 2,
-            characterNowX = character.object.x,
-            characterNowY = character.object.y;
+            characterNowX = character.chassis.object.x,
+            characterNowY = character.chassis.object.y;
         
         let mazeAddX = 0,
-            mazeAddY = 0;
+            mazeAddY = 0,
+            characterAddX = x,
+            characterAddY = y;
         
-        if (character.object.getGlobalPosition().x >= centerX &&
-            character.object.getGlobalPosition().x <= appW - centerX) {
+        if (character.chassis.object.getGlobalPosition().x >= centerX &&
+            character.chassis.object.getGlobalPosition().x <= appW - centerX) {
             config.flag.mazeX = true;
         }
         
-        if (character.object.getGlobalPosition().y >= centerY &&
-            character.object.getGlobalPosition().y <= appH - centerY) {
+        if (character.chassis.object.getGlobalPosition().y >= centerY &&
+            character.chassis.object.getGlobalPosition().y <= appH - centerY) {
             config.flag.mazeY = true;
         }
         
@@ -290,13 +286,33 @@ function main(load, resources) {
         }
         
         for (let i = 0, n = grid.length; i < n; i++) {
-            if (Bump.hitTestRectangle(character.object, grid[i], true)) {
+            if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
+                const wall = grid[i].children[1].children,
+                    bomb = 1;
                 Bump.hit(
-                    character.object, grid[i].children[1].children,
+                    character.chassis.object, wall,
                     true, false, true,
                     (collision, platform) => {
-                        if (Math.abs(characterNowX - character.object.x) > 0) mazeAddX = 0;
-                        if (Math.abs(characterNowY - character.object.y) > 0) mazeAddY = 0;
+                        if (Math.abs(characterNowX - character.chassis.object.x) > 0) {
+                            character.chassis.object.x = characterNowX;
+                            if (collision === 'left' && characterAddX < 0) {
+                                characterAddX = bomb;
+                                if (config.flag.mazeX) mazeAddX = bomb;
+                            } else if (collision === 'right' && characterAddX > 0) {
+                                characterAddX = -bomb;
+                                if (config.flag.mazeX) mazeAddX = -bomb;
+                            }
+                        }
+                        if (Math.abs(characterNowY - character.chassis.object.y) > 0) {
+                            character.chassis.object.y = characterNowY;
+                            if (collision === 'top' && characterAddY < 0) {
+                                characterAddY = bomb;
+                                if (config.flag.mazeY) mazeAddY = bomb;
+                            } else if (collision === 'bottom' && characterAddY > 0) {
+                                characterAddY = -bomb;
+                                if (config.flag.mazeY) mazeAddY = -bomb;
+                            }
+                        }
                         if (platform.name === '入口' || platform.name === '出口') {
                             // console.log(platform.name);
                         }
@@ -307,7 +323,7 @@ function main(load, resources) {
         
         maze.object.x -= mazeAddX;
         maze.object.y -= mazeAddY;
-        character.object.x += x;
-        character.object.y += y;
+        character.object.x += characterAddX;
+        character.object.y += characterAddY;
     }
 }

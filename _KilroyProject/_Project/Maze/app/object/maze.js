@@ -54,8 +54,8 @@ class Maze {
         };
         
         _this.wall = {
-            wh: _this.grid.wh * 0.25,
-            num: 4
+            wh: _this.grid.wh / 3,
+            num: 3
         };
         
         _this.border = {
@@ -92,9 +92,6 @@ class Maze {
     createMap() {
         const _this = this;
         
-        // _this.map.object.beginFill(_this.map.color, _this.map.alpha);
-        // _this.map.object.drawRect(_this.map.x, _this.map.y, _this.map.wh, _this.map.wh);
-        // _this.map.object.endFill();
         _this.object.addChild(_this.map.object);
     }
     
@@ -115,19 +112,19 @@ class Maze {
             
             if (i === 0) {
                 border.x = -_this.border.height * paste + _this.border.width / 2;
-                border.y = -_this.border.height * paste;
+                border.y = -_this.border.height * paste - _this.wall.wh / 2;
             }
             if (i === 1) {
-                border.x = -_this.border.height * paste;
+                border.x = -_this.border.height * paste - _this.wall.wh / 2;
                 border.y = -_this.border.height * paste + _this.border.width / 2;
             }
             if (i === 2) {
-                border.x = _this.border.height * paste + wh;
+                border.x = _this.border.height * paste + wh + _this.wall.wh / 2;
                 border.y = -_this.border.height * paste + _this.border.width / 2;
             }
             if (i === 3) {
                 border.x = -_this.border.height * paste + _this.border.width / 2;
-                border.y = _this.border.height * paste + wh;
+                border.y = _this.border.height * paste + wh + _this.wall.wh / 2;
             }
             
             for (let ii = 0, nn = _this.border.num; ii < nn; ii++) {
@@ -218,8 +215,9 @@ class Maze {
         
         if ((/top/i).test(grid.wall)) {
             const wall = new PIXI.Container();
+            wall.circular = true;
             wall.x = 0;
-            wall.y = 0;
+            wall.y = -wh / 2;
             for (let i = 0; i < n; i++) {
                 const grass = new PIXI.Sprite.from(_this.img.grass);
                 grass.width = wh;
@@ -233,7 +231,8 @@ class Maze {
         
         if ((/left/i).test(grid.wall)) {
             const wall = new PIXI.Container();
-            wall.x = 0;
+            wall.circular = true;
+            wall.x = -wh / 2;
             wall.y = 0;
             for (let i = 0; i < n; i++) {
                 const grass = new PIXI.Sprite.from(_this.img.grass);
@@ -248,7 +247,8 @@ class Maze {
         
         if ((/right/i).test(grid.wall)) {
             const wall = new PIXI.Container();
-            wall.x = _this.grid.wh - _this.wall.wh;
+            wall.circular = true;
+            wall.x = _this.grid.wh - _this.wall.wh + wh / 2;
             wall.y = 0;
             for (let i = 0; i < n; i++) {
                 const grass = new PIXI.Sprite.from(_this.img.grass);
@@ -263,8 +263,9 @@ class Maze {
         
         if ((/bottom/i).test(grid.wall)) {
             const wall = new PIXI.Container();
+            wall.circular = true;
             wall.x = 0;
-            wall.y = _this.grid.wh - _this.wall.wh;
+            wall.y = _this.grid.wh - _this.wall.wh + wh / 2;
             for (let i = 0; i < n; i++) {
                 const grass = new PIXI.Sprite.from(_this.img.grass);
                 grass.width = wh;
@@ -292,6 +293,8 @@ class Maze {
             door = new PIXI.Container(),
             children = door.children,
             wh = _this.wall.wh;
+    
+        door.circular = true;
         
         if (name === 'enter') door.name = '入口';
         if (name === 'out') door.name = '出口';
@@ -308,7 +311,7 @@ class Maze {
         
         if (_this.config[name].door === 'top') {
             door.x = 0;
-            door.y = 0;
+            door.y = -wh / 2;
             children[1].x = 3 * wh;
             children[1].y = 0;
             children[2].x = 0;
@@ -318,7 +321,7 @@ class Maze {
         }
         
         if (_this.config[name].door === 'left') {
-            door.x = 0;
+            door.x = -wh / 2;
             door.y = 0;
             children[1].x = 0;
             children[1].y = 3 * wh;
@@ -329,7 +332,7 @@ class Maze {
         }
         
         if (_this.config[name].door === 'right') {
-            door.x = _this.grid.wh - _this.wall.wh;
+            door.x = _this.grid.wh - _this.wall.wh + wh / 2;
             door.y = 0;
             children[1].x = 0;
             children[1].y = 3 * wh;
@@ -341,7 +344,7 @@ class Maze {
         
         if (_this.config[name].door === 'bottom') {
             door.x = 0;
-            door.y = _this.grid.wh - _this.wall.wh;
+            door.y = _this.grid.wh - _this.wall.wh + wh / 2;
             children[1].x = 3 * wh;
             children[1].y = 0;
             children[2].x = 0;
