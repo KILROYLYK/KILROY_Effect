@@ -27,7 +27,7 @@ import Character from '../object/character';
 import Rocker from '../tool/rocker';
 
 const config = {
-        multiple: 5,
+        multiple: 1,
         speed: 4,
         margin: 10 * 6,
         center: 0.99,
@@ -208,12 +208,18 @@ function main(load, resources) {
                         break;
                 }
             }
-        });
+        }),
+        friend = {
+            num: 6,
+            position: [],
+            object: []
+        };
     
     maze.object.addChild(character.object);
     appGame.stage.addChild(maze.object);
     appKeyboard.stage.addChild(rocker.object);
     
+    createFriend();
     init();
     start();
     animation();
@@ -304,7 +310,7 @@ function main(load, resources) {
         for (let i = 0, n = grid.length; i < n; i++) {
             if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
                 const wall = grid[i].children[1].children,
-                    bomb = 1;
+                    bomb = 0.5;
                 Bump.hit(
                     character.chassis.object, wall,
                     true, false, true,
@@ -341,5 +347,22 @@ function main(load, resources) {
         maze.object.y -= mazeAddY;
         character.object.x += characterAddX;
         character.object.y += characterAddY;
+    }
+    
+    /**
+     * 创建朋友
+     * @return {void}
+     */
+    function createFriend() {
+        for (let i = 0, n = friend.num; i < n; i++) {
+            const f = new Character({
+                resources: resources,
+                index: i + 2,
+                type: 0,
+                wh: character.config.wh
+            });
+            friend.object.push(f.object);
+            maze.object.addChild(f.object);
+        }
     }
 }

@@ -43,13 +43,16 @@ class Character {
         _this.people = {
             index: _this.config.index,
             width: _this.config.wh * 1.6,
-            speed: 1,
-            sprite: _this.config.resources['character_' + _this.config.index].spritesheet
+            speed: 0.8,
+            sprite: _this.config.resources['character_' + _this.config.index].spritesheet,
+            object: null
         };
         
         _this.dust = {
-            speed: 1,
-            sprite: _this.config.resources['character_' + _this.config.index].spritesheet
+            width: _this.config.wh * 1.2,
+            speed: 0.2,
+            sprite: _this.config.resources.dust.spritesheet,
+            object: null
         };
         
         _this.init();
@@ -124,6 +127,10 @@ class Character {
         _this.people.object.y = y;
         _this.people.object.animationSpeed = _this.people.speed;
         
+        if (_this.config.type) {
+            _this.createDust();
+        }
+        
         _this.object.addChild(_this.people.object);
     }
     
@@ -133,14 +140,22 @@ class Character {
      */
     createDust() {
         const _this = this,
-            animation = _this.people.sprite.animations['character_' + _this.people.index + '_r'],
-            spriteW = _this.people.sprite.textures['character_' + _this.people.index + '_r_00.png'].width,
-            spriteH = _this.people.sprite.textures['character_' + _this.people.index + '_r_00.png'].height,
-            width = _this.people.width,
+            animation = _this.dust.sprite.animations.dust_r,
+            spriteW = _this.dust.sprite.textures['dust_l_00000.png'].width,
+            spriteH = _this.dust.sprite.textures['dust_l_00000.png'].height,
+            width = _this.dust.width,
             height = width / (spriteW / spriteH),
-            x = -(width - _this.config.wh) / 2,
-            y = -(height - _this.config.wh) - _this.shadow.height / 2;
+            x = -width * 0.5,
+            y = _this.config.wh - height - _this.shadow.height / 2;
         
+        _this.dust.object = new PIXI.AnimatedSprite(animation);
+        _this.dust.object.width = width;
+        _this.dust.object.height = height;
+        _this.dust.object.x = x;
+        _this.dust.object.y = y;
+        _this.dust.object.animationSpeed = _this.dust.speed;
+        
+        _this.object.addChild(_this.dust.object);
         
     }
     
@@ -152,6 +167,7 @@ class Character {
         const _this = this;
         
         _this.people.object.play();
+        _this.dust.object.play();
     }
     
     /**
@@ -162,6 +178,7 @@ class Character {
         const _this = this;
         
         _this.people.object.gotoAndStop(0);
+        _this.dust.object.gotoAndStop(0);
     }
     
     /**
@@ -170,12 +187,16 @@ class Character {
      */
     animateLeft() {
         const _this = this,
-            animation = _this.people.sprite.animations['character_' + _this.people.index + '_l'];
+            characterA = _this.people.sprite.animations['character_' + _this.people.index + '_l'],
+            dustA = _this.dust.sprite.animations.dust_l;
         
-        if (_this.people.object.textures === animation) return;
+        if (_this.people.object.textures === characterA) return;
         
-        _this.people.object.texture = animation[0];
-        _this.people.object.textures = animation;
+        _this.people.object.texture = characterA[0];
+        _this.people.object.textures = characterA;
+        _this.dust.object.texture = dustA[0];
+        _this.dust.object.textures = dustA;
+        _this.dust.object.x = _this.config.wh - _this.dust.object.width * 0.5;
     }
     
     /**
@@ -184,12 +205,16 @@ class Character {
      */
     animateRight() {
         const _this = this,
-            animation = _this.people.sprite.animations['character_' + _this.people.index + '_r'];
+            animation = _this.people.sprite.animations['character_' + _this.people.index + '_r'],
+            dustA = _this.dust.sprite.animations.dust_r;
         
         if (_this.people.object.textures === animation) return;
         
         _this.people.object.texture = animation[0];
         _this.people.object.textures = animation;
+        _this.dust.object.texture = dustA[0];
+        _this.dust.object.textures = dustA;
+        _this.dust.object.x = -_this.dust.object.width * 0.5;
     }
     
 }

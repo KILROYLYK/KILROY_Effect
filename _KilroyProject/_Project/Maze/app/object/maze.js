@@ -190,6 +190,11 @@ class Maze {
             fill.height = _this.grid.wh;
             fill.x = 0;
             fill.y = 0;
+            fill.interactive = true;
+            fill.buttonMode = true;
+            fill.on('pointertap', () => {
+                console.log(i, grid.wall);
+            });
             
             grid.addChild(fill);
             _this.createWall(i, grid);
@@ -293,7 +298,7 @@ class Maze {
             door = new PIXI.Container(),
             children = door.children,
             wh = _this.wall.wh;
-    
+        
         door.circular = true;
         
         if (name === 'enter') door.name = '入口';
