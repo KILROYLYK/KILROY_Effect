@@ -26,7 +26,7 @@ class Rocker {
         _this.object = new PIXI.Container();
         
         _this.panel = {
-            color: 0x000000,
+            color: 0xFFFFFF,
             alpha: 0.2,
             origin: _this.config.wh / 2,
             radius: _this.config.wh / 2 * 0.6,
@@ -35,7 +35,7 @@ class Rocker {
         };
         
         _this.button = {
-            color: 0x000000,
+            color: 0xFFFFFF,
             alpha: 0.2,
             origin: _this.panel.origin,
             radius: _this.panel.radius * 0.65,
