@@ -55,11 +55,12 @@ class Maze {
         
         _this.wall = {
             wh: _this.grid.wh / 3,
-            num: 3
+            num: 3,
+            color: 0xEAD8A0
         };
         
         _this.border = {
-            width: 2 * _this.config.multiple * 3.59,
+            width: 2 * _this.config.multiple * 3.62,
             height: 2 * _this.config.multiple,
             num: 58
         };
@@ -111,19 +112,19 @@ class Maze {
             border.height = _this.border.height;
             
             if (i === 0) {
-                border.x = -_this.border.height * paste + _this.border.width / 2;
+                border.x = -_this.border.height * paste + _this.border.width / 2 - _this.border.height;
                 border.y = -_this.border.height * paste - _this.wall.wh / 2;
             }
             if (i === 1) {
                 border.x = -_this.border.height * paste - _this.wall.wh / 2;
-                border.y = -_this.border.height * paste + _this.border.width / 2;
+                border.y = -_this.border.height * paste + _this.border.width / 2 - _this.border.height;
             }
             if (i === 2) {
                 border.x = _this.border.height * paste + wh + _this.wall.wh / 2;
-                border.y = -_this.border.height * paste + _this.border.width / 2;
+                border.y = -_this.border.height * paste + _this.border.width / 2 - _this.border.height;
             }
             if (i === 3) {
-                border.x = -_this.border.height * paste + _this.border.width / 2;
+                border.x = -_this.border.height * paste + _this.border.width / 2 - _this.border.height;
                 border.y = _this.border.height * paste + wh + _this.wall.wh / 2;
             }
             
@@ -296,10 +297,17 @@ class Maze {
     createDoor(name) {
         const _this = this,
             door = new PIXI.Container(),
+            bg = new PIXI.Graphics(),
             children = door.children,
             wh = _this.wall.wh;
         
         door.circular = true;
+        
+        bg.lineStyle(0);
+        bg.beginFill(_this.wall.color, 1);
+        bg.drawRect(0, 0, _this.grid.wh, wh * 2);
+        bg.endFill();
+        door.addChild(bg);
         
         if (name === 'enter') door.name = '入口';
         if (name === 'out') door.name = '出口';
@@ -311,51 +319,34 @@ class Maze {
             door.addChild(grass);
         }
         
-        children[0].x = 0;
-        children[0].y = 0;
-        
         if (_this.config[name].door === 'top') {
             door.x = 0;
-            door.y = -wh / 2;
-            children[1].x = 3 * wh;
+            door.y = -wh;
+            children[0].x = 0;
+            children[0].y = -children[0].height / 2;
+            children[1].x = -wh / 2;
             children[1].y = 0;
-            children[2].x = 0;
-            children[2].y = -wh;
-            children[3].x = 3 * wh;
+            children[2].x = 2 * wh + wh / 2;
+            children[2].y = 0;
+            children[3].x = -wh / 2;
             children[3].y = -wh;
-        }
-        
-        if (_this.config[name].door === 'left') {
-            door.x = -wh / 2;
-            door.y = 0;
-            children[1].x = 0;
-            children[1].y = 3 * wh;
-            children[2].x = -wh;
-            children[2].y = 0;
-            children[3].x = -wh;
-            children[3].y = 3 * wh;
-        }
-        
-        if (_this.config[name].door === 'right') {
-            door.x = _this.grid.wh - _this.wall.wh + wh / 2;
-            door.y = 0;
-            children[1].x = 0;
-            children[1].y = 3 * wh;
-            children[2].x = wh;
-            children[2].y = 0;
-            children[3].x = wh;
-            children[3].y = 3 * wh;
+            children[4].x = 2 * wh + wh / 2;
+            children[4].y = -wh;
         }
         
         if (_this.config[name].door === 'bottom') {
             door.x = 0;
-            door.y = _this.grid.wh - _this.wall.wh + wh / 2;
-            children[1].x = 3 * wh;
+            door.y = _this.grid.wh - _this.wall.wh + wh;
+            children[0].x = 0;
+            children[0].y = 0;
+            children[1].x = -wh / 2;
             children[1].y = 0;
-            children[2].x = 0;
-            children[2].y = wh;
-            children[3].x = 3 * wh;
+            children[2].x = 2 * wh + wh / 2;
+            children[2].y = 0;
+            children[3].x = -wh / 2;
             children[3].y = wh;
+            children[4].x = 2 * wh + wh / 2;
+            children[4].y = wh;
         }
         
         return door;

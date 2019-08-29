@@ -196,8 +196,8 @@ class Rocker {
                 position.x = range * Y;
                 position.y = range * X;
             } else {
-                position.x = 0;
-                position.y = 0;
+                // position.x = 0;
+                // position.y = 0;
             }
         }
         

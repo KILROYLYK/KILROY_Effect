@@ -43,7 +43,7 @@ class Character {
         _this.people = {
             index: _this.config.index,
             width: _this.config.wh * 1.6,
-            speed: 0.8,
+            speed: 1.2,
             sprite: _this.config.resources['character_' + _this.config.index].spritesheet,
             object: null
         };

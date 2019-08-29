@@ -1,0 +1,71 @@
+html,
+body {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  background: #ead8a0;
+}
+body {
+  min-width: 300px;
+  max-width: 750px;
+  margin: 0 auto;
+}
+.keyboard {
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0rem;
+  z-index: 0;
+  height: 150px;
+  background: url('https://image.gaeamobile.net/image/20190829/174521/lawn.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto auto;
+  background-size: 0.5rem;
+  background-repeat: repeat;
+}
+.keyboard:before,
+.keyboard:after {
+  content: '';
+  display: block;
+}
+.keyboard:before {
+  position: absolute;
+  top: -0.1rem;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  height: 0.2rem;
+  background: url('https://image.gaeamobile.net/image/20190829/174521/border.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto auto;
+  background-size: auto 0.2rem;
+  background-repeat: repeat-x;
+}
+#appMaze {
+  position: absolute;
+  top: 0rem;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  z-index: 0;
+  height: calc(100% - 150px);
+  pointer-events: none;
+}
+#appRocker {
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0rem;
+  z-index: 0;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}

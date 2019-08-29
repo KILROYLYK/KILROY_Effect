@@ -44,7 +44,6 @@ const config = {
         app: appMaze,
         width: appMazeWH,
         height: appMazeWH,
-        transparent: true,
         autoDensity: true,
         antialias: true,
         preserveDrawingBuffer: true,
