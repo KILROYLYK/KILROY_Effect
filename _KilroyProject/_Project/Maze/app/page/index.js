@@ -7,6 +7,7 @@ import { src } from '../controller/window';
  * Pixi
  */
 const PIXI = require('pixi.js');
+require('pixi-sound');
 
 /**
  * Plugin
@@ -31,6 +32,7 @@ const config = {
         speed: 4,
         margin: 10 * 6,
         center: 0.99,
+        volume: 0.1,
         flag: {
             mazeX: false,
             mazeY: false
@@ -135,22 +137,115 @@ const config = {
             onComplete: () => {
             }
         }
+    ],
+    loadMusic = [
+        {
+            name: 'loading',
+            url: src.media + 'loading.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'start',
+            url: src.media + 'start.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'popup',
+            url: src.media + 'popup.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'success',
+            url: src.media + 'success.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'failure',
+            url: src.media + 'failure.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'walk',
+            url: src.media + 'walk.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_1_m',
+            url: src.media + 'character_1.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_2_m',
+            url: src.media + 'character_2.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_3_m',
+            url: src.media + 'character_3.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_4_m',
+            url: src.media + 'character_4.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_5_m',
+            url: src.media + 'character_5.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_6_m',
+            url: src.media + 'character_6.mp3',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'character_7_m',
+            url: src.media + 'character_7.mp3',
+            onComplete: () => {
+            }
+        }
     ];
+
+let res = null;
 
 loader
     .add(loadImg)
+    .add(loadMusic)
     .on('progress', () => {
-    
+        const total = loadImg.length + loadMusic.length;
     })
-    .load(main);
+    .load((load, resources) => {
+        res = resources;
+        startGame();
+    });
+
+/**
+ * 开始游戏
+ * @return {void}
+ */
+function startGame() {
+    main(res);
+}
 
 /**
  * Main
- * @param {object} load 资源
  * @param {object} resources 资源
  * @return {void}
  */
-function main(load, resources) {
+function main(resources) {
     const maze = new Maze({
             resources: resources,
             map: 0,
@@ -161,12 +256,14 @@ function main(load, resources) {
             resources: resources,
             index: 1,
             type: 1,
-            wh: maze.grid.wh * 0.35
+            wh: maze.grid.wh * 0.35,
+            volume: config.volume
         }),
         rocker = new Rocker({
             wh: appRockerWH,
             direction: 8,
             callback: (direction) => {
+                character.playSound();
                 switch (direction) {
                     case 1:
                         character.start();
@@ -208,6 +305,7 @@ function main(load, resources) {
                         break;
                     case 0:
                     default:
+                        character.closeSound();
                         character.stop();
                         move(0, 0);
                         break;
@@ -217,8 +315,8 @@ function main(load, resources) {
         friend = [
             {
                 name: 2,
-                // position: 43,
-                position: 871,
+                position: 43,
+                // position: 871,
                 time: 1000,
                 object: null,
                 clash: () => {
@@ -227,8 +325,8 @@ function main(load, resources) {
             },
             {
                 name: 3,
-                // position: 352,
-                position: 872,
+                position: 352,
+                // position: 872,
                 time: 2000,
                 object: null,
                 clash: () => {
@@ -237,8 +335,8 @@ function main(load, resources) {
             },
             {
                 name: 4,
-                // position: 391,
-                position: 873,
+                position: 724,
+                // position: 873,
                 time: 1500,
                 object: null,
                 clash: () => {
@@ -247,8 +345,8 @@ function main(load, resources) {
             },
             {
                 name: 5,
-                // position: 519,
-                position: 874,
+                position: 519,
+                // position: 874,
                 time: 3000,
                 object: null,
                 clash: () => {
@@ -257,8 +355,8 @@ function main(load, resources) {
             },
             {
                 name: 6,
-                // position: 745,
-                position: 875,
+                position: 745,
+                // position: 875,
                 time: 2500,
                 object: null,
                 clash: () => {
@@ -267,15 +365,30 @@ function main(load, resources) {
             },
             {
                 name: 7,
-                // position: 854,
-                position: 876,
+                position: 854,
+                // position: 876,
                 time: 2000,
                 object: null,
                 clash: () => {
                     console.log(6);
                 }
             }
-        ];
+        ],
+        sound = {
+            loading: resources.loading.sound,
+            popup: resources.popup.sound,
+            success: resources.success.sound,
+            failure: resources.failure.sound
+        };
+    
+    if (appGame.stage.children.length > 0) appGame.stage.children = [];
+    if (appKeyboard.stage.children.length > 0) appKeyboard.stage.children = [];
+    
+    sound.loading.volume = config.volume;
+    sound.popup.volume = config.volume;
+    sound.success.volume = config.volume;
+    sound.failure.volume = config.volume;
+    sound.loading.play();
     
     addFriend();
     maze.object.addChild(character.object);

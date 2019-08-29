@@ -19,7 +19,8 @@ class Character {
             resources: config.resources,
             index: config.index || 1,
             type: config.type || 0,
-            wh: config.wh || 20
+            wh: config.wh || 20,
+            volume: config.volume || 0.1
         };
         
         _this.object = new PIXI.Container();
@@ -45,6 +46,7 @@ class Character {
             width: _this.config.wh * 1.6,
             speed: 1.2,
             sprite: _this.config.resources['character_' + _this.config.index].spritesheet,
+            sound: _this.config.resources['character_' + _this.config.index + '_m'].sound,
             object: null
         };
         
@@ -53,6 +55,7 @@ class Character {
             x: 0.8,
             speed: 0.2,
             sprite: _this.config.resources.dust.spritesheet,
+            sound: _this.config.resources.walk.sound,
             object: null
         };
         
@@ -71,6 +74,9 @@ class Character {
      */
     init() {
         const _this = this;
+        
+        _this.dust.sound.loop = true;
+        _this.dust.sound.volume = _this.config.volume;
         
         _this.createChassis();
         _this.createShadow();
@@ -213,6 +219,25 @@ class Character {
     }
     
     /**
+     * 开启运动声音
+     * @return {void}
+     */
+    playSound() {
+        const _this = this;
+        
+        if (!_this.dust.sound.isPlaying) _this.dust.sound.play(0);
+    }
+    
+    /**
+     * 关闭运动声音
+     * @return {void}
+     */
+    closeSound() {
+        const _this = this;
+        if (_this.dust.sound.isPlaying) _this.dust.sound.pause();
+    }
+    
+    /**
      * 左运动
      * @return {void}
      */
@@ -261,6 +286,7 @@ class Character {
         _this.config.index = index;
         _this.people.index = index;
         _this.people.sprite = _this.config.resources['character_' + _this.people.index].spritesheet;
+        _this.people.sound = _this.config.resources['character_' + _this.people.index + '_m'].sound;
     }
     
     /**
