@@ -154,7 +154,7 @@ function main(load, resources) {
         }),
         character = new Character({
             resources: resources,
-            index: 1,
+            index: 2,
             wh: maze.grid.wh * 0.35
         }),
         rocker = new Rocker({

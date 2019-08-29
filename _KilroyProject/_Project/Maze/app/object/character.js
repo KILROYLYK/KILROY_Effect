@@ -66,7 +66,7 @@ class Character {
      */
     createChassis() {
         const _this = this;
-    
+        
         _this.chassis.object.circular = true;
         _this.chassis.object.lineStyle(0);
         _this.chassis.object.beginFill(_this.chassis.color, _this.chassis.alpha);
@@ -102,11 +102,11 @@ class Character {
      */
     createPeople() {
         const _this = this,
-            animation = _this.people.sprite.animations['character_' + _this.people.index],
-            spriteW = _this.people.sprite.data.meta.size.w,
-            spriteH = _this.people.sprite.data.meta.size.h,
+            animation = _this.people.sprite.animations['character_' + _this.people.index + '_r'],
+            spriteW = _this.people.sprite.textures['character_' + _this.people.index + '_r_00.png'].width,
+            spriteH = _this.people.sprite.textures['character_' + _this.people.index + '_r_00.png'].height,
             width = _this.people.width,
-            height = width / (spriteW / (spriteH / 2)),
+            height = width / (spriteW / spriteH),
             x = -(width - _this.config.wh) / 2,
             y = -(height - _this.config.wh) - _this.shadow.height / 2;
         
