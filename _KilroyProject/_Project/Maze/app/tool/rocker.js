@@ -38,7 +38,7 @@ class Rocker {
             color: 0x000000,
             alpha: 0.2,
             origin: _this.panel.origin,
-            radius: _this.panel.radius * 0.55,
+            radius: _this.panel.radius * 0.65,
             zIndex: 1,
             radian: 0,
             maxRadian: 1.6,

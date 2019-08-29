@@ -34,7 +34,7 @@ class Character {
         
         _this.shadow = {
             color: 0x000000,
-            alpha: 0.2,
+            alpha: 0.4,
             width: _this.config.wh * 0.6,
             height: _this.config.wh * 0.2,
             object: new PIXI.Graphics()
@@ -50,8 +50,15 @@ class Character {
         
         _this.dust = {
             width: _this.config.wh * 1.2,
+            x: 0.8,
             speed: 0.2,
             sprite: _this.config.resources.dust.spritesheet,
+            object: null
+        };
+        
+        _this.exclamation = {
+            width: _this.config.wh * 1.2,
+            sprite: _this.config.resources.exclamation.texture,
             object: null
         };
         
@@ -127,7 +134,9 @@ class Character {
         _this.people.object.y = y;
         _this.people.object.animationSpeed = _this.people.speed;
         
-        if (_this.config.type) {
+        if (_this.config.type === 0) {
+            _this.createExclamation();
+        } else if (_this.config.type === 1) {
             _this.createDust();
         }
         
@@ -135,7 +144,7 @@ class Character {
     }
     
     /**
-     * 创建运动尘土
+     * 创建尘土
      * @return {void}
      */
     createDust() {
@@ -145,7 +154,7 @@ class Character {
             spriteH = _this.dust.sprite.textures['dust_l_00000.png'].height,
             width = _this.dust.width,
             height = width / (spriteW / spriteH),
-            x = -width * 0.5,
+            x = -width * _this.dust.x,
             y = _this.config.wh - height - _this.shadow.height / 2;
         
         _this.dust.object = new PIXI.AnimatedSprite(animation);
@@ -157,6 +166,28 @@ class Character {
         
         _this.object.addChild(_this.dust.object);
         
+    }
+    
+    /**
+     * 创建感叹号
+     * @return {void}
+     */
+    createExclamation() {
+        const _this = this,
+            spriteW = _this.exclamation.sprite.width,
+            spriteH = _this.exclamation.sprite.height,
+            width = _this.dust.width,
+            height = width / (spriteW / spriteH),
+            x = (_this.config.wh - width) / 2,
+            y = -_this.people.object.height - _this.shadow.height / 2 - _this.config.wh * 0.6;
+        
+        _this.exclamation.object = new PIXI.Sprite.from(_this.exclamation.sprite);
+        _this.exclamation.object.width = width;
+        _this.exclamation.object.height = height;
+        _this.exclamation.object.x = x;
+        _this.exclamation.object.y = y;
+        
+        _this.object.addChild(_this.exclamation.object);
     }
     
     /**
@@ -191,12 +222,13 @@ class Character {
             dustA = _this.dust.sprite.animations.dust_l;
         
         if (_this.people.object.textures === characterA) return;
-        
         _this.people.object.texture = characterA[0];
         _this.people.object.textures = characterA;
-        _this.dust.object.texture = dustA[0];
-        _this.dust.object.textures = dustA;
-        _this.dust.object.x = _this.config.wh - _this.dust.object.width * 0.5;
+        if (_this.config.type === 1) {
+            _this.dust.object.texture = dustA[0];
+            _this.dust.object.textures = dustA;
+            _this.dust.object.x = _this.config.wh - _this.dust.object.width * (1 - _this.dust.x);
+        }
     }
     
     /**
@@ -209,14 +241,50 @@ class Character {
             dustA = _this.dust.sprite.animations.dust_r;
         
         if (_this.people.object.textures === animation) return;
-        
         _this.people.object.texture = animation[0];
         _this.people.object.textures = animation;
-        _this.dust.object.texture = dustA[0];
-        _this.dust.object.textures = dustA;
-        _this.dust.object.x = -_this.dust.object.width * 0.5;
+        if (_this.config.type === 1) {
+            _this.dust.object.texture = dustA[0];
+            _this.dust.object.textures = dustA;
+            _this.dust.object.x = -_this.dust.object.width * _this.dust.x;
+        }
     }
     
+    /**
+     * 切换角色
+     * @param {number} index 切换角色index
+     * @return {void}
+     */
+    switchCharacter(index) {
+        const _this = this;
+        
+        _this.config.index = index;
+        _this.people.index = index;
+        _this.people.sprite = _this.config.resources['character_' + _this.people.index].spritesheet;
+    }
+    
+    /**
+     * 自动移动
+     * @param {number} time 间隔时间
+     * @return {void}
+     */
+    autoMove(time) {
+        const _this = this;
+        
+        let type = 'right';
+        
+        if (_this.config.type !== 0) return;
+        
+        setInterval(() => {
+            if (type === 'left') {
+                type = 'right';
+                _this.animateRight();
+            } else if (type === 'right') {
+                type = 'left';
+                _this.animateLeft();
+            }
+        }, time);
+    }
 }
 
 export default Character;

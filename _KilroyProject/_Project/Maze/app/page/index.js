@@ -27,7 +27,7 @@ import Character from '../object/character';
 import Rocker from '../tool/rocker';
 
 const config = {
-        multiple: 1,
+        multiple: 4,
         speed: 4,
         margin: 10 * 6,
         center: 0.99,
@@ -79,6 +79,12 @@ const config = {
         {
             name: 'grass',
             url: src.img + 'grass.png',
+            onComplete: () => {
+            }
+        },
+        {
+            name: 'exclamation',
+            url: src.img + 'exclamation.png',
             onComplete: () => {
             }
         },
@@ -209,17 +215,74 @@ function main(load, resources) {
                 }
             }
         }),
-        friend = {
-            num: 6,
-            position: [],
-            object: []
-        };
+        friend = [
+            {
+                name: 2,
+                // position: 43,
+                position: 871,
+                time: 1000,
+                object: null,
+                clash: () => {
+                    console.log(1);
+                }
+            },
+            {
+                name: 3,
+                // position: 352,
+                position: 872,
+                time: 2000,
+                object: null,
+                clash: () => {
+                    console.log(2);
+                }
+            },
+            {
+                name: 4,
+                // position: 391,
+                position: 873,
+                time: 1500,
+                object: null,
+                clash: () => {
+                    console.log(3);
+                }
+            },
+            {
+                name: 5,
+                // position: 519,
+                position: 874,
+                time: 3000,
+                object: null,
+                clash: () => {
+                    console.log(4);
+                }
+            },
+            {
+                name: 6,
+                // position: 745,
+                position: 875,
+                time: 2500,
+                object: null,
+                clash: () => {
+                    console.log(5);
+                }
+            },
+            {
+                name: 7,
+                // position: 854,
+                position: 876,
+                time: 2000,
+                object: null,
+                clash: () => {
+                    console.log(6);
+                }
+            }
+        ];
     
+    addFriend();
     maze.object.addChild(character.object);
     appGame.stage.addChild(maze.object);
     appKeyboard.stage.addChild(rocker.object);
     
-    createFriend();
     init();
     start();
     animation();
@@ -310,7 +373,7 @@ function main(load, resources) {
         for (let i = 0, n = grid.length; i < n; i++) {
             if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
                 const wall = grid[i].children[1].children,
-                    bomb = 0.5;
+                    clash = 0.5;
                 Bump.hit(
                     character.chassis.object, wall,
                     true, false, true,
@@ -318,21 +381,21 @@ function main(load, resources) {
                         if (Math.abs(characterNowX - character.chassis.object.x) > 0) {
                             character.chassis.object.x = characterNowX;
                             if (collision === 'left' && characterAddX < 0) {
-                                characterAddX = bomb;
-                                if (config.flag.mazeX) mazeAddX = bomb;
+                                characterAddX = clash;
+                                if (config.flag.mazeX) mazeAddX = clash;
                             } else if (collision === 'right' && characterAddX > 0) {
-                                characterAddX = -bomb;
-                                if (config.flag.mazeX) mazeAddX = -bomb;
+                                characterAddX = -clash;
+                                if (config.flag.mazeX) mazeAddX = -clash;
                             }
                         }
                         if (Math.abs(characterNowY - character.chassis.object.y) > 0) {
                             character.chassis.object.y = characterNowY;
                             if (collision === 'top' && characterAddY < 0) {
-                                characterAddY = bomb;
-                                if (config.flag.mazeY) mazeAddY = bomb;
+                                characterAddY = clash;
+                                if (config.flag.mazeY) mazeAddY = clash;
                             } else if (collision === 'bottom' && characterAddY > 0) {
-                                characterAddY = -bomb;
-                                if (config.flag.mazeY) mazeAddY = -bomb;
+                                characterAddY = -clash;
+                                if (config.flag.mazeY) mazeAddY = -clash;
                             }
                         }
                         if (platform.name === '入口' || platform.name === '出口') {
@@ -343,6 +406,18 @@ function main(load, resources) {
             }
         }
         
+        for (let i = 0, n = friend.length; i < n; i++) {
+            Bump.hit(
+                character.chassis.object, friend[i].object.chassis.object,
+                false, false, true,
+                (collision, platform) => {
+                    character.switchCharacter(friend[i].name);
+                    friend[i].object.object.destroy();
+                    friend[i].clash();
+                }
+            );
+        }
+        
         maze.object.x -= mazeAddX;
         maze.object.y -= mazeAddY;
         character.object.x += characterAddX;
@@ -350,18 +425,25 @@ function main(load, resources) {
     }
     
     /**
-     * 创建朋友
+     * 添加朋友
      * @return {void}
      */
-    function createFriend() {
-        for (let i = 0, n = friend.num; i < n; i++) {
-            const f = new Character({
-                resources: resources,
-                index: i + 2,
-                type: 0,
-                wh: character.config.wh
-            });
-            friend.object.push(f.object);
+    function addFriend() {
+        for (let i = 0, n = friend.length; i < n; i++) {
+            const wh = character.config.wh,
+                f = new Character({
+                    resources: resources,
+                    index: i + 2,
+                    type: 0,
+                    wh: wh
+                }),
+                gridWH = maze.grid.wh,
+                grid = maze.grid.object.children[friend[i].position];
+            
+            f.object.x = grid.x + gridWH / 2 - wh / 2;
+            f.object.y = grid.y + gridWH / 2 - wh / 2;
+            f.autoMove(friend[i].time);
+            friend[i].object = f;
             maze.object.addChild(f.object);
         }
     }
