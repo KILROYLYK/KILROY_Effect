@@ -20,7 +20,7 @@ body {
   margin: 0 auto;
 }
 
-@wh: 150px;
+@wh: 200px;
 
 .rotate_screen {
   @style: fade(#303136, 100), fade(black, 100);
@@ -65,7 +65,7 @@ body {
   height: calc(100% - @wh);
   opacity: 0;
   .transition(opacity @time);
-  pointer-events: none;
+  //pointer-events: none;
   
   &.active {
     opacity: 1;
@@ -126,6 +126,7 @@ body {
 
 .loading {
   .position();
+  overflow: hidden;
   z-index: 5;
   background: @color_2;
   
@@ -168,7 +169,9 @@ body {
 }
 
 .text {
+  display: none;
   .position();
+  overflow: hidden;
   z-index: 1;
   background: @color_2;
   
@@ -207,5 +210,117 @@ body {
         .transition(all @time);
       }
     }
+    
+    .pop_outer_btn {
+      position: relative;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 50*@px auto;
+    }
+  }
+}
+
+.success {
+  display: none;
+  .position();
+  overflow: hidden;
+  z-index: 1;
+  background-color: @color_2;
+  
+  .inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 100%;
+    margin-top: -100*@px;
+    
+    .fireworks {
+      position: relative;
+      width: 100%;
+      height: 400*@px;
+      
+      div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 332*@px;
+        height: 264*@px;
+        background-image: url('@{src_img}sp_fireworks_yellow.png');
+        background-size: 1300%;
+        animation: fireworks .5s steps(13) infinite;
+        
+        &:nth-child(1) {
+          top: 100*@px;
+          animation-delay: .2s;
+        }
+        
+        &:nth-child(2) {
+          top: 140*@px;
+          left: 50%;
+          margin-left: -136*@px;
+          background-image: url('@{src_img}sp_fireworks_blue.png');
+        }
+        
+        &:nth-child(3) {
+          left: auto;
+          right: 0*@px;
+          background-image: url('@{src_img}sp_fireworks_red.png');
+          animation-delay: .4s;
+        }
+      }
+    }
+    
+    .icon-people {
+      width: 750*@px;
+      height: 150*@px;
+      .bg("h_icon_people.jpg",
+        100%,
+        100%);
+    }
+    
+    .text-anim {
+      position: relative;
+      color: #ffffff;
+      font-size: 46*@px;
+      font-weight: 900;
+      padding: 0 80*@px;
+      margin-top: 120*@px;
+      
+      .t1,
+      .t2 {
+        i {
+          margin: 0 3*@px;
+          opacity: 0;
+          font-style: normal;
+          .transition(opacity @time);
+        }
+      }
+      
+      .t2 {
+        text-align: right;
+      }
+    }
+  
+    .pop_outer_btn {
+      position: relative;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 100*@px auto 0;
+    }
+  }
+}
+
+// keyframes
+@keyframes fireworks {
+  0% {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -1300% 0;
   }
 }

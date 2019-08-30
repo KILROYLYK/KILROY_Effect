@@ -140,7 +140,10 @@ class Rocker {
             x = position.x - _this.button.position.x,
             y = position.y - _this.button.position.y;
         
-        if (!_this.config.flag) return;
+        if (!_this.config.flag) {
+            _this.buttonDragEnd(e);
+            return;
+        }
         
         _this.button.radian = Math.atan(x / y);
         _this.button.angle = _this.getAngle(x, y);

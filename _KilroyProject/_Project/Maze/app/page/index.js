@@ -275,8 +275,9 @@ loader
  */
 function startGame() {
     playSound('start');
-    $('#loading,#text').fadeOut(500);
+    $('#loading,#text').hide();
     $('#game,#keyboard').addClass('active');
+    help = 0;
     main(res);
 }
 
@@ -360,6 +361,7 @@ function main(resources) {
                 time: 1000,
                 object: null,
                 clash: () => {
+                    playSound('character_2_m');
                     if (gaea1Popup) gaea1Popup.open(0);
                 }
             },
@@ -370,6 +372,7 @@ function main(resources) {
                 time: 2000,
                 object: null,
                 clash: () => {
+                    playSound('character_3_m');
                     if (gaea2Popup) gaea2Popup.open(0);
                 }
             },
@@ -380,6 +383,7 @@ function main(resources) {
                 time: 1500,
                 object: null,
                 clash: () => {
+                    playSound('character_4_m');
                     if (preachPopup) preachPopup.open(0);
                 }
             },
@@ -390,6 +394,7 @@ function main(resources) {
                 time: 3000,
                 object: null,
                 clash: () => {
+                    playSound('character_5_m');
                     if (position1Popup) position1Popup.open(0);
                 }
             },
@@ -400,6 +405,7 @@ function main(resources) {
                 time: 2500,
                 object: null,
                 clash: () => {
+                    playSound('character_6_m');
                     if (position2Popup) position2Popup.open(0);
                 }
             },
@@ -410,15 +416,11 @@ function main(resources) {
                 time: 2000,
                 object: null,
                 clash: () => {
+                    playSound('character_7_m');
                     if (buffPopup) buffPopup.open(0);
                 }
             }
         ];
-    
-    if (appGame.stage.children.length > 0) appGame.stage.children = [];
-    if (appKeyboard.stage.children.length > 0) appKeyboard.stage.children = [];
-    
-    help = 0;
     
     addFriend();
     maze.object.addChild(character.object);
@@ -427,7 +429,6 @@ function main(resources) {
     
     init();
     start();
-    animation();
     
     /**
      * 初始化
@@ -446,6 +447,9 @@ function main(resources) {
         
         character.object.x = grid.x + gridWH / 2 - character.config.wh / 2;
         character.object.y = grid.y + gridWH / 2 - character.config.wh / 2;
+        
+        // console.log(maze.grid.object.children[871], maze.grid.object.children[871].children[1].children[0].getGlobalPosition().y);
+        // console.log(maze.grid.object.children[872], maze.grid.object.children[872].children[1].children[1].getGlobalPosition().y);
     }
     
     /**
@@ -455,13 +459,6 @@ function main(resources) {
     function start() {
         appGame.start();
         appKeyboard.start();
-    }
-    
-    /**
-     * 动画
-     * @return {void}
-     */
-    function animation() {
         appGame.ticker.add(() => {
             rocker.move();
         });
@@ -515,7 +512,7 @@ function main(resources) {
         for (let i = 0, n = grid.length; i < n; i++) {
             if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
                 const wall = grid[i].children[1].children,
-                    clash = 0.5;
+                    clash = 0;
                 Bump.hit(
                     character.chassis.object, wall,
                     true, false, true,
@@ -540,13 +537,38 @@ function main(resources) {
                                 if (config.flag.mazeY) mazeAddY = -clash;
                             }
                         }
+                        // console.log(platform.getGlobalPosition());
+                        // platform.destroy();
+                        // characterAddY = 0;
+                        // characterAddX = 0;
+                        // if (collision === 'top') {
+                        //     character.object.y = platform.getGlobalPosition().y + platform.height;
+                        // }
+                        // if (collision === 'left') {
+                        //
+                        // }
+                        // if (collision === 'right') {
+                        //
+                        // }
+                        // if (collision === 'bottom') {
+                        //     characterAddY = 0;
+                        //     character.object.y = platform.getGlobalPosition().y - character.height;
+                        // }
+                        
                         if (platform.name === '入口' || platform.name === '出口') {
                             if (config.flag.door) {
+                                rocker.config.flag = false;
+                                if (platform.name === '入口') {
+                                    character.object.y -= config.speed;
+                                }
+                                if (platform.name === '出口') {
+                                    character.object.y += config.speed;
+                                }
                                 config.flag.door = false;
                                 if (help < 6) {
                                     if (savePopup) savePopup.open();
                                 } else if (help === 6) {
-                                
+                                    success();
                                 }
                             }
                         }
@@ -560,10 +582,11 @@ function main(resources) {
                 character.chassis.object, friend[i].object.chassis.object,
                 false, false, true,
                 (collision, platform) => {
-                    ++help;
+                    rocker.config.flag = false;
                     character.switchCharacter(friend[i].name);
                     friend[i].object.object.destroy();
                     friend[i].clash();
+                    ++help;
                 }
             );
         }
@@ -620,6 +643,7 @@ function popup() {
             const _this = this;
             _this.$content.find('.pop_btn_save').on('click', () => {
                 _this.close();
+                showText('failureText');
             });
             _this.$content.find('.pop_btn_not_save').on('click', () => {
                 _this.close();
@@ -663,7 +687,6 @@ function popup() {
         },
         close_callback() {
             const _this = this;
-            playSound('character_2_m');
         }
     });
     
@@ -692,7 +715,6 @@ function popup() {
         },
         close_callback() {
             const _this = this;
-            playSound('character_3_m');
         }
     });
     
@@ -721,7 +743,6 @@ function popup() {
         },
         close_callback() {
             const _this = this;
-            playSound('character_4_m');
         }
     });
     
@@ -750,7 +771,6 @@ function popup() {
         },
         close_callback() {
             const _this = this;
-            playSound('character_5_m');
         }
     });
     
@@ -779,7 +799,6 @@ function popup() {
         },
         close_callback() {
             const _this = this;
-            playSound('character_6_m');
         }
     });
     
@@ -808,7 +827,6 @@ function popup() {
         },
         close_callback() {
             const _this = this;
-            playSound('character_7_m');
         }
     });
 }
@@ -818,10 +836,13 @@ function popup() {
  * @return {void}
  */
 function click() {
-    $('#btn_sound').on('click', () => {
+    $('#btn_sound').on('click', function () {
         if ($(this).hasClass('active')) {
             config.sound = false;
             $(this).removeClass('active');
+            for (let i = 0, n = loadMusic.length; i < n; i++) {
+                closeSound(loadMusic[i].name);
+            }
         } else {
             config.sound = true;
             $(this).addClass('active');
@@ -829,6 +850,9 @@ function click() {
     });
     $('#btn_out').on('click', () => {
         if (savePopup) savePopup.open();
+    });
+    $('#btn_view').on('click', () => {
+        if (gaea1Popup) gaea1Popup.open(1);
     });
 }
 
@@ -911,5 +935,49 @@ function showText(name) {
             });
     }
     
+    if (name === 'failureText') {
+        playSound('failure');
+        $content.append('<div id="btn_failure_view" class="pop_outer_btn">' +
+            '<i class="pop_btn_dec"></i>查看招聘信息</div>');
+        
+        // $content.append('<div id="btn_restart" class="pop_outer_btn">' +
+        //     '<i class="pop_btn_dec"></i>再玩一次</div>');
+        
+        $content.children('#btn_failure_view')
+            .on('click', () => {
+                if (gaea1Popup) gaea1Popup.open(1);
+            });
+        // $content.children('#btn_restart')
+        //     .on('click', () => {
+        //         $text.fadeOut(500);
+        //         startGame();
+        //     });
+    }
+    
     $text.fadeIn(time);
+}
+
+/**
+ * 游戏成功
+ * @return {void}
+ */
+function success() {
+    const $success = $('#success'),
+        t1 = new Text({
+            dom: "#success .t1",
+            text: "全员解救成功"
+        }),
+        t2 = new Text({
+            dom: "#success .t2",
+            text: "在盖娅等你"
+        });
+    
+    $success.fadeIn(500);
+    playSound('success');
+    
+    t1.play().then(() => {
+        setTimeout(() => {
+            t2.play();
+        }, 500);
+    });
 }
