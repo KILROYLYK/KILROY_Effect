@@ -81,9 +81,21 @@ body {
   }
 }
 
+.btn_sound {
+  .position(absolute, 25*@px, 25*@px, auto, auto);
+  z-index: 2;
+  .bg('sound_close.png', 64*@px, 65*@px, true);
+  pointer-events: all;
+  .transition(background @time);
+  
+  &.active {
+    .bg('sound_open.png', 64*@px, 65*@px);
+  }
+}
+
 .loading {
   .position();
-  z-index: 2;
+  z-index: 5;
   background: @color_2;
   
   &:before {

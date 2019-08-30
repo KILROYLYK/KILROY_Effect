@@ -55,7 +55,6 @@ class Character {
             x: 0.8,
             speed: 0.2,
             sprite: _this.config.resources.dust.spritesheet,
-            sound: _this.config.resources.walk.sound,
             object: null
         };
         
@@ -74,9 +73,6 @@ class Character {
      */
     init() {
         const _this = this;
-        
-        _this.dust.sound.loop = true;
-        _this.dust.sound.volume = _this.config.volume;
         
         _this.createChassis();
         _this.createShadow();
@@ -216,25 +212,6 @@ class Character {
         
         _this.people.object.gotoAndStop(0);
         _this.dust.object.gotoAndStop(0);
-    }
-    
-    /**
-     * 开启运动声音
-     * @return {void}
-     */
-    playSound() {
-        const _this = this;
-        
-        if (!_this.dust.sound.isPlaying) _this.dust.sound.play(0);
-    }
-    
-    /**
-     * 关闭运动声音
-     * @return {void}
-     */
-    closeSound() {
-        const _this = this;
-        if (_this.dust.sound.isPlaying) _this.dust.sound.pause();
     }
     
     /**

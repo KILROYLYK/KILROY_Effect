@@ -38,7 +38,7 @@ const config = {
         speed: 4,
         margin: 10 * 6,
         center: 0.99,
-        volume: 0.1,
+        sound: true,
         flag: {
             mazeX: false,
             mazeY: false
@@ -229,7 +229,6 @@ const config = {
     loadTotal = loadImg.length + loadAnimation.length * 2 + loadMusic.length;
 
 let res = null,
-    sound = null,
     loaded = 0;
 
 loader
@@ -242,22 +241,10 @@ loader
     })
     .load((load, resources) => {
         res = resources;
-        sound = {
-            loading: res.loading.sound,
-            start: res.start.sound,
-            popup: res.popup.sound,
-            success: res.success.sound,
-            failure: res.failure.sound
-        };
-        sound.loading.volume = config.volume;
-        sound.start.volume = config.volume;
-        sound.popup.volume = config.volume;
-        sound.success.volume = config.volume;
-        sound.failure.volume = config.volume;
-        
         setTimeout(() => {
-            sound.loading.play();
+            click();
             $('#loading').fadeOut(500);
+            playSound('loading');
             showText('loadText');
         }, 500);
     });
@@ -267,7 +254,7 @@ loader
  * @return {void}
  */
 function startGame() {
-    sound.start.play();
+    playSound('start');
     $('#loading,#text').fadeOut(500);
     $('#game,#keyboard').addClass('active');
     main(res);
@@ -296,7 +283,7 @@ function main(resources) {
             wh: appRockerWH,
             direction: 8,
             callback: (direction) => {
-                character.playSound();
+                playSound('walk');
                 switch (direction) {
                     case 1:
                         character.start();
@@ -338,7 +325,7 @@ function main(resources) {
                         break;
                     case 0:
                     default:
-                        character.closeSound();
+                        closeSound('walk');
                         character.stop();
                         move(0, 0);
                         break;
@@ -580,6 +567,52 @@ function main(resources) {
             maze.object.addChild(f.object);
         }
     }
+}
+
+/**
+ * 点击事件
+ * @return {void}
+ */
+function click() {
+    $('#btn_sound').on('click', function () {
+        if ($(this).hasClass('active')) {
+            config.sound = false;
+            $(this).removeClass('active');
+        } else {
+            config.sound = true;
+            $(this).addClass('active');
+        }
+    });
+}
+
+/**
+ * 播放声音
+ * @param {string} s 声音标识
+ * @return {void}
+ */
+function playSound(s) {
+    const volume = 0.1,
+        sound = res[s].sound;
+    
+    if (!res || !config.sound) return;
+    
+    if (s === 'walk') sound.loop = true;
+    
+    sound.volume = volume;
+    if (!sound.isPlaying) sound.play(0);
+}
+
+/**
+ * 关闭声音
+ * @param {string} s 声音标识
+ * @return {void}
+ */
+function closeSound(s) {
+    const sound = res[s].sound;
+    
+    if (!res) return;
+    
+    if (sound.isPlaying) sound.pause();
 }
 
 /**
