@@ -1,7 +1,7 @@
 /**
  * Window
  */
-import { $ } from '../../../_Base/js/window';
+import { w, $, Base, Popup } from '../../../_Base/js/window';
 import { src } from '../controller/window';
 
 /**
@@ -56,7 +56,8 @@ const config = {
         antialias: true,
         preserveDrawingBuffer: true,
         backgroundColor: 0xEAD8A0,
-        clearBeforeRender: true
+        clearBeforeRender: true,
+        resizeTo: appMaze
     }),
     appKeyboard = Application.create('canvasRocker', {
         app: appRocker,
@@ -67,7 +68,8 @@ const config = {
         antialias: true,
         preserveDrawingBuffer: true,
         backgroundColor: 0x000000,
-        clearBeforeRender: true
+        clearBeforeRender: true,
+        resizeTo: appRocker
     }),
     loader = new PIXI.Loader(),
     loadImg = [
@@ -230,6 +232,10 @@ const config = {
 
 let res = null,
     loaded = 0;
+
+Base.resizeWindow(() => {
+    rotateFun();
+}, 300);
 
 loader
     .add(loadImg)
@@ -568,6 +574,21 @@ function main(resources) {
         }
     }
 }
+
+/**
+ * 显示或隐藏遮罩层
+ * @return {void}
+ */
+function rotateFun() {
+    const $w = $(w),
+        $rotateScreen = $('#rotate_screen');
+    if (Base.isPSB.platform() === 'PC' || $rotateScreen.length === 0) return;
+    if ($w.width() >= $w.height()) $rotateScreen.addClass('active'); else $rotateScreen.removeClass('active');
+}
+
+/**
+ *
+ */
 
 /**
  * 点击事件
