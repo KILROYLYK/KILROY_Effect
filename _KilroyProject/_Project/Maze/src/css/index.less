@@ -20,7 +20,7 @@ body {
   margin: 0 auto;
 }
 
-@wh: 200*@px;
+@wh: 150px;
 
 .appMaze {
   overflow: hidden;
@@ -42,7 +42,13 @@ body {
   .position(top);
   z-index: 0;
   height: calc(100% - @wh);
+  opacity: 0;
+  .transition(opacity @time);
   pointer-events: none;
+  
+  &.active {
+    opacity: 1;
+  }
 }
 
 .keyboard {
@@ -50,9 +56,11 @@ body {
   .position(bottom);
   z-index: 0;
   height: @wh;
+  opacity: 0;
   .bg('lawn.jpg');
   background-size: 50*@px;
   background-repeat: repeat;
+  .transition(opacity @time);
   
   &:before,
   &:after {
@@ -67,19 +75,94 @@ body {
     background-size: auto 20*@px;
     background-repeat: repeat-x;
   }
+  
+  &.active {
+    opacity: 1;
+  }
 }
 
 .loading {
   .position();
-  z-index: 1;
+  z-index: 2;
   background: @color_2;
   
   &:before {
     content: '';
     display: block;
-    .position(top, 30%);
-    margin: auto;
-    .bg('slogan.png', 620*@px, 426*@px);
+    .position(top, 15%);
+    margin: 0 auto;
+    .bg('slogan.png', 620*@px, 426*@px, true);
+  }
+  
+  .progress {
+    .position(bottom, 15%);
+    margin: 0 auto;
+    .bg('load_bg.png', 561*@px, 22*@px, true);
+    
+    .strip {
+      display: block;
+      .position(absolute, 0, 0, 0, 64*@px);
+      height: 18*@px;
+      margin: auto 0;
+      
+      i {
+        display: block;
+        position: relative;
+        width: 0;
+        height: 100%;
+        .bg('load_progress.png', auto, 18*@px);
+        background-repeat: repeat-x;
+        
+        &:before {
+          content: '';
+          display: block;
+          .position(absolute, -87*@px, -25*@px, auto, auto);
+          .bg('load_character.png', 86*@px, 87*@px, true);
+        }
+      }
+    }
   }
 }
 
+.text {
+  .position();
+  z-index: 1;
+  background: @color_2;
+  
+  .content {
+    .center();
+    overflow: hidden;
+    width: 100%;
+    padding: 0 80*@px;
+    .borderBox();
+    
+    .t {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 150*@px;
+      .font(center, 100*@px, @color_1, 46*@px, true);
+      
+      &:nth-child(1) {
+        text-align: left;
+      }
+      
+      &:nth-child(2) {
+        text-align: right;
+      }
+      
+      &:nth-child(3) {
+      
+      }
+      
+      &:last-child {
+        margin: 0;
+      }
+      
+      i {
+        opacity: 0;
+        font-style: normal;
+        .transition(all @time);
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 /**
  * Window
  */
+import { $ } from '../../../_Base/js/window';
 import { src } from '../controller/window';
 
 /**
@@ -25,7 +26,12 @@ import Application from '../controller/application';
  */
 import Maze from '../object/maze';
 import Character from '../object/character';
+
+/**
+ * Tool
+ */
 import Rocker from '../tool/rocker';
+import Text from '../tool/text';
 
 const config = {
         multiple: 4,
@@ -223,6 +229,7 @@ const config = {
     loadTotal = loadImg.length + loadAnimation.length * 2 + loadMusic.length;
 
 let res = null,
+    sound = null,
     loaded = 0;
 
 loader
@@ -231,11 +238,28 @@ loader
     .add(loadMusic)
     .on('progress', () => {
         ++loaded;
-        console.log(loaded / loadTotal);
+        $('#progress .strip i').width(parseInt(loaded / loadTotal * 100) + '%');
     })
     .load((load, resources) => {
         res = resources;
-        startGame();
+        sound = {
+            loading: res.loading.sound,
+            start: res.start.sound,
+            popup: res.popup.sound,
+            success: res.success.sound,
+            failure: res.failure.sound
+        };
+        sound.loading.volume = config.volume;
+        sound.start.volume = config.volume;
+        sound.popup.volume = config.volume;
+        sound.success.volume = config.volume;
+        sound.failure.volume = config.volume;
+        
+        setTimeout(() => {
+            sound.loading.play();
+            $('#loading').fadeOut(500);
+            showText('loadText');
+        }, 500);
     });
 
 /**
@@ -243,7 +267,10 @@ loader
  * @return {void}
  */
 function startGame() {
-    // main(res);
+    sound.start.play();
+    $('#loading,#text').fadeOut(500);
+    $('#game,#keyboard').addClass('active');
+    main(res);
 }
 
 /**
@@ -379,22 +406,10 @@ function main(resources) {
                     console.log(6);
                 }
             }
-        ],
-        sound = {
-            loading: resources.loading.sound,
-            popup: resources.popup.sound,
-            success: resources.success.sound,
-            failure: resources.failure.sound
-        };
+        ];
     
     if (appGame.stage.children.length > 0) appGame.stage.children = [];
     if (appKeyboard.stage.children.length > 0) appKeyboard.stage.children = [];
-    
-    sound.loading.volume = config.volume;
-    sound.popup.volume = config.volume;
-    sound.success.volume = config.volume;
-    sound.failure.volume = config.volume;
-    sound.loading.play();
     
     addFriend();
     maze.object.addChild(character.object);
@@ -565,4 +580,56 @@ function main(resources) {
             maze.object.addChild(f.object);
         }
     }
+}
+
+/**
+ * 显示文案
+ * @param {string} name 文案标识
+ * @return {void}
+ */
+function showText(name) {
+    const $text = $('#text'),
+        $content = $text.children('.content'),
+        textContnt = {
+            loadText: [
+                '解救全员',
+                '逃出迷宫',
+                'GO!'
+            ],
+            successText: [
+                '全员解救成功',
+                '在盖娅等你'
+            ],
+            failureText: [
+                '有缘再见',
+                '我的伙伴'
+            ],
+            endText: [
+                '来盖娅',
+                '玩真的'
+            ]
+        },
+        time = 500;
+    
+    $content.html('');
+    
+    for (let i = 0, n = textContnt[name].length; i < n; i++) {
+        $content.append('<div class="t"></div>');
+        const t = new Text({
+            dom: '#text .content .t:nth-child(' + (i + 1) + ')',
+            text: textContnt[name][i]
+        });
+        setTimeout(() => {
+            t.play();
+        }, time * i * 2);
+    }
+    
+    if (name === 'loadText') {
+        $content.children('.t:nth-child(3)')
+            .on('click', () => {
+                startGame();
+            });
+    }
+    
+    $text.fadeIn(time);
 }
