@@ -27,7 +27,7 @@ class Character {
         
         _this.chassis = {
             color: 0x000000,
-            alpha: 0.5,
+            alpha: 0,
             origin: _this.config.wh / 2,
             radius: _this.config.wh / 2,
             object: new PIXI.Graphics()
