@@ -264,6 +264,7 @@ class Character {
         _this.people.index = index;
         _this.people.sprite = _this.config.resources['character_' + _this.people.index].spritesheet;
         _this.people.sound = _this.config.resources['character_' + _this.people.index + '_m'].sound;
+        _this.animationRight();
     }
     
     /**

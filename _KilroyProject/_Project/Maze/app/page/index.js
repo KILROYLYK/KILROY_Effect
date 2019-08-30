@@ -3,6 +3,7 @@
  */
 import { w, $, Base, Popup } from '../../../_Base/js/window';
 import { src } from '../controller/window';
+import '../../src/css/popup.less';
 
 /**
  * Pixi
@@ -40,8 +41,12 @@ const config = {
         center: 0.99,
         sound: true,
         flag: {
+            door: true,
             mazeX: false,
             mazeY: false
+        },
+        seTime: {
+            door: true
         }
     },
     appMaze = new App('appMaze'),
@@ -231,7 +236,15 @@ const config = {
     loadTotal = loadImg.length + loadAnimation.length * 2 + loadMusic.length;
 
 let res = null,
-    loaded = 0;
+    loaded = 0,
+    help = 0,
+    savePopup = null,
+    gaea1Popup = null,
+    gaea2Popup = null,
+    preachPopup = null,
+    position1Popup = null,
+    position2Popup = null,
+    buffPopup = null;
 
 Base.resizeWindow(() => {
     rotateFun();
@@ -248,6 +261,7 @@ loader
     .load((load, resources) => {
         res = resources;
         setTimeout(() => {
+            popup();
             click();
             $('#loading').fadeOut(500);
             playSound('loading');
@@ -346,7 +360,7 @@ function main(resources) {
                 time: 1000,
                 object: null,
                 clash: () => {
-                    console.log(1);
+                    if (gaea1Popup) gaea1Popup.open(0);
                 }
             },
             {
@@ -356,7 +370,7 @@ function main(resources) {
                 time: 2000,
                 object: null,
                 clash: () => {
-                    console.log(2);
+                    if (gaea2Popup) gaea2Popup.open(0);
                 }
             },
             {
@@ -366,7 +380,7 @@ function main(resources) {
                 time: 1500,
                 object: null,
                 clash: () => {
-                    console.log(3);
+                    if (preachPopup) preachPopup.open(0);
                 }
             },
             {
@@ -376,7 +390,7 @@ function main(resources) {
                 time: 3000,
                 object: null,
                 clash: () => {
-                    console.log(4);
+                    if (position1Popup) position1Popup.open(0);
                 }
             },
             {
@@ -386,7 +400,7 @@ function main(resources) {
                 time: 2500,
                 object: null,
                 clash: () => {
-                    console.log(5);
+                    if (position2Popup) position2Popup.open(0);
                 }
             },
             {
@@ -396,13 +410,15 @@ function main(resources) {
                 time: 2000,
                 object: null,
                 clash: () => {
-                    console.log(6);
+                    if (buffPopup) buffPopup.open(0);
                 }
             }
         ];
     
     if (appGame.stage.children.length > 0) appGame.stage.children = [];
     if (appKeyboard.stage.children.length > 0) appKeyboard.stage.children = [];
+    
+    help = 0;
     
     addFriend();
     maze.object.addChild(character.object);
@@ -525,7 +541,14 @@ function main(resources) {
                             }
                         }
                         if (platform.name === '入口' || platform.name === '出口') {
-                            // console.log(platform.name);
+                            if (config.flag.door) {
+                                config.flag.door = false;
+                                if (help < 6) {
+                                    if (savePopup) savePopup.open();
+                                } else if (help === 6) {
+                                
+                                }
+                            }
                         }
                     }
                 );
@@ -537,6 +560,7 @@ function main(resources) {
                 character.chassis.object, friend[i].object.chassis.object,
                 false, false, true,
                 (collision, platform) => {
+                    ++help;
                     character.switchCharacter(friend[i].name);
                     friend[i].object.object.destroy();
                     friend[i].clash();
@@ -587,15 +611,214 @@ function rotateFun() {
 }
 
 /**
- *
+ * 弹窗
+ * @return {void}
  */
+function popup() {
+    savePopup = new Popup('save_popup', {
+        finish_callback() {
+            const _this = this;
+            _this.$content.find('.pop_btn_save').on('click', () => {
+                _this.close();
+            });
+            _this.$content.find('.pop_btn_not_save').on('click', () => {
+                _this.close();
+            });
+        },
+        open_callback() {
+            const _this = this;
+            _this.$content.find('i').html(6 - help);
+        },
+        close_callback() {
+            const _this = this;
+            config.seTime.door = setTimeout(() => {
+                config.seTime.door = null;
+                config.flag.door = true;
+            }, 3000);
+        }
+    });
+    
+    gaea1Popup = new Popup('gaea1_popup', {
+        finish_callback() {
+            const _this = this;
+            _this.$content.find('.pop_btn_next').eq(0)
+                .on('click', () => {
+                    _this.close();
+                });
+            _this.$content.find('.pop_btn_next').eq(1)
+                .on('click', () => {
+                    _this.close();
+                    if (gaea2Popup) gaea2Popup.open(1);
+                });
+        },
+        open_callback(data) {
+            const _this = this;
+            if (data === 0) {
+                _this.$content.find('.pop_btn_next').eq(0).show();
+                _this.$content.find('.pop_btn_next').eq(1).hide();
+            } else if (data === 1) {
+                _this.$content.find('.pop_btn_next').eq(0).hide();
+                _this.$content.find('.pop_btn_next').eq(1).show();
+            }
+        },
+        close_callback() {
+            const _this = this;
+            playSound('character_2_m');
+        }
+    });
+    
+    gaea2Popup = new Popup('gaea2_popup', {
+        finish_callback() {
+            const _this = this;
+            _this.$content.find('.pop_btn_next').eq(0)
+                .on('click', () => {
+                    _this.close();
+                });
+            _this.$content.find('.pop_btn_next').eq(1)
+                .on('click', () => {
+                    _this.close();
+                    if (preachPopup) preachPopup.open(1);
+                });
+        },
+        open_callback(data) {
+            const _this = this;
+            if (data === 0) {
+                _this.$content.find('.pop_btn_next').eq(0).show();
+                _this.$content.find('.pop_btn_next').eq(1).hide();
+            } else if (data === 1) {
+                _this.$content.find('.pop_btn_next').eq(0).hide();
+                _this.$content.find('.pop_btn_next').eq(1).show();
+            }
+        },
+        close_callback() {
+            const _this = this;
+            playSound('character_3_m');
+        }
+    });
+    
+    preachPopup = new Popup('preach_popup', {
+        finish_callback() {
+            const _this = this;
+            _this.$content.find('.pop_btn_next').eq(0)
+                .on('click', () => {
+                    _this.close();
+                });
+            _this.$content.find('.pop_btn_next').eq(1)
+                .on('click', () => {
+                    _this.close();
+                    if (position1Popup) position1Popup.open(1);
+                });
+        },
+        open_callback(data) {
+            const _this = this;
+            if (data === 0) {
+                _this.$content.find('.pop_btn_next').eq(0).show();
+                _this.$content.find('.pop_btn_next').eq(1).hide();
+            } else if (data === 1) {
+                _this.$content.find('.pop_btn_next').eq(0).hide();
+                _this.$content.find('.pop_btn_next').eq(1).show();
+            }
+        },
+        close_callback() {
+            const _this = this;
+            playSound('character_4_m');
+        }
+    });
+    
+    position1Popup = new Popup('position1_popup', {
+        finish_callback() {
+            const _this = this;
+            _this.$content.find('.pop_btn_next').eq(0)
+                .on('click', () => {
+                    _this.close();
+                });
+            _this.$content.find('.pop_btn_next').eq(1)
+                .on('click', () => {
+                    _this.close();
+                    if (position2Popup) position2Popup.open(1);
+                });
+        },
+        open_callback(data) {
+            const _this = this;
+            if (data === 0) {
+                _this.$content.find('.pop_btn_next').eq(0).show();
+                _this.$content.find('.pop_btn_next').eq(1).hide();
+            } else if (data === 1) {
+                _this.$content.find('.pop_btn_next').eq(0).hide();
+                _this.$content.find('.pop_btn_next').eq(1).show();
+            }
+        },
+        close_callback() {
+            const _this = this;
+            playSound('character_5_m');
+        }
+    });
+    
+    position2Popup = new Popup('position2_popup', {
+        finish_callback() {
+            const _this = this;
+            _this.$content.find('.pop_btn_next').eq(0)
+                .on('click', () => {
+                    _this.close();
+                });
+            _this.$content.find('.pop_btn_next').eq(1)
+                .on('click', () => {
+                    _this.close();
+                    if (buffPopup) buffPopup.open(1);
+                });
+        },
+        open_callback(data) {
+            const _this = this;
+            if (data === 0) {
+                _this.$content.find('.pop_btn_next').eq(0).show();
+                _this.$content.find('.pop_btn_next').eq(1).hide();
+            } else if (data === 1) {
+                _this.$content.find('.pop_btn_next').eq(0).hide();
+                _this.$content.find('.pop_btn_next').eq(1).show();
+            }
+        },
+        close_callback() {
+            const _this = this;
+            playSound('character_6_m');
+        }
+    });
+    
+    buffPopup = new Popup('buff_popup', {
+        finish_callback() {
+            const _this = this;
+            _this.$content.find('.pop_btn_next').eq(0)
+                .on('click', () => {
+                    _this.close();
+                });
+            _this.$content.find('.pop_btn_next').eq(1)
+                .on('click', () => {
+                    _this.close();
+                    if (gaea1Popup) gaea1Popup.open(1);
+                });
+        },
+        open_callback(data) {
+            const _this = this;
+            if (data === 0) {
+                _this.$content.find('.pop_btn_next').eq(0).show();
+                _this.$content.find('.pop_btn_next').eq(1).hide();
+            } else if (data === 1) {
+                _this.$content.find('.pop_btn_next').eq(0).hide();
+                _this.$content.find('.pop_btn_next').eq(1).show();
+            }
+        },
+        close_callback() {
+            const _this = this;
+            playSound('character_7_m');
+        }
+    });
+}
 
 /**
  * 点击事件
  * @return {void}
  */
 function click() {
-    $('#btn_sound').on('click', function () {
+    $('#btn_sound').on('click', () => {
         if ($(this).hasClass('active')) {
             config.sound = false;
             $(this).removeClass('active');
@@ -603,6 +826,9 @@ function click() {
             config.sound = true;
             $(this).addClass('active');
         }
+    });
+    $('#btn_out').on('click', () => {
+        if (savePopup) savePopup.open();
     });
 }
 

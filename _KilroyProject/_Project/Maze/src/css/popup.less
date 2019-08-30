@@ -7,8 +7,9 @@
   background-size: 700*@px 600*@px;
 }
 
+.popup .box_popup,
 .popup.active .box_popup {
-  top: 42%;
+  top: 45% !important;
 }
 
 .popup {
@@ -159,6 +160,47 @@
   text-align: center;
 }
 
+#save_popup {
+  
+  p {
+    position: relative;
+    margin: 80*@px 0 60*@px;
+    width: 548*@px;
+    height: 104*@px;
+    .sp_pop;
+    background-position: 0 -400*@px;
+    
+    i {
+      display: block;
+      .position(absolute, -5*@px, auto, auto, 107*@px);
+      width: 50*@px;
+      height: 50*@px;
+      .font(center, 50*@px, @color_2, 50*@px, true);
+      font-style: normal;
+    }
+  }
+  
+  .pop_inner_btn {
+    
+    width: 244*@px;
+    height: 72*@px;
+    .sp_pop;
+    display: inline-block;
+    vertical-align: middle;
+    
+  }
+  
+  .pop_btn_save {
+    background-position: 0 -320*@px;
+    float: left;
+  }
+  
+  .pop_btn_not_save {
+    background-position: -260*@px -320*@px;
+    float: right;
+  }
+}
+
 #gaea1_popup,
 #gaea2_popup {
   .box_popup {
@@ -213,37 +255,5 @@
 #buff_popup {
   .pop_title {
     background-position: 0 -90*@px;
-  }
-}
-
-#save_popup {
-  
-  p {
-    margin: 80*@px 0 60*@px;
-    width: 548*@px;
-    height: 104*@px;
-    .sp_pop;
-    background-position: 0 -400*@px;
-    
-  }
-  
-  .pop_inner_btn {
-    
-    width: 244*@px;
-    height: 72*@px;
-    .sp_pop;
-    display: inline-block;
-    vertical-align: middle;
-    
-  }
-  
-  .pop_btn_save {
-    background-position: 0 -320*@px;
-    float: left;
-  }
-  
-  .pop_btn_not_save {
-    background-position: -260*@px -320*@px;
-    float: right;
   }
 }
