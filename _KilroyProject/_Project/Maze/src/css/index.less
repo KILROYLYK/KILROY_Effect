@@ -11,7 +11,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  background: #ead8a0;
+  background: @color_3;
 }
 
 body {
@@ -20,9 +20,33 @@ body {
   margin: 0 auto;
 }
 
-@wh: 150px;
+@wh: 200*@px;
+
+.appMaze {
+  overflow: hidden;
+  .position();
+  z-index: 0;
+}
+
+.appRocker {
+  overflow: hidden;
+  .position();
+  z-index: 0;
+  width: @wh;
+  height: @wh;
+  margin: 0 auto;
+}
+
+.game {
+  overflow: hidden;
+  .position(top);
+  z-index: 0;
+  height: calc(100% - @wh);
+  pointer-events: none;
+}
 
 .keyboard {
+  overflow: hidden;
   .position(bottom);
   z-index: 0;
   height: @wh;
@@ -45,24 +69,17 @@ body {
   }
 }
 
-#appMaze {
-  .position(top);
-  z-index: 0;
-  height: calc(100% - @wh);
-  pointer-events: none;
-}
-
-#appRocker {
-  .position(bottom);
-  z-index: 0;
-  width: @wh;
-  height: @wh;
-  margin: 0 auto;
-}
-
-#canvasMaze {
-}
-
-#canvasRocker {
+.loading {
+  .position();
+  z-index: 1;
+  background: @color_2;
+  
+  &:before {
+    content: '';
+    display: block;
+    .position(top, 30%);
+    margin: auto;
+    .bg('slogan.png', 620*@px, 426*@px);
+  }
 }
 

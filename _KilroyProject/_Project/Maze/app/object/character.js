@@ -241,7 +241,7 @@ class Character {
      * 左运动
      * @return {void}
      */
-    animateLeft() {
+    animationLeft() {
         const _this = this,
             characterA = _this.people.sprite.animations['character_' + _this.people.index + '_l'],
             dustA = _this.dust.sprite.animations.dust_l;
@@ -260,7 +260,7 @@ class Character {
      * 右运动
      * @return {void}
      */
-    animateRight() {
+    animationRight() {
         const _this = this,
             animation = _this.people.sprite.animations['character_' + _this.people.index + '_r'],
             dustA = _this.dust.sprite.animations.dust_r;
@@ -304,10 +304,10 @@ class Character {
         setInterval(() => {
             if (type === 'left') {
                 type = 'right';
-                _this.animateRight();
+                _this.animationRight();
             } else if (type === 'right') {
                 type = 'left';
-                _this.animateLeft();
+                _this.animationLeft();
             }
         }, time);
     }

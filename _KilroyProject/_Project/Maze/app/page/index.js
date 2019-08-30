@@ -88,7 +88,9 @@ const config = {
             url: src.img + 'exclamation.png',
             onComplete: () => {
             }
-        },
+        }
+    ],
+    loadAnimation = [
         {
             name: 'character_1',
             url: src.json + 'character_1.json',
@@ -217,15 +219,19 @@ const config = {
             onComplete: () => {
             }
         }
-    ];
+    ],
+    loadTotal = loadImg.length + loadAnimation.length * 2 + loadMusic.length;
 
-let res = null;
+let res = null,
+    loaded = 0;
 
 loader
     .add(loadImg)
+    .add(loadAnimation)
     .add(loadMusic)
     .on('progress', () => {
-        const total = loadImg.length + loadMusic.length;
+        ++loaded;
+        console.log(loaded / loadTotal);
     })
     .load((load, resources) => {
         res = resources;
@@ -237,7 +243,7 @@ loader
  * @return {void}
  */
 function startGame() {
-    main(res);
+    // main(res);
 }
 
 /**
@@ -270,17 +276,17 @@ function main(resources) {
                         move(0, -config.speed);
                         break;
                     case 2:
-                        character.animateRight();
+                        character.animationRight();
                         character.start();
                         move(config.speed, -config.speed);
                         break;
                     case 3:
-                        character.animateRight();
+                        character.animationRight();
                         character.start();
                         move(config.speed, 0);
                         break;
                     case 4:
-                        character.animateRight();
+                        character.animationRight();
                         character.start();
                         move(config.speed, config.speed);
                         break;
@@ -289,17 +295,17 @@ function main(resources) {
                         move(0, config.speed);
                         break;
                     case 6:
-                        character.animateLeft();
+                        character.animationLeft();
                         character.start();
                         move(-config.speed, config.speed);
                         break;
                     case 7:
-                        character.animateLeft();
+                        character.animationLeft();
                         character.start();
                         move(-config.speed, 0);
                         break;
                     case 8:
-                        character.animateLeft();
+                        character.animationLeft();
                         character.start();
                         move(-config.speed, -config.speed);
                         break;
