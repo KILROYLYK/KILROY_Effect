@@ -27,7 +27,7 @@ class Character {
         
         _this.chassis = {
             color: 0x000000,
-            alpha: 0,
+            alpha: 0.5,
             origin: _this.config.wh / 2,
             radius: _this.config.wh / 2,
             object: new PIXI.Graphics()
@@ -86,7 +86,7 @@ class Character {
     createChassis() {
         const _this = this;
         
-        _this.chassis.object.circular = true;
+        _this.chassis.object.circular = false;
         _this.chassis.object.lineStyle(0);
         _this.chassis.object.beginFill(_this.chassis.color, _this.chassis.alpha);
         _this.chassis.object.drawCircle(_this.chassis.origin, _this.chassis.origin, _this.chassis.radius);

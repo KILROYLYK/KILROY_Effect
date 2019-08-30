@@ -476,13 +476,13 @@ function main(resources) {
             appH = appMaze.clientHeight,
             centerX = appW / 2 * config.center - character.config.wh / 2,
             centerY = appH / 2 * config.center - character.config.wh / 2,
-            characterNowX = character.chassis.object.x,
-            characterNowY = character.chassis.object.y;
+            characterOldX = character.chassis.object.x,
+            characterOldY = character.chassis.object.y;
         
-        let mazeAddX = 0,
-            mazeAddY = 0,
-            characterAddX = x,
-            characterAddY = y;
+        let characterAddX = x,
+            characterAddY = y,
+            mazeAddX = 0,
+            mazeAddY = 0;
         
         if (character.chassis.object.getGlobalPosition().x >= centerX &&
             character.chassis.object.getGlobalPosition().x <= appW - centerX) {
@@ -509,6 +509,8 @@ function main(resources) {
             mazeAddY = 0;
         }
         
+        console.log(1);
+        
         for (let i = 0, n = grid.length; i < n; i++) {
             if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
                 const wall = grid[i].children[1].children,
@@ -517,61 +519,48 @@ function main(resources) {
                     character.chassis.object, wall,
                     true, false, true,
                     (collision, platform) => {
-                        if (Math.abs(characterNowX - character.chassis.object.x) > 0) {
-                            character.chassis.object.x = characterNowX;
-                            if (collision === 'left' && characterAddX < 0) {
-                                characterAddX = clash;
-                                if (config.flag.mazeX) mazeAddX = clash;
-                            } else if (collision === 'right' && characterAddX > 0) {
-                                characterAddX = -clash;
-                                if (config.flag.mazeX) mazeAddX = -clash;
+                        console.log(0, collision, characterAddX, characterOldX - character.chassis.object.x);
+                        if (characterOldX !== character.chassis.object.x) {
+                            mazeAddX = 0;
+                            character.chassis.object.x = characterOldX;
+                            if (collision === 'left' && characterAddX <= 0) {
+                                characterAddX = 0;
+                                character.object.x += platform.getGlobalPosition().x + platform.width - character.object.getGlobalPosition().x;
+                            }
+                            if (collision === 'right' && characterAddX >= 0) {
+                                characterAddX = 0;
+                                character.object.x -= character.object.getGlobalPosition().x + character.chassis.object.width - platform.getGlobalPosition().x;
                             }
                         }
-                        if (Math.abs(characterNowY - character.chassis.object.y) > 0) {
-                            character.chassis.object.y = characterNowY;
-                            if (collision === 'top' && characterAddY < 0) {
-                                characterAddY = clash;
-                                if (config.flag.mazeY) mazeAddY = clash;
-                            } else if (collision === 'bottom' && characterAddY > 0) {
-                                characterAddY = -clash;
-                                if (config.flag.mazeY) mazeAddY = -clash;
+                        if (characterOldY !== character.chassis.object.y) {
+                            mazeAddY = 0;
+                            character.chassis.object.y = characterOldY;
+                            if (collision === 'top' && characterAddY <= 0) {
+                                characterAddY = 0;
+                                character.object.y += platform.getGlobalPosition().y + platform.height - character.object.getGlobalPosition().y;
+                            }
+                            if (collision === 'bottom' && characterAddY >= 0) {
+                                characterAddY = 0;
+                                character.object.y -= character.object.getGlobalPosition().y + character.chassis.object.height - platform.getGlobalPosition().y;
                             }
                         }
-                        // console.log(platform.getGlobalPosition());
-                        // platform.destroy();
-                        // characterAddY = 0;
-                        // characterAddX = 0;
-                        // if (collision === 'top') {
-                        //     character.object.y = platform.getGlobalPosition().y + platform.height;
+                        // if (platform.name === '入口' || platform.name === '出口') {
+                        //     if (config.flag.door) {
+                        //         rocker.config.flag = false;
+                        //         if (platform.name === '入口') {
+                        //             character.object.y -= config.speed;
+                        //         }
+                        //         if (platform.name === '出口') {
+                        //             character.object.y += config.speed;
+                        //         }
+                        //         config.flag.door = false;
+                        //         if (help < 6) {
+                        //             if (savePopup) savePopup.open();
+                        //         } else if (help === 6) {
+                        //             success();
+                        //         }
+                        //     }
                         // }
-                        // if (collision === 'left') {
-                        //
-                        // }
-                        // if (collision === 'right') {
-                        //
-                        // }
-                        // if (collision === 'bottom') {
-                        //     characterAddY = 0;
-                        //     character.object.y = platform.getGlobalPosition().y - character.height;
-                        // }
-                        
-                        if (platform.name === '入口' || platform.name === '出口') {
-                            if (config.flag.door) {
-                                rocker.config.flag = false;
-                                if (platform.name === '入口') {
-                                    character.object.y -= config.speed;
-                                }
-                                if (platform.name === '出口') {
-                                    character.object.y += config.speed;
-                                }
-                                config.flag.door = false;
-                                if (help < 6) {
-                                    if (savePopup) savePopup.open();
-                                } else if (help === 6) {
-                                    success();
-                                }
-                            }
-                        }
                     }
                 );
             }

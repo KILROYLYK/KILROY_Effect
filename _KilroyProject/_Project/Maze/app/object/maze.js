@@ -221,7 +221,8 @@ class Maze {
         
         if ((/top/i).test(grid.wall)) {
             const wall = new PIXI.Container();
-            wall.circular = true;
+            // wall.width = wh * n;
+            // wall.height = wh;
             wall.x = 0;
             wall.y = -wh / 2;
             for (let i = 0; i < n; i++) {
@@ -237,7 +238,8 @@ class Maze {
         
         if ((/left/i).test(grid.wall)) {
             const wall = new PIXI.Container();
-            wall.circular = true;
+            // wall.width = wh;
+            // wall.height = wh * n;
             wall.x = -wh / 2;
             wall.y = 0;
             for (let i = 0; i < n; i++) {
@@ -253,7 +255,8 @@ class Maze {
         
         if ((/right/i).test(grid.wall)) {
             const wall = new PIXI.Container();
-            wall.circular = true;
+            // wall.width = wh;
+            // wall.height = wh * n;
             wall.x = _this.grid.wh - _this.wall.wh + wh / 2;
             wall.y = 0;
             for (let i = 0; i < n; i++) {
@@ -269,7 +272,8 @@ class Maze {
         
         if ((/bottom/i).test(grid.wall)) {
             const wall = new PIXI.Container();
-            wall.circular = true;
+            // wall.width = wh * n;
+            // wall.height = wh;
             wall.x = 0;
             wall.y = _this.grid.wh - _this.wall.wh + wh / 2;
             for (let i = 0; i < n; i++) {
@@ -300,8 +304,6 @@ class Maze {
             bg = new PIXI.Graphics(),
             children = door.children,
             wh = _this.wall.wh;
-        
-        door.circular = true;
         
         bg.lineStyle(0);
         bg.beginFill(_this.wall.color, 1);
