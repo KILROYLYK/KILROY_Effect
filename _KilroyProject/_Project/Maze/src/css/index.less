@@ -109,7 +109,23 @@ a:visited:hover {
 }
 
 .btn {
-
+  &.btn_1,
+  &.btn_2 {
+    display: block;
+    position: relative;
+    width: 280*@px;
+    height: 80*@px;
+    .borderBox();
+    .font(center, 40*@px*@scale, @color_1, 32*@px*@scale, true);
+  }
+  
+  &.btn_1 {
+    .border(20 30, 20*@px 30*@px, 'btn_1.png');
+  }
+  
+  &.btn_2 {
+    .border(20 30, 20*@px 30*@px, 'btn_2.png');
+  }
 }
 
 .btn_sound {
@@ -183,16 +199,6 @@ a:visited:hover {
   
   &.active {
     opacity: 1;
-  }
-  
-  .btn_map {
-    .position(absolute, 20*@px, 10*@px, auto, auto);
-    .bg('btn_map.png', 204*@px, 65*@px, true);
-  }
-  
-  .btn_out {
-    .position(absolute, auto, 10*@px, 20*@px, auto);
-    .bg('btn_out.png', 204*@px, 65*@px, true);
   }
 }
 
@@ -347,6 +353,7 @@ a:visited:hover {
     .text {
       position: relative;
       overflow: hidden;
+      margin-bottom: 100*@px;
       
       .t {
         position: relative;
@@ -378,72 +385,13 @@ a:visited:hover {
       }
     }
     
-    .btn_view,
-    .btn_restart {
+    .btn_1 {
       display: none;
-    }
-  }
-}
-
-.success {
-  display: none;
-  .position();
-  overflow: hidden;
-  z-index: 1;
-  background-color: @color_2;
-  
-  .inner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    width: 100%;
-    margin-top: -100*@px;
-    
-    .fireworks {
-      position: relative;
-      width: 100%;
-      height: 400*@px;
-    }
-    
-    .icon-people {
-      width: 750*@px;
-      height: 150*@px;
-      .bg("h_icon_people.jpg",
-        100%,
-        100%);
-    }
-    
-    .text-anim {
-      position: relative;
-      color: #ffffff;
-      font-size: 46*@px;
-      font-weight: 900;
-      padding: 0 80*@px;
-      margin-top: 120*@px;
+      margin: 50*@px auto;
       
-      .t1,
-      .t2 {
-        i {
-          margin: 0 3*@px;
-          opacity: 0;
-          font-style: normal;
-          .transition(opacity @time);
-        }
+      &.active {
+        display: block;
       }
-      
-      .t2 {
-        text-align: right;
-      }
-    }
-    
-    .pop_outer_btn {
-      position: relative;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: 100*@px auto 0;
     }
   }
 }

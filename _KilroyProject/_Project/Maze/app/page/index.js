@@ -139,7 +139,7 @@ function readyGame() {
             $(this).fadeOut(500);
             createGame();
             setTimeout(() => {
-                showDialogue('failure');
+                showDialogue('start');
             }, 500);
         });
     }, 50);
@@ -526,6 +526,7 @@ function showDialogue(name) {
     
     for (let i = 0, n = textContnt[name].length; i < n; i++) {
         const content = $dialogue.find('.t').eq(i);
+        content.removeClass('active');
         animationText(content.find('.box_scale'), textContnt[name][i]);
         setTimeout(() => {
             content.addClass('active');
@@ -550,19 +551,24 @@ function showDialogue(name) {
     if (name === 'success') {
         $dialogue.find('.fireworks').show();
         $dialogue.find('.people').show();
+        setTimeout(() => {
+            showDialogue('end');
+        }, 3000);
     } else {
         $dialogue.find('.fireworks').hide();
         $dialogue.find('.people').hide();
     }
     
     if (name === 'failure') {
-    
+        setTimeout(() => {
+            showDialogue('end');
+        }, 3000);
     }
     
     if (name === 'end') {
-        $dialogue.find('.btn').show();
+        $dialogue.find('.btn').addClass('active');
     } else {
-        $dialogue.find('.btn').hide();
+        $dialogue.find('.btn').removeClass('active');
     }
     
     $dialogue.fadeIn(500);
