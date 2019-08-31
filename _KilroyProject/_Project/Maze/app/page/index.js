@@ -1,15 +1,7 @@
 /**
  * Window
  */
-import { w, $, Base, Popup } from '../../../_Base/js/window';
-import { src } from '../controller/window';
-import '../../src/css/popup.less';
-
-/**
- * Pixi
- */
-const PIXI = require('pixi.js');
-require('pixi-sound');
+import { W, $, Base, w } from '../../../_Base/js/window';
 
 /**
  * Plugin
@@ -29,30 +21,82 @@ import Maze from '../object/maze';
 import Character from '../object/character';
 
 /**
- * Tool
+ * Module
  */
-import Rocker from '../tool/rocker';
-import Text from '../tool/text';
+import Preload from '../module/preload';
+import Rocker from '../module/rocker';
+import Popup from '../module/popup';
+import Sound from '../module/sound';
 
+/**
+ * Index
+ */
 const config = {
+        screen: 1,
         multiple: 4,
+        margin: {
+            x: 60,
+            y: 200
+        },
         speed: 4,
-        margin: 10 * 6,
+        volume: 0.2,
         center: 0.99,
-        sound: true,
+        help: 0,
+        resources: null,
         flag: {
             door: true,
             mazeX: false,
             mazeY: false
         },
-        seTime: {
+        setTime: {
+            start: true,
             door: true
         }
     },
     appMaze = new App('appMaze'),
     appRocker = new App('appRocker'),
-    appMazeWH = appMaze.clientWidth,
-    appRockerWH = appRocker.clientWidth,
+    preload = new Preload({
+        loadingCallback(progress) {
+            $('#progress .strip i').width(progress + '%');
+        },
+        finishCallback(resources) {
+            config.resources = resources;
+            setTimeout(() => {
+                readyGame();
+            }, 500);
+        }
+    });
+
+let appMazeWH = 0,
+    appRockerWH = 0,
+    appGame = null,
+    appKeyboard = null,
+    sound = null;
+
+let maze = null,
+    character = null,
+    rocker = null;
+
+Base.resizeWindow(() => {
+    rotateFun();
+}, 300);
+
+/**
+ * 创建游戏
+ * @return {void}
+ */
+function createGame() {
+    if (appGame) {
+        appGame.destroy();
+        appGame = null;
+    }
+    if (appKeyboard) {
+        appKeyboard.destroy();
+        appKeyboard = null;
+    }
+    
+    appMazeWH = appMaze.clientWidth;
+    appRockerWH = appRocker.clientWidth;
     appGame = Application.create('canvasMaze', {
         app: appMaze,
         width: appMazeWH,
@@ -63,7 +107,7 @@ const config = {
         backgroundColor: 0xEAD8A0,
         clearBeforeRender: true,
         resizeTo: appMaze
-    }),
+    });
     appKeyboard = Application.create('canvasRocker', {
         app: appRocker,
         width: appRockerWH,
@@ -75,388 +119,195 @@ const config = {
         backgroundColor: 0x000000,
         clearBeforeRender: true,
         resizeTo: appRocker
-    }),
-    loader = new PIXI.Loader(),
-    loadImg = [
-        {
-            name: 'border',
-            url: src.img + 'border.png',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'lawn',
-            url: src.img + 'lawn.jpg',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'grass',
-            url: src.img + 'grass.png',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'exclamation',
-            url: src.img + 'exclamation.png',
-            onComplete: () => {
-            }
-        }
-    ],
-    loadAnimation = [
-        {
-            name: 'character_1',
-            url: src.json + 'character_1.json',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_2',
-            url: src.json + 'character_2.json',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_3',
-            url: src.json + 'character_3.json',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_4',
-            url: src.json + 'character_4.json',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_5',
-            url: src.json + 'character_5.json',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_6',
-            url: src.json + 'character_6.json',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_7',
-            url: src.json + 'character_7.json',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'dust',
-            url: src.json + 'dust.json',
-            onComplete: () => {
-            }
-        }
-    ],
-    loadMusic = [
-        {
-            name: 'loading',
-            url: src.media + 'loading.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'start',
-            url: src.media + 'start.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'popup',
-            url: src.media + 'popup.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'success',
-            url: src.media + 'success.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'failure',
-            url: src.media + 'failure.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'walk',
-            url: src.media + 'walk.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_1_m',
-            url: src.media + 'character_1.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_2_m',
-            url: src.media + 'character_2.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_3_m',
-            url: src.media + 'character_3.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_4_m',
-            url: src.media + 'character_4.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_5_m',
-            url: src.media + 'character_5.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_6_m',
-            url: src.media + 'character_6.mp3',
-            onComplete: () => {
-            }
-        },
-        {
-            name: 'character_7_m',
-            url: src.media + 'character_7.mp3',
-            onComplete: () => {
-            }
-        }
-    ],
-    loadTotal = loadImg.length + loadAnimation.length * 2 + loadMusic.length;
-
-let res = null,
-    loaded = 0,
-    help = 0,
-    savePopup = null,
-    gaea1Popup = null,
-    gaea2Popup = null,
-    preachPopup = null,
-    position1Popup = null,
-    position2Popup = null,
-    buffPopup = null;
-
-Base.resizeWindow(() => {
-    rotateFun();
-}, 300);
-
-loader
-    .add(loadImg)
-    .add(loadAnimation)
-    .add(loadMusic)
-    .on('progress', () => {
-        ++loaded;
-        $('#progress .strip i').width(parseInt(loaded / loadTotal * 100) + '%');
-    })
-    .load((load, resources) => {
-        res = resources;
-        setTimeout(() => {
-            popup();
-            click();
-            $('#loading').fadeOut(500);
-            playSound('loading');
-            showText('loadText');
-        }, 500);
     });
+    sound = new Sound({
+        resources: config.resources,
+        volume: config.volume
+    });
+}
+
+/**
+ * 准备游戏
+ * @return {void}
+ */
+function readyGame() {
+    animationText($('#loading .text .box_scale'), '点击开启盖娅校招之旅');
+    $('#progress').removeClass('active');
+    setTimeout(() => {
+        $('#loading .text').addClass('active');
+        $('#loading').on('click', function () {
+            $(this).fadeOut(500);
+            createGame();
+            setTimeout(() => {
+                showDialogue('failure');
+            }, 500);
+        });
+    }, 50);
+}
 
 /**
  * 开始游戏
  * @return {void}
  */
 function startGame() {
-    playSound('start');
-    $('#loading,#text').hide();
+    if (!config.setTime.start) return;
+    config.setTime.start = false;
+    config.help = 0;
     $('#game,#keyboard').addClass('active');
-    help = 0;
-    main(res);
+    game();
 }
 
 /**
- * Main
- * @param {object} resources 资源
+ * 游戏
  * @return {void}
  */
-function main(resources) {
-    const maze = new Maze({
-            resources: resources,
-            map: 0,
-            wh: appMazeWH,
-            multiple: config.multiple
-        }),
-        character = new Character({
-            resources: resources,
-            index: 1,
-            type: 1,
-            wh: maze.grid.wh * 0.35,
-            volume: config.volume
-        }),
-        rocker = new Rocker({
-            wh: appRockerWH,
-            direction: 8,
-            callback: (direction) => {
-                playSound('walk');
-                switch (direction) {
-                    case 1:
-                        character.start();
-                        move(0, -config.speed);
-                        break;
-                    case 2:
-                        character.animationRight();
-                        character.start();
-                        move(config.speed, -config.speed);
-                        break;
-                    case 3:
-                        character.animationRight();
-                        character.start();
-                        move(config.speed, 0);
-                        break;
-                    case 4:
-                        character.animationRight();
-                        character.start();
-                        move(config.speed, config.speed);
-                        break;
-                    case 5:
-                        character.start();
-                        move(0, config.speed);
-                        break;
-                    case 6:
-                        character.animationLeft();
-                        character.start();
-                        move(-config.speed, config.speed);
-                        break;
-                    case 7:
-                        character.animationLeft();
-                        character.start();
-                        move(-config.speed, 0);
-                        break;
-                    case 8:
-                        character.animationLeft();
-                        character.start();
-                        move(-config.speed, -config.speed);
-                        break;
-                    case 0:
-                    default:
-                        closeSound('walk');
-                        character.stop();
-                        move(0, 0);
-                        break;
-                }
+function game() {
+    const friend = [
+        {
+            name: 2,
+            position: 43,
+            time: 1000,
+            object: null,
+            clash: () => {
+                sound.play('character_2_m');
+                // if (gaea1Popup) gaea1Popup.open(0);
             }
-        }),
-        friend = [
-            {
-                name: 2,
-                position: 43,
-                // position: 871,
-                time: 1000,
-                object: null,
-                clash: () => {
-                    playSound('character_2_m');
-                    if (gaea1Popup) gaea1Popup.open(0);
-                }
-            },
-            {
-                name: 3,
-                position: 352,
-                // position: 872,
-                time: 2000,
-                object: null,
-                clash: () => {
-                    playSound('character_3_m');
-                    if (gaea2Popup) gaea2Popup.open(0);
-                }
-            },
-            {
-                name: 4,
-                position: 724,
-                // position: 873,
-                time: 1500,
-                object: null,
-                clash: () => {
-                    playSound('character_4_m');
-                    if (preachPopup) preachPopup.open(0);
-                }
-            },
-            {
-                name: 5,
-                position: 519,
-                // position: 874,
-                time: 3000,
-                object: null,
-                clash: () => {
-                    playSound('character_5_m');
-                    if (position1Popup) position1Popup.open(0);
-                }
-            },
-            {
-                name: 6,
-                position: 745,
-                // position: 875,
-                time: 2500,
-                object: null,
-                clash: () => {
-                    playSound('character_6_m');
-                    if (position2Popup) position2Popup.open(0);
-                }
-            },
-            {
-                name: 7,
-                position: 854,
-                // position: 876,
-                time: 2000,
-                object: null,
-                clash: () => {
-                    playSound('character_7_m');
-                    if (buffPopup) buffPopup.open(0);
-                }
+        },
+        {
+            name: 3,
+            position: 352,
+            time: 2000,
+            object: null,
+            clash: () => {
+                sound.play('character_3_m');
+                // if (gaea2Popup) gaea2Popup.open(0);
             }
-        ];
+        },
+        {
+            name: 4,
+            position: 724,
+            time: 1500,
+            object: null,
+            clash: () => {
+                sound.play('character_4_m');
+                // if (preachPopup) preachPopup.open(0);
+            }
+        },
+        {
+            name: 5,
+            position: 519,
+            time: 3000,
+            object: null,
+            clash: () => {
+                sound.play('character_5_m');
+                // if (position1Popup) position1Popup.open(0);
+            }
+        },
+        {
+            name: 6,
+            position: 745,
+            time: 2500,
+            object: null,
+            clash: () => {
+                sound.play('character_6_m');
+                // if (position2Popup) position2Popup.open(0);
+            }
+        },
+        {
+            name: 7,
+            position: 854,
+            time: 2000,
+            object: null,
+            clash: () => {
+                sound.play('character_7_m');
+                // if (buffPopup) buffPopup.open(0);
+            }
+        }
+    ];
+    
+    maze = new Maze({
+        resources: config.resources,
+        map: 0,
+        wh: appMazeWH,
+        multiple: config.multiple
+    });
+    character = new Character({
+        resources: config.resources,
+        index: 1,
+        type: 1,
+        wh: maze.grid.wh * 0.35,
+        volume: config.volume
+    });
+    rocker = new Rocker({
+        wh: appRockerWH,
+        direction: 8,
+        callback: (direction) => {
+            sound.play('walk');
+            switch (direction) {
+                case 1:
+                    character.start();
+                    move(0, -config.speed);
+                    break;
+                case 2:
+                    character.animationRight();
+                    character.start();
+                    move(config.speed, -config.speed);
+                    break;
+                case 3:
+                    character.animationRight();
+                    character.start();
+                    move(config.speed, 0);
+                    break;
+                case 4:
+                    character.animationRight();
+                    character.start();
+                    move(config.speed, config.speed);
+                    break;
+                case 5:
+                    character.start();
+                    move(0, config.speed);
+                    break;
+                case 6:
+                    character.animationLeft();
+                    character.start();
+                    move(-config.speed, config.speed);
+                    break;
+                case 7:
+                    character.animationLeft();
+                    character.start();
+                    move(-config.speed, 0);
+                    break;
+                case 8:
+                    character.animationLeft();
+                    character.start();
+                    move(-config.speed, -config.speed);
+                    break;
+                case 0:
+                default:
+                    sound.pause('walk');
+                    character.stop();
+                    move(0, 0);
+                    break;
+            }
+        }
+    });
     
     addFriend();
     maze.object.addChild(character.object);
     appGame.stage.addChild(maze.object);
     appKeyboard.stage.addChild(rocker.object);
     
-    init();
     start();
     
     /**
-     * 初始化
-     * @return {void}
-     */
-    function init() {
-        const gridWH = maze.grid.wh,
-            grid = maze.grid.object.children[maze.config.enter.grid];
-        
-        maze.object.x = -grid.x + config.margin;
-        maze.object.y = -grid.y + appMaze.clientHeight - gridWH - config.margin;
-        
-        if (appMaze.clientHeight > maze.map.wh) {
-            maze.object.y = (appMaze.clientHeight - appMaze.clientWidth) / 2 * 0.8;
-        }
-        
-        character.object.x = grid.x + gridWH / 2 - character.config.wh / 2;
-        character.object.y = grid.y + gridWH / 2 - character.config.wh / 2;
-        
-        // console.log(maze.grid.object.children[871], maze.grid.object.children[871].children[1].children[0].getGlobalPosition().y);
-        // console.log(maze.grid.object.children[872], maze.grid.object.children[872].children[1].children[1].getGlobalPosition().y);
-    }
-    
-    /**
-     * 开始动画
+     * 开始
      * @return {void}
      */
     function start() {
+        const grid = maze.grid.object.children[maze.config.enter.grid];
+        
+        initMap(grid);
+        initCharacter(grid, character);
         appGame.start();
         appKeyboard.start();
         appGame.ticker.add(() => {
@@ -497,14 +348,14 @@ function main(resources) {
         if (config.flag.mazeX) mazeAddX = x;
         if (config.flag.mazeY) mazeAddY = y;
         
-        if (maze.object.x - mazeAddX >= config.margin ||
-            maze.object.x - mazeAddX <= -(maze.map.wh + config.margin - appW)) {
+        if (maze.object.x - mazeAddX >= config.margin.x ||
+            maze.object.x - mazeAddX <= -(maze.map.wh + config.margin.x - appW)) {
             config.flag.mazeX = false;
             mazeAddX = 0;
         }
         
-        if (maze.object.y - mazeAddY >= config.margin ||
-            maze.object.y - mazeAddY <= -(maze.map.wh + config.margin - appH)) {
+        if (maze.object.y - mazeAddY >= config.margin.y ||
+            maze.object.y - mazeAddY <= -(maze.map.wh + config.margin.y - appH)) {
             config.flag.mazeY = false;
             mazeAddY = 0;
         }
@@ -551,10 +402,10 @@ function main(resources) {
                                     character.object.y += config.speed;
                                 }
                                 config.flag.door = false;
-                                if (help < 6) {
-                                    if (savePopup) savePopup.open();
-                                } else if (help === 6) {
-                                    success();
+                                if (config.help < 6) {
+                                    // if (savePopup) savePopup.open();
+                                } else if (config.help === 6) {
+                                    // success();
                                 }
                             }
                         }
@@ -572,7 +423,7 @@ function main(resources) {
                     character.switchCharacter(friend[i].name);
                     friend[i].object.object.destroy();
                     friend[i].clash();
-                    ++help;
+                    config.help++;
                 }
             );
         }
@@ -591,21 +442,130 @@ function main(resources) {
         for (let i = 0, n = friend.length; i < n; i++) {
             const wh = character.config.wh,
                 f = new Character({
-                    resources: resources,
+                    resources: config.resources,
                     index: i + 2,
                     type: 0,
                     wh: wh
                 }),
-                gridWH = maze.grid.wh,
                 grid = maze.grid.object.children[friend[i].position];
             
-            f.object.x = grid.x + gridWH / 2 - wh / 2;
-            f.object.y = grid.y + gridWH / 2 - wh / 2;
+            initCharacter(grid, f);
             f.autoMove(friend[i].time);
             friend[i].object = f;
             maze.object.addChild(f.object);
         }
     }
+    
+    /**
+     * 初始化地图位置
+     * @param {object} grid 格子
+     * @return {void}
+     */
+    function initMap(grid) {
+        const gridWH = maze.grid.wh;
+        
+        maze.object.x = -grid.x + config.margin.x;
+        maze.object.y = -grid.y + appMaze.clientHeight - gridWH - config.margin.y;
+    }
+    
+    /**
+     * 初始化角色位置
+     * @param {object} grid 格子
+     * @param {object} char 角色
+     * @return {void}
+     */
+    function initCharacter(grid, char) {
+        const gridWH = maze.grid.wh,
+            charWH = char.config.wh;
+        
+        char.object.x = grid.x + gridWH / 2 - charWH / 2;
+        char.object.y = grid.y + gridWH / 2 - charWH / 2;
+    }
+}
+
+/**
+ * 动画文字
+ * @param {object} $dom $节点
+ * @param {string} text 文案
+ * @return {void}
+ */
+function animationText($dom, text) {
+    $dom.html('');
+    for (let i = 0, n = text.length; i < n; i++) {
+        $dom.append('<i>' + text[i] + '</i>');
+    }
+}
+
+/**
+ * 显示对话
+ * @param {string} name 文案标识
+ * @return {void}
+ */
+function showDialogue(name) {
+    const $dialogue = $('#dialogue'),
+        textContnt = {
+            start: [
+                '解救全员',
+                '逃出迷宫',
+                'GO!'
+            ],
+            success: [
+                '全员解救成功',
+                '在盖娅等你'
+            ],
+            failure: [
+                '有缘再见',
+                '我的伙伴'
+            ],
+            end: [
+                '来盖娅',
+                '玩真的'
+            ]
+        },
+        time = 500;
+    
+    for (let i = 0, n = textContnt[name].length; i < n; i++) {
+        const content = $dialogue.find('.t').eq(i);
+        animationText(content.find('.box_scale'), textContnt[name][i]);
+        setTimeout(() => {
+            content.addClass('active');
+        }, time * i);
+    }
+    
+    if (textContnt[name].length > 2) {
+        $dialogue.find('.t').eq(2).show();
+    } else {
+        $dialogue.find('.t')
+            .eq(2).hide()
+            .find('.box_scale').html('');
+    }
+    
+    if (name === 'start') {
+        setTimeout(() => {
+            startGame();
+            $dialogue.fadeOut(500);
+        }, 2500);
+    }
+    
+    if (name === 'success') {
+        $dialogue.find('.fireworks').show();
+        $dialogue.find('.people').show();
+    } else {
+        $dialogue.find('.fireworks').hide();
+        $dialogue.find('.people').hide();
+    }
+    
+    if (name === 'failure') {
+    
+    }
+    
+    if (name === 'end') {
+        $dialogue.find('.btn').show();
+    } else {
+        $dialogue.find('.btn').hide();
+    }
+    
+    $dialogue.fadeIn(500);
 }
 
 /**
@@ -613,357 +573,8 @@ function main(resources) {
  * @return {void}
  */
 function rotateFun() {
-    const $w = $(w),
+    const $W = $(W),
         $rotateScreen = $('#rotate_screen');
     if (Base.isPSB.platform() === 'PC' || $rotateScreen.length === 0) return;
-    if ($w.width() >= $w.height()) $rotateScreen.addClass('active'); else $rotateScreen.removeClass('active');
-}
-
-/**
- * 弹窗
- * @return {void}
- */
-function popup() {
-    savePopup = new Popup('save_popup', {
-        finish_callback() {
-            const _this = this;
-            _this.$content.find('.pop_btn_save').on('click', () => {
-                _this.close();
-                showText('failureText');
-            });
-            _this.$content.find('.pop_btn_not_save').on('click', () => {
-                _this.close();
-            });
-        },
-        open_callback() {
-            const _this = this;
-            _this.$content.find('i').html(6 - help);
-        },
-        close_callback() {
-            const _this = this;
-            config.seTime.door = setTimeout(() => {
-                config.seTime.door = null;
-                config.flag.door = true;
-            }, 3000);
-        }
-    });
-    
-    gaea1Popup = new Popup('gaea1_popup', {
-        finish_callback() {
-            const _this = this;
-            _this.$content.find('.pop_btn_next').eq(0)
-                .on('click', () => {
-                    _this.close();
-                });
-            _this.$content.find('.pop_btn_next').eq(1)
-                .on('click', () => {
-                    _this.close();
-                    if (gaea2Popup) gaea2Popup.open(1);
-                });
-        },
-        open_callback(data) {
-            const _this = this;
-            if (data === 0) {
-                _this.$content.find('.pop_btn_next').eq(0).show();
-                _this.$content.find('.pop_btn_next').eq(1).hide();
-            } else if (data === 1) {
-                _this.$content.find('.pop_btn_next').eq(0).hide();
-                _this.$content.find('.pop_btn_next').eq(1).show();
-            }
-        },
-        close_callback() {
-            const _this = this;
-        }
-    });
-    
-    gaea2Popup = new Popup('gaea2_popup', {
-        finish_callback() {
-            const _this = this;
-            _this.$content.find('.pop_btn_next').eq(0)
-                .on('click', () => {
-                    _this.close();
-                });
-            _this.$content.find('.pop_btn_next').eq(1)
-                .on('click', () => {
-                    _this.close();
-                    if (preachPopup) preachPopup.open(1);
-                });
-        },
-        open_callback(data) {
-            const _this = this;
-            if (data === 0) {
-                _this.$content.find('.pop_btn_next').eq(0).show();
-                _this.$content.find('.pop_btn_next').eq(1).hide();
-            } else if (data === 1) {
-                _this.$content.find('.pop_btn_next').eq(0).hide();
-                _this.$content.find('.pop_btn_next').eq(1).show();
-            }
-        },
-        close_callback() {
-            const _this = this;
-        }
-    });
-    
-    preachPopup = new Popup('preach_popup', {
-        finish_callback() {
-            const _this = this;
-            _this.$content.find('.pop_btn_next').eq(0)
-                .on('click', () => {
-                    _this.close();
-                });
-            _this.$content.find('.pop_btn_next').eq(1)
-                .on('click', () => {
-                    _this.close();
-                    if (position1Popup) position1Popup.open(1);
-                });
-        },
-        open_callback(data) {
-            const _this = this;
-            if (data === 0) {
-                _this.$content.find('.pop_btn_next').eq(0).show();
-                _this.$content.find('.pop_btn_next').eq(1).hide();
-            } else if (data === 1) {
-                _this.$content.find('.pop_btn_next').eq(0).hide();
-                _this.$content.find('.pop_btn_next').eq(1).show();
-            }
-        },
-        close_callback() {
-            const _this = this;
-        }
-    });
-    
-    position1Popup = new Popup('position1_popup', {
-        finish_callback() {
-            const _this = this;
-            _this.$content.find('.pop_btn_next').eq(0)
-                .on('click', () => {
-                    _this.close();
-                });
-            _this.$content.find('.pop_btn_next').eq(1)
-                .on('click', () => {
-                    _this.close();
-                    if (position2Popup) position2Popup.open(1);
-                });
-        },
-        open_callback(data) {
-            const _this = this;
-            if (data === 0) {
-                _this.$content.find('.pop_btn_next').eq(0).show();
-                _this.$content.find('.pop_btn_next').eq(1).hide();
-            } else if (data === 1) {
-                _this.$content.find('.pop_btn_next').eq(0).hide();
-                _this.$content.find('.pop_btn_next').eq(1).show();
-            }
-        },
-        close_callback() {
-            const _this = this;
-        }
-    });
-    
-    position2Popup = new Popup('position2_popup', {
-        finish_callback() {
-            const _this = this;
-            _this.$content.find('.pop_btn_next').eq(0)
-                .on('click', () => {
-                    _this.close();
-                });
-            _this.$content.find('.pop_btn_next').eq(1)
-                .on('click', () => {
-                    _this.close();
-                    if (buffPopup) buffPopup.open(1);
-                });
-        },
-        open_callback(data) {
-            const _this = this;
-            if (data === 0) {
-                _this.$content.find('.pop_btn_next').eq(0).show();
-                _this.$content.find('.pop_btn_next').eq(1).hide();
-            } else if (data === 1) {
-                _this.$content.find('.pop_btn_next').eq(0).hide();
-                _this.$content.find('.pop_btn_next').eq(1).show();
-            }
-        },
-        close_callback() {
-            const _this = this;
-        }
-    });
-    
-    buffPopup = new Popup('buff_popup', {
-        finish_callback() {
-            const _this = this;
-            _this.$content.find('.pop_btn_next').eq(0)
-                .on('click', () => {
-                    _this.close();
-                });
-            _this.$content.find('.pop_btn_next').eq(1)
-                .on('click', () => {
-                    _this.close();
-                    if (gaea1Popup) gaea1Popup.open(1);
-                });
-        },
-        open_callback(data) {
-            const _this = this;
-            if (data === 0) {
-                _this.$content.find('.pop_btn_next').eq(0).show();
-                _this.$content.find('.pop_btn_next').eq(1).hide();
-            } else if (data === 1) {
-                _this.$content.find('.pop_btn_next').eq(0).hide();
-                _this.$content.find('.pop_btn_next').eq(1).show();
-            }
-        },
-        close_callback() {
-            const _this = this;
-        }
-    });
-}
-
-/**
- * 点击事件
- * @return {void}
- */
-function click() {
-    $('#btn_sound').on('click', function () {
-        if ($(this).hasClass('active')) {
-            config.sound = false;
-            $(this).removeClass('active');
-            for (let i = 0, n = loadMusic.length; i < n; i++) {
-                closeSound(loadMusic[i].name);
-            }
-        } else {
-            config.sound = true;
-            $(this).addClass('active');
-        }
-    });
-    $('#btn_out').on('click', () => {
-        if (savePopup) savePopup.open();
-    });
-    $('#btn_view').on('click', () => {
-        if (gaea1Popup) gaea1Popup.open(1);
-    });
-}
-
-/**
- * 播放声音
- * @param {string} s 声音标识
- * @return {void}
- */
-function playSound(s) {
-    const volume = 0.1,
-        sound = res[s].sound;
-    
-    if (!res || !config.sound) return;
-    
-    if (s === 'walk') sound.loop = true;
-    
-    sound.volume = volume;
-    if (!sound.isPlaying) sound.play(0);
-}
-
-/**
- * 关闭声音
- * @param {string} s 声音标识
- * @return {void}
- */
-function closeSound(s) {
-    const sound = res[s].sound;
-    
-    if (!res) return;
-    
-    if (sound.isPlaying) sound.pause();
-}
-
-/**
- * 显示文案
- * @param {string} name 文案标识
- * @return {void}
- */
-function showText(name) {
-    const $text = $('#text'),
-        $content = $text.children('.content'),
-        textContnt = {
-            loadText: [
-                '解救全员',
-                '逃出迷宫',
-                'GO!'
-            ],
-            successText: [
-                '全员解救成功',
-                '在盖娅等你'
-            ],
-            failureText: [
-                '有缘再见',
-                '我的伙伴'
-            ],
-            endText: [
-                '来盖娅',
-                '玩真的'
-            ]
-        },
-        time = 500;
-    
-    $content.html('');
-    
-    for (let i = 0, n = textContnt[name].length; i < n; i++) {
-        $content.append('<div class="t"></div>');
-        const t = new Text({
-            dom: '#text .content .t:nth-child(' + (i + 1) + ')',
-            text: textContnt[name][i]
-        });
-        setTimeout(() => {
-            t.play();
-        }, time * i * 2);
-    }
-    
-    if (name === 'loadText') {
-        $content.children('.t:nth-child(3)')
-            .on('click', () => {
-                startGame();
-            });
-    }
-    
-    if (name === 'failureText') {
-        playSound('failure');
-        $content.append('<div id="btn_failure_view" class="pop_outer_btn">' +
-            '<i class="pop_btn_dec"></i>查看招聘信息</div>');
-        
-        // $content.append('<div id="btn_restart" class="pop_outer_btn">' +
-        //     '<i class="pop_btn_dec"></i>再玩一次</div>');
-        
-        $content.children('#btn_failure_view')
-            .on('click', () => {
-                if (gaea1Popup) gaea1Popup.open(1);
-            });
-        // $content.children('#btn_restart')
-        //     .on('click', () => {
-        //         $text.fadeOut(500);
-        //         startGame();
-        //     });
-    }
-    
-    $text.fadeIn(time);
-}
-
-/**
- * 游戏成功
- * @return {void}
- */
-function success() {
-    const $success = $('#success'),
-        t1 = new Text({
-            dom: "#success .t1",
-            text: "全员解救成功"
-        }),
-        t2 = new Text({
-            dom: "#success .t2",
-            text: "在盖娅等你"
-        });
-    
-    $success.fadeIn(500);
-    playSound('success');
-    
-    t1.play().then(() => {
-        setTimeout(() => {
-            t2.play();
-        }, 500);
-    });
+    if ($W.width() >= $W.height()) $rotateScreen.addClass('active'); else $rotateScreen.removeClass('active');
 }

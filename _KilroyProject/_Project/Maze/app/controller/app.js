@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { d } from '../../../_Base/js/window';
+import { D } from '../../../_Base/js/window';
 
 /**
  * App
@@ -39,14 +39,14 @@ class App {
  */
 function getDom() {
     const _this = this,
-        dom = d.getElementById(_this.config.id);
+        dom = D.getElementById(_this.config.id);
     
     if (!dom) {
-        const div = d.createElement('div');
+        const div = D.createElement('div');
         
         div.setAttribute('id', _this.config.id);
         div.setAttribute('class', _this.config.id);
-        d.getElementsByTagName('body')[0].appendChild(div);
+        D.getElementsByTagName('body')[0].appendChild(div);
         
         return div;
     }

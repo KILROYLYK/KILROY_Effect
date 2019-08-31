@@ -46,7 +46,6 @@ class Character {
             width: _this.config.wh * 1.6,
             speed: 1.2,
             sprite: _this.config.resources['character_' + _this.config.index].spritesheet,
-            sound: _this.config.resources['character_' + _this.config.index + '_m'].sound,
             object: null
         };
         
@@ -173,7 +172,6 @@ class Character {
         _this.config.index = index;
         _this.people.index = index;
         _this.people.sprite = _this.config.resources['character_' + _this.people.index].spritesheet;
-        _this.people.sound = _this.config.resources['character_' + _this.people.index + '_m'].sound;
         _this.animationRight();
     }
 }

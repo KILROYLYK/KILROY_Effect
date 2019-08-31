@@ -1,5 +1,5 @@
 /**
- * Pixi
+ * Plugin
  */
 const PIXI = require('pixi.js');
 

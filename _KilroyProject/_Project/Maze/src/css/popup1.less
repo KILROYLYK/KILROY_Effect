@@ -1,0 +1,259 @@
+//******Public******//
+@import 'base';
+
+// 雪碧图
+.sp_pop {
+  background-image: url("@{src_img}popup_sprite.png");
+  background-size: 700*@px 600*@px;
+}
+
+.popup .box_popup,
+.popup.active .box_popup {
+  top: 45% !important;
+}
+
+.popup {
+  color: #000000;
+  
+  p {
+    margin: 10*@px 0;
+  }
+  
+  .box_popup {
+    width: 650*@px;
+    margin: 0 auto;
+    background-image: url("@{src_img}popup_bg_re.png");
+    background-size: 100%;
+    padding: 0 40*@px 20*@px;
+    
+    &::before {
+      content: "";
+      width: 650*@px;
+      height: 20*@px;
+      position: absolute;
+      top: -18*@px;
+      left: 0;
+      background-image: url("@{src_img}popup_bg.png");
+      background-size: 650*@px 40*@px;
+      
+    }
+    
+    &::after {
+      content: "";
+      width: 650*@px;
+      height: 20*@px;
+      position: absolute;
+      bottom: -18*@px;
+      left: 0;
+      background-image: url("@{src_img}popup_bg.png");
+      background-size: 650*@px 40*@px;
+      background-position: 0 -20*@px;
+    }
+    
+    .box_content {
+      margin: -2px;
+      // background-color: #fef54a;
+      overflow: visible;
+    }
+    
+    .close {
+      .sp_pop;
+      background-position: -400*@px -20*@px;
+      border: 0;
+      left: auto;
+      right: 10*@px;
+      top: -10*@px;
+      width: 60*@px;
+      height: 60*@px;
+      
+      i {
+        display: none
+      }
+    }
+  }
+}
+
+.pop_title {
+  width: 390*@px;
+  height: 70*@px;
+  .sp_pop;
+  margin: 40*@px auto;
+  position: relative;
+  
+  &::after {
+    content: "";
+    display: inline-block;
+    width: 570*@px;
+    height: 8*@px;
+    .sp_pop;
+    position: absolute;
+    left: -90*@px;
+    top: 110%;
+  }
+}
+
+.pop_subtitle {
+  font-size: 35*@px;
+  // padding: 0 10*@px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0 10*@px;
+}
+
+.pop_intro {
+  font-size: 30*@px;
+  text-indent: 2em;
+  padding: 0 10*@px;
+  text-align: justify;
+}
+
+.line_black {
+  width: 570*@px;
+  height: 8*@px;
+  .sp_pop;
+  margin: 20*@px 0;
+}
+
+.line_gray {
+  width: 570*@px;
+  height: 8*@px;
+  .sp_pop;
+  margin: 20*@px 0;
+  background-position: 0 -240*@px;
+}
+
+.pop_outer_btn {
+  width: 244*@px;
+  height: 82*@px;
+  line-height: 82*@px;
+  .sp_pop;
+  background-position: -400*@px -80*@px;
+  text-align: center;
+  font-size: 34*@px;
+  color: #fef54a;
+  font-weight: bold;
+  position: absolute;
+  right: 50%;
+  left: 50%;
+  margin-left: -122*@px;
+}
+
+.pop_btn_next {
+  bottom: -170*@px;
+}
+
+.pop_btn_dec {
+  width: 100%;
+  height: 100%;
+  display: block;
+  .sp_pop;
+  background-position: -400*@px -170*@px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.pop_focus {
+  background: #000000;
+  color: #fef54a;
+  font-style: normal;
+  text-align: center;
+}
+
+#save_popup {
+  
+  p {
+    position: relative;
+    margin: 80*@px 0 60*@px;
+    width: 548*@px;
+    height: 104*@px;
+    .sp_pop;
+    background-position: 0 -400*@px;
+    
+    i {
+      display: block;
+      .position(absolute, -5*@px, auto, auto, 107*@px);
+      width: 50*@px;
+      height: 50*@px;
+      .font(center, 50*@px, @color_2, 50*@px, true);
+      font-style: normal;
+    }
+  }
+  
+  .pop_inner_btn {
+    
+    width: 244*@px;
+    height: 72*@px;
+    .sp_pop;
+    display: inline-block;
+    vertical-align: middle;
+    
+  }
+  
+  .pop_btn_save {
+    background-position: 0 -320*@px;
+    float: left;
+  }
+  
+  .pop_btn_not_save {
+    background-position: -260*@px -320*@px;
+    float: right;
+  }
+}
+
+#gaea1_popup,
+#gaea2_popup {
+  .box_popup {
+    // height: 570*@px;
+  }
+}
+
+#gaea1_popup,
+#gaea2_popup {
+  .pop_title {
+    background-position: 0 -10*@px;
+  }
+  
+  .pop_btn_job {
+    bottom: -310*@px;
+  }
+}
+
+#preach_popup {
+  .pop_title {
+    background-position: 0 -250*@px;
+  }
+  
+  p {
+    text-align: center;
+  }
+  
+  .pop_intro {
+    text-indent: 0;
+    font-size: 24*@px;
+  }
+  
+}
+
+#position1_popup,
+#position2_popup {
+  .pop_title {
+    background-position: 0 -170*@px;
+  }
+  
+  .pop_intro {
+    text-indent: 0;
+  }
+  
+  .intro {
+    text-align: center;
+    font-size: 24*@px;
+    margin-top: 40*@px;
+  }
+}
+
+#buff_popup {
+  .pop_title {
+    background-position: 0 -90*@px;
+  }
+}
