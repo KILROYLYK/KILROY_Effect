@@ -1,7 +1,7 @@
 /**
  * 迷宫道路
  */
-export const way = [
+export const type = [
     '', // 0
     'top', // 1
     'left', // 2

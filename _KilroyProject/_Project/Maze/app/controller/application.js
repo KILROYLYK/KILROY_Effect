@@ -36,6 +36,8 @@ class Application {
             sharedLoader: false, // 使用PIXI.Loader.shared
             resizeTo: null // 自动调节大小
         };
+        
+        _this.init();
     }
     
     /**

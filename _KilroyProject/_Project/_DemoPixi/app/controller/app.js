@@ -16,13 +16,12 @@ class App {
         const _this = this;
         
         _this.config = {
-            id: id || 'app',
-            object: null
+            id: id || 'app'
         };
         
         _this.init();
         
-        return _this.config.object;
+        return getDom.call(_this);
     }
     
     /**
@@ -31,30 +30,28 @@ class App {
      */
     init() {
         const _this = this;
+    }
+}
+
+/**
+ * 获取Dom
+ * @return {object} Dom
+ */
+function getDom() {
+    const _this = this,
+        dom = d.getElementById(_this.config.id);
+    
+    if (!dom) {
+        const div = d.createElement('div');
         
-        _this.config.object = _this.getDom();
+        div.setAttribute('id', _this.config.id);
+        div.setAttribute('class', _this.config.id);
+        d.getElementsByTagName('body')[0].appendChild(div);
+        
+        return div;
     }
     
-    /**
-     * 获取Dom
-     * @return {object} Dom
-     */
-    getDom() {
-        const _this = this,
-            dom = d.getElementById(_this.config.id);
-        
-        if (!dom) {
-            const div = d.createElement('div');
-            
-            div.setAttribute('id', _this.config.id);
-            div.setAttribute('class', _this.config.id);
-            d.getElementsByTagName('body')[0].appendChild(div);
-      
-            return div;
-        }
-        
-        return dom;
-    }
+    return dom;
 }
 
 export default App;

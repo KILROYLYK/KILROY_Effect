@@ -9,7 +9,7 @@ const PIXI = require('pixi.js');
 import { px } from './window';
 
 /**
- * 应用
+ * Application
  */
 class Application {
     /**
@@ -36,6 +36,8 @@ class Application {
             sharedLoader: false, // 使用PIXI.Loader.shared
             resizeTo: null // 自动调节大小
         };
+        
+        _this.init();
     }
     
     /**
