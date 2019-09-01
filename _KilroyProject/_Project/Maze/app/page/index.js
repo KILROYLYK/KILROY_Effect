@@ -40,7 +40,6 @@ const config = {
         speed: 4,
         volume: 0.2,
         color: 0xEAD8A0,
-        center: 0.99,
         help: 0,
         resources: null,
         flag: {
@@ -113,6 +112,7 @@ function readyGame() {
  */
 function startGame() {
     if (!config.flag.start) return;
+    if (sound) sound.pause('end');
     config.flag.start = false;
     config.help = 0;
     $('#game,#keyboard').addClass('active');
@@ -377,11 +377,11 @@ function playGame() {
         const grid = maze.grid.object.children,
             appW = appMaze.clientWidth,
             appH = appMaze.clientHeight,
-            centerX = appW / 2 * config.center - character.config.wh / 2,
-            centerY = appH / 2 * config.center - character.config.wh / 2,
+            centerX = appW / 2 * 0.99 - character.config.wh / 2,
+            centerY = appH / 2 * 0.99 - character.config.wh / 2,
             characterOldX = character.chassis.object.x,
             characterOldY = character.chassis.object.y;
-        
+    
         let characterAddX = x,
             characterAddY = y,
             mazeAddX = 0,
@@ -392,8 +392,8 @@ function playGame() {
             config.flag.mazeX = true;
         }
         
-        if (character.chassis.object.getGlobalPosition().y >= centerY &&
-            character.chassis.object.getGlobalPosition().y <= appH - centerY) {
+        if (character.chassis.object.getGlobalPosition().y >= centerY - appW / 4 &&
+            character.chassis.object.getGlobalPosition().y <= appH - centerY - appW / 4) {
             config.flag.mazeY = true;
         }
         
@@ -631,6 +631,7 @@ function showDialogue(name) {
     }
     
     if (name === 'success') {
+        if (sound) sound.play('success');
         $dialogue.find('.fireworks').show();
         $dialogue.find('.people').show();
         setTimeout(() => {
@@ -642,12 +643,14 @@ function showDialogue(name) {
     }
     
     if (name === 'failure') {
+        if (sound) sound.play('failure');
         setTimeout(() => {
             showDialogue('end');
         }, 3000);
     }
     
     if (name === 'end') {
+        if (sound) sound.play('end');
         config.flag.start = true;
         destroyGame();
         $dialogue.find('.btn').addClass('active');
@@ -676,6 +679,7 @@ function createPopup() {
         },
         openCallback() {
             const _this = this;
+            rocker.stop();
             _this.$content.find('.num .box_scale').html(6 - config.help);
         },
         closeCallback() {
@@ -707,6 +711,7 @@ function createPopup() {
         },
         openCallback(data) {
             const _this = this;
+            rocker.stop();
             _this.$content.find('.content,a').removeClass('active');
             _this.$content.find('.content').eq(data.type).addClass('active');
             if (data.save) {
@@ -742,10 +747,12 @@ function createClick() {
             appMap.start();
             setCharacterS();
         }
+        if (sound) sound.play('map');
     });
     $('#btn_map_close').on('click', () => {
         $('#map').removeClass('active');
         if (appMap) appMap.stop();
+        if (sound) sound.play('map');
     });
     $('#btn_quit,#btn_map_out').on('click', () => {
         if (popup.quit) popup.quit.open();

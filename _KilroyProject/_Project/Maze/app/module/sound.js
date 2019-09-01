@@ -66,7 +66,7 @@ class Sound {
         if (sound && !sound.isPlaying) {
             if (name === 'walk') sound.loop = true;
             sound.volume = _this.config.volume;
-            sound.play();
+            sound.play(0);
         }
     }
     
