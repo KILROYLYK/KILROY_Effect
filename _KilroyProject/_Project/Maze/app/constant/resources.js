@@ -9,8 +9,18 @@ export const img = [
     src.img + 'load_bg.png',
     src.img + 'load_progress.png',
     src.img + 'load_character.png',
-    src.img + 'sound_open.png',
-    src.img + 'sound_close.png'
+    src.img + 'sound.png',
+    src.img + 'btn_1.png',
+    src.img + 'btn_2.png',
+    src.img + 'map_bg.png',
+    src.img + 'map_qr_bg.png',
+    src.img + 'popup_bg_1.png',
+    src.img + 'popup_bg_2.jpg',
+    src.img + 'popup_sprite.png',
+    src.img + 'fireworks_red.png',
+    src.img + 'fireworks_yellow.png',
+    src.img + 'fireworks_blue.png',
+    src.img + 'success_people.jpg'
 ];
 
 /**

@@ -95,11 +95,10 @@ function createPanel() {
     const _this = this;
     
     _this.panel.object.lineStyle(0);
-    _this.panel.object.beginFill(_this.panel.color, 1);
+    _this.panel.object.beginFill(_this.panel.color, _this.panel.alpha);
     _this.panel.object.drawCircle(_this.panel.origin, _this.panel.origin, _this.panel.radius);
     _this.panel.object.endFill();
     _this.panel.object.zIndex = _this.panel.zIndex;
-    _this.panel.object.alpha = _this.panel.alpha;
     _this.object.addChild(_this.panel.object);
 }
 
@@ -112,7 +111,7 @@ function createButton() {
     
     _this.button.object.lineStyle(0);
     _this.button.object.beginFill(_this.button.color, 1);
-    _this.button.object.drawCircle(_this.panel.origin, _this.panel.origin, _this.button.radius);
+    _this.button.object.drawCircle(_this.button.origin, _this.button.origin, _this.button.radius);
     _this.button.object.endFill();
     _this.button.object.zIndex = _this.button.zIndex;
     _this.button.object.alpha = _this.button.alpha;

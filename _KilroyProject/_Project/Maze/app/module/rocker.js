@@ -16,6 +16,7 @@ class Rocker {
         const _this = this;
         
         _this.config = {
+            resources: config.resources,
             wh: config.wh || 200,
             direction: config.direction || 8,
             flag: false,
@@ -27,18 +28,19 @@ class Rocker {
         
         _this.panel = {
             color: 0xFFFFFF,
-            alpha: 0.2,
+            alpha: 0,
             origin: _this.config.wh / 2,
             radius: _this.config.wh / 2 * 0.6,
             zIndex: 0,
+            sprite: _this.config.resources.rocker.texture,
             object: new PIXI.Graphics()
         };
         
         _this.button = {
             color: 0xFFFFFF,
-            alpha: 0.2,
+            alpha: 0.1,
             origin: _this.panel.origin,
-            radius: _this.panel.radius * 0.65,
+            radius: _this.panel.radius * 0.5,
             zIndex: 1,
             radian: 0,
             maxRadian: 1.6,
@@ -92,14 +94,19 @@ class Rocker {
  * @return {void}
  */
 function createPanel() {
-    const _this = this;
+    const _this = this,
+        sprite = new PIXI.Sprite.from(_this.panel.sprite);
     
+    sprite.width = _this.panel.radius * 2;
+    sprite.height = _this.panel.radius * 2;
+    sprite.x = _this.panel.origin - sprite.width / 2;
+    sprite.y = _this.panel.origin - sprite.width / 2;
     _this.panel.object.lineStyle(0);
-    _this.panel.object.beginFill(_this.panel.color, 1);
+    _this.panel.object.beginFill(_this.panel.color, _this.panel.alpha);
     _this.panel.object.drawCircle(_this.panel.origin, _this.panel.origin, _this.panel.radius);
     _this.panel.object.endFill();
     _this.panel.object.zIndex = _this.panel.zIndex;
-    _this.panel.object.alpha = _this.panel.alpha;
+    _this.panel.object.addChild(sprite);
     _this.object.addChild(_this.panel.object);
 }
 
@@ -112,7 +119,7 @@ function createButton() {
     
     _this.button.object.lineStyle(0);
     _this.button.object.beginFill(_this.button.color, 1);
-    _this.button.object.drawCircle(_this.panel.origin, _this.panel.origin, _this.button.radius);
+    _this.button.object.drawCircle(_this.button.origin, _this.button.origin, _this.button.radius);
     _this.button.object.endFill();
     _this.button.object.zIndex = _this.button.zIndex;
     _this.button.object.alpha = _this.button.alpha;

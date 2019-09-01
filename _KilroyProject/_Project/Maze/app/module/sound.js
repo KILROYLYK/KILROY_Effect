@@ -67,7 +67,8 @@ class Sound {
             sound = _this.config.resources[name].sound;
         
         if (!_this.config.flag) return;
-        if (!sound.isPlaying) sound.play(0);
+        
+        if (sound && !sound.isPlaying) sound.play(0);
     }
     
     /**
@@ -79,7 +80,7 @@ class Sound {
         const _this = this,
             sound = _this.config.resources[name].sound;
         
-        if (sound.isPlaying) sound.pause();
+        if (sound && sound.isPlaying) sound.pause();
     }
 }
 

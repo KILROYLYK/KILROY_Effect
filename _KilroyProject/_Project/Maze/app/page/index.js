@@ -1,7 +1,7 @@
 /**
  * Window
  */
-import { W, $, Base, w } from '../../../_Base/js/window';
+import { W, $, Base, Popup } from '../../../_Base/js/window';
 
 /**
  * Plugin
@@ -25,7 +25,6 @@ import Character from '../object/character';
  */
 import Preload from '../module/preload';
 import Rocker from '../module/rocker';
-import Popup from '../module/popup';
 import Sound from '../module/sound';
 
 /**
@@ -36,7 +35,7 @@ const config = {
         multiple: 4,
         margin: {
             x: 60,
-            y: 200
+            y: 300
         },
         speed: 4,
         volume: 0.2,
@@ -44,12 +43,12 @@ const config = {
         help: 0,
         resources: null,
         flag: {
+            start: true,
             door: true,
             mazeX: false,
             mazeY: false
         },
         setTime: {
-            start: true,
             door: true
         }
     },
@@ -65,7 +64,8 @@ const config = {
                 readyGame();
             }, 500);
         }
-    });
+    }),
+    popup = {};
 
 let appMazeWH = 0,
     appRockerWH = 0,
@@ -82,18 +82,39 @@ Base.resizeWindow(() => {
 }, 300);
 
 /**
+ * 准备游戏
+ * @return {void}
+ */
+function readyGame() {
+    animationText($('#loading .text .box_scale'), '点击开启盖娅校招之旅');
+    $('#progress').removeClass('active');
+    setTimeout(() => {
+        $('#loading .text').addClass('active');
+        $('#loading').on('click', function () {
+            $(this).fadeOut(500);
+            createGame();
+            createPopup();
+            createClick();
+            setTimeout(() => {
+                showDialogue('start');
+            }, 500);
+        });
+    }, 50);
+}
+
+/**
  * 创建游戏
  * @return {void}
  */
 function createGame() {
-    if (appGame) {
-        appGame.destroy();
-        appGame = null;
-    }
-    if (appKeyboard) {
-        appKeyboard.destroy();
-        appKeyboard = null;
-    }
+    // if (appGame) {
+    //     appGame.destroy();
+    //     appGame = null;
+    // }
+    // if (appKeyboard) {
+    //     appKeyboard.destroy();
+    //     appKeyboard = null;
+    // }
     
     appMazeWH = appMaze.clientWidth;
     appRockerWH = appRocker.clientWidth;
@@ -127,31 +148,12 @@ function createGame() {
 }
 
 /**
- * 准备游戏
- * @return {void}
- */
-function readyGame() {
-    animationText($('#loading .text .box_scale'), '点击开启盖娅校招之旅');
-    $('#progress').removeClass('active');
-    setTimeout(() => {
-        $('#loading .text').addClass('active');
-        $('#loading').on('click', function () {
-            $(this).fadeOut(500);
-            createGame();
-            setTimeout(() => {
-                showDialogue('start');
-            }, 500);
-        });
-    }, 50);
-}
-
-/**
  * 开始游戏
  * @return {void}
  */
 function startGame() {
-    if (!config.setTime.start) return;
-    config.setTime.start = false;
+    if (!config.flag.start) return;
+    config.flag.start = false;
     config.help = 0;
     $('#game,#keyboard').addClass('active');
     game();
@@ -170,7 +172,12 @@ function game() {
             object: null,
             clash: () => {
                 sound.play('character_2_m');
-                // if (gaea1Popup) gaea1Popup.open(0);
+                if (popup.recruitment) {
+                    popup.recruitment.open({
+                        type: 1,
+                        save: true
+                    });
+                }
             }
         },
         {
@@ -180,7 +187,12 @@ function game() {
             object: null,
             clash: () => {
                 sound.play('character_3_m');
-                // if (gaea2Popup) gaea2Popup.open(0);
+                if (popup.recruitment) {
+                    popup.recruitment.open({
+                        type: 2,
+                        save: true
+                    });
+                }
             }
         },
         {
@@ -190,7 +202,12 @@ function game() {
             object: null,
             clash: () => {
                 sound.play('character_4_m');
-                // if (preachPopup) preachPopup.open(0);
+                if (popup.recruitment) {
+                    popup.recruitment.open({
+                        type: 3,
+                        save: true
+                    });
+                }
             }
         },
         {
@@ -200,7 +217,12 @@ function game() {
             object: null,
             clash: () => {
                 sound.play('character_5_m');
-                // if (position1Popup) position1Popup.open(0);
+                if (popup.recruitment) {
+                    popup.recruitment.open({
+                        type: 4,
+                        save: true
+                    });
+                }
             }
         },
         {
@@ -210,7 +232,12 @@ function game() {
             object: null,
             clash: () => {
                 sound.play('character_6_m');
-                // if (position2Popup) position2Popup.open(0);
+                if (popup.recruitment) {
+                    popup.recruitment.open({
+                        type: 5,
+                        save: true
+                    });
+                }
             }
         },
         {
@@ -220,10 +247,28 @@ function game() {
             object: null,
             clash: () => {
                 sound.play('character_7_m');
-                // if (buffPopup) buffPopup.open(0);
+                if (popup.recruitment) {
+                    popup.recruitment.open({
+                        type: 6,
+                        save: true
+                    });
+                }
             }
         }
     ];
+    
+    // if (maze) {
+    //     maze.object.destroy();
+    //     maze = null;
+    // }
+    // if (character) {
+    //     character.object.destroy();
+    //     character = null;
+    // }
+    // if (rocker) {
+    //     rocker.object.destroy();
+    //     rocker = null;
+    // }
     
     maze = new Maze({
         resources: config.resources,
@@ -239,6 +284,7 @@ function game() {
         volume: config.volume
     });
     rocker = new Rocker({
+        resources: config.resources,
         wh: appRockerWH,
         direction: 8,
         callback: (direction) => {
@@ -403,9 +449,9 @@ function game() {
                                 }
                                 config.flag.door = false;
                                 if (config.help < 6) {
-                                    // if (savePopup) savePopup.open();
+                                    if (popup.quit) popup.quit.open();
                                 } else if (config.help === 6) {
-                                    // success();
+                                    showDialogue('success');
                                 }
                             }
                         }
@@ -566,12 +612,101 @@ function showDialogue(name) {
     }
     
     if (name === 'end') {
+        config.flag.start = true;
         $dialogue.find('.btn').addClass('active');
     } else {
         $dialogue.find('.btn').removeClass('active');
     }
     
     $dialogue.fadeIn(500);
+}
+
+/**
+ * 创建弹窗
+ * @return {void}
+ */
+function createPopup() {
+    popup.quit = new Popup('quit_popup', {
+        finishCallback() {
+            const _this = this;
+            $('#btn_quit_agree').on('click', () => {
+                _this.close();
+                showDialogue('failure');
+            });
+            $('#btn_quit_disagree').on('click', () => {
+                _this.close();
+            });
+        },
+        openCallback(data) {
+            const _this = this;
+            _this.$content.find('.num .box_scale').html(6 - data);
+        }
+    });
+    
+    popup.recruitment = new Popup('recruitment_popup', {
+        finishCallback() {
+            const _this = this;
+            $('#btn_rec_save').on('click', () => {
+                _this.close();
+            });
+            $('#btn_rec_next').on('click', () => {
+                const index = _this.$content.find('.content.active').index();
+                _this.open({
+                    type: index + 1,
+                    save: false
+                });
+            });
+            $('#btn_review').on('click', () => {
+                _this.open({
+                    type: 0,
+                    save: false
+                });
+            });
+        },
+        openCallback(data) {
+            const _this = this;
+            _this.$content.find('.content,a').removeClass('active');
+            _this.$content.find('.content').eq(data.type).addClass('active');
+            if (data.save) {
+                _this.$content.find('a').eq(0).addClass('active');
+            } else {
+                if (data.type !== 5) {
+                    _this.$content.find('a').eq(1).addClass('active');
+                } else {
+                    _this.$content.find('a').eq(2).addClass('active');
+                }
+            }
+        }
+    });
+}
+
+/**
+ * 创建点击
+ * @return {void}
+ */
+function createClick() {
+    $('#btn_sound').on('click', function () {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            if (sound) sound.close();
+        } else {
+            $(this).addClass('active');
+            if (sound) sound.open();
+        }
+    });
+    $('#btn_out').on('click', () => {
+        popup.quit.open(config.help);
+    });
+    $('#btn_view').on('click', () => {
+        popup.recruitment.open({
+            type: 0,
+            save: false
+        });
+    });
+    // $('#btn_restart').on('click', () => {
+    //     $('#dialogue').fadeOut(500);
+    // });
+    
 }
 
 /**

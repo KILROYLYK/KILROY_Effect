@@ -1,7 +1,7 @@
 //******Public******//
 @import 'base';
 
-@wh: 200px;
+@wh: 250px;
 
 //***Base***//
 html,
@@ -116,27 +116,30 @@ a:visited:hover {
     width: 280*@px;
     height: 80*@px;
     .borderBox();
-    .font(center, 40*@px*@scale, @color_1, 32*@px*@scale, true);
   }
   
   &.btn_1 {
     .border(20 30, 20*@px 30*@px, 'btn_1.png');
+    .font(center, 40*@px*@scale, @color_1, 32*@px*@scale, true);
   }
   
   &.btn_2 {
     .border(20 30, 20*@px 30*@px, 'btn_2.png');
+    .font(center, 40*@px*@scale, @color_2, 32*@px*@scale, true);
   }
 }
 
 .btn_sound {
   .position(absolute, 25*@px, 25*@px, auto, auto);
   z-index: 2;
-  .bg('sound_close.png', 64*@px, 65*@px, true);
+  width: 64*@px;
+  height: 65*@px;
+  .bg('sound.png', 138*@px, 65*@px);
+  background-position: -74*@px 0;
   pointer-events: all;
-  .transition(background @time);
   
   &.active {
-    .bg('sound_open.png', 64*@px, 65*@px);
+    background-position: 0 0;
   }
 }
 
@@ -173,7 +176,7 @@ a:visited:hover {
   z-index: 0;
   width: @wh;
   height: @wh;
-  margin: 0 auto;
+  margin: auto;
 }
 
 .game {
@@ -193,12 +196,22 @@ a:visited:hover {
   overflow: hidden;
   .position(bottom);
   z-index: 0;
-  height: @wh;
+  height: 300px;
   opacity: 0;
   .transition(opacity @time);
   
   &.active {
     opacity: 1;
+  }
+  
+  .btn_1 {
+    &:nth-child(2) {
+      .position(absolute, auto, auto, 10*@px, 10*@px)
+    }
+    
+    &:nth-child(3) {
+      .position(absolute, auto, 10*@px, 10*@px, auto)
+    }
   }
 }
 
@@ -397,7 +410,7 @@ a:visited:hover {
 }
 
 //***Animation***//
-.am_fun() {
+.am_fireworks() {
   from {
     background-position: 0 0;
   }
@@ -409,4 +422,4 @@ a:visited:hover {
   }
 }
 
-.creatAnimation(fireworks, .am_fun());
+.creatAnimation(fireworks, .am_fireworks());

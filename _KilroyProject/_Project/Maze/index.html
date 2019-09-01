@@ -54,7 +54,8 @@
 <body>
 
 <a id="btn_sound" class="btn_sound active"
-   href="javascript:void(0);"></a>
+   href="javascript:void(0);">
+</a>
 
 <div id="loading" class="loading">
     <div id="progress" class="progress active">
@@ -91,11 +92,15 @@
            href="javascript:void(0);">
             <div class="box_scale">查看招聘信息</div>
         </a>
-        <a id="btn_restart" class="btn btn_1"
-           href="javascript:void(0);">
-            <div class="box_scale">再救一次</div>
-        </a>
+        <!--<a id="btn_restart" class="btn btn_1"-->
+        <!--   href="javascript:void(0);">-->
+        <!--    <div class="box_scale">再救一次</div>-->
+        <!--</a>-->
     </div>
+</div>
+
+<div id="map" class="map">
+
 </div>
 
 <div id="game" class="game">
@@ -104,11 +109,11 @@
 
 <div id="keyboard" class="keyboard">
     <div id="appRocker" class="appRocker"></div>
-    <a id="btn_map" class="btn_map"
+    <a id="btn_map" class="btn btn_1"
        href="javascript:void(0);">
         <div class="box_scale">查看地图</div>
     </a>
-    <a id="btn_out" class="btn_out"
+    <a id="btn_out" class="btn btn_1"
        href="javascript:void(0);">
         <div class="box_scale">查看招聘信息</div>
     </a>
@@ -116,151 +121,162 @@
 
 <div id="rotate_screen" class="rotate_screen"></div>
 
-<script type="text/html" id="save_popup">
-    <p><i></i></p>
-    <div class="pop_inner_btn pop_btn_save"></div>
-    <div class="pop_inner_btn pop_btn_not_save"></div>
+<script type="text/html" id="quit_popup">
+    <div class="content">
+        <div class="num">
+            <div class="box_scale"></div>
+        </div>
+    </div>
+    <a id="btn_quit_agree" class="btn btn_2"
+       href="javascript:void(0);">
+        <div class="box_scale">确认放弃</div>
+    </a>
+    <a id="btn_quit_disagree" class="btn btn_1"
+       href="javascript:void(0);">
+        <div class="box_scale">不放弃！</div>
+    </a>
 </script>
 
-<script type="text/html" id="gaea1_popup">
-    <h5 class="pop_title"></h5>
-    <p class="pop_intro">
-        盖娅在原创内容方面进行深耕，成功孵化出国内一线动画工作室七创社，
-        并打造了中国最受欢迎的国创动画《凹凸世界》，目前拥有的核心粉丝数已经超过500万人，
-        是国内最为活跃的国漫粉丝群体，粉丝创作内容的抖音播放量超过10亿次。此外，
-        盖娅也在不断探索电子竞技和创新业务，以集换式卡牌游戏作为电竞突破口，
-        依托全球最大的中文卡牌游戏社区旅法师营地，尝试全方位的电竞服务。
-    </p>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>解救
+<script type="text/html" id="recruitment_popup">
+    <div class="content">
+        <div class="box_scale">
+            <div class="box">
+                <div class="title"></div>
+                <div class="line l_1"></div>
+                <p class="info">
+                    盖娅在原创内容方面进行深耕，成功孵化出国内一线动画工作室七创社，
+                    并打造了中国最受欢迎的国创动画《凹凸世界》，目前拥有的核心粉丝数已经超过500万人，
+                    是国内最为活跃的国漫粉丝群体，粉丝创作内容的抖音播放量超过10亿次。此外，
+                    盖娅也在不断探索电子竞技和创新业务，以集换式卡牌游戏作为电竞突破口，
+                    依托全球最大的中文卡牌游戏社区旅法师营地，尝试全方位的电竞服务。
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>下一位
+    <div class="content">
+        <div class="box_scale">
+            <div class="box">
+                <div class="title"></div>
+                <div class="line l_1"></div>
+                <p class="info">
+                    盖娅互娱成立于2014年，是一家面向全球用户提供高品质互动娱乐内容的公司。
+                    公司管理扁平化，福利贴心。盖娅目前拥有来自11个国家和地区的约1000名员工，
+                    搭建了强大的全球游戏研发及发行能力，有数款成绩非凡的自研游戏和成熟的全球发行渠道，
+                    与包括Bethesda，Square Enix，CDPR在内的世界一流研发工作室建立了战略合作，
+                    全球累计用户超过1亿。
+                </p>
+            </div>
+        </div>
     </div>
-</script>
-
-<script type="text/html" id="gaea2_popup">
-    <h5 class="pop_title"></h5>
-    <p class="pop_intro">
-        盖娅互娱成立于2014年，是一家面向全球用户提供高品质互动娱乐内容的公司。
-        公司管理扁平化，福利贴心。盖娅目前拥有来自11个国家和地区的约1000名员工，
-        搭建了强大的全球游戏研发及发行能力，有数款成绩非凡的自研游戏和成熟的全球发行渠道，与包括Bethesda，Square
-        Enix，CDPR在内的世界一流研发工作室建立了战略合作，全球累计用户超过1亿。
-    </p>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>解救
+    <div class="content">
+        <div class="box_scale">
+            <div class="box">
+                <div class="title"></div>
+                <div class="line l_1"></div>
+                <p class="subtitle">
+                    哈尔滨工业大学
+                </p>
+                <p class="info">
+                    时间：2019年9月3日18:30 地点：活动中心227
+                </p>
+                <div class="line l_2"></div>
+                <p class="subtitle">
+                    西安电子科技大学
+                </p>
+                <p class="info">
+                    时间：2019年11日 19:00 地点：B-532
+                </p>
+                <div class="line l_2"></div>
+                <p class="subtitle">武汉大学 </p>
+                <p class="info"> (敬请期待) </p>
+                <div class="line l_2"></div>
+                <p class="subtitle">东北大学 </p>
+                <p class="info"> (敬请期待) </p>
+                <div class="line l_2"></div>
+                <p class="subtitle">北京邮电大学 </p>
+                <p class="info"> (敬请期待) </p>
+            </div>
+        </div>
     </div>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>下一位
+    <div class="content">
+        <div class="box_scale">
+            <div class="box">
+                <div class="title"></div>
+                <div class="line l_1"></div>
+                <p class="subtitle">游戏研发类：</p>
+                <p class="info">
+                    服务器开发工程师、客户端开发工程师、游戏策划、测试工程师、PM助理
+                </p>
+                <div class="line l_2"></div>
+                <p class="subtitle">平台技术类：</p>
+                <p class="info">
+                    数据研发工程师、AI算法工程师、PHP工程师
+                </p>
+            </div>
+        </div>
     </div>
-</script>
-
-<script type="text/html" id="preach_popup">
-    <h5 class="pop_title"></h5>
-    <p class="pop_subtitle">
-        哈尔滨工业大学
-    </p>
-    <p class="pop_intro">
-        时间：2019年9月3日18:30 地点：活动中心227
-    </p>
-    <div class="line_gray"></div>
-    <p class="pop_subtitle">
-        西安电子科技大学
-    </p>
-    <p class="pop_intro">
-        时间：2019年11日 19:00 地点：B-532
-    </p>
-    <div class="line_gray"></div>
-    <p class="pop_subtitle">武汉大学 </p>
-    <p class="pop_intro"> (敬请期待) </p>
-    <div class="line_gray"></div>
-    <p class="pop_subtitle">东北大学 </p>
-    <p class="pop_intro"> (敬请期待) </p>
-    <div class="line_gray"></div>
-    <p class="pop_subtitle">北京邮电大学 </p>
-    <p class="pop_intro"> (敬请期待) </p>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>解救
+    <div class="content">
+        <div class="box_scale">
+            <div class="box">
+                <div class="title"></div>
+                <div class="line l_1"></div>
+                <p class="subtitle">运营&设计类：</p>
+                <p class="info">
+                    英语运营、视频设计师、视觉设计师
+                </p>
+                <div class="line l_2"></div>
+                <p class="subtitle">其他：</p>
+                <p class="info">
+                    战略分析师、数据分析专员、商务专员、
+                    采购助理、法务专员、人力资源专员
+                </p>
+                <div class="line l_2"></div>
+                <p class="subtitle">盖娅旗下工作室：</p>
+                <p class="info" style="padding-bottom:0.05rem">
+                    <i class="focus">
+                        &nbsp;七创社：
+                    </i>
+                    分镜师、编剧、原画师
+                </p>
+                <p class="info" style="padding-bottom:0.05rem">
+                    <i class="focus">
+                        &nbsp;谜笛工作室：
+                    </i>
+                    内容运营
+                </p>
+                <p class="info intro" style="padding-bottom:0.05rem">
+                    -应聘请发送“意向岗位+姓名+学校+专业”-
+                </p>
+                <p class="info focus">
+                    &nbsp;投递简历至campus@gaea.com
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>下一位
+    <div class="content">
+        <div class="box_scale">
+            <div class="box">
+                <div class="title"></div>
+                <div class="line l_1"></div>
+                <p class="info">
+                    五险一金、补充医疗、健身房、下午茶、团建经费、
+                    福利礼金、开门利是、充足假期、年度大戏、全员拓展、各种俱乐部。
+                </p>
+            </div>
+        </div>
     </div>
-</script>
-
-<script type="text/html" id="position1_popup">
-    <h5 class="pop_title"></h5>
-    <p class="pop_subtitle">
-        游戏研发类：
-    </p>
-    <p class="pop_intro">
-        服务器开发工程师、客户端开发工程师、游戏策划、测试工程师、PM助理
-    </p>
-    <div class="line_black"></div>
-    <p class="pop_subtitle">
-        平台技术类：
-    </p>
-    <p class="pop_intro">
-        数据研发工程师、AI算法工程师、PHP工程师
-    </p>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>解救
-    </div>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>下一位
-    </div>
-</script>
-
-<script type="text/html" id="position2_popup">
-    <h5 class="pop_title"></h5>
-    <p class="pop_subtitle">
-        运营&设计类：
-    </p>
-    <p class="pop_intro">
-        英语运营、视频设计师、视觉设计师
-    </p>
-    <div class="line_black"></div>
-    <p class="pop_subtitle">
-        其他：
-    </p>
-    <p class="pop_intro">
-        战略分析师、数据分析专员、商务专员、采购助理、法务专员、人力资源专员
-    </p>
-    <div class="line_black"></div>
-    <p class="pop_subtitle">
-        盖娅旗下工作室：
-    </p>
-    <p class="pop_intro">
-        <i class="pop_focus">&nbsp;七创社：</i> 分镜师、编剧、原画师
-    </p>
-    <p class="pop_intro">
-        <i class="pop_focus">&nbsp;谜笛工作室：</i> 内容运营
-    </p>
-    <p class="pop_intro intro">
-        -应聘请发送“意向岗位+姓名+学校+专业”-
-    </p>
-    <p class="pop_intro pop_focus">
-        &nbsp;投递简历至campus@gaea.com
-    </p>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>解救
-    </div>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>下一位
-    </div>
-</script>
-
-<script type="text/html" id="buff_popup">
-    <h5 class="pop_title"></h5>
-    <p class="pop_intro">
-        五险一金、补充医疗、健身房、下午茶、团建经费、
-        福利礼金、开门利是、充足假期、年度大戏、全员拓展、各种俱乐部。
-    </p>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>解救
-    </div>
-    <div class="pop_outer_btn pop_btn_next">
-        <i class="pop_btn_dec"></i>回看招聘信息
-    </div>
+    <a id="btn_rec_save" class="btn btn_1"
+       href="javascript:void(0);">
+        <div class="box_scale">解救</div>
+    </a>
+    <a id="btn_rec_next" class="btn btn_1"
+       href="javascript:void(0);">
+        <div class="box_scale">下一位</div>
+    </a>
+    <a id="btn_review" class="btn btn_1"
+       href="javascript:void(0);">
+        <div class="box_scale">回看招聘信息</div>
+    </a>
 </script>
 <!--<script type="text/javascript" src="https://image.gaeamobile.net/javascript/20190830/192910/index.bundle.js"></script>-->
 </body>
