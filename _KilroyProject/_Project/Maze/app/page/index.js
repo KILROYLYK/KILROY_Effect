@@ -39,6 +39,7 @@ const config = {
         },
         speed: 4,
         volume: 0.2,
+        color: 0xEAD8A0,
         center: 0.99,
         help: 0,
         resources: null,
@@ -53,6 +54,7 @@ const config = {
         }
     },
     appMaze = new App('appMaze'),
+    appMazeS = new App('appMazeS'),
     appRocker = new App('appRocker'),
     preload = new Preload({
         loadingCallback(progress) {
@@ -61,6 +63,8 @@ const config = {
         finishCallback(resources) {
             config.resources = resources;
             setTimeout(() => {
+                createPopup();
+                createClick();
                 readyGame();
             }, 500);
         }
@@ -68,13 +72,17 @@ const config = {
     popup = {};
 
 let appMazeWH = 0,
+    appMazeSWH = 0,
     appRockerWH = 0,
     appGame = null,
+    appMap = null,
     appKeyboard = null,
     sound = null;
 
 let maze = null,
+    mazeS = null,
     character = null,
+    characterS = null,
     rocker = null;
 
 Base.resizeWindow(() => {
@@ -92,9 +100,6 @@ function readyGame() {
         $('#loading .text').addClass('active');
         $('#loading').on('click', function () {
             $(this).fadeOut(500);
-            createGame();
-            createPopup();
-            createClick();
             setTimeout(() => {
                 showDialogue('start');
             }, 500);
@@ -103,20 +108,25 @@ function readyGame() {
 }
 
 /**
+ * 开始游戏
+ * @return {void}
+ */
+function startGame() {
+    if (!config.flag.start) return;
+    config.flag.start = false;
+    config.help = 0;
+    $('#game,#keyboard').addClass('active');
+    createGame();
+    playGame();
+}
+
+/**
  * 创建游戏
  * @return {void}
  */
 function createGame() {
-    // if (appGame) {
-    //     appGame.destroy();
-    //     appGame = null;
-    // }
-    // if (appKeyboard) {
-    //     appKeyboard.destroy();
-    //     appKeyboard = null;
-    // }
-    
     appMazeWH = appMaze.clientWidth;
+    appMazeSWH = appMazeS.clientWidth;
     appRockerWH = appRocker.clientWidth;
     appGame = Application.create('canvasMaze', {
         app: appMaze,
@@ -125,9 +135,20 @@ function createGame() {
         autoDensity: true,
         antialias: true,
         preserveDrawingBuffer: true,
-        backgroundColor: 0xEAD8A0,
+        backgroundColor: config.color,
         clearBeforeRender: true,
         resizeTo: appMaze
+    });
+    appMap = Application.create('canvasMap', {
+        app: appMazeS,
+        width: appMazeSWH,
+        height: appMazeSWH,
+        autoDensity: true,
+        antialias: true,
+        preserveDrawingBuffer: true,
+        backgroundColor: config.color,
+        clearBeforeRender: true,
+        resizeTo: appMazeS
     });
     appKeyboard = Application.create('canvasRocker', {
         app: appRocker,
@@ -148,28 +169,17 @@ function createGame() {
 }
 
 /**
- * 开始游戏
+ * 玩游戏
  * @return {void}
  */
-function startGame() {
-    if (!config.flag.start) return;
-    config.flag.start = false;
-    config.help = 0;
-    $('#game,#keyboard').addClass('active');
-    game();
-}
-
-/**
- * 游戏
- * @return {void}
- */
-function game() {
+function playGame() {
     const friend = [
         {
             name: 2,
             position: 43,
             time: 1000,
             object: null,
+            objectS: null,
             clash: () => {
                 sound.play('character_2_m');
                 if (popup.recruitment) {
@@ -185,6 +195,7 @@ function game() {
             position: 352,
             time: 2000,
             object: null,
+            objectS: null,
             clash: () => {
                 sound.play('character_3_m');
                 if (popup.recruitment) {
@@ -215,6 +226,7 @@ function game() {
             position: 519,
             time: 3000,
             object: null,
+            objectS: null,
             clash: () => {
                 sound.play('character_5_m');
                 if (popup.recruitment) {
@@ -230,6 +242,7 @@ function game() {
             position: 745,
             time: 2500,
             object: null,
+            objectS: null,
             clash: () => {
                 sound.play('character_6_m');
                 if (popup.recruitment) {
@@ -245,6 +258,7 @@ function game() {
             position: 854,
             time: 2000,
             object: null,
+            objectS: null,
             clash: () => {
                 sound.play('character_7_m');
                 if (popup.recruitment) {
@@ -257,31 +271,29 @@ function game() {
         }
     ];
     
-    // if (maze) {
-    //     maze.object.destroy();
-    //     maze = null;
-    // }
-    // if (character) {
-    //     character.object.destroy();
-    //     character = null;
-    // }
-    // if (rocker) {
-    //     rocker.object.destroy();
-    //     rocker = null;
-    // }
-    
     maze = new Maze({
         resources: config.resources,
         map: 0,
         wh: appMazeWH,
         multiple: config.multiple
     });
+    mazeS = new Maze({
+        resources: config.resources,
+        map: 0,
+        wh: appMazeSWH,
+        multiple: 1
+    });
     character = new Character({
         resources: config.resources,
         index: 1,
         type: 1,
-        wh: maze.grid.wh * 0.35,
-        volume: config.volume
+        wh: maze.grid.wh * 0.35
+    });
+    characterS = new Character({
+        resources: config.resources,
+        index: 1,
+        type: 1,
+        wh: mazeS.grid.wh * 0.35
     });
     rocker = new Rocker({
         resources: config.resources,
@@ -338,28 +350,22 @@ function game() {
         }
     });
     
+    const initGrid = maze.grid.object.children[maze.config.enter.grid];
+    
     addFriend();
     maze.object.addChild(character.object);
+    mazeS.object.addChild(characterS.object);
     appGame.stage.addChild(maze.object);
+    appMap.stage.addChild(mazeS.object);
     appKeyboard.stage.addChild(rocker.object);
     
-    start();
-    
-    /**
-     * 开始
-     * @return {void}
-     */
-    function start() {
-        const grid = maze.grid.object.children[maze.config.enter.grid];
-        
-        initMap(grid);
-        initCharacter(grid, character);
-        appGame.start();
-        appKeyboard.start();
-        appGame.ticker.add(() => {
-            rocker.move();
-        });
-    }
+    initMap(initGrid);
+    initCharacter(maze.grid.wh, initGrid, character);
+    appGame.start();
+    appKeyboard.start();
+    appGame.ticker.add(() => {
+        rocker.move();
+    });
     
     /**
      * 移动
@@ -467,7 +473,9 @@ function game() {
                 (collision, platform) => {
                     rocker.config.flag = false;
                     character.switchCharacter(friend[i].name);
+                    characterS.switchCharacter(friend[i].name);
                     friend[i].object.object.destroy();
+                    friend[i].objectS.object.destroy();
                     friend[i].clash();
                     config.help++;
                 }
@@ -487,18 +495,29 @@ function game() {
     function addFriend() {
         for (let i = 0, n = friend.length; i < n; i++) {
             const wh = character.config.wh,
+                whS = characterS.config.wh,
                 f = new Character({
                     resources: config.resources,
                     index: i + 2,
                     type: 0,
                     wh: wh
                 }),
-                grid = maze.grid.object.children[friend[i].position];
+                fS = new Character({
+                    resources: config.resources,
+                    index: i + 2,
+                    type: 0,
+                    wh: whS
+                }),
+                grid = maze.grid.object.children[friend[i].position],
+                gridS = mazeS.grid.object.children[friend[i].position];
             
-            initCharacter(grid, f);
+            initCharacter(maze.grid.wh, grid, f);
+            initCharacter(mazeS.grid.wh, gridS, fS);
             f.autoMove(friend[i].time);
             friend[i].object = f;
+            friend[i].objectS = fS;
             maze.object.addChild(f.object);
+            mazeS.object.addChild(fS.object);
         }
     }
     
@@ -512,21 +531,36 @@ function game() {
         
         maze.object.x = -grid.x + config.margin.x;
         maze.object.y = -grid.y + appMaze.clientHeight - gridWH - config.margin.y;
+        mazeS.object.x = 0;
+        mazeS.object.y = 0;
     }
     
     /**
      * 初始化角色位置
+     * @param {object} gridWH 格子宽高
      * @param {object} grid 格子
      * @param {object} char 角色
      * @return {void}
      */
-    function initCharacter(grid, char) {
-        const gridWH = maze.grid.wh,
-            charWH = char.config.wh;
+    function initCharacter(gridWH, grid, char) {
+        const charWH = char.config.wh;
         
         char.object.x = grid.x + gridWH / 2 - charWH / 2;
         char.object.y = grid.y + gridWH / 2 - charWH / 2;
     }
+}
+
+/**
+ * 设置地图内角色位置
+ * @return {void}
+ */
+function setCharacterS() {
+    const multiple = appMazeWH * maze.config.multiple / (appMazeSWH * mazeS.config.multiple),
+        x = character.object.x / multiple,
+        y = character.object.y / multiple;
+    
+    characterS.object.x = x;
+    characterS.object.y = y;
 }
 
 /**
@@ -549,7 +583,7 @@ function animationText($dom, text) {
  */
 function showDialogue(name) {
     const $dialogue = $('#dialogue'),
-        textContnt = {
+        textContent = {
             start: [
                 '解救全员',
                 '逃出迷宫',
@@ -570,16 +604,18 @@ function showDialogue(name) {
         },
         time = 500;
     
-    for (let i = 0, n = textContnt[name].length; i < n; i++) {
+    $('#game,#keyboard,#map').removeClass('active');
+    
+    for (let i = 0, n = textContent[name].length; i < n; i++) {
         const content = $dialogue.find('.t').eq(i);
         content.removeClass('active');
-        animationText(content.find('.box_scale'), textContnt[name][i]);
+        animationText(content.find('.box_scale'), textContent[name][i]);
         setTimeout(() => {
             content.addClass('active');
         }, time * i);
     }
     
-    if (textContnt[name].length > 2) {
+    if (textContent[name].length > 2) {
         $dialogue.find('.t').eq(2).show();
     } else {
         $dialogue.find('.t')
@@ -613,6 +649,7 @@ function showDialogue(name) {
     
     if (name === 'end') {
         config.flag.start = true;
+        destroyGame();
         $dialogue.find('.btn').addClass('active');
     } else {
         $dialogue.find('.btn').removeClass('active');
@@ -637,9 +674,14 @@ function createPopup() {
                 _this.close();
             });
         },
-        openCallback(data) {
+        openCallback() {
             const _this = this;
-            _this.$content.find('.num .box_scale').html(6 - data);
+            _this.$content.find('.num .box_scale').html(6 - config.help);
+        },
+        closeCallback() {
+            setTimeout(() => {
+                config.flag.door = true;
+            }, 3000);
         }
     });
     
@@ -694,8 +736,19 @@ function createClick() {
             if (sound) sound.open();
         }
     });
-    $('#btn_out').on('click', () => {
-        popup.quit.open(config.help);
+    $('#btn_map_open').on('click', () => {
+        $('#map').addClass('active');
+        if (appMap) {
+            appMap.start();
+            setCharacterS();
+        }
+    });
+    $('#btn_map_close').on('click', () => {
+        $('#map').removeClass('active');
+        if (appMap) appMap.stop();
+    });
+    $('#btn_quit,#btn_map_out').on('click', () => {
+        if (popup.quit) popup.quit.open();
     });
     $('#btn_view').on('click', () => {
         popup.recruitment.open({
@@ -703,10 +756,45 @@ function createClick() {
             save: false
         });
     });
-    // $('#btn_restart').on('click', () => {
-    //     $('#dialogue').fadeOut(500);
-    // });
+    $('#btn_restart').on('click', () => {
+        startGame();
+        $('#dialogue').fadeOut(500);
+    });
+}
+
+/**
+ * 销毁游戏
+ * @return {void}
+ */
+function destroyGame() {
+    $('#appMaze').html('');
+    $('#appMazeS').html('');
+    $('#appRocker').html('');
     
+    if (appGame) {
+        appGame.destroy();
+        appGame = null;
+    }
+    if (appMap) {
+        appMap.destroy();
+        appMap = null;
+    }
+    if (appKeyboard) {
+        appKeyboard.destroy();
+        appKeyboard = null;
+    }
+    if (maze) {
+        maze.object.destroy();
+        maze = null;
+    }
+    if (character) {
+        character.object.destroy();
+        character = null;
+    }
+    if (rocker) {
+        rocker.object.destroy();
+        rocker = null;
+    }
 }
 
 /**

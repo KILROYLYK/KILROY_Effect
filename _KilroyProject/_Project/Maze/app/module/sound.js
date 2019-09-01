@@ -24,13 +24,8 @@ class Sound {
      * @return {void}
      */
     init() {
-        const _this = this,
-            res = _this.config.resources;
+        const _this = this;
         
-        for (const key in res) {
-            if (key === 'walk') res[key].loop = true;
-            res[key].volume = _this.config.volume;
-        }
     }
     
     /**
@@ -68,7 +63,11 @@ class Sound {
         
         if (!_this.config.flag) return;
         
-        if (sound && !sound.isPlaying) sound.play(0);
+        if (sound && !sound.isPlaying) {
+            if (name === 'walk') sound.loop = true;
+            sound.volume = _this.config.volume;
+            sound.play();
+        }
     }
     
     /**

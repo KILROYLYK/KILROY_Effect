@@ -19,8 +19,7 @@ class Character {
             resources: config.resources,
             index: config.index || 1,
             type: config.type || 0,
-            wh: config.wh || 20,
-            volume: config.volume || 0.1
+            wh: config.wh || 20
         };
         
         _this.object = new PIXI.Container();

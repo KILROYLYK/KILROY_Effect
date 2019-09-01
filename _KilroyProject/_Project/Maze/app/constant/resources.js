@@ -110,20 +110,20 @@ export const gameAnimation = [
 ];
 export const gameMusic = [
     {
-        name: 'loading',
-        url: src.media + 'loading.mp3',
-        onComplete: () => {
-        }
-    },
-    {
-        name: 'start',
-        url: src.media + 'start.mp3',
+        name: 'walk',
+        url: src.media + 'walk.mp3',
         onComplete: () => {
         }
     },
     {
         name: 'popup',
         url: src.media + 'popup.mp3',
+        onComplete: () => {
+        }
+    },
+    {
+        name: 'map',
+        url: src.media + 'map.mp3',
         onComplete: () => {
         }
     },
@@ -140,8 +140,8 @@ export const gameMusic = [
         }
     },
     {
-        name: 'walk',
-        url: src.media + 'walk.mp3',
+        name: 'end',
+        url: src.media + 'end.mp3',
         onComplete: () => {
         }
     },
