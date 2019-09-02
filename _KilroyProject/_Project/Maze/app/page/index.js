@@ -898,6 +898,6 @@ function createClick() {
 function rotateFun() {
     const $W = $(W),
         $rotateScreen = $('#rotate_screen');
-    if (Base.isPSB.platform() === 'PC' || $rotateScreen.length === 0) return;
+    // if (Base.isPSB.platform() === 'PC' || $rotateScreen.length === 0) return;
     if ($W.width() >= $W.height()) $rotateScreen.addClass('active'); else $rotateScreen.removeClass('active');
 }
