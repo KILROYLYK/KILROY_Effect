@@ -1200,7 +1200,7 @@ a:visited:hover {
   background-position: 0rem -0.72rem !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(2) {
-  height: 7rem;
+  height: 7.4rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(2) .title {
   width: 5.08rem;
@@ -1208,7 +1208,7 @@ a:visited:hover {
   background-position: 0rem -0.72rem !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(3) {
-  height: 9.1rem;
+  height: 9.2rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(3) .title {
   width: 5.08rem;
@@ -1216,7 +1216,7 @@ a:visited:hover {
   background-position: 0rem -3.2rem !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(4) {
-  height: 8.8rem;
+  height: 9.2rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(4) .title {
   width: 5.08rem;
@@ -1230,7 +1230,7 @@ a:visited:hover {
   margin: 0.2rem 0 !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(5) {
-  height: 8.55rem;
+  height: 9rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(5) .title {
   width: 5.08rem;
@@ -1241,7 +1241,7 @@ a:visited:hover {
   margin: 0.2rem 0 !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(6) {
-  height: 3.8rem;
+  height: 4rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(6) .title {
   width: 6.46rem;
@@ -1249,7 +1249,7 @@ a:visited:hover {
   background-position: 0rem -1.92rem !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(7) {
-  height: 7.85rem;
+  height: 8.8rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(7) .title {
   width: 7.14rem;
@@ -1258,6 +1258,9 @@ a:visited:hover {
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(7) .info:nth-child(4) {
   margin-top: 0.2rem;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(7) .box .focus {
+  line-height: 1rem !important;
 }
 #recruitment_popup .box_popup .box_content .content.active {
   display: block;
@@ -1293,9 +1296,9 @@ a:visited:hover {
   background-size: 100% auto;
   background-repeat: repeat-y;
   text-align: justify;
-  line-height: 0.8rem;
+  line-height: 0.88rem;
   color: #000000;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
 }
 #recruitment_popup .box_popup .box_content .content .box_scale .box .title {
   margin: 0 auto;
@@ -1329,9 +1332,10 @@ a:visited:hover {
 }
 #recruitment_popup .box_popup .box_content .content .box_scale .box .focus {
   background: #000000;
+  text-align: center;
+  line-height: 0.8rem;
   color: #fef54a;
   font-style: normal;
-  text-align: center;
 }
 #recruitment_popup .box_popup .box_content a {
   display: none;
