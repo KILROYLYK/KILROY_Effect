@@ -25,6 +25,7 @@ import Character from '../object/character';
  */
 import Preload from '../module/preload';
 import Rocker from '../module/rocker';
+import Collision from '../module/collision';
 import Sound from '../module/sound';
 
 /**
@@ -34,8 +35,8 @@ const config = {
         screen: 1,
         multiple: 4,
         margin: {
-            x: 60,
-            y: 300
+            x: 0,
+            y: 0
         },
         speed: 4,
         volume: 0.2,
@@ -68,6 +69,7 @@ const config = {
             }, 500);
         }
     }),
+    // collision = new Collision(),
     popup = {};
 
 let appMazeWH = 0,
@@ -93,17 +95,14 @@ Base.resizeWindow(() => {
  * @return {void}
  */
 function readyGame() {
-    animationText($('#loading .text .box_scale'), '点击开启盖娅校招之旅');
     $('#progress').removeClass('active');
-    setTimeout(() => {
-        $('#loading .text').addClass('active');
-        $('#loading').on('click', function () {
-            $(this).fadeOut(500);
-            setTimeout(() => {
-                showDialogue('start');
-            }, 500);
-        });
-    }, 50);
+    $('#loading .text').addClass('active');
+    $('#loading').on('click', function () {
+        $(this).fadeOut(500);
+        setTimeout(() => {
+            showDialogue('start');
+        }, 500);
+    });
 }
 
 /**
@@ -112,7 +111,7 @@ function readyGame() {
  */
 function startGame() {
     if (!config.flag.start) return;
-    if (sound) sound.pause('end');
+    if (sound) sound.pause('failure');
     config.flag.start = false;
     config.help = 0;
     $('#game,#keyboard').addClass('active');
@@ -166,6 +165,8 @@ function createGame() {
         resources: config.resources,
         volume: config.volume
     });
+    config.margin.x = appMaze.clientWidth / 6;
+    config.margin.y = appMaze.clientHeight / 3;
 }
 
 /**
@@ -175,8 +176,24 @@ function createGame() {
 function playGame() {
     const friend = [
         {
+            name: 1,
+            position: 391,
+            time: 2000,
+            object: null,
+            objectS: null,
+            clash: () => {
+                sound.play('character_1_m');
+                if (popup.recruitment) {
+                    popup.recruitment.open({
+                        type: 0,
+                        save: true
+                    });
+                }
+            }
+        },
+        {
             name: 2,
-            position: 43,
+            position: 858,
             time: 1000,
             object: null,
             objectS: null,
@@ -191,13 +208,12 @@ function playGame() {
             }
         },
         {
-            name: 3,
-            position: 352,
-            time: 2000,
+            name: 4,
+            position: 519,
+            time: 1500,
             object: null,
-            objectS: null,
             clash: () => {
-                sound.play('character_3_m');
+                sound.play('character_4_m');
                 if (popup.recruitment) {
                     popup.recruitment.open({
                         type: 2,
@@ -207,12 +223,13 @@ function playGame() {
             }
         },
         {
-            name: 4,
-            position: 724,
-            time: 1500,
+            name: 5,
+            position: 57,
+            time: 3000,
             object: null,
+            objectS: null,
             clash: () => {
-                sound.play('character_4_m');
+                sound.play('character_5_m');
                 if (popup.recruitment) {
                     popup.recruitment.open({
                         type: 3,
@@ -222,13 +239,13 @@ function playGame() {
             }
         },
         {
-            name: 5,
-            position: 519,
-            time: 3000,
+            name: 6,
+            position: 752,
+            time: 2500,
             object: null,
             objectS: null,
             clash: () => {
-                sound.play('character_5_m');
+                sound.play('character_6_m');
                 if (popup.recruitment) {
                     popup.recruitment.open({
                         type: 4,
@@ -238,13 +255,13 @@ function playGame() {
             }
         },
         {
-            name: 6,
-            position: 745,
-            time: 2500,
+            name: 7,
+            position: 352,
+            time: 2000,
             object: null,
             objectS: null,
             clash: () => {
-                sound.play('character_6_m');
+                sound.play('character_7_m');
                 if (popup.recruitment) {
                     popup.recruitment.open({
                         type: 5,
@@ -254,13 +271,13 @@ function playGame() {
             }
         },
         {
-            name: 7,
-            position: 854,
-            time: 2000,
+            name: 8,
+            position: 43,
+            time: 1800,
             object: null,
             objectS: null,
             clash: () => {
-                sound.play('character_7_m');
+                sound.play('character_8_m');
                 if (popup.recruitment) {
                     popup.recruitment.open({
                         type: 6,
@@ -285,13 +302,13 @@ function playGame() {
     });
     character = new Character({
         resources: config.resources,
-        index: 1,
+        index: 3,
         type: 1,
         wh: maze.grid.wh * 0.35
     });
     characterS = new Character({
         resources: config.resources,
-        index: 1,
+        index: 3,
         type: 1,
         wh: mazeS.grid.wh * 0.35
     });
@@ -364,7 +381,7 @@ function playGame() {
     appGame.start();
     appKeyboard.start();
     appGame.ticker.add(() => {
-        rocker.move();
+        if (rocker) rocker.move();
     });
     
     /**
@@ -377,23 +394,33 @@ function playGame() {
         const grid = maze.grid.object.children,
             appW = appMaze.clientWidth,
             appH = appMaze.clientHeight,
+            offset = {
+                x: 0,
+                y: -appH / 7
+            },
             centerX = appW / 2 * 0.99 - character.config.wh / 2,
             centerY = appH / 2 * 0.99 - character.config.wh / 2,
             characterOldX = character.chassis.object.x,
-            characterOldY = character.chassis.object.y;
-    
+            characterOldY = character.chassis.object.y,
+            obj1 = {
+                x: character.chassis.object.getGlobalPosition().x,
+                y: character.chassis.object.getGlobalPosition().y,
+                w: character.chassis.object.width,
+                h: character.chassis.object.height
+            };
+        
         let characterAddX = x,
             characterAddY = y,
             mazeAddX = 0,
             mazeAddY = 0;
         
-        if (character.chassis.object.getGlobalPosition().x >= centerX &&
-            character.chassis.object.getGlobalPosition().x <= appW - centerX) {
+        if (obj1.x >= centerX + offset.x &&
+            obj1.x <= appW - centerX + offset.x) {
             config.flag.mazeX = true;
         }
         
-        if (character.chassis.object.getGlobalPosition().y >= centerY - appW / 4 &&
-            character.chassis.object.getGlobalPosition().y <= appH - centerY - appW / 4) {
+        if (obj1.y >= centerY + offset.y &&
+            obj1.y <= appH - centerY + offset.y) {
             config.flag.mazeY = true;
         }
         
@@ -411,6 +438,41 @@ function playGame() {
             config.flag.mazeY = false;
             mazeAddY = 0;
         }
+        
+        // const speed = {
+        //     x: x,
+        //     y: y
+        // };
+        // let newSpeed = {
+        //     x: x,
+        //     y: y
+        // };
+        //
+        // for (let i = 0, n = grid.length; i < n; i++) {
+        //     const obg2 = {
+        //         x: grid[i].getGlobalPosition().x,
+        //         y: grid[i].getGlobalPosition().y,
+        //         w: grid[i].width,
+        //         h: grid[i].height
+        //     };
+        //     if (collision.detection(obj1, obg2)) {
+        //         const wall = grid[i].children[1].children;
+        //         for (let ii = 0, nn = wall.length; ii < nn; ii++) {
+        //             const obj3 = {
+        //                 x: wall[ii].getGlobalPosition().x,
+        //                 y: wall[ii].getGlobalPosition().y,
+        //                 w: wall[ii].width,
+        //                 h: wall[ii].height
+        //             };
+        //             newSpeed = collision.detectionRun(speed, obj1, obj3);
+        //         }
+        //     }
+        // }
+        //
+        // maze.object.x -= newSpeed.x;
+        // maze.object.y -= newSpeed.y;
+        // character.object.x += newSpeed.x;
+        // character.object.y += newSpeed.y;
         
         for (let i = 0, n = grid.length; i < n; i++) {
             if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
@@ -445,15 +507,15 @@ function playGame() {
                             }
                         }
                         if (platform.name === '入口' || platform.name === '出口') {
-                            if (config.flag.door) {
-                                rocker.config.flag = false;
-                                if (platform.name === '入口') {
-                                    character.object.y -= config.speed;
-                                }
-                                if (platform.name === '出口') {
-                                    character.object.y += config.speed;
-                                }
-                                config.flag.door = false;
+                            if (!config.flag.door) return;
+                            config.flag.door = false;
+                            if (rocker) rocker.stop();
+                            if (platform.name === '入口') {
+                                character.object.y -= config.speed;
+                                if (popup.quit) popup.quit.open();
+                            }
+                            if (platform.name === '出口') {
+                                character.object.y += config.speed;
                                 if (config.help < 6) {
                                     if (popup.quit) popup.quit.open();
                                 } else if (config.help === 6) {
@@ -471,11 +533,12 @@ function playGame() {
                 character.chassis.object, friend[i].object.chassis.object,
                 false, false, true,
                 (collision, platform) => {
-                    rocker.config.flag = false;
+                    if (friend[i].object.config.type === 2) return;
+                    if (rocker) rocker.stop();
                     character.switchCharacter(friend[i].name);
                     characterS.switchCharacter(friend[i].name);
-                    friend[i].object.object.destroy();
-                    friend[i].objectS.object.destroy();
+                    friend[i].object.save();
+                    friend[i].objectS.save();
                     friend[i].clash();
                     config.help++;
                 }
@@ -498,13 +561,13 @@ function playGame() {
                 whS = characterS.config.wh,
                 f = new Character({
                     resources: config.resources,
-                    index: i + 2,
+                    index: friend[i].name,
                     type: 0,
                     wh: wh
                 }),
                 fS = new Character({
                     resources: config.resources,
-                    index: i + 2,
+                    index: friend[i].name,
                     type: 0,
                     wh: whS
                 }),
@@ -551,6 +614,44 @@ function playGame() {
 }
 
 /**
+ * 销毁游戏
+ * @return {void}
+ */
+function destroyGame() {
+    config.flag.start = true;
+    config.flag.door = true;
+    
+    $('#appMaze').html('');
+    $('#appMazeS').html('');
+    $('#appRocker').html('');
+    
+    if (appGame) {
+        appGame.destroy();
+        appGame = null;
+    }
+    if (appMap) {
+        appMap.destroy();
+        appMap = null;
+    }
+    if (appKeyboard) {
+        appKeyboard.destroy();
+        appKeyboard = null;
+    }
+    if (maze) {
+        maze.object.destroy();
+        maze = null;
+    }
+    if (character) {
+        character.object.destroy();
+        character = null;
+    }
+    if (rocker) {
+        rocker.object.destroy();
+        rocker = null;
+    }
+}
+
+/**
  * 设置地图内角色位置
  * @return {void}
  */
@@ -593,13 +694,13 @@ function showDialogue(name) {
                 '全员解救成功',
                 '在盖娅等你'
             ],
+            successEnd: [
+                '来盖娅',
+                '玩真的'
+            ],
             failure: [
                 '有缘再见',
                 '我的伙伴'
-            ],
-            end: [
-                '来盖娅',
-                '玩真的'
             ]
         },
         time = 500;
@@ -635,7 +736,8 @@ function showDialogue(name) {
         $dialogue.find('.fireworks').show();
         $dialogue.find('.people').show();
         setTimeout(() => {
-            showDialogue('end');
+            destroyGame();
+            showDialogue('successEnd');
         }, 3000);
     } else {
         $dialogue.find('.fireworks').hide();
@@ -645,14 +747,17 @@ function showDialogue(name) {
     if (name === 'failure') {
         if (sound) sound.play('failure');
         setTimeout(() => {
-            showDialogue('end');
+            destroyGame();
+            if (popup.recruitment) {
+                popup.recruitment.open({
+                    type: 0,
+                    save: false
+                });
+            }
         }, 3000);
     }
     
-    if (name === 'end') {
-        if (sound) sound.play('end');
-        config.flag.start = true;
-        destroyGame();
+    if (name === 'successEnd') {
         $dialogue.find('.btn').addClass('active');
     } else {
         $dialogue.find('.btn').removeClass('active');
@@ -678,14 +783,23 @@ function createPopup() {
             });
         },
         openCallback() {
-            const _this = this;
-            rocker.stop();
-            _this.$content.find('.num .box_scale').html(6 - config.help);
+            const _this = this,
+                n = 6 - config.help;
+            if (rocker) rocker.stop();
+            
+            if (n > 0) {
+                _this.$content.find('.content .box_scale').html('还有<span>' + n + '</span>名同伴未被解救，<br>确认放弃他们吗？');
+            } else {
+                _this.$content.find('.content .box_scale').html('已解救全员，<br>确认现在放弃吗？');
+            }
         },
         closeCallback() {
-            setTimeout(() => {
-                config.flag.door = true;
-            }, 3000);
+            if (config.setTime.door) {
+                clearTimeout(config.setTime.door);
+                config.setTime.door = setTimeout(() => {
+                    config.flag.door = true;
+                }, 3000);
+            }
         }
     });
     
@@ -702,25 +816,33 @@ function createPopup() {
                     save: false
                 });
             });
-            $('#btn_review').on('click', () => {
+            $('#btn_rec_review').on('click', () => {
                 _this.open({
                     type: 0,
                     save: false
                 });
             });
+            $('#btn_rec_restart').on('click', () => {
+                _this.close();
+                $('#dialogue').fadeOut(500);
+                setTimeout(() => {
+                    startGame();
+                }, 500);
+            });
         },
         openCallback(data) {
             const _this = this;
-            rocker.stop();
+            if (rocker) rocker.stop();
             _this.$content.find('.content,a').removeClass('active');
             _this.$content.find('.content').eq(data.type).addClass('active');
             if (data.save) {
                 _this.$content.find('a').eq(0).addClass('active');
             } else {
-                if (data.type !== 5) {
+                if (data.type !== 6) {
                     _this.$content.find('a').eq(1).addClass('active');
                 } else {
                     _this.$content.find('a').eq(2).addClass('active');
+                    _this.$content.find('a').eq(3).addClass('active');
                 }
             }
         }
@@ -754,7 +876,7 @@ function createClick() {
         if (appMap) appMap.stop();
         if (sound) sound.play('map');
     });
-    $('#btn_quit,#btn_map_out').on('click', () => {
+    $('#btn_quit,#btn_map_quit').on('click', () => {
         if (popup.quit) popup.quit.open();
     });
     $('#btn_view').on('click', () => {
@@ -767,41 +889,6 @@ function createClick() {
         startGame();
         $('#dialogue').fadeOut(500);
     });
-}
-
-/**
- * 销毁游戏
- * @return {void}
- */
-function destroyGame() {
-    $('#appMaze').html('');
-    $('#appMazeS').html('');
-    $('#appRocker').html('');
-    
-    if (appGame) {
-        appGame.destroy();
-        appGame = null;
-    }
-    if (appMap) {
-        appMap.destroy();
-        appMap = null;
-    }
-    if (appKeyboard) {
-        appKeyboard.destroy();
-        appKeyboard = null;
-    }
-    if (maze) {
-        maze.object.destroy();
-        maze = null;
-    }
-    if (character) {
-        character.object.destroy();
-        character = null;
-    }
-    if (rocker) {
-        rocker.object.destroy();
-        rocker = null;
-    }
 }
 
 /**

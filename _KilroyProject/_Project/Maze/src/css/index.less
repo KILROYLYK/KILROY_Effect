@@ -1,8 +1,6 @@
 //******Public******//
 @import 'base';
 
-@wh: 250px;
-
 //***Base***//
 html,
 body {
@@ -154,7 +152,7 @@ a:visited:hover {
     display: inline-block;
     font-style: normal;
     
-    .loop(@i) when (@i<=15) {
+    .loop(@i) when (@i<=10) {
       &:nth-child(@{i}) {
         .autoTransition(100*@px*@scale, 0*@px, 0.5s, @i*0.07s);
       }
@@ -174,18 +172,18 @@ a:visited:hover {
   overflow: hidden;
   .position();
   z-index: 0;
-  width: 570*@px;
-  height: 570*@px;
+  width: 700*@px;
+  height: 700*@px;
   margin: auto;
 }
 
 .appRocker {
   overflow: hidden;
-  .position();
+  .position(top);
   z-index: 0;
-  width: @wh;
-  height: @wh;
-  margin: auto;
+  width: 400*@px;
+  height: 400*@px;
+  margin: 0 auto;
 }
 
 .game {
@@ -194,7 +192,7 @@ a:visited:hover {
   z-index: 0;
   opacity: 0;
   .transition(opacity @time);
-  //pointer-events: none;
+  pointer-events: none;
   
   &.active {
     opacity: 1;
@@ -205,7 +203,7 @@ a:visited:hover {
   overflow: hidden;
   .position(bottom);
   z-index: 0;
-  height: 300px;
+  height: 450*@px;
   opacity: 0;
   .transition(opacity @time);
   
@@ -214,12 +212,14 @@ a:visited:hover {
   }
   
   .btn_1 {
+    .transform(scale(0.9));
+    
     &:nth-child(2) {
-      .position(absolute, auto, auto, 10*@px, 10*@px)
+      .position(absolute, auto, auto, 20*@px, 20*@px);
     }
     
     &:nth-child(3) {
-      .position(absolute, auto, 10*@px, 10*@px, auto)
+      .position(absolute, auto, 20*@px, 20*@px, auto)
     }
   }
 }
@@ -280,9 +280,15 @@ a:visited:hover {
     width: 100%;
     height: 60*@px;
     margin: 0 auto;
+    opacity: 0;
     .font(center, 60*@px*@scale, @color_1, 50*@px*@scale, true);
     .fontSpacing(5*@px);
     pointer-events: none;
+    
+    &.active {
+      opacity: 0.5;
+      .animation(opacity 2s ease infinite);
+    }
   }
 }
 
@@ -432,24 +438,24 @@ a:visited:hover {
     .transform(translateX(100%));
   }
   
+  .box_map {
+    position: relative;
+    margin: 10*@px auto 0;
+    .bg('map_bg.png', 730*@px, 730*@px, true);
+    pointer-events: none;
+  }
+  
   .box {
-    .position();
-    width: 610*@px;
-    height: 960*@px;
-    margin: auto;
-    
-    .box_map {
-      position: relative;
-      .bg('map_bg.png', 610*@px, 615*@px, true);
-    }
+    position: relative;
+    height: calc(100% - 740 * @px);
     
     .box_qr {
-      position: relative;
-      margin-top: (960-615-322)*@px;
+      .position();
+      margin: auto;
       .bg('map_qr_bg.png', 610*@px, 322*@px, true);
       
       .qr {
-        .position(left, 40*@px);
+        .position(absolute, 40*@px, auto, auto, 40*@px);
         width: 220*@px;
         height: 220*@px;
         margin: auto;
@@ -462,19 +468,25 @@ a:visited:hover {
           height: 204*@px;
           margin: auto;
         }
+        
+        .text {
+          .position(bottom, -40*@px);
+          height: 30*@px;
+          .font(center, 30*@px*@scale, #fff315, 20*@px*@scale);
+        }
       }
       
       .btn_1 {
         position: absolute;
         
         &:nth-child(2) {
-          top: 50*@px;
+          top: 60*@px;
           right: 40*@px;
         }
         
         &:nth-child(3) {
           right: 40*@px;
-          bottom: 50*@px;
+          bottom: 60*@px;
         }
       }
     }
@@ -482,6 +494,20 @@ a:visited:hover {
 }
 
 //***Animation***//
+.am_opacity() {
+  from {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.creatAnimation(opacity, .am_opacity());
+
 .am_fireworks() {
   from {
     background-position: 0 0;

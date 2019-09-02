@@ -1,6 +1,6 @@
 {"frames": {
 
-"character_2_l_00.png":
+"character_8_l_00.png":
 {
 	"frame": {"x":1,"y":1,"w":120,"h":144},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":144},
 	"sourceSize": {"w":120,"h":144}
 },
-"character_2_l_01.png":
+"character_8_l_01.png":
 {
 	"frame": {"x":1,"y":147,"w":120,"h":144},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":144},
 	"sourceSize": {"w":120,"h":144}
 },
-"character_2_r_00.png":
+"character_8_r_00.png":
 {
 	"frame": {"x":1,"y":293,"w":120,"h":144},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":144},
 	"sourceSize": {"w":120,"h":144}
 },
-"character_2_r_01.png":
+"character_8_r_01.png":
 {
 	"frame": {"x":1,"y":439,"w":120,"h":144},
 	"rotated": false,
@@ -33,16 +33,16 @@
 	"sourceSize": {"w":120,"h":144}
 }},
 "animations": {
-	"character_2_l": ["character_2_l_00.png","character_2_l_01.png"],
-	"character_2_r": ["character_2_r_00.png","character_2_r_01.png"]
+	"character_8_l": ["character_8_l_00.png","character_8_l_01.png"],
+	"character_8_r": ["character_8_r_00.png","character_8_r_01.png"]
 },
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "https://image.gaeamobile.net/image/20190902/152104/character_2.png",
+	"image": "https://image.gaeamobile.net/image/20190902/152104/character_8.png",
 	"format": "RGBA8888",
 	"size": {"w":122,"h":584},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8b218906d75de299a95205566c3727bc:2d536fd255afcff3bfd463495286b5a0:cfcf1c9cbf6dcf2c60432f9a41dcc927$"
+	"smartupdate": "$TexturePacker:SmartUpdate:415a75a5cd7f5ac1e18a83141893bb23:6b30ec4ed9c03ea75041f3cb31f8faa8:e33765cd50d887b4b3a30b4e148faacc$"
 }
 }

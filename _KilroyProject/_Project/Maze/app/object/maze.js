@@ -60,9 +60,9 @@ class Maze {
         };
         
         _this.border = {
-            width: 2 * _this.config.multiple * 3.62,
-            height: 2 * _this.config.multiple,
-            num: 58
+            width: _this.map.wh / 50,
+            height: _this.map.wh / 50 / (96 / 27),
+            num: 50
         };
         
         _this.img = {

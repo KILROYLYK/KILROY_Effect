@@ -19,7 +19,10 @@ class Character {
             resources: config.resources,
             index: config.index || 1,
             type: config.type || 0,
-            wh: config.wh || 20
+            wh: config.wh || 20,
+            setTime: {
+                auto: null
+            }
         };
         
         _this.object = new PIXI.Container();
@@ -59,6 +62,12 @@ class Character {
         _this.exclamation = {
             width: _this.config.wh * 1.2,
             sprite: _this.config.resources.exclamation.texture,
+            object: null
+        };
+        
+        _this.heart = {
+            wh: _this.config.wh * 1.2,
+            sprite: _this.config.resources.heart.texture,
             object: null
         };
         
@@ -149,7 +158,11 @@ class Character {
         
         if (_this.config.type !== 0) return;
         
-        setInterval(() => {
+        _this.config.setTime.auto = setInterval(() => {
+            if (_this.config.type === 2) {
+                clearInterval(_this.config.setTime.auto);
+                return;
+            }
             if (type === 'left') {
                 type = 'right';
                 _this.animationRight();
@@ -172,6 +185,19 @@ class Character {
         _this.people.index = index;
         _this.people.sprite = _this.config.resources['character_' + _this.people.index].spritesheet;
         _this.animationRight();
+    }
+    
+    /**
+     * 解救
+     * @return {void}
+     */
+    save() {
+        const _this = this;
+        
+        _this.config.type = 2;
+        _this.people.object.destroy();
+        _this.exclamation.object.destroy();
+        _this.heart.object.alpha = 1;
     }
 }
 
@@ -207,6 +233,7 @@ function createShadow() {
         _this.shadow.width,
         _this.shadow.height
     );
+    _this.shadow.object.zIndex = 0;
     _this.shadow.object.endFill();
     _this.object.addChild(_this.shadow.object);
 }
@@ -234,6 +261,7 @@ function createPeople() {
     
     if (_this.config.type === 0) {
         createExclamation.call(_this);
+        createHeart.call(_this);
     } else if (_this.config.type === 1) {
         createDust.call(_this);
     }
@@ -286,6 +314,26 @@ function createExclamation() {
     _this.exclamation.object.y = y;
     
     _this.object.addChild(_this.exclamation.object);
+}
+
+/**
+ * 创建心
+ * @return {void}
+ */
+function createHeart() {
+    const _this = this,
+        wh = _this.heart.wh,
+        x = (_this.config.wh - wh) / 2,
+        y = -wh * 0.4;
+    
+    _this.heart.object = new PIXI.Sprite.from(_this.heart.sprite);
+    _this.heart.object.width = wh;
+    _this.heart.object.height = wh;
+    _this.heart.object.x = x;
+    _this.heart.object.y = y;
+    _this.heart.object.alpha = 0;
+    
+    _this.object.addChild(_this.heart.object);
 }
 
 export default Character;

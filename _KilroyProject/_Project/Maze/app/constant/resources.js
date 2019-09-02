@@ -52,8 +52,20 @@ export const gameImg = [
         }
     },
     {
+        name: 'heart',
+        url: src.img + 'game_heart.png',
+        onComplete: () => {
+        }
+    },
+    {
         name: 'rocker',
         url: src.img + 'game_rocker.png',
+        onComplete: () => {
+        }
+    },
+    {
+        name: 'rocker_button',
+        url: src.img + 'game_rocker_button.png',
         onComplete: () => {
         }
     }
@@ -102,6 +114,12 @@ export const gameAnimation = [
         }
     },
     {
+        name: 'character_8',
+        url: src.json + 'character_8.json',
+        onComplete: () => {
+        }
+    },
+    {
         name: 'dust',
         url: src.json + 'dust.json',
         onComplete: () => {
@@ -112,12 +130,6 @@ export const gameMusic = [
     {
         name: 'walk',
         url: src.media + 'walk.mp3',
-        onComplete: () => {
-        }
-    },
-    {
-        name: 'popup',
-        url: src.media + 'popup.mp3',
         onComplete: () => {
         }
     },
@@ -134,14 +146,14 @@ export const gameMusic = [
         }
     },
     {
-        name: 'failure',
-        url: src.media + 'failure.mp3',
+        name: 'suck',
+        url: src.media + 'suck.mp3',
         onComplete: () => {
         }
     },
     {
-        name: 'end',
-        url: src.media + 'end.mp3',
+        name: 'failure',
+        url: src.media + 'failure.mp3',
         onComplete: () => {
         }
     },
@@ -184,6 +196,12 @@ export const gameMusic = [
     {
         name: 'character_7_m',
         url: src.media + 'character_7.mp3',
+        onComplete: () => {
+        }
+    },
+    {
+        name: 'character_8_m',
+        url: src.media + 'character_8.mp3',
         onComplete: () => {
         }
     }
