@@ -535,7 +535,7 @@ a:visited:hover {
   right: 0;
   bottom: 0rem;
   z-index: 0;
-  height: 4.5rem;
+  height: 5rem;
   opacity: 0;
   -webkit-transition: opacity 0.5s;
   -moz-transition: opacity 0.5s;
@@ -1207,34 +1207,34 @@ a:visited:hover {
   background-position: 0rem -0.72rem !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(3) {
-  height: 8.55rem;
+  height: 9.1rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(3) .title {
   width: 5.08rem;
   height: 1rem;
-  background-position: 0rem -4.4rem !important;
-}
-#recruitment_popup .box_popup .box_content .content:nth-child(3) .l_2 {
-  margin: 0.2rem 0 !important;
+  background-position: 0rem -3.2rem !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(4) {
-  height: 5.9rem;
+  height: 8.8rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(4) .title {
   width: 5.08rem;
   height: 1rem;
   background-position: 0rem -3.2rem !important;
 }
+#recruitment_popup .box_popup .box_content .content:nth-child(4) .info {
+  text-indent: 0 !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(4) .l_2 {
+  margin: 0.2rem 0 !important;
+}
 #recruitment_popup .box_popup .box_content .content:nth-child(5) {
-  height: 8.35rem;
+  height: 8.55rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(5) .title {
   width: 5.08rem;
   height: 1rem;
-  background-position: 0rem -3.2rem !important;
-}
-#recruitment_popup .box_popup .box_content .content:nth-child(5) .info {
-  text-indent: 0 !important;
+  background-position: 0rem -4.4rem !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(5) .l_2 {
   margin: 0.2rem 0 !important;
@@ -1327,7 +1327,6 @@ a:visited:hover {
   text-indent: 2em;
 }
 #recruitment_popup .box_popup .box_content .content .box_scale .box .focus {
-  padding: 0.04rem 0;
   background: #000000;
   color: #fef54a;
   font-style: normal;

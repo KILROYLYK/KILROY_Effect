@@ -184,6 +184,18 @@ class Character {
         _this.config.index = index;
         _this.people.index = index;
         _this.people.sprite = _this.config.resources['character_' + _this.people.index].spritesheet;
+        
+        const spriteW = _this.people.sprite.textures['character_' + _this.config.index + '_r_00.png'].width,
+            spriteH = _this.people.sprite.textures['character_' + _this.config.index + '_r_00.png'].height,
+            width = _this.people.width,
+            height = width / (spriteW / spriteH),
+            x = -(width - _this.config.wh) / 2,
+            y = -(height - _this.config.wh) - _this.shadow.height / 2;
+        
+        _this.people.object.width = width;
+        _this.people.object.height = height;
+        _this.people.object.x = x;
+        _this.people.object.y = y;
         _this.animationRight();
     }
     

@@ -39,8 +39,9 @@ const config = {
             y: 0
         },
         speed: 4,
-        volume: 0.2,
+        volume: 0.5,
         color: 0xEAD8A0,
+        friend: 7,
         help: 0,
         resources: null,
         flag: {
@@ -516,9 +517,9 @@ function playGame() {
                             }
                             if (platform.name === '出口') {
                                 character.object.y += config.speed;
-                                if (config.help < 6) {
+                                if (config.help < config.friend) {
                                     if (popup.quit) popup.quit.open();
-                                } else if (config.help === 6) {
+                                } else if (config.help === config.friend) {
                                     showDialogue('success');
                                 }
                             }
@@ -784,7 +785,7 @@ function createPopup() {
         },
         openCallback() {
             const _this = this,
-                n = 6 - config.help;
+                n = config.friend - config.help;
             if (rocker) rocker.stop();
             
             if (n > 0) {
