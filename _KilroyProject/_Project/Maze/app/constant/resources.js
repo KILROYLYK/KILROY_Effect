@@ -128,6 +128,18 @@ export const gameAnimation = [
 ];
 export const gameMusic = [
     {
+        name: 'loading',
+        url: src.media + 'loading.mp3',
+        onComplete: () => {
+        }
+    },
+    {
+        name: 'dialogue',
+        url: src.media + 'dialogue.mp3',
+        onComplete: () => {
+        }
+    },
+    {
         name: 'walk',
         url: src.media + 'walk.mp3',
         onComplete: () => {
@@ -145,12 +157,12 @@ export const gameMusic = [
         onComplete: () => {
         }
     },
-    {
-        name: 'suck',
-        url: src.media + 'suck.mp3',
-        onComplete: () => {
-        }
-    },
+    // {
+    //     name: 'suck',
+    //     url: src.media + 'suck.mp3',
+    //     onComplete: () => {
+    //     }
+    // },
     {
         name: 'failure',
         url: src.media + 'failure.mp3',

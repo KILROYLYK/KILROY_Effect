@@ -8,7 +8,7 @@ import { Base } from '../../../_Base/js/window';
  */
 export const px = Base.isPSB.platform() === 'PC' ? 1 : 2;
 export const src = {
-    img: 'https://image.gaeamobile.net/image/20190902/163409/',
+    img: 'https://image.gaeamobile.net/image/20190903/153912/',
     json: 'https://image.gaeamobile.net/javascript/20190902/152446/',
-    media: 'https://image.gaeamobile.net/video/20190902/162952/'
+    media: 'https://image.gaeamobile.net/video/20190903/145106/'
 };

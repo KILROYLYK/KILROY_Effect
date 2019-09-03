@@ -1,0 +1,1362 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+html {
+  font-size: 14px;
+}
+body {
+  position: relative;
+  font-size: 14px;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+}
+a:link,
+a:active,
+a:visited,
+a:hover,
+a:visited:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+a,
+i,
+b,
+font,
+strong,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+li,
+div,
+section {
+  outline: 0;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-focus-ring-color: rgba(0, 0, 0, 0);
+}
+img {
+  border: none;
+}
+img[src=''] {
+  opacity: 0 !important;
+}
+ul,
+li,
+img,
+span,
+p,
+font,
+strong,
+em,
+ol,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+dl,
+dt,
+dd,
+input,
+tboby,
+form {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+li {
+  list-style: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+input,
+select,
+textarea,
+button {
+  border-radius: 0;
+  outline: none;
+}
+input {
+  -webkit-appearance: none;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+@media screen and (min-width: 320px) {
+  html {
+    font-size: 42.67px;
+  }
+}
+@media screen and (min-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media screen and (min-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media screen and (min-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media screen and (min-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media screen and (min-width: 640px) {
+  html {
+    font-size: 85.33px;
+  }
+}
+@media screen and (min-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+html,
+body {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: '微软雅黑', 'Microsoft YaHei', 'Hiragino Sans GB', '宋体', '华文楷体', '楷体', Arial, Verdana, sans-serif;
+  background: #000000;
+}
+body {
+  width: 7.5rem;
+  min-width: 300px;
+  max-width: 750px;
+  margin: 0 auto;
+  font-size: 0.12rem;
+  color: #000000;
+}
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
+a:link,
+a:active,
+a:visited,
+a:hover,
+a:visited:hover {
+  color: #ffffff;
+}
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
+.disabled {
+  -webkit-filter: grayscale(100);
+  -moz-filter: grayscale(100);
+  -o-filter: grayscale(100);
+  -ms-filter: grayscale(100);
+  filter: grayscale(100);
+  pointer-events: none;
+}
+.hover:hover {
+  -webkit-filter: brightness(130%);
+  -moz-filter: brightness(130%);
+  -o-filter: brightness(130%);
+  -ms-filter: brightness(130%);
+  filter: brightness(130%);
+}
+.box_scale {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  width: 200%;
+  height: 200%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transform: translate(-50%, -50%) scale(0.5);
+  -moz-transform: translate(-50%, -50%) scale(0.5);
+  -o-transform: translate(-50%, -50%) scale(0.5);
+  -ms-transform: translate(-50%, -50%) scale(0.5);
+  transform: translate(-50%, -50%) scale(0.5);
+}
+.box_vertical {
+  display: table;
+  position: relative;
+  height: 100%;
+}
+.box_vertical .box_middle {
+  display: table-cell;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  vertical-align: middle;
+}
+.box_scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.rotate_screen {
+  display: none;
+  position: fixed;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  z-index: 100;
+  background: -webkit-radial-gradient(#303136, #000000) ;
+  background: -moz-radial-gradient(#303136, #000000) ;
+  background: -o-radial-gradient(#303136, #000000) ;
+  background: -ms-radial-gradient(#303136, #000000) ;
+  background: radial-gradient(#303136, #000000) ;
+}
+.rotate_screen:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  margin: auto;
+  width: 1.68rem;
+  height: 1.66rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/rotate_screen.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.68rem 1.66rem;
+  pointer-events: none;
+}
+.rotate_screen.active {
+  display: block;
+}
+.btn.btn_1,
+.btn.btn_2 {
+  display: block;
+  position: relative;
+  width: 2.8rem;
+  height: 0.8rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.btn.btn_1 {
+  border-width: 0.2rem 0.3rem;
+  border-style: solid;
+  border-image-source: url('https://image.gaeamobile.net/image/20190903/153912/btn_1.png');
+  border-image-repeat: round;
+  border-image-slice: 20 30 fill;
+  border-image-outset: 0;
+  text-align: center;
+  line-height: 0.8rem;
+  color: #ffffff;
+  font-size: 0.64rem;
+  font-weight: 600;
+}
+.btn.btn_2 {
+  border-width: 0.2rem 0.3rem;
+  border-style: solid;
+  border-image-source: url('https://image.gaeamobile.net/image/20190903/153912/btn_2.png');
+  border-image-repeat: round;
+  border-image-slice: 20 30 fill;
+  border-image-outset: 0;
+  text-align: center;
+  line-height: 0.8rem;
+  color: #000000;
+  font-size: 0.64rem;
+  font-weight: 600;
+}
+.btn_sound {
+  position: absolute;
+  top: 0.25rem;
+  left: auto;
+  right: 0.25rem;
+  bottom: auto;
+  z-index: 3;
+  width: 0.64rem;
+  height: 0.65rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/sound.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.38rem 0.65rem;
+  background-position: -0.74rem 0;
+  pointer-events: all;
+}
+.btn_sound.active {
+  background-position: 0 0;
+}
+.amText.active i {
+  opacity: 1 !important;
+  -webkit-transform: translate(0, 0) !important;
+  -moz-transform: translate(0, 0) !important;
+  -o-transform: translate(0, 0) !important;
+  -ms-transform: translate(0, 0) !important;
+  transform: translate(0, 0) !important;
+  pointer-events: all !important;
+}
+.amText i {
+  display: inline-block;
+  font-style: normal;
+}
+.amText i:nth-child(1) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.07s, transform 0.5s 0.07s;
+  -moz-transition: opacity 0.5s 0.07s, transform 0.5s 0.07s;
+  -o-transition: opacity 0.5s 0.07s, transform 0.5s 0.07s;
+  -ms-transition: opacity 0.5s 0.07s, transform 0.5s 0.07s;
+  transition: opacity 0.5s 0.07s, transform 0.5s 0.07s;
+  pointer-events: none;
+}
+.amText i:nth-child(2) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.14s, transform 0.5s 0.14s;
+  -moz-transition: opacity 0.5s 0.14s, transform 0.5s 0.14s;
+  -o-transition: opacity 0.5s 0.14s, transform 0.5s 0.14s;
+  -ms-transition: opacity 0.5s 0.14s, transform 0.5s 0.14s;
+  transition: opacity 0.5s 0.14s, transform 0.5s 0.14s;
+  pointer-events: none;
+}
+.amText i:nth-child(3) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.21s, transform 0.5s 0.21s;
+  -moz-transition: opacity 0.5s 0.21s, transform 0.5s 0.21s;
+  -o-transition: opacity 0.5s 0.21s, transform 0.5s 0.21s;
+  -ms-transition: opacity 0.5s 0.21s, transform 0.5s 0.21s;
+  transition: opacity 0.5s 0.21s, transform 0.5s 0.21s;
+  pointer-events: none;
+}
+.amText i:nth-child(4) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.28s, transform 0.5s 0.28s;
+  -moz-transition: opacity 0.5s 0.28s, transform 0.5s 0.28s;
+  -o-transition: opacity 0.5s 0.28s, transform 0.5s 0.28s;
+  -ms-transition: opacity 0.5s 0.28s, transform 0.5s 0.28s;
+  transition: opacity 0.5s 0.28s, transform 0.5s 0.28s;
+  pointer-events: none;
+}
+.amText i:nth-child(5) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.35s, transform 0.5s 0.35s;
+  -moz-transition: opacity 0.5s 0.35s, transform 0.5s 0.35s;
+  -o-transition: opacity 0.5s 0.35s, transform 0.5s 0.35s;
+  -ms-transition: opacity 0.5s 0.35s, transform 0.5s 0.35s;
+  transition: opacity 0.5s 0.35s, transform 0.5s 0.35s;
+  pointer-events: none;
+}
+.amText i:nth-child(6) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.42s, transform 0.5s 0.42s;
+  -moz-transition: opacity 0.5s 0.42s, transform 0.5s 0.42s;
+  -o-transition: opacity 0.5s 0.42s, transform 0.5s 0.42s;
+  -ms-transition: opacity 0.5s 0.42s, transform 0.5s 0.42s;
+  transition: opacity 0.5s 0.42s, transform 0.5s 0.42s;
+  pointer-events: none;
+}
+.amText i:nth-child(7) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.49s, transform 0.5s 0.49s;
+  -moz-transition: opacity 0.5s 0.49s, transform 0.5s 0.49s;
+  -o-transition: opacity 0.5s 0.49s, transform 0.5s 0.49s;
+  -ms-transition: opacity 0.5s 0.49s, transform 0.5s 0.49s;
+  transition: opacity 0.5s 0.49s, transform 0.5s 0.49s;
+  pointer-events: none;
+}
+.amText i:nth-child(8) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.56s, transform 0.5s 0.56s;
+  -moz-transition: opacity 0.5s 0.56s, transform 0.5s 0.56s;
+  -o-transition: opacity 0.5s 0.56s, transform 0.5s 0.56s;
+  -ms-transition: opacity 0.5s 0.56s, transform 0.5s 0.56s;
+  transition: opacity 0.5s 0.56s, transform 0.5s 0.56s;
+  pointer-events: none;
+}
+.amText i:nth-child(9) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.63s, transform 0.5s 0.63s;
+  -moz-transition: opacity 0.5s 0.63s, transform 0.5s 0.63s;
+  -o-transition: opacity 0.5s 0.63s, transform 0.5s 0.63s;
+  -ms-transition: opacity 0.5s 0.63s, transform 0.5s 0.63s;
+  transition: opacity 0.5s 0.63s, transform 0.5s 0.63s;
+  pointer-events: none;
+}
+.amText i:nth-child(10) {
+  opacity: 0;
+  -webkit-transform: translate(2rem, 0rem);
+  -moz-transform: translate(2rem, 0rem);
+  -o-transform: translate(2rem, 0rem);
+  -ms-transform: translate(2rem, 0rem);
+  transform: translate(2rem, 0rem);
+  -webkit-transition: opacity 0.5s 0.7s, transform 0.5s 0.7s;
+  -moz-transition: opacity 0.5s 0.7s, transform 0.5s 0.7s;
+  -o-transition: opacity 0.5s 0.7s, transform 0.5s 0.7s;
+  -ms-transition: opacity 0.5s 0.7s, transform 0.5s 0.7s;
+  transition: opacity 0.5s 0.7s, transform 0.5s 0.7s;
+  pointer-events: none;
+}
+.appMaze {
+  overflow: hidden;
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  z-index: 0;
+}
+.appMazeS {
+  overflow: hidden;
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  z-index: 0;
+  width: 7rem;
+  height: 7rem;
+  margin: auto;
+}
+.appRocker {
+  overflow: hidden;
+  position: absolute;
+  top: 0rem;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  z-index: 0;
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto;
+}
+.game {
+  overflow: hidden;
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  z-index: 0;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+.game.active {
+  opacity: 1;
+}
+.keyboard {
+  overflow: hidden;
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0rem;
+  z-index: 0;
+  height: 5rem;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+.keyboard.active {
+  opacity: 1;
+}
+.keyboard .btn_1 {
+  -webkit-transform: scale(0.9);
+  -moz-transform: scale(0.9);
+  -o-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  transform: scale(0.9);
+}
+.keyboard .btn_1:nth-child(2) {
+  position: absolute;
+  top: auto;
+  left: 0.2rem;
+  right: auto;
+  bottom: 0.2rem;
+}
+.keyboard .btn_1:nth-child(3) {
+  position: absolute;
+  top: auto;
+  left: auto;
+  right: 0.2rem;
+  bottom: 0.2rem;
+}
+.loading {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  overflow: hidden;
+  z-index: 5;
+  background: #000000;
+}
+.loading:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 15%;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  margin: 0 auto;
+  width: 6.2rem;
+  height: 4.26rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/slogan.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 6.2rem 4.26rem;
+}
+.loading .progress {
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 3rem;
+  margin: 0 auto;
+  opacity: 0;
+  width: 5.61rem;
+  height: 0.22rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/load_bg.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 5.61rem 0.22rem;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+.loading .progress.active {
+  opacity: 1;
+}
+.loading .progress .strip {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0.64rem;
+  right: 0;
+  bottom: 0;
+  height: 0.18rem;
+  margin: auto 0;
+}
+.loading .progress .strip i {
+  display: block;
+  position: relative;
+  width: 0;
+  height: 100%;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/load_progress.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto 0.18rem;
+  background-repeat: repeat-x;
+}
+.loading .progress .strip i:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -0.87rem;
+  left: auto;
+  right: -0.25rem;
+  bottom: auto;
+  width: 0.86rem;
+  height: 0.87rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/load_character.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 0.86rem 0.87rem;
+}
+.loading .text {
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 3rem;
+  overflow: hidden;
+  width: 100%;
+  height: 0.6rem;
+  margin: 0 auto;
+  opacity: 0;
+  text-align: center;
+  line-height: 1.2rem;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-indent: 0.05rem;
+  letter-spacing: 0.05rem;
+  pointer-events: none;
+}
+.loading .text.active {
+  opacity: 0.5;
+  -webkit-animation: opacity 2s ease infinite;
+  -moz-animation: opacity 2s ease infinite;
+  -o-animation: opacity 2s ease infinite;
+  -ms-animation: opacity 2s ease infinite;
+  animation: opacity 2s ease infinite;
+}
+.dialogue {
+  display: none;
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  overflow: hidden;
+  z-index: 2;
+  background: #000000;
+}
+.dialogue .content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.dialogue .content .fireworks {
+  display: none;
+  position: relative;
+  height: 4.5rem;
+}
+.dialogue .content .fireworks div {
+  position: absolute;
+  width: 3.32rem;
+  height: 2.64rem;
+  background-size: 1300% 2.64rem !important;
+  background-repeat: repeat-x !important;
+  -webkit-animation: fireworks 2s steps(13) infinite;
+  -moz-animation: fireworks 2s steps(13) infinite;
+  -o-animation: fireworks 2s steps(13) infinite;
+  -ms-animation: fireworks 2s steps(13) infinite;
+  animation: fireworks 2s steps(13) infinite;
+}
+.dialogue .content .fireworks div:nth-child(1) {
+  top: 0rem;
+  left: 0.3rem;
+  animation-delay: 0.2s;
+}
+.dialogue .content .fireworks div:nth-child(2) {
+  right: 0.3rem;
+  bottom: 0;
+  animation-delay: 0.6s;
+}
+.dialogue .content .fireworks div:nth-child(3) {
+  top: 0.5rem;
+  left: 1rem;
+  animation-delay: 0.5s;
+}
+.dialogue .content .fireworks div:nth-child(4) {
+  top: 0.5rem;
+  right: 1rem;
+  animation-delay: 0.8s;
+}
+.dialogue .content .fireworks div:nth-child(5) {
+  left: 0.8rem;
+  bottom: 0;
+  animation-delay: 0.4s;
+}
+.dialogue .content .fireworks div:nth-child(6) {
+  top: 0;
+  right: 0.5rem;
+  bottom: 0;
+  margin: auto 0;
+  animation-delay: 1.2s;
+}
+.dialogue .content .fireworks div.f_r {
+  background: url('https://image.gaeamobile.net/image/20190903/153912/fireworks_red.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto auto;
+}
+.dialogue .content .fireworks div.f_y {
+  background: url('https://image.gaeamobile.net/image/20190903/153912/fireworks_yellow.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto auto;
+}
+.dialogue .content .fireworks div.f_b {
+  background: url('https://image.gaeamobile.net/image/20190903/153912/fireworks_blue.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto auto;
+}
+.dialogue .content .people {
+  display: none;
+  position: relative;
+  margin: 0.5rem 0;
+  width: 7.5rem;
+  height: 1.5rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/success_people.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 7.5rem 1.5rem;
+}
+.dialogue .content .text {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.dialogue .content .text .t {
+  position: relative;
+  overflow: hidden;
+  height: 0.7rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  line-height: 1.4rem;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.dialogue .content .text .t:nth-child(1) {
+  text-align: left;
+}
+.dialogue .content .text .t:nth-child(2) {
+  text-align: right;
+}
+.dialogue .content .text .t:last-child {
+  margin: 0;
+}
+.dialogue .content .text .t .box_scale {
+  padding: 0 1.6rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.dialogue .content .btn_1 {
+  display: none;
+  margin: 0.5rem auto;
+}
+.dialogue .content .btn_1.active {
+  display: block;
+}
+.map {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  right: auto;
+  bottom: 0;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  transition: all 0.5s;
+}
+.map.active {
+  opacity: 1;
+  -webkit-transform: translateX(100%);
+  -moz-transform: translateX(100%);
+  -o-transform: translateX(100%);
+  -ms-transform: translateX(100%);
+  transform: translateX(100%);
+}
+.map .box_map {
+  position: relative;
+  margin: 0.1rem auto 0;
+  width: 7.3rem;
+  height: 7.3rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/map_bg.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 7.3rem 7.3rem;
+  pointer-events: none;
+}
+.map .box {
+  position: relative;
+  height: calc(100% - 740 * 0.01rem);
+}
+.map .box .box_qr {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  margin: auto;
+  width: 6.1rem;
+  height: 3.22rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/map_qr_bg.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 6.1rem 3.22rem;
+}
+.map .box .box_qr .qr {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  right: auto;
+  bottom: auto;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin: auto;
+  background: #fff315;
+}
+.map .box .box_qr .qr img {
+  display: block;
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  width: 2.04rem;
+  height: 2.04rem;
+  margin: auto;
+}
+.map .box .box_qr .qr .text {
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: -0.4rem;
+  height: 0.3rem;
+  text-align: center;
+  line-height: 0.6rem;
+  color: #fff315;
+  font-size: 0.4rem;
+}
+.map .box .box_qr .btn_1 {
+  position: absolute;
+}
+.map .box .box_qr .btn_1:nth-child(2) {
+  top: 0.6rem;
+  right: 0.4rem;
+}
+.map .box .box_qr .btn_1:nth-child(3) {
+  right: 0.4rem;
+  bottom: 0.6rem;
+}
+@keyframes opacity {
+  from {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@-moz-keyframes opacity {
+  from {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@-webkit-keyframes opacity {
+  from {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@-o-keyframes opacity {
+  from {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@keyframes fireworks {
+  from {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: -1300% 0;
+  }
+  100% {
+    background-position: -1300% 0;
+  }
+}
+@-moz-keyframes fireworks {
+  from {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: -1300% 0;
+  }
+  100% {
+    background-position: -1300% 0;
+  }
+}
+@-webkit-keyframes fireworks {
+  from {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: -1300% 0;
+  }
+  100% {
+    background-position: -1300% 0;
+  }
+}
+@-o-keyframes fireworks {
+  from {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: -1300% 0;
+  }
+  100% {
+    background-position: -1300% 0;
+  }
+}
+.popup {
+  display: none;
+  position: fixed;
+  top: 0rem;
+  left: 0rem;
+  right: 0rem;
+  bottom: 0rem;
+  z-index: 50;
+  opacity: 0;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  -webkit-transition: all 0.6s;
+  -moz-transition: all 0.6s;
+  -o-transition: all 0.6s;
+  -ms-transition: all 0.6s;
+  transition: all 0.6s;
+  cursor: pointer;
+}
+.popup.show {
+  display: block;
+}
+.popup.active {
+  opacity: 1;
+}
+.popup.active .box_popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.popup .box_popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  width: 7.2rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transform: translate(-50%, calc(-50% - 200 * 0.01rem));
+  -moz-transform: translate(-50%, calc(-50% - 200 * 0.01rem));
+  -o-transform: translate(-50%, calc(-50% - 200 * 0.01rem));
+  -ms-transform: translate(-50%, calc(-50% - 200 * 0.01rem));
+  transform: translate(-50%, calc(-50% - 200 * 0.01rem));
+  -webkit-transition: transform 0.6s;
+  -moz-transition: transform 0.6s;
+  -o-transition: transform 0.6s;
+  -ms-transition: transform 0.6s;
+  transition: transform 0.6s;
+  cursor: auto;
+}
+.popup .box_popup .close {
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: -0.9rem;
+  z-index: 1;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin: 0 auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.popup .box_popup .box_content {
+  overflow: hidden;
+  position: relative;
+  margin: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#quit_popup .box_popup .close,
+#recruitment_popup .box_popup .close {
+  position: absolute;
+  top: 0.2rem;
+  left: auto;
+  right: 0.2rem;
+  bottom: auto;
+  width: 0.42rem;
+  height: 0.42rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_sprite.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 5.69rem 4.22rem;
+  background-position: -3.86rem -0.35rem;
+}
+#quit_popup .box_popup .close i,
+#recruitment_popup .box_popup .close i {
+  display: none;
+}
+#quit_popup .box_popup {
+  width: 6.47rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#quit_popup .box_popup:before,
+#quit_popup .box_popup:after {
+  content: '';
+  display: block;
+  position: relative;
+  height: 0.23rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_bg_1.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 0.46rem;
+}
+#quit_popup .box_popup:before {
+  background-position: 0 0;
+}
+#quit_popup .box_popup:after {
+  margin-top: -1px;
+  background-position: 0 -0.23rem;
+}
+#quit_popup .box_popup .box_content {
+  margin: -1px 0 0;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_bg_2.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+  text-align: center;
+}
+#quit_popup .box_popup .box_content .content {
+  position: relative;
+  width: 100%;
+  height: 1rem;
+  margin: 0.85rem auto 0.5rem;
+}
+#quit_popup .box_popup .box_content .content .box_scale {
+  padding: 0 1rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: left;
+  line-height: 1rem;
+  color: #000000;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+#quit_popup .box_popup .box_content .content .box_scale span {
+  margin: 0 0.2rem;
+}
+#quit_popup .box_popup .box_content a {
+  display: inline-block;
+  width: 2.4rem;
+  margin: 0 0.2rem;
+}
+#quit_popup .box_popup .box_content a:nth-child(2) {
+  -webkit-transform: scale(0.92);
+  -moz-transform: scale(0.92);
+  -o-transform: scale(0.92);
+  -ms-transform: scale(0.92);
+  transform: scale(0.92);
+}
+#recruitment_popup .box_popup {
+  width: 6.47rem;
+}
+#recruitment_popup .box_popup .close {
+  display: none;
+}
+#recruitment_popup .box_popup .box_content {
+  text-align: center;
+}
+#recruitment_popup .box_popup .box_content .content {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  height: 8rem;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(1) .title {
+  width: 5.08rem;
+  height: 1rem;
+  background-position: 0rem -0.72rem !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(1) .info:nth-child(2) {
+  margin-top: 0.3rem;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(2) .title {
+  width: 5.08rem;
+  height: 1rem;
+  background-position: 0rem -3.2rem !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(2) .info:nth-last-child(1),
+#recruitment_popup .box_popup .box_content .content:nth-child(2) .info:nth-last-child(2),
+#recruitment_popup .box_popup .box_content .content:nth-child(2) .info:nth-last-child(3) {
+  text-indent: 0 !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(3) .title {
+  width: 5.08rem;
+  height: 1rem;
+  background-position: 0rem -4.4rem !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(4) {
+  height: 6.1rem;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(4) .box_scroll {
+  height: 8rem;
+  padding-bottom: 0 !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(4) .title {
+  width: 5.72rem;
+  height: 0.82rem;
+  background-position: 0rem -7.62rem !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(4) .info {
+  text-align: center;
+  text-indent: 0 !important;
+  font-weight: bold;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(5) .box_scroll {
+  padding-bottom: 0 !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(5) .title {
+  width: 6.46rem;
+  height: 1.04rem;
+  background-position: 0rem -1.92rem !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(5) .info {
+  text-align: center;
+  text-indent: 0 !important;
+  font-weight: bold;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(6) .title {
+  width: 7.14rem;
+  height: 0.78rem;
+  background-position: 0rem -5.62rem !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(6) .info:nth-child(2) {
+  margin-top: 0.3rem;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(7) .title {
+  width: 4.66rem;
+  height: 0.82rem;
+  background-position: 0rem -6.6rem !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(7) .info {
+  margin: 1rem 0 0;
+  text-indent: 0 !important;
+  text-align: center;
+  line-height: 1.4rem;
+  color: #000000;
+  font-size: 1rem;
+  font-weight: 600;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(7) a {
+  display: block !important;
+  width: 5.44rem;
+  height: 1.94rem;
+  margin: 2rem auto 0;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_sprite.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11.38rem 8.44rem;
+  background-position: -5.94rem -3.18rem;
+}
+#recruitment_popup .box_popup .box_content .content.active {
+  display: block;
+}
+#recruitment_popup .box_popup .box_content .content .box_scale:before,
+#recruitment_popup .box_popup .box_content .content .box_scale:after {
+  content: '';
+  display: block;
+  position: relative;
+  height: 0.46rem;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_bg_1.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 0.92rem;
+}
+#recruitment_popup .box_popup .box_content .content .box_scale:before {
+  background-position: 0 0;
+}
+#recruitment_popup .box_popup .box_content .content .box_scale:after {
+  margin-top: -2px;
+  background-position: 0 -0.46rem;
+}
+#recruitment_popup .box_popup .box_content .content .box_scroll {
+  height: 11rem;
+  padding: 0 0.6rem 0.6rem;
+}
+#recruitment_popup .box_popup .box_content .content .box {
+  position: relative;
+  padding: 0.6rem 0.4rem;
+  margin: -2px 0 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_bg_2.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+  text-align: justify;
+  line-height: 0.88rem;
+  color: #000000;
+  font-size: 0.68rem;
+  -webkit-overflow-scrolling: touch;
+}
+#recruitment_popup .box_popup .box_content .content .title {
+  margin: 0 auto;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_sprite.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11.38rem 8.44rem;
+}
+#recruitment_popup .box_popup .box_content .content .line {
+  width: 11.38rem;
+  height: 0.14rem;
+  margin: 0.6rem auto;
+  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_sprite.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11.38rem 8.44rem;
+}
+#recruitment_popup .box_popup .box_content .content .line.l_1 {
+  background-position: 0 0;
+}
+#recruitment_popup .box_popup .box_content .content .line.l_2 {
+  margin-left: -0.2rem;
+  background-position: 0 -0.34rem;
+}
+#recruitment_popup .box_popup .box_content .content .subtitle {
+  margin-bottom: 0.2rem;
+  font-size: 0.74rem;
+  font-weight: bold;
+}
+#recruitment_popup .box_popup .box_content .content .info {
+  text-indent: 2em;
+}
+#recruitment_popup .box_popup .box_content a {
+  display: none;
+  width: 2.4rem;
+  margin: 0.3rem auto 0;
+}
+#recruitment_popup .box_popup .box_content a.active {
+  display: block;
+}
+#recruitment_popup .box_popup .box_content a#btn_rec_review,
+#recruitment_popup .box_popup .box_content a#btn_rec_restart {
+  width: 2.8rem;
+}

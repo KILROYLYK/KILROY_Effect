@@ -1,12 +1,12 @@
 /**
  * Window
  */
-import { W, $, Base, Popup } from '../../../_Base/js/window';
+import { W, D, $, Base, Popup } from '../../../_Base/js/window';
 
 /**
  * Plugin
  */
-// import Bump from '../../../$Plugin/Pixi/bump';
+import Bump from '../../../$Plugin/Pixi/bump';
 
 /**
  * Controller
@@ -63,16 +63,16 @@ const config = {
         },
         finishCallback(resources) {
             config.resources = resources;
-            $('#loading').fadeOut(500);
-            startGame();
-            // setTimeout(() => {
-            //     createPopup();
-            //     createClick();
-            //     readyGame();
-            // }, 500);
+            // $('#loading').fadeOut(500);
+            // startGame();
+            setTimeout(() => {
+                createPopup();
+                createClick();
+                readyGame();
+            }, 500);
         }
     }),
-    collision = new Collision(),
+    // collision = new Collision(),
     popup = {};
 
 let appMazeWH = 0,
@@ -98,6 +98,10 @@ Base.resizeWindow(() => {
  * @return {void}
  */
 function readyGame() {
+    sound = new Sound({
+        resources: config.resources,
+        volume: config.volume
+    });
     $('#progress').removeClass('active');
     $('#loading .text').addClass('active');
     $('#loading').on('click', function () {
@@ -114,7 +118,7 @@ function readyGame() {
  */
 function startGame() {
     if (!config.flag.start) return;
-    if (sound) sound.pause('failure');
+    if (sound) sound.play('loading');
     config.flag.start = false;
     config.help = 0;
     $('#game,#keyboard').addClass('active');
@@ -164,10 +168,6 @@ function createGame() {
         clearBeforeRender: true,
         resizeTo: appRocker
     });
-    sound = new Sound({
-        resources: config.resources,
-        volume: config.volume
-    });
     config.margin.x = appMaze.clientWidth / 6;
     config.margin.y = appMaze.clientHeight / 3;
 }
@@ -186,12 +186,6 @@ function playGame() {
             objectS: null,
             clash: () => {
                 sound.play('character_1_m');
-                if (popup.recruitment) {
-                    popup.recruitment.open({
-                        type: 0,
-                        save: true
-                    });
-                }
             }
         },
         {
@@ -202,12 +196,6 @@ function playGame() {
             objectS: null,
             clash: () => {
                 sound.play('character_2_m');
-                if (popup.recruitment) {
-                    popup.recruitment.open({
-                        type: 1,
-                        save: true
-                    });
-                }
             }
         },
         {
@@ -217,12 +205,6 @@ function playGame() {
             object: null,
             clash: () => {
                 sound.play('character_4_m');
-                if (popup.recruitment) {
-                    popup.recruitment.open({
-                        type: 2,
-                        save: true
-                    });
-                }
             }
         },
         {
@@ -233,12 +215,6 @@ function playGame() {
             objectS: null,
             clash: () => {
                 sound.play('character_5_m');
-                if (popup.recruitment) {
-                    popup.recruitment.open({
-                        type: 3,
-                        save: true
-                    });
-                }
             }
         },
         {
@@ -249,12 +225,6 @@ function playGame() {
             objectS: null,
             clash: () => {
                 sound.play('character_6_m');
-                if (popup.recruitment) {
-                    popup.recruitment.open({
-                        type: 4,
-                        save: true
-                    });
-                }
             }
         },
         {
@@ -265,12 +235,6 @@ function playGame() {
             objectS: null,
             clash: () => {
                 sound.play('character_7_m');
-                if (popup.recruitment) {
-                    popup.recruitment.open({
-                        type: 5,
-                        save: true
-                    });
-                }
             }
         },
         {
@@ -281,12 +245,6 @@ function playGame() {
             objectS: null,
             clash: () => {
                 sound.play('character_8_m');
-                if (popup.recruitment) {
-                    popup.recruitment.open({
-                        type: 6,
-                        save: true
-                    });
-                }
             }
         }
     ];
@@ -320,7 +278,7 @@ function playGame() {
         wh: appRockerWH,
         direction: 8,
         callback: (direction) => {
-            sound.play('walk');
+            if (sound) sound.play('walk');
             switch (direction) {
                 case 1:
                     character.start();
@@ -362,7 +320,7 @@ function playGame() {
                     break;
                 case 0:
                 default:
-                    sound.pause('walk');
+                    if (sound) sound.pause('walk');
                     character.stop();
                     move(0, 0);
                     break;
@@ -442,117 +400,123 @@ function playGame() {
             mazeAddY = 0;
         }
         
-        const speed = {
-            x: x,
-            y: y
-        };
-        let newSpeed = {
-            x: x,
-            y: y
-        };
-        
-        for (let i = 0, n = grid.length; i < n; i++) {
-            const obg2 = {
-                x: grid[i].getGlobalPosition().x,
-                y: grid[i].getGlobalPosition().y,
-                w: grid[i].width,
-                h: grid[i].height
-            };
-            if (collision.detection(obj1, obg2)) {
-                const wall = grid[i].children[1].children;
-                console.log('碰撞', i);
-                // for (let ii = 0, nn = wall.length; ii < nn; ii++) {
-                //     const obj3 = {
-                //         x: wall[ii].getGlobalPosition().x,
-                //         y: wall[ii].getGlobalPosition().y,
-                //         w: wall[ii].width,
-                //         h: wall[ii].height
-                //     };
-                //     newSpeed = collision.detectionRun(speed, obj1, obj3);
-                // }
-            }
-        }
-        
-        maze.object.x -= newSpeed.x;
-        maze.object.y -= newSpeed.y;
-        character.object.x += newSpeed.x;
-        character.object.y += newSpeed.y;
-        
+        // const speed = {
+        //     x: x,
+        //     y: y
+        // };
+        // let newSpeed = {
+        //     x: x,
+        //     y: y
+        // };
+        //
         // for (let i = 0, n = grid.length; i < n; i++) {
-        //     if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
-        //         const wall = grid[i].children[1].children,
-        //             difference = 0.001;
-        //         Bump.hit(
-        //             character.chassis.object, wall,
-        //             true, false, true,
-        //             (collision, platform) => {
-        //                 if (characterOldX !== character.chassis.object.x) {
-        //                     mazeAddX = 0;
-        //                     character.chassis.object.x = characterOldX;
-        //                     if (collision === 'left' && characterAddX <= 0) {
-        //                         characterAddX = 0;
-        //                         character.object.x += platform.getGlobalPosition().x + platform.width - character.object.getGlobalPosition().x - difference;
-        //                     }
-        //                     if (collision === 'right' && characterAddX >= 0) {
-        //                         characterAddX = 0;
-        //                         character.object.x -= character.object.getGlobalPosition().x + character.chassis.object.width - platform.getGlobalPosition().x - difference;
-        //                     }
-        //                 }
-        //                 if (characterOldY !== character.chassis.object.y) {
-        //                     mazeAddY = 0;
-        //                     character.chassis.object.y = characterOldY;
-        //                     if (collision === 'top' && characterAddY <= 0) {
-        //                         characterAddY = 0;
-        //                         character.object.y += platform.getGlobalPosition().y + platform.height - character.object.getGlobalPosition().y - difference;
-        //                     }
-        //                     if (collision === 'bottom' && characterAddY >= 0) {
-        //                         characterAddY = 0;
-        //                         character.object.y -= character.object.getGlobalPosition().y + character.chassis.object.height - platform.getGlobalPosition().y - difference;
-        //                     }
-        //                 }
-        //                 if (platform.name === '入口' || platform.name === '出口') {
-        //                     if (!config.flag.door) return;
-        //                     config.flag.door = false;
-        //                     if (rocker) rocker.stop();
-        //                     if (platform.name === '入口') {
-        //                         character.object.y -= config.speed;
-        //                         if (popup.quit) popup.quit.open();
-        //                     }
-        //                     if (platform.name === '出口') {
-        //                         character.object.y += config.speed;
-        //                         if (config.help < config.friend) {
-        //                             if (popup.quit) popup.quit.open();
-        //                         } else if (config.help === config.friend) {
-        //                             showDialogue('success');
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         );
+        //     const obg2 = {
+        //         x: grid[i].getGlobalPosition().x,
+        //         y: grid[i].getGlobalPosition().y,
+        //         w: grid[i].width,
+        //         h: grid[i].height
+        //     };
+        //     if (collision.detection(obj1, obg2)) {
+        //         const wall = grid[i].children[1].children;
+        //         console.log('碰撞', i);
+        //         for (let ii = 0, nn = wall.length; ii < nn; ii++) {
+        //             const obj3 = {
+        //                 x: wall[ii].getGlobalPosition().x,
+        //                 y: wall[ii].getGlobalPosition().y,
+        //                 w: wall[ii].width,
+        //                 h: wall[ii].height
+        //             };
+        //             // newSpeed = collision.detectionRun(speed, obj1, obj3);
+        //         }
         //     }
         // }
         //
-        // for (let i = 0, n = friend.length; i < n; i++) {
-        //     Bump.hit(
-        //         character.chassis.object, friend[i].object.chassis.object,
-        //         false, false, true,
-        //         (collision, platform) => {
-        //             if (friend[i].object.config.type === 2) return;
-        //             if (rocker) rocker.stop();
-        //             character.switchCharacter(friend[i].name);
-        //             characterS.switchCharacter(friend[i].name);
-        //             friend[i].object.save();
-        //             friend[i].objectS.save();
-        //             friend[i].clash();
-        //             config.help++;
-        //         }
-        //     );
-        // }
-        //
-        // maze.object.x -= mazeAddX;
-        // maze.object.y -= mazeAddY;
-        // character.object.x += characterAddX;
-        // character.object.y += characterAddY;
+        // maze.object.x -= newSpeed.x;
+        // maze.object.y -= newSpeed.y;
+        // character.object.x += newSpeed.x;
+        // character.object.y += newSpeed.y;
+        
+        for (let i = 0, n = grid.length; i < n; i++) {
+            if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
+                const wall = grid[i].children[1].children,
+                    difference = 0.001;
+                Bump.hit(
+                    character.chassis.object, wall,
+                    true, false, true,
+                    (collision, platform) => {
+                        if (characterOldX !== character.chassis.object.x) {
+                            mazeAddX = 0;
+                            character.chassis.object.x = characterOldX;
+                            if (collision === 'left' && characterAddX <= 0) {
+                                characterAddX = 0;
+                                character.object.x += platform.getGlobalPosition().x + platform.width - character.object.getGlobalPosition().x - difference;
+                            }
+                            if (collision === 'right' && characterAddX >= 0) {
+                                characterAddX = 0;
+                                character.object.x -= character.object.getGlobalPosition().x + character.chassis.object.width - platform.getGlobalPosition().x - difference;
+                            }
+                        }
+                        if (characterOldY !== character.chassis.object.y) {
+                            mazeAddY = 0;
+                            character.chassis.object.y = characterOldY;
+                            if (collision === 'top' && characterAddY <= 0) {
+                                characterAddY = 0;
+                                character.object.y += platform.getGlobalPosition().y + platform.height - character.object.getGlobalPosition().y - difference;
+                            }
+                            if (collision === 'bottom' && characterAddY >= 0) {
+                                characterAddY = 0;
+                                character.object.y -= character.object.getGlobalPosition().y + character.chassis.object.height - platform.getGlobalPosition().y - difference;
+                            }
+                        }
+                        if (platform.name === '入口' || platform.name === '出口') {
+                            if (!config.flag.door) return;
+                            config.flag.door = false;
+                            if (rocker) rocker.stop();
+                            if (platform.name === '入口') {
+                                character.object.y -= config.speed;
+                                if (popup.quit) popup.quit.open();
+                            }
+                            if (platform.name === '出口') {
+                                character.object.y += config.speed;
+                                if (config.help < config.friend) {
+                                    if (popup.quit) popup.quit.open();
+                                } else if (config.help === config.friend) {
+                                    showDialogue('success');
+                                }
+                            }
+                        }
+                    }
+                );
+            }
+        }
+        
+        for (let i = 0, n = friend.length; i < n; i++) {
+            Bump.hit(
+                character.chassis.object, friend[i].object.chassis.object,
+                false, false, true,
+                (collision, platform) => {
+                    if (friend[i].object.config.type === 2) return;
+                    if (rocker) rocker.stop();
+                    character.switchCharacter(friend[i].name);
+                    characterS.switchCharacter(friend[i].name);
+                    friend[i].object.save();
+                    friend[i].objectS.save();
+                    friend[i].clash();
+                    if (popup.recruitment) {
+                        popup.recruitment.open({
+                            type: config.help,
+                            save: true
+                        });
+                    }
+                    config.help++;
+                }
+            );
+        }
+        
+        maze.object.x -= mazeAddX;
+        maze.object.y -= mazeAddY;
+        character.object.x += characterAddX;
+        character.object.y += characterAddY;
     }
     
     /**
@@ -711,6 +675,8 @@ function showDialogue(name) {
     
     $('#game,#keyboard,#map').removeClass('active');
     
+    if (sound) sound.play('dialogue');
+    
     for (let i = 0, n = textContent[name].length; i < n; i++) {
         const content = $dialogue.find('.t').eq(i);
         content.removeClass('active');
@@ -779,18 +745,20 @@ function createPopup() {
         finishCallback() {
             const _this = this;
             $('#btn_quit_agree').on('click', () => {
+                if (W._hmt) W._hmt.push(['_trackEvent', '确认放弃']);
                 _this.close();
                 showDialogue('failure');
             });
             $('#btn_quit_disagree').on('click', () => {
+                if (W._hmt) W._hmt.push(['_trackEvent', '不放弃']);
                 _this.close();
             });
         },
         openCallback() {
             const _this = this,
                 n = config.friend - config.help;
+            if (W._hmt) W._hmt.push(['_trackEvent', '不救了，退出']);
             if (rocker) rocker.stop();
-            
             if (n > 0) {
                 _this.$content.find('.content .box_scale').html('还有<span>' + n + '</span>名同伴未被解救，<br>确认放弃他们吗？');
             } else {
@@ -810,6 +778,10 @@ function createPopup() {
     popup.recruitment = new Popup('recruitment_popup', {
         finishCallback() {
             const _this = this;
+            $('#btn_rec_more').on('click', () => {
+                if (W._hmt) W._hmt.push(['_trackEvent', '跳转校园招聘职位']);
+                location.href = 'https://www.gaea.com/cn/position';
+            });
             $('#btn_rec_save').on('click', () => {
                 _this.close();
             });
@@ -821,15 +793,18 @@ function createPopup() {
                 });
             });
             $('#btn_rec_review').on('click', () => {
+                if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息']);
                 _this.open({
                     type: 0,
                     save: false
                 });
             });
             $('#btn_rec_restart').on('click', () => {
+                if (W._hmt) W._hmt.push(['_trackEvent', '再救一次']);
                 _this.close();
                 $('#dialogue').fadeOut(500);
                 setTimeout(() => {
+                    if (sound) sound.pause('failure');
                     startGame();
                 }, 500);
             });
@@ -840,13 +815,13 @@ function createPopup() {
             _this.$content.find('.content,a').removeClass('active');
             _this.$content.find('.content').eq(data.type).addClass('active');
             if (data.save) {
-                _this.$content.find('a').eq(0).addClass('active');
+                _this.$content.find('a').eq(1).addClass('active');
             } else {
-                if (data.type !== 6) {
-                    _this.$content.find('a').eq(1).addClass('active');
-                } else {
+                if (data.type !== config.friend - 1) {
                     _this.$content.find('a').eq(2).addClass('active');
+                } else {
                     _this.$content.find('a').eq(3).addClass('active');
+                    _this.$content.find('a').eq(4).addClass('active');
                 }
             }
         }
@@ -884,14 +859,17 @@ function createClick() {
         if (popup.quit) popup.quit.open();
     });
     $('#btn_view').on('click', () => {
+        if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息']);
         popup.recruitment.open({
             type: 0,
             save: false
         });
     });
     $('#btn_restart').on('click', () => {
-        startGame();
+        if (W._hmt) W._hmt.push(['_trackEvent', '再救一次']);
+        if (sound) sound.pause('failure');
         $('#dialogue').fadeOut(500);
+        startGame();
     });
 }
 
@@ -905,3 +883,31 @@ function rotateFun() {
     // if (Base.isPSB.platform() === 'PC' || $rotateScreen.length === 0) return;
     if ($W.width() >= $W.height()) $rotateScreen.addClass('active'); else $rotateScreen.removeClass('active');
 }
+
+/**
+ * 百度统计
+ */
+(function () {
+    W._hmt = W._hmt || [];
+    const $body = $('body'),
+        id = 'baidu-jssdk',
+        js = D.createElement('script'),
+        app = '2c2165a3cfa4078fccd6b6ad4275c2ea';
+    
+    if (D.getElementById(id)) return;
+    
+    js.type = 'text/javascript';
+    js.id = id;
+    js.src = 'https://hm.baidu.com/hm.js?' + app;
+    
+    $body.append(js);
+    
+    // /**
+    //  * 绑定点击事件
+    //  * @param {String} name 统计标识
+    //  * @return {void}
+    //  */
+    // function click(name) {
+    //     W._hmt.push(['_trackEvent', name]);
+    // }
+})();
