@@ -7,7 +7,7 @@
 
 //******Sprite******//
 @popup_w: 569*@px;
-@popup_h: 422*@px;
+@popup_h: 474*@px;
 .spritePopup(@sprite:false) when (@sprite=false) {
   .bg('popup_sprite.png', @popup_w, @popup_h);
 }
@@ -174,6 +174,21 @@
         
         &:nth-child(2) {
           .title {
+            width: 233*@px*@scale;
+            height: 41*@px*@scale;
+            background-position: 0*@px -432*@px*@scale !important;
+          }
+          
+          .info {
+            &:nth-child(2),
+            &:nth-child(3) {
+              margin-top: 15*@px*@scale;
+            }
+          }
+        }
+        
+        &:nth-child(3) {
+          .title {
             width: 254*@px*@scale;
             height: 50*@px*@scale;
             background-position: 0*@px -160*@px*@scale !important;
@@ -188,7 +203,7 @@
           }
         }
         
-        &:nth-child(3) {
+        &:nth-child(4) {
           .title {
             width: 254*@px*@scale;
             height: 50*@px*@scale;
@@ -196,7 +211,7 @@
           }
         }
         
-        &:nth-child(4) {
+        &:nth-child(5) {
           height: 610*@px;
           
           .box_scroll {
@@ -208,24 +223,6 @@
             width: 286*@px*@scale;
             height: 41*@px*@scale;
             background-position: 0*@px -381*@px*@scale !important;
-          }
-          
-          .info {
-            text-align: center;
-            text-indent: 0 !important;
-            font-weight: bold;
-          }
-        }
-        
-        &:nth-child(5) {
-          .box_scroll {
-            padding-bottom: 0 !important;
-          }
-          
-          .title {
-            width: 323*@px*@scale;
-            height: 52*@px*@scale;
-            background-position: 0*@px -96*@px*@scale !important;
           }
           
           .info {

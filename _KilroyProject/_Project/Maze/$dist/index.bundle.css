@@ -255,7 +255,7 @@ a:visited:hover {
   margin: auto;
   width: 1.68rem;
   height: 1.66rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/rotate_screen.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/rotate_screen.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 1.68rem 1.66rem;
@@ -277,7 +277,7 @@ a:visited:hover {
 .btn.btn_1 {
   border-width: 0.2rem 0.3rem;
   border-style: solid;
-  border-image-source: url('https://image.gaeamobile.net/image/20190903/153912/btn_1.png');
+  border-image-source: url('https://image.gaeamobile.net/image/20190903/170702/btn_1.png');
   border-image-repeat: round;
   border-image-slice: 20 30 fill;
   border-image-outset: 0;
@@ -290,7 +290,7 @@ a:visited:hover {
 .btn.btn_2 {
   border-width: 0.2rem 0.3rem;
   border-style: solid;
-  border-image-source: url('https://image.gaeamobile.net/image/20190903/153912/btn_2.png');
+  border-image-source: url('https://image.gaeamobile.net/image/20190903/170702/btn_2.png');
   border-image-repeat: round;
   border-image-slice: 20 30 fill;
   border-image-outset: 0;
@@ -309,7 +309,7 @@ a:visited:hover {
   z-index: 3;
   width: 0.64rem;
   height: 0.65rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/sound.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/sound.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 1.38rem 0.65rem;
@@ -585,7 +585,7 @@ a:visited:hover {
   margin: 0 auto;
   width: 6.2rem;
   height: 4.26rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/slogan.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/slogan.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 6.2rem 4.26rem;
@@ -600,7 +600,7 @@ a:visited:hover {
   opacity: 0;
   width: 5.61rem;
   height: 0.22rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/load_bg.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/load_bg.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 5.61rem 0.22rem;
@@ -629,7 +629,7 @@ a:visited:hover {
   position: relative;
   width: 0;
   height: 100%;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/load_progress.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/load_progress.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto 0.18rem;
@@ -645,7 +645,7 @@ a:visited:hover {
   bottom: auto;
   width: 0.86rem;
   height: 0.87rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/load_character.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/load_character.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 0.86rem 0.87rem;
@@ -756,19 +756,19 @@ a:visited:hover {
   animation-delay: 1.2s;
 }
 .dialogue .content .fireworks div.f_r {
-  background: url('https://image.gaeamobile.net/image/20190903/153912/fireworks_red.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/fireworks_red.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto auto;
 }
 .dialogue .content .fireworks div.f_y {
-  background: url('https://image.gaeamobile.net/image/20190903/153912/fireworks_yellow.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/fireworks_yellow.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto auto;
 }
 .dialogue .content .fireworks div.f_b {
-  background: url('https://image.gaeamobile.net/image/20190903/153912/fireworks_blue.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/fireworks_blue.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto auto;
@@ -779,7 +779,7 @@ a:visited:hover {
   margin: 0.5rem 0;
   width: 7.5rem;
   height: 1.5rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/success_people.jpg');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/success_people.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 7.5rem 1.5rem;
@@ -852,7 +852,7 @@ a:visited:hover {
   margin: 0.1rem auto 0;
   width: 7.3rem;
   height: 7.3rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/map_bg.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/map_bg.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 7.3rem 7.3rem;
@@ -871,7 +871,7 @@ a:visited:hover {
   margin: auto;
   width: 6.1rem;
   height: 3.22rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/map_qr_bg.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/map_qr_bg.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 6.1rem 3.22rem;
@@ -1098,10 +1098,10 @@ a:visited:hover {
   bottom: auto;
   width: 0.42rem;
   height: 0.42rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_sprite.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/popup_sprite.png');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 5.69rem 4.22rem;
+  background-size: 5.69rem 4.74rem;
   background-position: -3.86rem -0.35rem;
 }
 #quit_popup .box_popup .close i,
@@ -1120,7 +1120,7 @@ a:visited:hover {
   display: block;
   position: relative;
   height: 0.23rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_bg_1.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/popup_bg_1.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 0.46rem;
@@ -1134,7 +1134,7 @@ a:visited:hover {
 }
 #quit_popup .box_popup .box_content {
   margin: -1px 0 0;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_bg_2.jpg');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/popup_bg_2.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% auto;
@@ -1197,44 +1197,40 @@ a:visited:hover {
   margin-top: 0.3rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(2) .title {
-  width: 5.08rem;
-  height: 1rem;
-  background-position: 0rem -3.2rem !important;
+  width: 4.66rem;
+  height: 0.82rem;
+  background-position: 0rem -8.64rem !important;
 }
-#recruitment_popup .box_popup .box_content .content:nth-child(2) .info:nth-last-child(1),
-#recruitment_popup .box_popup .box_content .content:nth-child(2) .info:nth-last-child(2),
-#recruitment_popup .box_popup .box_content .content:nth-child(2) .info:nth-last-child(3) {
-  text-indent: 0 !important;
+#recruitment_popup .box_popup .box_content .content:nth-child(2) .info:nth-child(2),
+#recruitment_popup .box_popup .box_content .content:nth-child(2) .info:nth-child(3) {
+  margin-top: 0.3rem;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(3) .title {
   width: 5.08rem;
   height: 1rem;
+  background-position: 0rem -3.2rem !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(3) .info:nth-last-child(1),
+#recruitment_popup .box_popup .box_content .content:nth-child(3) .info:nth-last-child(2),
+#recruitment_popup .box_popup .box_content .content:nth-child(3) .info:nth-last-child(3) {
+  text-indent: 0 !important;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(4) .title {
+  width: 5.08rem;
+  height: 1rem;
   background-position: 0rem -4.4rem !important;
 }
-#recruitment_popup .box_popup .box_content .content:nth-child(4) {
+#recruitment_popup .box_popup .box_content .content:nth-child(5) {
   height: 6.1rem;
 }
-#recruitment_popup .box_popup .box_content .content:nth-child(4) .box_scroll {
+#recruitment_popup .box_popup .box_content .content:nth-child(5) .box_scroll {
   height: 8rem;
   padding-bottom: 0 !important;
 }
-#recruitment_popup .box_popup .box_content .content:nth-child(4) .title {
+#recruitment_popup .box_popup .box_content .content:nth-child(5) .title {
   width: 5.72rem;
   height: 0.82rem;
   background-position: 0rem -7.62rem !important;
-}
-#recruitment_popup .box_popup .box_content .content:nth-child(4) .info {
-  text-align: center;
-  text-indent: 0 !important;
-  font-weight: bold;
-}
-#recruitment_popup .box_popup .box_content .content:nth-child(5) .box_scroll {
-  padding-bottom: 0 !important;
-}
-#recruitment_popup .box_popup .box_content .content:nth-child(5) .title {
-  width: 6.46rem;
-  height: 1.04rem;
-  background-position: 0rem -1.92rem !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(5) .info {
   text-align: center;
@@ -1268,10 +1264,10 @@ a:visited:hover {
   width: 5.44rem;
   height: 1.94rem;
   margin: 2rem auto 0;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_sprite.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/popup_sprite.png');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 11.38rem 8.44rem;
+  background-size: 11.38rem 9.48rem;
   background-position: -5.94rem -3.18rem;
 }
 #recruitment_popup .box_popup .box_content .content.active {
@@ -1283,7 +1279,7 @@ a:visited:hover {
   display: block;
   position: relative;
   height: 0.46rem;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_bg_1.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/popup_bg_1.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 0.92rem;
@@ -1306,7 +1302,7 @@ a:visited:hover {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_bg_2.jpg');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/popup_bg_2.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% auto;
@@ -1319,19 +1315,19 @@ a:visited:hover {
 }
 #recruitment_popup .box_popup .box_content .content .title {
   margin: 0 auto;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_sprite.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/popup_sprite.png');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 11.38rem 8.44rem;
+  background-size: 11.38rem 9.48rem;
 }
 #recruitment_popup .box_popup .box_content .content .line {
   width: 11.38rem;
   height: 0.14rem;
   margin: 0.6rem auto;
-  background: url('https://image.gaeamobile.net/image/20190903/153912/popup_sprite.png');
+  background: url('https://image.gaeamobile.net/image/20190903/170702/popup_sprite.png');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 11.38rem 8.44rem;
+  background-size: 11.38rem 9.48rem;
 }
 #recruitment_popup .box_popup .box_content .content .line.l_1 {
   background-position: 0 0;
