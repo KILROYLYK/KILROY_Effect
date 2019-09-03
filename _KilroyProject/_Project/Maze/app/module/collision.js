@@ -99,30 +99,28 @@ class Collision {
      * @return {object} 碰上的速度
      */
     detectionRun(speed, obj1, obj2) {
-        const _this = this;
+        const _this = this,
+            x = obj1.x,
+            y = obj1.y;
         
-        obj1.x += speed.x;
-        obj1.y += speed.y;
+        console.log(1, obj1.x, obj1.y);
+        
+        // obj1.x += speed.x;
+        // obj1.y += speed.y;
+        
+        console.log(2, obj1.x, obj1.y);
         
         if (!_this.detection(obj1, obj2)) return speed;
+    
+        console.log(obj1, obj2);
         
-        if (speed.x > 0 && obj1.x + obj1.w >= obj2.x) {
-            speed.x -= obj1.x + obj1.w - obj2.x;
-            if (speed.x < 0) speed.x = 0;
-        } else if (speed.x < 0 && obj1.x <= obj2.x + obj2.w) {
-            speed.x += obj2.x + obj2.w - obj1.x;
-            if (speed.x > 0) speed.x = 0;
+        if (speed.y < 0) {
+            console.log('上', obj2.y + obj2.h - obj1.y);
         }
         
-        if (speed.y > 0 && obj1.y + obj1.h >= obj2.y) {
-            speed.y -= obj1.y + obj1.h - obj2.y;
-            if (speed.y < 0) speed.y = 0;
-        } else if (speed.y < 0 && obj1.y <= obj2.y + obj2.h) {
-            speed.y += obj2.y + obj2.h - obj1.y;
-            if (speed.y > 0) speed.y = 0;
-        }
+        console.log('计算结果：', speed);
         
-        console.log(speed);
+        debugger;
         
         return speed;
     }

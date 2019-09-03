@@ -16,6 +16,7 @@ class Rocker {
         const _this = this;
         
         _this.config = {
+            resources: config.resources,
             wh: config.wh || 200,
             direction: config.direction || 8,
             flag: false,
@@ -27,28 +28,30 @@ class Rocker {
         
         _this.panel = {
             color: 0xFFFFFF,
-            alpha: 0.2,
+            alpha: 1,
             origin: _this.config.wh / 2,
-            radius: _this.config.wh / 2 * 0.6,
+            wh: _this.config.wh * 0.6,
             zIndex: 0,
-            object: new PIXI.Graphics()
+            sprite: _this.config.resources.rocker.texture,
+            object: new PIXI.Container()
         };
         
         _this.button = {
             color: 0xFFFFFF,
-            alpha: 0.2,
+            alpha: 1,
             origin: _this.panel.origin,
-            radius: _this.panel.radius * 0.65,
+            wh: _this.panel.wh * 0.45,
             zIndex: 1,
             radian: 0,
             maxRadian: 1.6,
             angle: 0,
-            sensitivity: _this.panel.radius * 0.3,
+            sensitivity: _this.panel.wh / 2 * 0.3,
             position: {
                 x: 0,
                 y: 0
             },
-            object: new PIXI.Graphics()
+            sprite: _this.config.resources.rocker_button.texture,
+            object: new PIXI.Container()
         };
         
         _this.init();
@@ -92,13 +95,15 @@ class Rocker {
  * @return {void}
  */
 function createPanel() {
-    const _this = this;
+    const _this = this,
+        sprite = new PIXI.Sprite.from(_this.panel.sprite);
     
-    _this.panel.object.lineStyle(0);
-    _this.panel.object.beginFill(_this.panel.color, _this.panel.alpha);
-    _this.panel.object.drawCircle(_this.panel.origin, _this.panel.origin, _this.panel.radius);
-    _this.panel.object.endFill();
-    _this.panel.object.zIndex = _this.panel.zIndex;
+    sprite.width = _this.panel.wh;
+    sprite.height = _this.panel.wh;
+    sprite.x = _this.panel.origin - sprite.width / 2;
+    sprite.y = _this.panel.origin - sprite.width / 2;
+    sprite.alpha = _this.panel.alpha;
+    _this.panel.object.addChild(sprite);
     _this.object.addChild(_this.panel.object);
 }
 
@@ -107,14 +112,15 @@ function createPanel() {
  * @return {void}
  */
 function createButton() {
-    const _this = this;
+    const _this = this,
+        sprite = new PIXI.Sprite.from(_this.button.sprite);
     
-    _this.button.object.lineStyle(0);
-    _this.button.object.beginFill(_this.button.color, 1);
-    _this.button.object.drawCircle(_this.button.origin, _this.button.origin, _this.button.radius);
-    _this.button.object.endFill();
-    _this.button.object.zIndex = _this.button.zIndex;
-    _this.button.object.alpha = _this.button.alpha;
+    sprite.width = _this.button.wh;
+    sprite.height = _this.button.wh;
+    sprite.x = _this.button.origin - sprite.width / 2;
+    sprite.y = _this.button.origin - sprite.width / 2;
+    sprite.alpha = _this.button.alpha;
+    _this.button.object.addChild(sprite);
     _this.button.object.interactive = true;
     _this.button.object.buttonMode = true;
     _this.button.object
@@ -186,7 +192,7 @@ function buttonDragEnd() {
  */
 function buttonMove(x, y) {
     const _this = this,
-        range = _this.panel.radius,
+        range = _this.panel.wh / 2,
         radian = _this.button.radian,
         maxRadian = _this.button.maxRadian,
         X = Math.cos(radian),
