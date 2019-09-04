@@ -52,44 +52,55 @@ class Collision {
     }
     
     /**
-     * 碰撞后停止
-     * @param {object} speed 加速度
+     * 防止撞墙
+     * @param {object} speed 速度
      * @param {array} plyA 面
      * @param {array} plyB 面
      * @return {object} 优化后速度
      */
-    stopMove(speed, plyA, plyB) {
-        const _this = this;
+    preventAgainstWall(speed, plyA, plyB) {
+        const _this = this,
+            speedOld = {
+                x: speed.x,
+                y: speed.y
+            },
+            plyANew = [];
+        
+        if (speed.y < 0 && plyA[0].y === plyB[2].y && plyA[2].y > plyB[2].y) speed.y = 0;
+        if (speed.x < 0 && plyA[0].x === plyB[1].x && plyA[1].x > plyB[1].x) speed.x = 0;
+        if (speed.x > 0 && plyA[1].x === plyB[0].x && plyA[0].x < plyB[0].x) speed.x = 0;
+        if (speed.y > 0 && plyA[2].y === plyB[0].y && plyA[0].y < plyB[0].y) speed.y = 0;
         
         for (let i = 0, n = plyA.length; i < n; i++) {
+            plyANew.push(plyA[i]);
             plyA[i].x += speed.x;
             plyA[i].y += speed.y;
         }
         
         if (!_this.isPolygonsOverlap(plyA, plyB)) return speed;
         
-        if (speed.y < 0 && plyA[0].y <= plyB[2].y && plyA[2].y > plyB[2].y) {
+        if (speed.y < 0 && plyA[0].y < plyB[2].y && plyA[2].y > plyB[2].y) {
             speed.direction = 'top';
-            speed.y -= plyA[0].y - plyB[2].y;
-            if (speed.y > 0) speed.y = 0;
+            speed.y = plyB[2].y - plyANew[0].y;
+            console.log('top', speed.y);
         }
         
-        if (speed.x < 0 && plyA[0].x <= plyB[1].x && plyA[1].x > plyB[1].x) {
+        if (speed.x < 0 && plyA[0].x < plyB[1].x && plyA[1].x > plyB[1].x) {
             speed.direction = 'left';
-            speed.x = 0;
+            speed.x = plyB[1].x - plyANew[0].x;
+            console.log('left', speed.x);
         }
         
-        if (speed.x > 0 && plyA[1].x >= plyB[0].x && plyA[0].x < plyB[0].x) {
+        if (speed.x > 0 && plyA[1].x > plyB[0].x && plyA[0].x < plyB[0].x) {
             speed.direction = 'right';
-            speed.x = 0;
+            speed.x = plyB[0].x - plyANew[1].x;
+            console.log('right', speed.x);
         }
         
-        if (speed.y > 0 && plyA[2].y >= plyB[0].y && plyA[0].y < plyB[0].y) {
+        if (speed.y > 0 && plyA[2].y > plyB[0].y && plyA[0].y < plyB[0].y) {
             speed.direction = 'bottom';
-            console.log('bottom', speed.y, plyA[2].y - plyB[0].y);
-            speed.y -= plyA[2].y - plyB[0].y;
-            console.log(speed.y);
-            if (speed.y < 0) speed.y = 0;
+            speed.y = plyB[0].y - plyANew[2].y;
+            console.log('bottom', speed.y);
         }
         
         return speed;
