@@ -39,6 +39,10 @@ const config = {
         },
         speed: 3,
         volume: 1,
+        loop: [
+            'walk',
+            'success'
+        ],
         color: 0xEAD8A0,
         friend: 7,
         help: 0,
@@ -705,19 +709,19 @@ function createPopup() {
         finishCallback() {
             const _this = this;
             $('#btn_quit_agree').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '确认放弃']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '确认放弃', '弹窗按钮']);
                 _this.close();
                 showDialogue('failure');
             });
             $('#btn_quit_disagree').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '不放弃']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '不放弃', '弹窗按钮']);
                 _this.close();
             });
         },
         openCallback() {
             const _this = this,
                 n = config.friend - config.help;
-            if (W._hmt) W._hmt.push(['_trackEvent', '不救了，退出']);
+            if (W._hmt) W._hmt.push(['_trackEvent', '不救了，退出', '弹窗']);
             if (rocker) rocker.stop();
             if (n > 0) {
                 _this.$content.find('.content .box_scale').html('还有<span>' + n + '</span>名同伴未被解救，<br>确认放弃他们吗？');
@@ -739,7 +743,7 @@ function createPopup() {
         finishCallback() {
             const _this = this;
             $('#btn_rec_more').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '跳转校园招聘职位']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '跳转校园招聘职位', '弹窗按钮']);
                 location.href = 'https://www.gaea.com/cn/position';
             });
             $('#btn_rec_save').on('click', () => {
@@ -753,14 +757,14 @@ function createPopup() {
                 });
             });
             $('#btn_rec_review').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息', '弹窗按钮']);
                 _this.open({
                     type: 0,
                     save: false
                 });
             });
             $('#btn_rec_restart').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '再救一次']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '再救一次', '弹窗按钮']);
                 _this.close();
                 $('#dialogue').fadeOut(500);
                 setTimeout(() => {
@@ -820,14 +824,14 @@ function createClick() {
         if (popup.quit) popup.quit.open();
     });
     $('#btn_view').on('click', () => {
-        if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息']);
+        if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息', '对话按钮']);
         popup.recruitment.open({
             type: 0,
             save: false
         });
     });
     $('#btn_restart').on('click', () => {
-        if (W._hmt) W._hmt.push(['_trackEvent', '再救一次']);
+        if (W._hmt) W._hmt.push(['_trackEvent', '再救一次', '对话按钮']);
         if (sound) sound.pause('success');
         if (sound) sound.pause('failure');
         $('#dialogue').fadeOut(500);

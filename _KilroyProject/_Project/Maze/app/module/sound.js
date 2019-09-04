@@ -13,7 +13,8 @@ class Sound {
         _this.config = {
             resources: config.resources,
             flag: true,
-            volume: config.volume || 0.2
+            volume: config.volume || 0.2,
+            loop: config.loop || []
         };
         
         _this.init();
@@ -64,9 +65,13 @@ class Sound {
         if (!_this.config.flag) return;
         
         if (sound && !sound.isPlaying) {
+            
             if (name === 'walk') sound.loop = true;
             if (name === 'success') sound.loop = true;
             sound.volume = _this.config.volume;
+            for (let i = 0, n = _this.config.loop.length; i < n; i++) {
+                if (name === _this.config.loop[i]) sound.loop = true;
+            }
             sound.play(0);
         }
     }
