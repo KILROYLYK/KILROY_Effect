@@ -12,18 +12,6 @@ class Collision {
         
         _this.config = {};
         
-        _this.speed = {
-            x: 0,
-            y: 0
-        };
-        
-        _this.object = {
-            x: 0,
-            y: 0,
-            w: 0,
-            h: 0
-        };
-        
         _this.init();
     }
     
@@ -33,124 +21,225 @@ class Collision {
      */
     init() {
         const _this = this;
-        
     }
     
     /**
-     * 检测碰撞
-     * @param {object} obj1 对象1
-     * @param {object} obj2 对象2
-     * @return {boolean} 是否重叠
+     * 元素对象转点描述
+     * @param {object} obj 面对象
+     * @return {array} 点数组
      */
-    detection(obj1, obj2) {
-        const _this = this,
-            a = [
-                {
-                    x: obj1.x,
-                    y: obj1.y
-                },
-                {
-                    x: obj1.x,
-                    y: obj1.y + obj1.h
-                },
-                {
-                    x: obj1.x + obj1.w,
-                    y: obj1.y
-                },
-                {
-                    x: obj1.x + obj1.w,
-                    y: obj1.y + obj1.h
-                }
-            ],
-            b = [
-                {
-                    x: obj2.x,
-                    y: obj2.y
-                },
-                {
-                    x: obj2.x,
-                    y: obj2.y + obj2.h
-                },
-                {
-                    x: obj2.x + obj2.w,
-                    y: obj2.y
-                },
-                {
-                    x: obj2.x + obj2.w,
-                    y: obj2.y + obj2.h
-                }
-            ];
+    conversionPointArray(obj) {
+        const _this = this;
         
-        for (let i = 0, il = a.length; i < il; i++) {
-            const segA = [a[i], a[i === il - 1 ? 0 : i + 1]];
-            for (let j = 0, jl = b.length; j < jl; j++) {
-                const segB = [b[j], b[j === jl - 1 ? 0 : j + 1]];
-                if (isOverlap(segA, segB)) return true;
+        return [
+            {
+                x: obj.x,
+                y: obj.y
+            },
+            {
+                x: obj.x + obj.width,
+                y: obj.y
+            },
+            {
+                x: obj.x + obj.width,
+                y: obj.y + obj.height
+            },
+            {
+                x: obj.x,
+                y: obj.y + obj.height
+            }
+        ];
+    }
+    
+    /**
+     * 碰撞后停止
+     * @param {object} speed 加速度
+     * @param {array} plyA 面
+     * @param {array} plyB 面
+     * @return {object} 优化后速度
+     */
+    stopMove(speed, plyA, plyB) {
+        const _this = this;
+        
+        for (let i = 0, n = plyA.length; i < n; i++) {
+            plyA[i].x += speed.x;
+            plyA[i].y += speed.y;
+        }
+        
+        if (!_this.isPolygonsOverlap(plyA, plyB)) return speed;
+        
+        if (speed.y < 0 && plyA[0].y <= plyB[2].y && plyA[2].y > plyB[2].y) {
+            speed.direction = 'top';
+            speed.y -= plyA[0].y - plyB[2].y;
+            if (speed.y > 0) speed.y = 0;
+        }
+        
+        if (speed.x < 0 && plyA[0].x <= plyB[1].x && plyA[1].x > plyB[1].x) {
+            speed.direction = 'left';
+            speed.x = 0;
+        }
+        
+        if (speed.x > 0 && plyA[1].x >= plyB[0].x && plyA[0].x < plyB[0].x) {
+            speed.direction = 'right';
+            speed.x = 0;
+        }
+        
+        if (speed.y > 0 && plyA[2].y >= plyB[0].y && plyA[0].y < plyB[0].y) {
+            speed.direction = 'bottom';
+            console.log('bottom', speed.y, plyA[2].y - plyB[0].y);
+            speed.y -= plyA[2].y - plyB[0].y;
+            console.log(speed.y);
+            if (speed.y < 0) speed.y = 0;
+        }
+        
+        return speed;
+    }
+    
+    /**
+     * 判断两多边形线段是否相交
+     * @param {array} segA 线段
+     * @param {array} segB 线段
+     * @return {boolean} 是否相交
+     */
+    isSegmentsIntersectant(segA, segB) {
+        const _this = this,
+            abc = (segA[0].x - segB[0].x) * (segA[1].y - segB[0].y) - (segA[0].y - segB[0].y) * (segA[1].x - segB[0].x),
+            abd = (segA[0].x - segB[1].x) * (segA[1].y - segB[1].y) - (segA[0].y - segB[1].y) * (segA[1].x - segB[1].x);
+        
+        if (abc * abd >= 0) {
+            return false;
+        }
+        
+        const cda = (segB[0].x - segA[0].x) * (segB[1].y - segA[0].y) - (segB[0].y - segA[0].y) * (segB[1].x - segA[0].x),
+            cdb = cda + abc - abd;
+        
+        return !(cda * cdb >= 0);
+    }
+    
+    /**
+     * 判断两多边形边界是否相交
+     * @param {array} plyA 面
+     * @param {array} plyB 面
+     * @return {boolean} 是否相交
+     */
+    isPolygonsIntersectant(plyA, plyB) {
+        const _this = this;
+        
+        for (let i = 0, il = plyA.length; i < il; i++) {
+            for (let j = 0, jl = plyB.length; j < jl; j++) {
+                const segA = [plyA[i], plyA[i === il - 1 ? 0 : i + 1]];
+                const segB = [plyB[j], plyB[j === jl - 1 ? 0 : j + 1]];
+                if (_this.isSegmentsIntersectant(segA, segB)) {
+                    return true;
+                }
             }
         }
         return false;
     }
     
     /**
-     * 检测运动碰撞
-     * @param {object} speed 速度对象
-     * @param {object} obj1 对象1
-     * @param {object} obj2 对象2
-     * @return {object} 碰上的速度
+     * 判断点是否在另一平面图中
+     * @param {object} point 点
+     * @param {array} polygon 面
+     * @return {boolean} 是否重叠
      */
-    detectionRun(speed, obj1, obj2) {
+    isPointInPolygon(point, polygon) {
         const _this = this,
-            x = obj1.x,
-            y = obj1.y;
+            N = polygon.length,
+            boundOrVertex = true,
+            precision = 2e-10,
+            p = point;
         
-        console.log(1, obj1.x, obj1.y);
+        let intersectCount = 0,
+            p1 = polygon[0],
+            p2 = {};
         
-        // obj1.x += speed.x;
-        // obj1.y += speed.y;
-        
-        console.log(2, obj1.x, obj1.y);
-        
-        if (!_this.detection(obj1, obj2)) return speed;
-    
-        console.log(obj1, obj2);
-        
-        if (speed.y < 0) {
-            console.log('上', obj2.y + obj2.h - obj1.y);
+        for (let i = 1; i <= N; ++i) {
+            if (p.x === p1.x && p.y === p1.y) {
+                return boundOrVertex;
+            }
+            
+            p2 = polygon[i % N];
+            if (p.y < Math.min(p1.y, p2.y) || p.y > Math.max(p1.y, p2.y)) {
+                p1 = p2;
+                continue;
+            }
+            
+            if (p.y > Math.min(p1.y, p2.y) && p.y < Math.max(p1.y, p2.y)) {
+                if (p.x <= Math.max(p1.x, p2.x)) {
+                    if (p1.y === p2.y && p.x >= Math.min(p1.x, p2.x)) {
+                        return boundOrVertex;
+                    }
+                    
+                    if (p1.x === p2.x) {
+                        if (p1.x === p.x) {
+                            return boundOrVertex;
+                        } else {
+                            ++intersectCount;
+                        }
+                    } else {
+                        const xinters = (p.y - p1.y) * (p2.x - p1.x) / (p2.y - p1.y) + p1.x;
+                        if (Math.abs(p.x - xinters) < precision) {
+                            return boundOrVertex;
+                        }
+                        
+                        if (p.x < xinters) {
+                            ++intersectCount;
+                        }
+                    }
+                }
+            } else {
+                if (p.y === p2.y && p.x <= p2.x) {
+                    const p3 = polygon[(i + 1) % N];
+                    if (p.y >= Math.min(p1.y, p3.y) && p.y <= Math.max(p1.y, p3.y)) {
+                        ++intersectCount;
+                    } else {
+                        intersectCount += 2;
+                    }
+                }
+            }
+            p1 = p2;
         }
         
-        console.log('计算结果：', speed);
+        if (intersectCount % 2 === 0) {
+            return false;
+        } else { //奇数在多边形内
+            return true;
+        }
+    }
+    
+    /**
+     * 判断两多变形是否存在点与区域的包含关系
+     * @param {array} plyA 面
+     * @param {array} plyB 面
+     * @return {boolean} 是否相交
+     */
+    isPointInPolygonBidirectional(plyA, plyB) {
+        const _this = this;
         
-        debugger;
+        let [a, b] = [false, false];
+        a = plyA.some((item) => {
+            return _this.isPointInPolygon(item, plyB);
+        });
+        if (!a) {
+            b = plyB.some((item) => {
+                return _this.isPointInPolygon(item, plyA);
+            });
+        }
+        return a || b;
+    }
+    
+    /**
+     * 判断多边形是否重叠
+     * @param {array} plyA 面
+     * @param {array} plyB 面
+     * @return {boolean} 是否相交
+     */
+    isPolygonsOverlap(plyA, plyB) {
+        const _this = this;
         
-        return speed;
+        return _this.isPolygonsIntersectant(plyA, plyB) || _this.isPointInPolygonBidirectional(plyA, plyB);
     }
 }
 
-/**
- * 检测重叠
- * @param {object} segA 物体A
- * @param {object} segB 物体B
- * @return {boolean} 是否重叠
- */
-function isOverlap(segA, segB) {
-    const a = (segA[0].x - segB[0].x) *
-        (segA[1].y - segB[0].y) -
-        (segA[0].y - segB[0].y) *
-        (segA[1].x - segB[0].x),
-        b = (segA[0].x - segB[1].x) *
-            (segA[1].y - segB[1].y) -
-            (segA[0].y - segB[1].y) *
-            (segA[1].x - segB[1].x);
-    
-    if (a * b >= 0) return false;
-    
-    const c = (segB[0].x - segA[0].x) *
-        (segB[1].y - segA[0].y) -
-        (segB[0].y - segA[0].y) *
-        (segB[1].x - segA[0].x),
-        d = c + a - b;
-    
-    return !(c * d >= 0);
-}
-
-export default Collision;
+export default new Collision();

@@ -30,8 +30,9 @@ class Character {
         _this.chassis = {
             color: 0x000000,
             alpha: 0,
-            origin: _this.config.wh / 2,
-            radius: _this.config.wh / 2,
+            wh: _this.config.wh,
+            x: 0,
+            y: 0,
             object: new PIXI.Graphics()
         };
         
@@ -45,6 +46,7 @@ class Character {
         
         _this.people = {
             index: _this.config.index,
+            alpha: 1,
             width: _this.config.wh * 1.6,
             speed: 1.2,
             sprite: _this.config.resources['character_' + _this.config.index].spritesheet,
@@ -223,7 +225,7 @@ function createChassis() {
     _this.chassis.object.circular = false;
     _this.chassis.object.lineStyle(0);
     _this.chassis.object.beginFill(_this.chassis.color, _this.chassis.alpha);
-    _this.chassis.object.drawCircle(_this.chassis.origin, _this.chassis.origin, _this.chassis.radius);
+    _this.chassis.object.drawRect(_this.chassis.x, _this.chassis.y, _this.chassis.wh, _this.chassis.wh);
     _this.chassis.object.endFill();
     _this.chassis.object.x = 0;
     _this.chassis.object.y = 0;
@@ -269,6 +271,7 @@ function createPeople() {
     _this.people.object.height = height;
     _this.people.object.x = x;
     _this.people.object.y = y;
+    _this.people.object.alpha = _this.people.alpha;
     _this.people.object.animationSpeed = _this.people.speed;
     
     if (_this.config.type === 0) {

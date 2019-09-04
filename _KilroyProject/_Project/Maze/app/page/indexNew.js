@@ -1,12 +1,12 @@
 /**
  * Window
  */
-import { W, D, $, Base, Popup, GaeaAjax } from '../../../_Base/js/window';
+import { W, D, $, Base, Popup } from '../../../_Base/js/window';
 
 /**
  * Plugin
  */
-import Bump from '../../../$Plugin/Pixi/bump';
+// import Bump from '../../../$Plugin/Pixi/bump';
 
 /**
  * Controller
@@ -25,6 +25,7 @@ import Character from '../object/character';
  */
 import Preload from '../module/preload';
 import Rocker from '../module/rocker';
+import Collision from '../module/collision';
 import Sound from '../module/sound';
 
 /**
@@ -37,8 +38,8 @@ const config = {
             x: 0,
             y: 0
         },
-        speed: 3,
-        volume: 1,
+        speed: 4,
+        volume: 0.5,
         color: 0xEAD8A0,
         friend: 7,
         help: 0,
@@ -62,11 +63,13 @@ const config = {
         },
         finishCallback(resources) {
             config.resources = resources;
-            setTimeout(() => {
-                createPopup();
-                createClick();
-                readyGame();
-            }, 500);
+            $('#loading').fadeOut(500);
+            startGame();
+            // setTimeout(() => {
+            //     createPopup();
+            //     createClick();
+            //     readyGame();
+            // }, 500);
         }
     }),
     popup = {};
@@ -84,6 +87,26 @@ let maze = null,
     character = null,
     characterS = null,
     rocker = null;
+
+D.onkeydown = (e) => {
+    if (!character) return;
+    
+    if (e && e.keyCode === 38) {//上
+        character.object.y--;
+    }
+    
+    if (e && e.keyCode === 40) {//下
+        character.object.y++;
+    }
+    
+    if (e && e.keyCode === 37) {//左
+        character.object.x--;
+    }
+    
+    if (e && e.keyCode === 39) {//右
+        character.object.x++;
+    }
+};
 
 Base.resizeWindow(() => {
     rotateFun();
@@ -349,134 +372,136 @@ function playGame() {
      */
     function move(x, y) {
         const grid = maze.grid.object.children,
-            appW = appMaze.clientWidth,
-            appH = appMaze.clientHeight,
-            offset = {
-                x: 0,
-                y: -appH / 7
-            },
-            centerX = appW / 2 * 0.99 - character.config.wh / 2,
-            centerY = appH / 2 * 0.99 - character.config.wh / 2,
-            characterOldX = character.chassis.object.x,
-            characterOldY = character.chassis.object.y,
-            obj1 = {
+            characterObj = Collision.conversionPointArray({
                 x: character.chassis.object.getGlobalPosition().x,
                 y: character.chassis.object.getGlobalPosition().y,
-                w: character.chassis.object.width,
-                h: character.chassis.object.height
+                width: character.chassis.object.width,
+                height: character.chassis.object.height
+            }),
+            speed = {
+                x: x,
+                xd: true,
+                y: y,
+                yd: true
             };
         
-        let characterAddX = x,
-            characterAddY = y,
-            mazeAddX = 0,
-            mazeAddY = 0;
-        
-        if (obj1.x >= centerX + offset.x &&
-            obj1.x <= appW - centerX + offset.x) {
-            config.flag.mazeX = true;
-        }
-        
-        if (obj1.y >= centerY + offset.y &&
-            obj1.y <= appH - centerY + offset.y) {
-            config.flag.mazeY = true;
-        }
-        
-        if (config.flag.mazeX) mazeAddX = x;
-        if (config.flag.mazeY) mazeAddY = y;
-        
-        if (maze.object.x - mazeAddX >= config.margin.x ||
-            maze.object.x - mazeAddX <= -(maze.map.wh + config.margin.x - appW)) {
-            config.flag.mazeX = false;
-            mazeAddX = 0;
-        }
-        
-        if (maze.object.y - mazeAddY >= config.margin.y ||
-            maze.object.y - mazeAddY <= -(maze.map.wh + config.margin.y - appH)) {
-            config.flag.mazeY = false;
-            mazeAddY = 0;
-        }
+        let newSpeed = {
+            x: x,
+            y: y
+        };
+    
+        if (speed.xd) speed.x *= 2;
+        if (speed.yd) speed.y *= 2;
         
         for (let i = 0, n = grid.length; i < n; i++) {
-            if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
-                const wall = grid[i].children[1].children,
-                    difference = 0.001;
-                Bump.hit(
-                    character.chassis.object, wall,
-                    true, false, true,
-                    (collision, platform) => {
-                        if (characterOldX !== character.chassis.object.x) {
-                            mazeAddX = 0;
-                            character.chassis.object.x = characterOldX;
-                            if (collision === 'left' && characterAddX <= 0) {
-                                characterAddX = 0;
-                                character.object.x += platform.getGlobalPosition().x + platform.width - character.object.getGlobalPosition().x - difference;
-                            }
-                            if (collision === 'right' && characterAddX >= 0) {
-                                characterAddX = 0;
-                                character.object.x -= character.object.getGlobalPosition().x + character.chassis.object.width - platform.getGlobalPosition().x - difference;
-                            }
-                        }
-                        if (characterOldY !== character.chassis.object.y) {
-                            mazeAddY = 0;
-                            character.chassis.object.y = characterOldY;
-                            if (collision === 'top' && characterAddY <= 0) {
-                                characterAddY = 0;
-                                character.object.y += platform.getGlobalPosition().y + platform.height - character.object.getGlobalPosition().y - difference;
-                            }
-                            if (collision === 'bottom' && characterAddY >= 0) {
-                                characterAddY = 0;
-                                character.object.y -= character.object.getGlobalPosition().y + character.chassis.object.height - platform.getGlobalPosition().y - difference;
-                            }
-                        }
-                        if (platform.name === '入口' || platform.name === '出口') {
-                            if (!config.flag.door) return;
-                            config.flag.door = false;
-                            if (rocker) rocker.stop();
-                            if (platform.name === '入口') {
-                                character.object.y -= config.speed;
-                                if (popup.quit) popup.quit.open();
-                            }
-                            if (platform.name === '出口') {
-                                character.object.y += config.speed;
-                                if (config.help < config.friend) {
-                                    if (popup.quit) popup.quit.open();
-                                } else if (config.help === config.friend) {
-                                    showDialogue('success');
-                                }
-                            }
-                        }
-                    }
-                );
+            const fill = grid[i].children[0],
+                gridObj = Collision.conversionPointArray({
+                    x: fill.getGlobalPosition().x,
+                    y: fill.getGlobalPosition().y,
+                    width: fill.width,
+                    height: fill.height
+                });
+            if (Collision.isPolygonsOverlap(characterObj, gridObj)) {
+                const wall = grid[i].children[1].children;
+                for (let ii = 0, nn = wall.length; ii < nn; ii++) {
+                    const wallObj = Collision.conversionPointArray({
+                        x: wall[ii].getGlobalPosition().x,
+                        y: wall[ii].getGlobalPosition().y,
+                        width: wall[ii].width,
+                        height: wall[ii].height
+                    });
+                    
+                    newSpeed = Collision.stopMove(speed, characterObj, wallObj);
+                }
             }
         }
         
-        for (let i = 0, n = friend.length; i < n; i++) {
-            Bump.hit(
-                character.chassis.object, friend[i].object.chassis.object,
-                false, false, true,
-                (collision, platform) => {
-                    if (friend[i].object.config.type === 2) return;
-                    if (rocker) rocker.stop();
-                    character.switchCharacter(friend[i].name);
-                    characterS.switchCharacter(friend[i].name);
-                    friend[i].object.save();
-                    friend[i].objectS.save();
-                    friend[i].clash();
-                    if (popup.recruitment) {
-                        popup.recruitment.open({
-                            type: config.help,
-                            save: true
-                        });
-                    }
-                    config.help++;
-                }
-            );
-        }
+        maze.object.x -= newSpeed.x;
+        maze.object.y -= newSpeed.y;
+        character.object.x += newSpeed.x;
+        character.object.y += newSpeed.y;
         
-        maze.object.x -= mazeAddX;
-        maze.object.y -= mazeAddY;
-        character.object.x += characterAddX;
-        character.object.y += characterAddY;
+        // for (let i = 0, n = grid.length; i < n; i++) {
+        //     if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
+        //         const wall = grid[i].children[1].children,
+        //             difference = 0.001;
+        //         Bump.hit(
+        //             character.chassis.object, wall,
+        //             true, false, true,
+        //             (collision, platform) => {
+        //                 if (characterOldX !== character.chassis.object.x) {
+        //                     mazeAddX = 0;
+        //                     character.chassis.object.x = characterOldX;
+        //                     if (collision === 'left' && characterAddX <= 0) {
+        //                         characterAddX = 0;
+        //                         character.object.x += platform.getGlobalPosition().x + platform.width - character.object.getGlobalPosition().x - difference;
+        //                     }
+        //                     if (collision === 'right' && characterAddX >= 0) {
+        //                         characterAddX = 0;
+        //                         character.object.x -= character.object.getGlobalPosition().x + character.chassis.object.width - platform.getGlobalPosition().x - difference;
+        //                     }
+        //                 }
+        //                 if (characterOldY !== character.chassis.object.y) {
+        //                     mazeAddY = 0;
+        //                     character.chassis.object.y = characterOldY;
+        //                     if (collision === 'top' && characterAddY <= 0) {
+        //                         characterAddY = 0;
+        //                         character.object.y += platform.getGlobalPosition().y + platform.height - character.object.getGlobalPosition().y - difference;
+        //                     }
+        //                     if (collision === 'bottom' && characterAddY >= 0) {
+        //                         characterAddY = 0;
+        //                         character.object.y -= character.object.getGlobalPosition().y + character.chassis.object.height - platform.getGlobalPosition().y - difference;
+        //                     }
+        //                 }
+        //                 if (platform.name === '入口' || platform.name === '出口') {
+        //                     if (!config.flag.door) return;
+        //                     config.flag.door = false;
+        //                     if (rocker) rocker.stop();
+        //                     if (platform.name === '入口') {
+        //                         character.object.y -= config.speed;
+        //                         if (popup.quit) popup.quit.open();
+        //                     }
+        //                     if (platform.name === '出口') {
+        //                         character.object.y += config.speed;
+        //                         if (config.help < config.friend) {
+        //                             if (popup.quit) popup.quit.open();
+        //                         } else if (config.help === config.friend) {
+        //                             showDialogue('success');
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         );
+        //     }
+        // }
+        //
+        // for (let i = 0, n = friend.length; i < n; i++) {
+        //     Bump.hit(
+        //         character.chassis.object, friend[i].object.chassis.object,
+        //         false, false, true,
+        //         (collision, platform) => {
+        //             if (friend[i].object.config.type === 2) return;
+        //             if (rocker) rocker.stop();
+        //             character.switchCharacter(friend[i].name);
+        //             characterS.switchCharacter(friend[i].name);
+        //             friend[i].object.save();
+        //             friend[i].objectS.save();
+        //             friend[i].clash();
+        //             if (popup.recruitment) {
+        //                 popup.recruitment.open({
+        //                     type: config.help,
+        //                     save: true
+        //                 });
+        //             }
+        //             config.help++;
+        //         }
+        //     );
+        // }
+        //
+        // maze.object.x -= mazeAddX;
+        // maze.object.y -= mazeAddY;
+        // character.object.x += characterAddX;
+        // character.object.y += characterAddY;
     }
     
     /**
@@ -764,7 +789,6 @@ function createPopup() {
                 _this.close();
                 $('#dialogue').fadeOut(500);
                 setTimeout(() => {
-                    if (sound) sound.pause('success');
                     if (sound) sound.pause('failure');
                     startGame();
                 }, 500);
@@ -828,7 +852,6 @@ function createClick() {
     });
     $('#btn_restart').on('click', () => {
         if (W._hmt) W._hmt.push(['_trackEvent', '再救一次']);
-        if (sound) sound.pause('success');
         if (sound) sound.pause('failure');
         $('#dialogue').fadeOut(500);
         startGame();
@@ -847,137 +870,14 @@ function rotateFun() {
 }
 
 /**
- * 分享
- */
-(function () {
-    /*global setShareInfo wx*/
-    const share = {
-        title: '盖娅互娱2020年校招开启',
-        description: '解救伙伴，开启校招冒险之旅',
-        img: 'https://image.gaeamobile.net/image/20190904/115559/slogan.png',
-        url: location.href
-    };
-    
-    $.getScript('https://qzonestyle.gtimg.cn/qzone/qzact/common/share/share.js', () => {
-        if (typeof setShareInfo === 'undefined') return;
-        
-        setShareInfo({
-            title: share.title,
-            summary: share.description,
-            pic: share.img,
-            url: location.href
-        });
-    });
-    
-    GaeaAjax.encryptAjax(
-        'https://activity.gaeamobile.net/api/wechat-share',
-        {
-            gameId: '520017',
-            url: location.href
-        },
-        (result) => {
-            if (result.retCode !== 0) {
-                console.log(result.retMsg);
-                return;
-            }
-            $.getScript('https://res.wx.qq.com/open/js/jweixin-1.4.0.js', () => {
-                if (typeof wx === 'undefined') return;
-                
-                wx.config({
-                    debug: false,
-                    appId: result.appId,
-                    timestamp: result.timestamp,
-                    nonceStr: result.nonceStr,
-                    signature: result.signature,
-                    jsApiList: ['checkJsApi', 'onMenuShareAppMessage', 'onMenuShareTimeline']
-                });
-                
-                wx.ready(() => {
-                    
-                    //分享给好友
-                    wx.onMenuShareAppMessage({
-                        title: share.title,
-                        desc: share.description,
-                        link: share.url,
-                        imgUrl: share.img,
-                        type: 'link', //link、music、video
-                        dataUrl: '', //music或video的数据链接
-                        success: function () {
-                        },
-                        cancel: function () {
-                        }
-                    });
-                    
-                    //分享至朋友圈
-                    wx.onMenuShareTimeline({
-                        title: share.title,
-                        link: share.url,
-                        imgUrl: share.img,
-                        trigger: function (res) {
-                        },
-                        success: function (res) {
-                        },
-                        cancel: function (res) {
-                        },
-                        fail: function (res) {
-                        }
-                    });
-                    
-                    //分享至QQ
-                    wx.onMenuShareQQ({
-                        title: share.title,
-                        desc: share.description,
-                        link: share.url,
-                        imgUrl: share.img,
-                        success: function () {
-                        },
-                        cancel: function () {
-                        }
-                    });
-                    
-                    //分享至QQ空间
-                    wx.onMenuShareQZone({
-                        title: share.title,
-                        desc: share.description,
-                        link: share.url,
-                        imgUrl: share.img,
-                        success: function () {
-                        },
-                        cancel: function () {
-                        }
-                    });
-                    
-                    //分享至腾讯微博
-                    wx.onMenuShareWeibo({
-                        title: share.title,
-                        desc: share.description,
-                        link: share.url,
-                        imgUrl: share.img,
-                        success: function () {
-                        },
-                        cancel: function () {
-                        }
-                    });
-                    
-                    //报错
-                    wx.error((res) => {
-                        console.log(res);
-                    });
-                });
-            });
-        }
-    );
-})();
-
-/**
- * 统计
+ * 百度统计
  */
 (function () {
     W._hmt = W._hmt || [];
     const $body = $('body'),
         id = 'baidu-jssdk',
         js = D.createElement('script'),
-        app = 'aad7546bb649c1f598b65f160c8e426e';
+        app = '2c2165a3cfa4078fccd6b6ad4275c2ea';
     
     if (D.getElementById(id)) return;
     
