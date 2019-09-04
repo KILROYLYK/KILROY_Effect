@@ -1,7 +1,7 @@
 /**
  * Window
  */
-import { W, D, $, Base, Popup, GaeaAjax } from '../../../_Base/js/window';
+import { W, $, Base, Popup, GaeaAjax } from '../../../_Base/js/window';
 
 /**
  * Plugin
@@ -51,7 +51,8 @@ const config = {
             start: true,
             door: true,
             mazeX: false,
-            mazeY: false
+            mazeY: false,
+            submit: true
         },
         setTime: {
             door: true
@@ -68,6 +69,7 @@ const config = {
             config.resources = resources;
             setTimeout(() => {
                 createPopup();
+                createReservation();
                 createClick();
                 readyGame();
             }, 500);
@@ -118,6 +120,7 @@ function readyGame() {
  */
 function startGame() {
     if (!config.flag.start) return;
+    if (W._hmt) W._hmt.push(['_trackEvent', '开始游戏', '游戏']);
     if (sound) sound.play('loading');
     config.flag.start = false;
     config.help = 0;
@@ -473,6 +476,7 @@ function playGame() {
                         });
                     }
                     config.help++;
+                    if (W._hmt) W._hmt.push(['_trackEvent', '解救' + config.help + '人', '游戏']);
                 }
             );
         }
@@ -709,19 +713,19 @@ function createPopup() {
         finishCallback() {
             const _this = this;
             $('#btn_quit_agree').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '确认放弃', '弹窗按钮']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '确认放弃', '点击']);
                 _this.close();
                 showDialogue('failure');
             });
             $('#btn_quit_disagree').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '不放弃', '弹窗按钮']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '不放弃', '点击']);
                 _this.close();
             });
         },
         openCallback() {
             const _this = this,
                 n = config.friend - config.help;
-            if (W._hmt) W._hmt.push(['_trackEvent', '不救了，退出', '弹窗']);
+            if (W._hmt) W._hmt.push(['_trackEvent', '不救了，退出', '点击']);
             if (rocker) rocker.stop();
             if (n > 0) {
                 _this.$content.find('.content .box_scale').html('还有<span>' + n + '</span>名同伴未被解救，<br>确认放弃他们吗？');
@@ -743,7 +747,7 @@ function createPopup() {
         finishCallback() {
             const _this = this;
             $('#btn_rec_more').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '跳转校园招聘职位', '弹窗按钮']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '跳转校园招聘职位', '跳转外链']);
                 location.href = 'https://www.gaea.com/cn/position';
             });
             $('#btn_rec_save').on('click', () => {
@@ -757,14 +761,14 @@ function createPopup() {
                 });
             });
             $('#btn_rec_review').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息', '弹窗按钮']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息', '点击']);
                 _this.open({
                     type: 0,
                     save: false
                 });
             });
             $('#btn_rec_restart').on('click', () => {
-                if (W._hmt) W._hmt.push(['_trackEvent', '再救一次', '弹窗按钮']);
+                if (W._hmt) W._hmt.push(['_trackEvent', '再救一次', '点击']);
                 _this.close();
                 $('#dialogue').fadeOut(500);
                 setTimeout(() => {
@@ -777,19 +781,102 @@ function createPopup() {
         openCallback(data) {
             const _this = this;
             if (rocker) rocker.stop();
-            _this.$content.find('.content,a').removeClass('active');
-            _this.$content.find('.content').eq(data.type).addClass('active');
+            _this.$content.children('.content,a').removeClass('active');
+            _this.$content.children('.content').eq(data.type).addClass('active');
             if (data.save) {
-                _this.$content.find('a').eq(1).addClass('active');
+                _this.$content.children('a').eq(0).addClass('active');
             } else {
                 if (data.type !== config.friend - 1) {
-                    _this.$content.find('a').eq(2).addClass('active');
+                    _this.$content.children('a').eq(1).addClass('active');
                 } else {
-                    _this.$content.find('a').eq(3).addClass('active');
-                    _this.$content.find('a').eq(4).addClass('active');
+                    _this.$content.children('a').eq(2).addClass('active');
+                    _this.$content.children('a').eq(3).addClass('active');
                 }
             }
         }
+    });
+    
+    // popup.recruitment.open({
+    //     type: 6,
+    //     save: false
+    // });
+}
+
+/**
+ * 创建预约
+ * @return {void}
+ */
+function createReservation() {
+    const id = 25016,
+        network = {
+            domain: {
+                formal: 'https://acts.gaeamobile.net',
+                test: 'http://acts-test.gaeamobile.net'
+            },
+            pass_check: '/api/pre-login',
+            submit: '/api/user'
+        },
+        verify = {
+            email: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        };
+    
+    let preid = '';
+    
+    (() => {
+        const a = {
+            url: network.domain.formal + network.pass_check,
+            data: {
+                activity_id: id,
+                timestamp: parseInt(new Date().valueOf())
+            },
+            successFn: function (result) {
+                preid = result.data.preid;
+            },
+            errorFn: function (e) {
+                console.log(e);
+            }
+        };
+        GaeaAjax.encryptAjax(a.url, a.data, a.successFn, a.errorFn);
+    })();
+    
+    $('#reservation_form .btn_submit').on('click', () => {
+        const value = $('#email').val();
+        
+        if (!config.flag.submit) return;
+        
+        if (!verify.email.test(value)) {
+            $('#reservation_form .error').html('格式错误，请重新输入');
+            return;
+        }
+        
+        config.flag.submit = false;
+        
+        const a = {
+            url: network.domain.formal + network.submit,
+            data: {
+                account: value,
+                plat: 'an',
+                account_type: 2,
+                activity_id: id,
+                channel: 'gaea',
+                preid: preid
+            },
+            successFn: function (result) {
+                config.flag.submit = true;
+                if (result.retCode === 0) {
+                    $('#reservation_form').hide();
+                    $('#reservation_success').show();
+                } else if (result.retCode === 3) {
+                    $('#reservation_form .error').html('该邮箱已存在');
+                }
+            },
+            errorFn: function (e) {
+                console.log(e);
+                config.flag.submit = true;
+            }
+        };
+        
+        GaeaAjax.encryptAjax(a.url, a.data, a.successFn, a.errorFn);
     });
 }
 
@@ -824,14 +911,14 @@ function createClick() {
         if (popup.quit) popup.quit.open();
     });
     $('#btn_view').on('click', () => {
-        if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息', '对话按钮']);
+        if (W._hmt) W._hmt.push(['_trackEvent', '查看招聘信息', '点击']);
         popup.recruitment.open({
             type: 0,
             save: false
         });
     });
     $('#btn_restart').on('click', () => {
-        if (W._hmt) W._hmt.push(['_trackEvent', '再救一次', '对话按钮']);
+        if (W._hmt) W._hmt.push(['_trackEvent', '再救一次', '点击']);
         if (sound) sound.pause('success');
         if (sound) sound.pause('failure');
         $('#dialogue').fadeOut(500);
@@ -904,8 +991,8 @@ function rotateFun() {
                         desc: share.description,
                         link: share.url,
                         imgUrl: share.img,
-                        type: 'link', //link、music、video
-                        dataUrl: '', //music或video的数据链接
+                        type: 'link',
+                        dataUrl: '',
                         success: function () {
                         },
                         cancel: function () {
@@ -971,32 +1058,4 @@ function rotateFun() {
             });
         }
     );
-})();
-
-/**
- * 统计
- */
-(function () {
-    W._hmt = W._hmt || [];
-    const $body = $('body'),
-        id = 'baidu-jssdk',
-        js = D.createElement('script'),
-        app = 'aad7546bb649c1f598b65f160c8e426e';
-    
-    if (D.getElementById(id)) return;
-    
-    js.type = 'text/javascript';
-    js.id = id;
-    js.src = 'https://hm.baidu.com/hm.js?' + app;
-    
-    $body.append(js);
-    
-    // /**
-    //  * 绑定点击事件
-    //  * @param {String} name 统计标识
-    //  * @return {void}
-    //  */
-    // function click(name) {
-    //     W._hmt.push(['_trackEvent', name]);
-    // }
 })();

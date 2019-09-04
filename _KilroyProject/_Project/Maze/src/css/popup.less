@@ -247,6 +247,13 @@
         }
         
         &:nth-child(7) {
+          height: 810*@px;
+          
+          .box_scroll {
+            height: 600*@px*@scale;
+            padding-bottom: 0 !important;
+          }
+          
           .title {
             width: 233*@px*@scale;
             height: 41*@px*@scale;
@@ -254,18 +261,30 @@
           }
           
           .info {
-            margin: 50*@px*@scale 0 0;
             text-indent: 0 !important;
-            .font(center, 70*@px*@scale, @color_2, 50*@px*@scale, true);
+            .font(center, 60*@px*@scale, @color_2, 35*@px*@scale, true);
           }
           
-          a {
+          .btn_rec_more {
             display: block !important;
             width: 272*@px*@scale;
             height: 97*@px*@scale;
-            margin: 100*@px*@scale auto 0;
+            margin: 20*@px*@scale auto 25*@px*@scale;
             .spritePopup(true);
             background-position: -297*@px*@scale -159*@px*@scale;
+          }
+          
+          .reservation_success {
+            display: none;
+            height: 60*@px*@scale;
+            margin: 50*@px*@scale;
+            .font(center, 60*@px*@scale, @color_2, 40*@px*@scale, true);
+          }
+          
+          .text {
+            height: 30*@px*@scale;
+            margin-top: 15*@px*@scale;
+            .font(center, 30*@px*@scale, @color_2, 30*@px*@scale, true);
           }
         }
         
@@ -341,7 +360,7 @@
         }
       }
       
-      a {
+      > a {
         display: none;
         width: 240*@px;
         margin: 30*@px auto 0;
@@ -356,5 +375,41 @@
         }
       }
     }
+  }
+}
+
+#reservation_form {
+  position: relative;
+  overflow: hidden;
+  margin-top: 20*@px*@scale;
+  
+  .input_box {
+    position: relative;
+    overflow: hidden;
+    height: 80*@px*@scale;
+    
+    input {
+      display: block;
+      width: 100%;
+      height: 80*@px*@scale;
+      padding: 0 15*@px*@scale;
+      .borderBox();
+      border: 8*@px*@scale solid #92c200;
+      .font(left, 60*@px*@scale, @color_2, 36*@px*@scale);
+    }
+  }
+  
+  .error {
+    height: 40*@px*@scale;
+    .font(center, 40*@px*@scale, red, 26*@px*@scale);
+  }
+  
+  .btn_submit {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    .borderBox();
+    .bg('btn_1.png', 244*@px*@scale, 81*@px*@scale, true);
+    .font(center, 81*@px*@scale, @color_1, 32*@px*@scale, true);
   }
 }

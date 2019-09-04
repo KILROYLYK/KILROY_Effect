@@ -38,7 +38,7 @@ const config = {
             x: 0,
             y: 0
         },
-        speed: 3,
+        speed: 2,
         volume: 1,
         color: 0xEAD8A0,
         friend: 7,

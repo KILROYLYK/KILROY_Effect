@@ -1245,30 +1245,55 @@ a:visited:hover {
 #recruitment_popup .box_popup .box_content .content:nth-child(6) .info:nth-child(2) {
   margin-top: 0.3rem;
 }
+#recruitment_popup .box_popup .box_content .content:nth-child(7) {
+  height: 8.1rem;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(7) .box_scroll {
+  height: 12rem;
+  padding-bottom: 0 !important;
+}
 #recruitment_popup .box_popup .box_content .content:nth-child(7) .title {
   width: 4.66rem;
   height: 0.82rem;
   background-position: 0rem -6.6rem !important;
 }
 #recruitment_popup .box_popup .box_content .content:nth-child(7) .info {
-  margin: 1rem 0 0;
   text-indent: 0 !important;
   text-align: center;
-  line-height: 1.4rem;
+  line-height: 1.2rem;
   color: #000000;
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-weight: 600;
 }
-#recruitment_popup .box_popup .box_content .content:nth-child(7) a {
+#recruitment_popup .box_popup .box_content .content:nth-child(7) .btn_rec_more {
   display: block !important;
   width: 5.44rem;
   height: 1.94rem;
-  margin: 2rem auto 0;
+  margin: 0.4rem auto 0.5rem;
   background: url('https://image.gaeamobile.net/image/20190903/170702/popup_sprite.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 11.38rem 9.48rem;
   background-position: -5.94rem -3.18rem;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(7) .reservation_success {
+  display: none;
+  height: 1.2rem;
+  margin: 1rem;
+  text-align: center;
+  line-height: 1.2rem;
+  color: #000000;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+#recruitment_popup .box_popup .box_content .content:nth-child(7) .text {
+  height: 0.6rem;
+  margin-top: 0.3rem;
+  text-align: center;
+  line-height: 0.6rem;
+  color: #000000;
+  font-size: 0.6rem;
+  font-weight: 600;
 }
 #recruitment_popup .box_popup .box_content .content.active {
   display: block;
@@ -1344,15 +1369,65 @@ a:visited:hover {
 #recruitment_popup .box_popup .box_content .content .info {
   text-indent: 2em;
 }
-#recruitment_popup .box_popup .box_content a {
+#recruitment_popup .box_popup .box_content > a {
   display: none;
   width: 2.4rem;
   margin: 0.3rem auto 0;
 }
-#recruitment_popup .box_popup .box_content a.active {
+#recruitment_popup .box_popup .box_content > a.active {
   display: block;
 }
-#recruitment_popup .box_popup .box_content a#btn_rec_review,
-#recruitment_popup .box_popup .box_content a#btn_rec_restart {
+#recruitment_popup .box_popup .box_content > a#btn_rec_review,
+#recruitment_popup .box_popup .box_content > a#btn_rec_restart {
   width: 2.8rem;
+}
+#reservation_form {
+  position: relative;
+  overflow: hidden;
+  margin-top: 0.4rem;
+}
+#reservation_form .input_box {
+  position: relative;
+  overflow: hidden;
+  height: 1.6rem;
+}
+#reservation_form .input_box input {
+  display: block;
+  width: 100%;
+  height: 1.6rem;
+  padding: 0 0.3rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 0.16rem solid #92c200;
+  text-align: left;
+  line-height: 1.2rem;
+  color: #000000;
+  font-size: 0.72rem;
+}
+#reservation_form .error {
+  height: 0.8rem;
+  text-align: center;
+  line-height: 0.8rem;
+  color: red;
+  font-size: 0.52rem;
+}
+#reservation_form .btn_submit {
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 4.88rem;
+  height: 1.62rem;
+  background: url('https://image.gaeamobile.net/image/20190903/170702/btn_1.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 4.88rem 1.62rem;
+  text-align: center;
+  line-height: 1.62rem;
+  color: #ffffff;
+  font-size: 0.64rem;
+  font-weight: 600;
 }

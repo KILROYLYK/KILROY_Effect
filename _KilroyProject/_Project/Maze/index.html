@@ -48,6 +48,17 @@
                 }
             }, false);
         })(window, document, 750, true);
+
+        /**
+         * 百度统计
+         */
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?aad7546bb649c1f598b65f160c8e426e";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
     </script>
     <!--<link href="https://image.gaeamobile.net/javascript/20190904/115559/index.bundle.css" rel="stylesheet">-->
 </head>
@@ -292,7 +303,27 @@
                     <p class="info">
                         点击查看更多职位详情<br>开启校招之旅
                     </p>
-                    <a id="btn_rec_more" class="btn_rec_more" href="javascript:void(0);"></a>
+                    <a id="btn_rec_more" class="btn_rec_more"
+                       href="javascript:void(0);"></a>
+                    <p class="info">
+                        留下你的邮箱&nbsp;&nbsp;参与游戏周边抽奖
+                    </p>
+                    <p class="text">
+                        我们会通过邮件联系中奖玩家
+                    </p>
+                    <form id="reservation_form" class="reservation_form"
+                          action="javascript:void(0);">
+                        <div class="input_box input_email">
+                            <input type="text" id="email" class="email"
+                                   name="email" value="" placeholder="请输入邮箱"
+                                   maxlength="50">
+                        </div>
+                        <div class="error"></div>
+                        <a class="btn_submit" href="javascript:void(0);">提交</a>
+                    </form>
+                    <div id="reservation_success" class="reservation_success">
+                        提交成功，祝你欧气满满
+                    </div>
                 </div>
             </div>
         </div>
@@ -315,6 +346,6 @@
     </a>
 </script>
 
-<!--<script type="text/javascript" src="https://image.gaeamobile.net/javascript/20190904/115559/index.bundle.js"></script>-->
+<!--<script type="text/javascript" src="https://image.gaeamobile.net/javascript/20190904/155456/index.bundle.js"></script>-->
 </body>
 </html>
