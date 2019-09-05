@@ -38,7 +38,7 @@ const config = {
             x: 0,
             y: 0
         },
-        speed: 4,
+        speed: 2,
         volume: 1,
         color: 0xEAD8A0,
         friend: 7,
@@ -355,7 +355,6 @@ function playGame() {
             appW = appMaze.clientWidth,
             appH = appMaze.clientHeight,
             offset = {
-                wall: 0.1,
                 x: 0,
                 y: -appH / 7
             },
