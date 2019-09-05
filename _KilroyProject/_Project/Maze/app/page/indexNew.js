@@ -38,7 +38,7 @@ const config = {
             x: 0,
             y: 0
         },
-        speed: 2,
+        speed: 4,
         volume: 1,
         color: 0xEAD8A0,
         friend: 7,
@@ -397,18 +397,29 @@ function playGame() {
             config.flag.mazeY = false;
         }
         
-        if (config.flag.mazeX) speed.x *= 2;
-        if (config.flag.mazeY) speed.y *= 2;
+        if (config.flag.mazeX) {
+            speed.x *= 2;
+            speed.xd = true;
+        }
+        if (config.flag.mazeY) {
+            speed.y *= 2;
+            speed.yd = true;
+        }
         
         for (let i = 0, n = grid.length; i < n; i++) {
             const fill = grid[i].children[0],
-                gridArr = Collision.conversionPointArray({
-                    x: fill.getGlobalPosition().x,
-                    y: fill.getGlobalPosition().y,
-                    width: fill.width,
-                    height: fill.height
-                });
-            if (Collision.isPolygonsOverlap(characterArr, gridArr)) {
+                fillX = fill.getGlobalPosition().x,
+                fillY = fill.getGlobalPosition().y;
+            
+            if (fillX < 0 || fillY < 0) continue;
+            
+            const fillArr = Collision.conversionPointArray({
+                x: fillX,
+                y: fillY,
+                width: fill.width,
+                height: fill.height
+            });
+            if (Collision.isPolygonsOverlap(characterArr, fillArr)) {
                 const wall = grid[i].children[1].children;
                 for (let ii = 0, nn = wall.length; ii < nn; ii++) {
                     const wallArr = Collision.conversionPointArray({

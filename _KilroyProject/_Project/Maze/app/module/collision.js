@@ -77,34 +77,40 @@ class Collision {
             plyA[i].y += speed.y;
         }
         
+        console.log(plyA[0].y - plyAOld[0].y);
+        
         if (!_this.isPolygonsOverlap(plyA, plyB)) return speed;
         
         if (speed.y < 0 && plyA[0].y < plyB[2].y && plyA[2].y > plyB[2].y) {
             speed.direction = 'top';
             speed.y = plyB[2].y - plyAOld[0].y;
-            console.log('top', speed.y);
+            console.log('top', plyB[2].y, plyAOld[0].y, speed.y);
             if (Math.abs(speed.y) < 0.001 || speed.y > 0) speed.y = 0;
         }
         
         // if (speed.x < 0 && plyA[0].x < plyB[1].x && plyA[1].x > plyB[1].x) {
         //     speed.direction = 'left';
         //     speed.x = plyB[1].x - plyAOld[0].x;
-        //     console.log('left', speed.x);
+        //     console.log('left', plyB[1].x, plyAOld[0].x, speed.x);
+        //     if (Math.abs(speed.x) < 0.001 || speed.x > 0) speed.x = 0;
         // }
         //
         // if (speed.x > 0 && plyA[1].x > plyB[0].x && plyA[0].x < plyB[0].x) {
         //     speed.direction = 'right';
         //     speed.x = plyB[0].x - plyAOld[1].x;
-        //     console.log('right', speed.x);
+        //     console.log('right', plyB[0].x, plyAOld[1].x, speed.x);
+        //     if (Math.abs(speed.x) < 0.001 || speed.x < 0) speed.x = 0;
         // }
         
         if (speed.y > 0 && plyA[2].y > plyB[0].y && plyA[0].y < plyB[0].y) {
             speed.direction = 'bottom';
             speed.y = plyB[0].y - plyAOld[2].y;
-            console.log(plyB[0].y, plyAOld[2].y);
-            console.log('bottom', speed.y);
+            console.log('bottom', plyB[0].y, plyAOld[2].y, speed.y);
             if (Math.abs(speed.y) < 0.001 || speed.y < 0) speed.y = 0;
         }
+    
+        if (speed.xd) speed.x /= 2;
+        if (speed.yd) speed.y /= 2;
         
         return speed;
     }

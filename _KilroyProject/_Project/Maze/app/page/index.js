@@ -404,7 +404,13 @@ function playGame() {
         }
         
         for (let i = 0, n = grid.length; i < n; i++) {
-            if (Bump.hitTestRectangle(character.chassis.object, grid[i], true)) {
+            const fill = grid[i].children[0],
+                fillX = fill.getGlobalPosition().x,
+                fillY = fill.getGlobalPosition().y;
+    
+            if (fillX < 0 || fillY < 0) continue;
+            
+            if (Bump.hitTestRectangle(character.chassis.object, fill, true)) {
                 const wall = grid[i].children[1].children,
                     difference = 0.001;
                 Bump.hit(
@@ -810,8 +816,7 @@ function createReservation() {
     const id = 25016,
         network = {
             domain: {
-                formal: 'https://acts.gaeamobile.net',
-                test: 'http://acts-test.gaeamobile.net'
+                formal: 'https://acts.gaeamobile.net'
             },
             pass_check: '/api/pre-login',
             submit: '/api/user'
