@@ -407,8 +407,8 @@ function playGame() {
             const fill = grid[i].children[0],
                 fillX = fill.getGlobalPosition().x,
                 fillY = fill.getGlobalPosition().y;
-    
-            if (fillX < 0 || fillY < 0) continue;
+            
+            if (fillX < 0 || fillY < 0 || fillX > appW || fillY > appH) continue;
             
             if (Bump.hitTestRectangle(character.chassis.object, fill, true)) {
                 const wall = grid[i].children[1].children,
