@@ -155,7 +155,7 @@ function createGame() {
         autoDensity: true,
         antialias: true,
         preserveDrawingBuffer: true,
-        backgroundColor: config.color,
+        backgroundColor: 0x85B312,
         clearBeforeRender: true,
         resizeTo: appMazeS
     });
@@ -262,7 +262,7 @@ function playGame() {
         resources: config.resources,
         map: 0,
         wh: appMazeSWH,
-        multiple: 1
+        multiple: 0.94
     });
     character = new Character({
         resources: config.resources,
@@ -274,7 +274,7 @@ function playGame() {
         resources: config.resources,
         index: 3,
         type: 1,
-        wh: mazeS.grid.wh * 0.35
+        wh: mazeS.grid.wh * 0.8
     });
     rocker = new Rocker({
         resources: config.resources,
@@ -536,8 +536,8 @@ function playGame() {
         
         maze.object.x = -grid.x + config.margin.x;
         maze.object.y = -grid.y + appMaze.clientHeight - gridWH - config.margin.y;
-        mazeS.object.x = 0;
-        mazeS.object.y = 0;
+        mazeS.object.x = appMazeSWH * 0.03;
+        mazeS.object.y = appMazeSWH * 0.03;
     }
     
     /**
