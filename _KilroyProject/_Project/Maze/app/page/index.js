@@ -464,8 +464,14 @@ function playGame() {
         }
         
         for (let i = 0, n = friend.length; i < n; i++) {
+            const fd = friend[i].object.chassis.object,
+                fdX = fd.getGlobalPosition().x,
+                fdY = fd.getGlobalPosition().y;
+    
+            if (fdX < 0 || fdY < 0 || fdX > appW || fdY > appH) continue;
+            
             Bump.hit(
-                character.chassis.object, friend[i].object.chassis.object,
+                character.chassis.object, fd,
                 false, false, true,
                 (collision, platform) => {
                     if (friend[i].object.config.type === 2) return;

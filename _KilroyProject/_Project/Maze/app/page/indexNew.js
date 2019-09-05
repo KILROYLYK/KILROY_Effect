@@ -355,6 +355,7 @@ function playGame() {
             appW = appMaze.clientWidth,
             appH = appMaze.clientHeight,
             offset = {
+                wall: 0.1,
                 x: 0,
                 y: -appH / 7
             },
@@ -370,12 +371,8 @@ function playGame() {
             speed = {
                 x: x,
                 y: y
-            };
-        
-        let newSpeed = {
-            x: x,
-            y: y
-        };
+            },
+            speedNew = Base.unlinkObject(speed);
         
         if (characterObj.x >= centerX + offset.x &&
             characterObj.x <= appW - centerX + offset.x) {
@@ -397,20 +394,11 @@ function playGame() {
             config.flag.mazeY = false;
         }
         
-        if (config.flag.mazeX) {
-            speed.x *= 2;
-            speed.xd = true;
-        }
-        if (config.flag.mazeY) {
-            speed.y *= 2;
-            speed.yd = true;
-        }
-        
         for (let i = 0, n = grid.length; i < n; i++) {
             const fill = grid[i].children[0],
                 fillX = fill.getGlobalPosition().x,
                 fillY = fill.getGlobalPosition().y;
-    
+            
             if (fillX < 0 || fillY < 0 || fillX > appW || fillY > appH) continue;
             
             const fillArr = Collision.conversionPointArray({
@@ -419,17 +407,57 @@ function playGame() {
                 width: fill.width,
                 height: fill.height
             });
+            
             if (Collision.isPolygonsOverlap(characterArr, fillArr)) {
                 const wall = grid[i].children[1].children;
                 for (let ii = 0, nn = wall.length; ii < nn; ii++) {
                     const wallArr = Collision.conversionPointArray({
-                        x: wall[ii].getGlobalPosition().x,
-                        y: wall[ii].getGlobalPosition().y,
-                        width: wall[ii].width,
-                        height: wall[ii].height
-                    });
+                            x: wall[ii].getGlobalPosition().x,
+                            y: wall[ii].getGlobalPosition().y,
+                            width: wall[ii].width,
+                            height: wall[ii].height
+                        }),
+                        characterArrNext = Base.unlinkObject(characterArr),
+                        speedNext = Base.unlinkObject(speed);
                     
-                    newSpeed = Collision.preventAgainstWall(speed, characterArr, wallArr);
+                    if (config.flag.mazeX) speedNext.x *= 2;
+                    if (config.flag.mazeY) speedNext.y *= 2;
+                    
+                    for (let iii = 0, nnn = characterArrNext.length; iii < nnn; iii++) {
+                        characterArrNext[iii].x += speedNext.x;
+                        characterArrNext[iii].y += speedNext.y;
+                    }
+                    
+                    if (Collision.isPolygonsOverlap(characterArrNext, wallArr)) {
+                        if (speed.y < 0 && characterArr[0].y < wallArr[2].y && characterArr[2].y > wallArr[2].y) {
+                            speed.direction = 'top';
+                            speedNew.y = wallArr[2].y - characterArr[0].y;
+                            console.log('top', wallArr[2].y, characterArr[0].y, speedNew.y);
+                            if (config.flag.mazeY && speedNew.y !== 0) speedNew.y /= 2;
+                            if (Math.abs(speedNew.y) < 0.001 || speedNew.y > 0) speedNew.y = 0;
+                        }
+                        if (speed.x < 0 && characterArr[0].x < wallArr[1].x && characterArr[1].x > wallArr[1].x) {
+                            speed.direction = 'left';
+                            speedNew.x = wallArr[1].x - characterArr[0].x;
+                            console.log('left', wallArr[1].x, characterArr[0].x, speedNew.x);
+                            if (config.flag.mazeX && speedNew.x !== 0) speedNew.x /= 2;
+                            if (Math.abs(speedNew.x) < 0.001 || speedNew.x > 0) speedNew.x = 0;
+                        }
+                        if (speed.x > 0 && characterArr[1].x > wallArr[0].x && characterArr[0].x < wallArr[0].x) {
+                            speed.direction = 'right';
+                            speedNew.x = wallArr[0].x - characterArr[1].x;
+                            console.log('right', wallArr[0].x, characterArr[1].x, speedNew.x);
+                            if (config.flag.mazeX && speedNew.x !== 0) speedNew.x /= 2;
+                            if (Math.abs(speedNew.x) < 0.001 || speedNew.x < 0) speedNew.x = 0;
+                        }
+                        if (speed.y > 0 && characterArr[2].y > wallArr[0].y && characterArr[0].y < wallArr[0].y) {
+                            speed.direction = 'bottom';
+                            speedNew.y = wallArr[0].y - characterArr[2].y;
+                            console.log('bottom', wallArr[0].y, characterArr[2].y, speedNew.y);
+                            if (config.flag.mazeY && speedNew.y !== 0) speedNew.y /= 2;
+                            if (Math.abs(speedNew.y) < 0.001 || speedNew.y < 0) speedNew.y = 0;
+                        }
+                    }
                 }
             }
         }
@@ -457,10 +485,10 @@ function playGame() {
         //     );
         // }
         
-        maze.object.x -= config.flag.mazeX ? newSpeed.x : 0;
-        maze.object.y -= config.flag.mazeY ? newSpeed.y : 0;
-        character.object.x += newSpeed.x;
-        character.object.y += newSpeed.y;
+        maze.object.x -= config.flag.mazeX ? speedNew.x : 0;
+        maze.object.y -= config.flag.mazeY ? speedNew.y : 0;
+        character.object.x += speedNew.x;
+        character.object.y += speedNew.y;
     }
     
     /**
