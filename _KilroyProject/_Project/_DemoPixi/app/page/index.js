@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { w, Base, Preload } from '../../../_Base/js/window';
+import { W, Base, Preload } from '../../../_Base/js/window';
 
 /**
  * Controller
@@ -68,7 +68,7 @@ import Ability from '../object/ability';
             
             appWave.start();
             
-            w.wave = wave;
+            W.wave = wave;
         }
     });
 })();
@@ -102,7 +102,9 @@ import Ability from '../object/ability';
         ability.update();
     });
     
-    w.ability = ability;
+    W.ability = ability;
 })();
+
+W.ability.showCapability([0, 2, 4, 6, 8, 10]);
 
 

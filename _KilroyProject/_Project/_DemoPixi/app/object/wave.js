@@ -1,7 +1,7 @@
 /**
- * Constant
+ * Controller
  */
-import { imgFilter } from '../constant/img';
+import { filter } from '../controller/window';
 
 /**
  * Pixi
@@ -27,11 +27,11 @@ class Wave {
                 url: config.imgUrl || '',
                 width: config.imgWidth || 0,
                 height: config.imgHeight || 0,
-                ripple_1: imgFilter.PC + 'ripple_1.jpg',
-                ripple_2: imgFilter.PC + 'ripple_2.jpg'
+                ripple_1: filter.pc + 'ripple_1.jpg',
+                ripple_2: filter.pc + 'ripple_2.jpg'
             }
         };
-    
+        
         _this.object = new PIXI.Container();
         
         _this.img = {

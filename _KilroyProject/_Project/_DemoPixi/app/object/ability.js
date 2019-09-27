@@ -154,7 +154,7 @@ function createPanel() {
         floor.beginFill(_this.panel.color, _this.panel.alpha);
         
         for (let ii = 0, nn = _this.panel.border.surface; ii < nn; ii++) {
-            const coordinate = _this.getCoordinate(ii, ability);
+            const coordinate = getCoordinate.call(_this, ii, ability);
             polygon.push(coordinate.x);
             polygon.push(coordinate.y);
         }
@@ -167,7 +167,7 @@ function createPanel() {
     
     for (let i = 0, n = _this.panel.border.surface; i < n; i++) {
         const border = new PIXI.Graphics(),
-            coordinate = _this.getCoordinate(i, 1);
+            coordinate = getCoordinate.call(_this, i, 1);
         
         border.lineStyle(_this.panel.border.width, _this.panel.border.color, _this.panel.border.alpha);
         border.beginFill(_this.panel.border.color, _this.panel.border.alpha);
@@ -200,7 +200,7 @@ function createPoint() {
         _this.point.position[i] = _this.config.position[i];
         _this.point.speed[i] = _this.config.position[i];
         
-        const coordinate = _this.getCoordinate(i, _this.point.position[i]);
+        const coordinate = getCoordinate.call(_this, i, _this.point.position[i]);
         
         point.lineStyle(0);
         point.beginFill(_this.point.color, _this.point.alpha);

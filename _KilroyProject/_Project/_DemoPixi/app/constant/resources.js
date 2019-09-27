@@ -1,3 +1,6 @@
+/**
+ * Controller
+ */
 import { src } from '../controller/window';
 
 /**
