@@ -13,25 +13,17 @@ export const img = [src.img + 'rotate_screen.png'];
  */
 export const gameImg = [
     {
-        name: 'border',
-        url: src.img + 'game_border.png',
+        name: 'rocker',
+        url: src.img + 'game_rocker.png',
         onComplete: () => {
         }
-    }
-];
-export const gameAnimation = [
+    },
     {
-        name: 'character',
-        url: src.json + 'character.json',
+        name: 'rocker_button',
+        url: src.img + 'game_rocker_button.png',
         onComplete: () => {
         }
     }
 ];
-export const gameMusic = [
-    {
-        name: 'walk',
-        url: src.media + 'walk.mp3',
-        onComplete: () => {
-        }
-    }
-];
+export const gameAnimation = [];
+export const gameMusic = [];

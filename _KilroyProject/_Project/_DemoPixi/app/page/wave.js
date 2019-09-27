@@ -37,10 +37,10 @@ const app = new App('appWave'),
 let wave = null;
 
 Preload.process([img], {
-    loading_callback: (index, num, progress) => {
+    loadingCallback: (index, num, progress) => {
         // console.log(index, num, progress + '%');
     },
-    finish_callback: () => {
+    finishCallback: () => {
         // console.log('完成');
         wave = new Wave({
             app: app,

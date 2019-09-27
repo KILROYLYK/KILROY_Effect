@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { d } from '../../../_Base/js/window';
+import { D } from '../../../_Base/js/window';
 
 /**
  * Three
@@ -30,7 +30,7 @@ import Ground from '../object/ground';
 /**
  * Main
  */
-const app = d.getElementById('app'),
+const app = D.getElementById('app'),
     scene = new Scene({
         color: '#69abff',
         opacity: 0.0007

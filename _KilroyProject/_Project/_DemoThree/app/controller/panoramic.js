@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { d } from '../../../_Base/js/window';
+import { D } from '../../../_Base/js/window';
 
 /**
  * Three
@@ -29,6 +29,12 @@ class Panoramic {
         
         _this.scene = scene;
         _this.camera = camera;
+    
+        _this.img = {
+            src: config.img,
+            width: config.width || 1024,
+            height: config.width || 1024
+        };
         
         _this.config = {
             side: [
@@ -70,12 +76,6 @@ class Panoramic {
         _this.move = new Move(_this.camera, {
             walk: false
         });
-    
-        _this.img = {
-            src: config.img,
-            width: config.width || 1024,
-            height: config.width || 1024
-        };
         
         _this.init();
     }
@@ -117,7 +117,7 @@ class Panoramic {
         
         for (let i = 0; i < _this.config.side.length; i++) {
             const side = _this.config.side[i];
-            const img = d.createElement('img');
+            const img = D.createElement('img');
             
             img.width = _this.img.width + 6;
             img.src = _this.img.src + side.url;

@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { d, Base } from '../../../_Base/js/window';
+import { D, Base } from '../../../_Base/js/window';
 
 /**
  * Three
@@ -112,8 +112,8 @@ class Move {
     clickMoveCamera() {
         const _this = this;
         
-        d.addEventListener('mousedown', onMouseDown, false);
-        d.addEventListener('wheel', onMouseWheel, false);
+        D.addEventListener('mousedown', onMouseDown, false);
+        D.addEventListener('wheel', onMouseWheel, false);
         
         /**
          * 鼠标按下
@@ -126,8 +126,8 @@ class Move {
             
             if (!_this.config.flag.turn) return;
             
-            d.addEventListener('mousemove', onMouseMove, false);
-            d.addEventListener('mouseup', onMouseUp, false);
+            D.addEventListener('mousemove', onMouseMove, false);
+            D.addEventListener('mouseup', onMouseUp, false);
         }
         
         /**
@@ -158,8 +158,8 @@ class Move {
             e.preventDefault();
             e.stopPropagation();
             
-            d.removeEventListener('mousemove', onMouseMove);
-            d.removeEventListener('mouseup', onMouseUp);
+            D.removeEventListener('mousemove', onMouseMove);
+            D.removeEventListener('mouseup', onMouseUp);
         }
         
         /**
@@ -182,7 +182,7 @@ class Move {
     touchMoveCamera() {
         const _this = this;
         
-        d.addEventListener('touchstart', onTouchStart, false);
+        D.addEventListener('touchstart', onTouchStart, false);
         
         /**
          * 触摸开始
@@ -199,8 +199,8 @@ class Move {
             _this.config.position.touchX = touch.screenX;
             _this.config.position.touchY = touch.screenY;
             
-            d.addEventListener('touchmove', onTouchMove, false);
-            d.addEventListener('touchend', onTouchEnd, false);
+            D.addEventListener('touchmove', onTouchMove, false);
+            D.addEventListener('touchend', onTouchEnd, false);
         }
         
         /**
@@ -231,8 +231,8 @@ class Move {
             e.preventDefault();
             e.stopPropagation();
             
-            d.removeEventListener('touchmove', onTouchMove);
-            d.removeEventListener('touchend', onTouchEnd);
+            D.removeEventListener('touchmove', onTouchMove);
+            D.removeEventListener('touchend', onTouchEnd);
         }
     }
 }

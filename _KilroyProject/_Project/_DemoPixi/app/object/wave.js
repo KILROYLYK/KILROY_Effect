@@ -98,7 +98,7 @@ class Wave {
         
         _this.sprite.flag = true;
         _this.sprite.size = 0;
-        _this.imgCover(_this.sprite.object, _this.sprite.wh, _this.sprite.wh);
+        imgCover.call(_this, _this.sprite.object, _this.sprite.wh, _this.sprite.wh);
         _this.sprite.filter.scale.x = _this.sprite.scale;
         _this.sprite.filter.scale.y = _this.sprite.scale;
     }
@@ -134,8 +134,8 @@ function createRipple() {
 function setImgPosition() {
     const _this = this;
     
-    _this.imgCover(_this.img.object, _this.img.width, _this.img.height);
-    _this.imgCover(_this.sprite.object, _this.sprite.wh, _this.sprite.wh);
+    imgCover.call(_this, _this.img.object, _this.img.width, _this.img.height);
+    imgCover.call(_this, _this.sprite.object, _this.sprite.wh, _this.sprite.wh);
 }
 
 /**

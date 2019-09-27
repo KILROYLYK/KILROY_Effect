@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { W, Base, Preload } from '../../../_Base/js/window';
+import { W, D, Base, Preload } from '../../../_Base/js/window';
 
 /**
  * Controller
@@ -39,11 +39,10 @@ import Ability from '../object/ability';
         img = 'https://image.gaeamobile.net/image/20190729/194701/bg.jpg';
     
     Preload.process([img], {
-        loading_callback: (index, num, progress) => {
+        loadingCallback: (index, num, progress) => {
             // console.log(index, num, progress + '%');
         },
-        finish_callback: () => {
-            // console.log('完成');
+        finishCallback: () => {
             const wave = new Wave({
                 app: app,
                 imgUrl: img,
@@ -69,6 +68,8 @@ import Ability from '../object/ability';
             appWave.start();
             
             W.wave = wave;
+    
+            W.wave.move();
         }
     });
 })();
@@ -106,5 +107,3 @@ import Ability from '../object/ability';
 })();
 
 W.ability.showCapability([0, 2, 4, 6, 8, 10]);
-
-

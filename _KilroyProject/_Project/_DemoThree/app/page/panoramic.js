@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { d } from '../../../_Base/js/window';
+import { D } from '../../../_Base/js/window';
 
 /**
  * Controller
@@ -19,7 +19,7 @@ import Update from '../environment/update';
 /**
  * Main
  */
-const app = d.getElementById('app'),
+const app = D.getElementById('app'),
     scene = new Scene(),
     camera = new Camera(app, {
         fov: 70

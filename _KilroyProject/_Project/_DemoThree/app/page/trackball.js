@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { w, d } from '../../../_Base/js/window';
+import { W, D } from '../../../_Base/js/window';
 
 /**
  * Three
@@ -30,7 +30,7 @@ import Ground from '../object/ground';
 /**
  * Main
  */
-const app = d.getElementById('app'),
+const app = D.getElementById('app'),
     scene = new Scene({
         color: '#cccccc',
         opacity: 0.0005
@@ -41,7 +41,7 @@ const app = d.getElementById('app'),
     renderer = new Renderer(app),
     update = new Update();
 
-renderer.object.setPixelRatio(w.devicePixelRatio);
+renderer.object.setPixelRatio(W.devicePixelRatio);
 
 const lightList = [
     Light.ambient({
