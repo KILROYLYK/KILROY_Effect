@@ -1,7 +1,6 @@
 ﻿/.DS_Store
 /.eslintrc.js
 /.eslintignore
-/tsconfig.json
 /package.json
 /package-lock.json
 /.idea
