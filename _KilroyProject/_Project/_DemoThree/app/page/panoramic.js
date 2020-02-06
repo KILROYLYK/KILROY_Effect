@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { D } from '../../../_Base/js/window';
+import { D } from '../../../_Base/javascript/window';
 
 /**
  * Controller

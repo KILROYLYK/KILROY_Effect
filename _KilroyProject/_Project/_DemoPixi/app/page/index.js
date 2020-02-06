@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { W, D, Base, Preload } from '../../../_Base/js/window';
+import { W, D, Base, Preload } from '../../../_Base/javascript/window';
 
 /**
  * Controller

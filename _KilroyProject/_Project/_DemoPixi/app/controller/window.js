@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { Base } from '../../../_Base/js/window';
+import { Base } from '../../../_Base/javascript/window';
 
 /**
  * 全局参数

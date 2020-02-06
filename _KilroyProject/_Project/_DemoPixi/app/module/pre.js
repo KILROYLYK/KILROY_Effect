@@ -1,7 +1,7 @@
 /**
  * Window
  */
-import { Preload } from '../../../_Base/js/window';
+import { Preload } from '../../../_Base/javascript/window';
 
 /**
  * Plugin

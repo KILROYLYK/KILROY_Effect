@@ -1,7 +1,7 @@
 /**
  * Public
  */
-import { D, Base } from '../../../_Base/js/window';
+import { D, Base } from '../../../_Base/javascript/window';
 
 /**
  * Three
