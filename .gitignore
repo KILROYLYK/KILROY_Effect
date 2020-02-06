@@ -3,6 +3,7 @@
 /.eslintignore
 /package.json
 /package-lock.json
+/tsconfig.json
 /.idea
 /node_modules
 
