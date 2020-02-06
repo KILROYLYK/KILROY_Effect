@@ -6,7 +6,7 @@ import { D } from '../../../_Base/javascript/window';
 /**
  * Three
  */
-import { CSS3DObject } from '../../../$Plugin/Three/examples/jsm/renderers/CSS3DRenderer';
+import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 /**
  * Controller

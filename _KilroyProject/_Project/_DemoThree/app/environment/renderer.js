@@ -2,7 +2,7 @@
  * Three
  */
 const THREE = require('three');
-import { CSS3DRenderer } from '../../../$Plugin/Three/examples/jsm/renderers/CSS3DRenderer';
+import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 /**
  * 渲染器

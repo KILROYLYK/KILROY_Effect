@@ -65,7 +65,7 @@ import Ability from '../object/ability';
                 flag.resize = true;
             });
             
-            appWave.start();
+            // appWave.start();
             
             W.wave = wave;
     
@@ -97,7 +97,7 @@ import Ability from '../object/ability';
     
     appAbility.stage.addChild(ability.object);
     
-    appAbility.start();
+    // appAbility.start();
     
     appAbility.ticker.add(() => {
         ability.update();
