@@ -4,6 +4,7 @@
 /package.json
 /package-lock.json
 /tsconfig.json
+/tslint.json
 /.idea
 /node_modules
 
