@@ -8,17 +8,16 @@ export default interface _Interface {
     /**
      * 构造函数
      * 配置基础信息
-     * @param {any} config 配置
      * @return {void}
      */
-    constructor(config?: object);
+    constructor();
     
     /**
      * 创建
      * 创建实例
      * @return {any} 实例
      */
-    create(): any;
+    create(): void;
     
     /**
      * 初始化
@@ -30,10 +29,9 @@ export default interface _Interface {
     /**
      * 更新
      * 更新对象
-     * @param {boolean} isResize 是否调整大小
      * @return {void}
      */
-    update(isResize: boolean = false): void;
+    update(): void;
     
     /**
      * 销毁
