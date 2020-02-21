@@ -11,7 +11,7 @@ export default class Camera extends _Environment {
      * @param {object} dom 动画Dom
      * @param {object} config 配置
      */
-    constructor(dom, config: object = {}) {
+    constructor(dom, config?: object) {
         super();
         
         const _this = this;
