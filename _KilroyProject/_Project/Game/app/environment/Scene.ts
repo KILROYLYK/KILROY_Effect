@@ -6,12 +6,13 @@ import _Environment from './_Environment';
  */
 export default class Scene extends _Environment {
     /**
-     * 原型对象
+     * 构造函数
      * @constructor Scene
-     * @param {object:object} config 配置
+     * @param {object} config 配置
      */
     constructor(config?: object) {
         super();
+        
         const _this = this,
             color = (config && config.color) || '#000000',
             opacity = (config && config.opacity) || 0;
@@ -22,6 +23,7 @@ export default class Scene extends _Environment {
         };
         
         _this.create();
+        _this.init();
     }
     
     /**
@@ -30,8 +32,17 @@ export default class Scene extends _Environment {
      */
     private create(): void {
         const _this = this;
-
+        
         _this.instance = new THREE.Scene();
+    }
+    
+    /**
+     * 初始化
+     * @return {void}
+     */
+    public init(): void {
+        const _this = this;
+        
         _this.instance.background = _this.config.background;
         _this.instance.fog = _this.config.fog;
     }

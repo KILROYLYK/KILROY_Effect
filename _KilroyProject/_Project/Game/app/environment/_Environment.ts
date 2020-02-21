@@ -16,7 +16,6 @@ export default abstract class _Environment implements Environment {
         const _this = this;
     }
     
-    
     /**
      * 初始化
      * @return {void}
