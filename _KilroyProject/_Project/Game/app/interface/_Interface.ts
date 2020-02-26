@@ -2,8 +2,9 @@
  * 接口
  */
 export default interface _Interface {
-    config; // 配置
-    isInit; // 是否初始化
+    config: any; // 配置
+    isCreate: boolean; // 是否创建
+    instance: object; // 实例
     
     /**
      * 构造函数

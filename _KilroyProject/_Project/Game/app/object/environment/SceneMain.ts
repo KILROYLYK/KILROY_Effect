@@ -1,10 +1,10 @@
-import * as THREE from 'three';
+import Global from '../../constant/Global';
 import _Environment from './_Environment';
 
 /**
  * 场景
  */
-export default class Scene extends _Environment {
+export default class SceneMain extends _Environment {
     /**
      * 构造函数
      * @constructor Scene
@@ -14,12 +14,12 @@ export default class Scene extends _Environment {
         super();
         
         const _this = this,
-            color = (config && config.color) || '#000000',
-            opacity = (config && config.opacity) || 0;
+            color = '#000000';
         
         _this.config = {
-            background: new THREE.Color(color),
-            fog: new THREE.FogExp2(color, opacity)
+            color: color,
+            background: new Global.THREE.Color(color),
+            fog: new Global.THREE.FogExp2(color, 0)
         };
         
         _this.create();
@@ -32,8 +32,10 @@ export default class Scene extends _Environment {
      */
     private create(): void {
         const _this = this;
+    
+        super.create();
         
-        _this.instance = new THREE.Scene();
+        _this.instance = new Global.THREE.Scene();
     }
     
     /**
@@ -42,8 +44,21 @@ export default class Scene extends _Environment {
      */
     public init(): void {
         const _this = this;
+    
+        super.init();
         
         _this.instance.background = _this.config.background;
         _this.instance.fog = _this.config.fog;
+    }
+    
+    /**
+     * 更新
+     * @param {boolean} isResize 是否调整大小
+     * @return {void}
+     */
+    public update(isResize: boolean = false): void {
+        const _this = this;
+        
+        super.update();
     }
 }

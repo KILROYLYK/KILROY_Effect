@@ -1,27 +1,25 @@
-import * as THREE from 'three';
-import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
+import Global from '../../constant/Global';
 import _Environment from './_Environment';
+import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 /**
  * 渲染器
  */
-export default class Renderer extends _Environment {
+export default class RendererMain extends _Environment {
     /**
      * 构造函数
      * @constructor Renderer
-     * @param {object} dom 动画Dom
-     * @param {object} config 配置
      */
-    constructor(dom, config?: object) {
+    protected constructor() {
         super();
         
         const _this = this;
-        
-        _this.config = {
-            dom: dom, // 动画Dom
-            type: config.type || 'WebGL',
-            width: dom.clientWidth,
-            height: dom.clientHeight
+    
+        _this.config = { // 配置
+            dom: Global.GameDom,
+            type: Global.Config.RendererType,
+            width: Global.Width,
+            height: Global.Height
         };
         
         _this.create();
@@ -35,11 +33,13 @@ export default class Renderer extends _Environment {
     private create(): void {
         const _this = this,
             Renderer = _this.getRendererType();
+    
+        super.create();
         
         _this.instance = new Renderer({
             antialias: true
         });
-        _this.config.dom.appendChild(_this.instance.domElement);
+        _this.config.dom.appendChild(_this.instance.domElement); // 添加渲染器
         
     }
     
@@ -49,6 +49,8 @@ export default class Renderer extends _Environment {
      */
     public init(): void {
         const _this = this;
+    
+        super.init();
         
         _this.instance.setSize(
             _this.config.width,
@@ -58,23 +60,20 @@ export default class Renderer extends _Environment {
     
     /**
      * 更新
+     * @param {boolean} isResize 是否调整大小
      * @return {void}
      */
-    public update(): void {
+    public update(isResize: boolean = false): void {
         const _this = this;
+        
+        if (isResize) {
+            _this.instance.setSize(
+                _this.config.dom.clientWidth,
+                _this.config.dom.clientHeight
+            );
+        }
+        
         _this.instance.update();
-    }
-    
-    /**
-     * 调整更新
-     * @return {void}
-     */
-    public resizeUpdate(): void {
-        const _this = this;
-        _this.instance.setSize(
-            _this.config.dom.clientWidth,
-            _this.config.dom.clientHeight
-        );
     }
     
     /**
@@ -85,11 +84,11 @@ export default class Renderer extends _Environment {
         const _this = this;
         
         if (_this.config.type === 'WebGL') {
-            return THREE.WebGLRenderer;
+            return Global.THREE.WebGLRenderer;
         } else if (_this.config.type === 'CSS3D') {
             return CSS3DRenderer;
         } else {
-            return THREE.WebGLRenderer;
+            return Global.THREE.WebGLRenderer;
         }
     }
 }

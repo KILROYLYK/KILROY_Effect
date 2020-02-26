@@ -1,19 +1,21 @@
-import Environment from "../interface/Environment";
+import Environment from '../../interface/Environment';
 
 /**
  * 基类-环境
  */
 export default abstract class _Environment implements Environment {
-    public config: object = null; // 配置
+    public config: any = null; // 配置
+    public isCreate: boolean = false; // 是否创建
     public instance: object = null; // 实例
-    public isInit: boolean = false; // 是否初始化
     
     /**
      * 创建
      * @return {any} 实例
      */
-    private create(): void {
+    public create(): void {
         const _this = this;
+        
+        _this.isCreate = true;
     }
     
     /**
@@ -28,8 +30,10 @@ export default abstract class _Environment implements Environment {
      * 更新
      * @return {void}
      */
-    public update(isResize: boolean = false): void {
+    public update(): void {
         const _this = this;
+        
+        _this.init();
     }
     
     /**
@@ -38,6 +42,8 @@ export default abstract class _Environment implements Environment {
      */
     public destroy(): void {
         const _this = this;
+        
+        _this.isCreate = false;
         _this.instance = null;
     }
 }
