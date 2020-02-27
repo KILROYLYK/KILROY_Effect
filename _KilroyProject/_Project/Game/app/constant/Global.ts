@@ -1,6 +1,10 @@
+import './Style'; // 样式
+
 import { W, D } from '../../../_Base/javascript/window'; // 浏览器对象
-import * as THREE from 'three';
+import * as THREE from 'three'; // 游戏引擎
 import Config from './Config'; // 配置
+import Object from './Object'; // 对象
+import Function from './Function'; // 函数
 
 /**
  * Global
@@ -11,10 +15,12 @@ export default class Global {
     
     readonly static THREE = THREE; // ThreeJS
     
-    readonly static GameDom: any = D.getElementById('game');
-    public static Width: number = W.clientWidth;
-    public static Height: number = W.clientHeight;
+    readonly static GameDom: D = Function.getGameDom('game');
+    public static Width: number = W.innerWidth;
+    public static Height: number = W.innerHeight;
     
-    readonly static Config: object = Config; // 配置
-    public static Object: object = {}; // 对象
+    readonly static Config = Config; // 配置
+    readonly static Object = Object; // 对象
+    readonly static Function = Function; // 函数
+    public static Instance: object = {}; // 实例
 }

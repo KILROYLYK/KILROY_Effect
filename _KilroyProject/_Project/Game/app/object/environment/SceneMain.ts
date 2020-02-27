@@ -7,10 +7,9 @@ import _Environment from './_Environment';
 export default class SceneMain extends _Environment {
     /**
      * 构造函数
-     * @constructor Scene
-     * @param {object} config 配置
+     * @constructor SceneMain
      */
-    constructor(config?: object) {
+    protected constructor() {
         super();
         
         const _this = this,

@@ -7,7 +7,7 @@ import _Environment from './_Environment';
 export default class CameraMain extends _Environment {
     /**
      * 构造函数
-     * @constructor Camera
+     * @constructor CameraMain
      */
     protected constructor() {
         super();

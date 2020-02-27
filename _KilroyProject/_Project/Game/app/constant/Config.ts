@@ -2,6 +2,5 @@
  * Config
  */
 export default class Config {
-   public static RendererType: 'WebGL' // 渲染类型：WebGL | CSS3D
+    readonly static RendererType: 'WebGL' | 'CSS3D' = 'WebGL' // 渲染类型
 }
-

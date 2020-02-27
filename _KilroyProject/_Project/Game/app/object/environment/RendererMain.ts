@@ -8,14 +8,14 @@ import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 export default class RendererMain extends _Environment {
     /**
      * 构造函数
-     * @constructor Renderer
+     * @constructor RendererMain
      */
     protected constructor() {
         super();
         
         const _this = this;
-    
-        _this.config = { // 配置
+        
+        _this.config = {
             dom: Global.GameDom,
             type: Global.Config.RendererType,
             width: Global.Width,
@@ -33,14 +33,16 @@ export default class RendererMain extends _Environment {
     private create(): void {
         const _this = this,
             Renderer = _this.getRendererType();
-    
+        
         super.create();
         
         _this.instance = new Renderer({
             antialias: true
         });
-        _this.config.dom.appendChild(_this.instance.domElement); // 添加渲染器
         
+        console.log(_this.instance);
+        
+        _this.config.dom.appendChild(_this.instance.domElement); // 添加渲染器
     }
     
     /**
@@ -49,7 +51,7 @@ export default class RendererMain extends _Environment {
      */
     public init(): void {
         const _this = this;
-    
+        
         super.init();
         
         _this.instance.setSize(
@@ -67,20 +69,20 @@ export default class RendererMain extends _Environment {
         const _this = this;
         
         if (isResize) {
+            _this.config.width = Global.Width;
+            _this.config.height = Global.Height;
             _this.instance.setSize(
-                _this.config.dom.clientWidth,
-                _this.config.dom.clientHeight
+                _this.config.width,
+                _this.config.height
             );
         }
-        
-        _this.instance.update();
     }
     
     /**
      * 获取Renderer类型
      * @return {function} Renderer对象
      */
-    private getRendererType(): Function {
+    private getRendererType(): any {
         const _this = this;
         
         if (_this.config.type === 'WebGL') {
