@@ -52,13 +52,20 @@ export default class Function {
     
     /**
      * 监听屏幕变化并更新全局尺寸
+     * @return {void}
+     */
+    public static resizeDom(): void {
+        Global.Width = Global.Window.innerWidth;
+        Global.Height = Global.Window.innerHeight;
+    }
+    
+    /**
+     * 监听屏幕变化并更新
      * @param {function} callback 回调
      * @return {void}
      */
-    public static resizeGame(callback?: Function): void {
+    public static resizeAuto(callback?: Function): void {
         Function.resizeWindow(() => {
-            Global.Width = Global.Window.innerWidth;
-            Global.Height = Global.Window.innerHeight;
             callback && callback();
         });
     }

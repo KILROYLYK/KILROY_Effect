@@ -4,6 +4,7 @@ import { W, D } from '../../../_Base/javascript/window'; // 浏览器对象
 import * as THREE from 'three'; // 游戏引擎
 import Config from './Config'; // 配置
 import Object from './Object'; // 对象
+import Stage from './Stage'; // 场景
 import Function from './Function'; // 函数
 
 /**
@@ -21,6 +22,7 @@ export default class Global {
     
     readonly static Config = Config; // 配置
     readonly static Object = Object; // 对象
+    readonly static Stage = Stage; // 场景
     readonly static Function = Function; // 函数
     public static Instance: object = {}; // 实例
 }
