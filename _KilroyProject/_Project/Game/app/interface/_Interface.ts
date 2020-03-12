@@ -3,7 +3,7 @@
  */
 export default interface _Interface {
     config: any; // 配置
-    instance: Object; // 实例
+    instance: any; // 实例
     
     /**
      * 构造函数
@@ -22,7 +22,7 @@ export default interface _Interface {
     /**
      * 创建
      * 创建实例
-     * @return {any} 实例
+     * @return {void}
      */
     create(): void;
     

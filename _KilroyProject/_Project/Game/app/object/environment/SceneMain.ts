@@ -1,19 +1,22 @@
 import Global from '../../constant/Global';
-import _Environment from './_Environment';
+import _Environment from '../../interface/Environment';
 
 /**
  * 场景
  */
-export default class SceneMain extends _Environment {
+export default class SceneMain implements _Environment {
+    public config: any = {};
+    public instance: any = null;
+    
+    protected isCreate: boolean = false;
+    
     /**
      * 构造函数
      * @constructor SceneMain
      */
     protected constructor() {
-        super();
-        
         const _this = this,
-            color = '#000000';
+            color = 0x5AFFFD;
         
         _this.config = {
             color: color,
@@ -29,10 +32,11 @@ export default class SceneMain extends _Environment {
      * 创建
      * @return {any} 实例
      */
-    private create(): void {
+    protected create(): void {
         const _this = this;
-    
-        super.create();
+        
+        if (_this.isCreate) return;
+        _this.isCreate = true;
         
         _this.instance = new Global.THREE.Scene();
     }
@@ -41,10 +45,10 @@ export default class SceneMain extends _Environment {
      * 初始化
      * @return {void}
      */
-    public init(): void {
+    protected init(): void {
         const _this = this;
-    
-        super.init();
+        
+        if (!_this.isCreate) return;
         
         _this.instance.background = _this.config.background;
         _this.instance.fog = _this.config.fog;
@@ -58,6 +62,20 @@ export default class SceneMain extends _Environment {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        super.update();
+        if (isResize) {
+        
+        }
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        
+        if (!_this.isCreate) return;
+        _this.instance = null;
+        _this.isCreate = false;
     }
 }

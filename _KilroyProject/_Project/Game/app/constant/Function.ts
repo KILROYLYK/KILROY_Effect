@@ -1,5 +1,5 @@
 import { W, D } from '../../../_Base/javascript/window';
-import Global from "./Global"; // 浏览器对象
+import Global from './Global'; // 浏览器对象
 
 /**
  * Function
@@ -28,6 +28,30 @@ export default class Function {
     }
     
     /**
+     * 开起WebGL2
+     * @return {void}
+     */
+    public static openWebGL2(): void {
+        // 待实现
+    }
+    
+    /**
+     * 自动刷新游戏
+     * @param {function} callback 回调
+     * @return {void}
+     */
+    public static refreshGame(callback) {
+        const _this = this;
+        
+        if (!callback) return;
+        
+        callback();
+        requestAnimationFrame(() => {
+            _this.refreshGame(callback);
+        });
+    }
+    
+    /**
      * 监听屏幕变化
      * @param {function} callback 回调
      * @param {number} time 间隔时间
@@ -35,7 +59,6 @@ export default class Function {
      */
     public static resizeWindow(callback: Function, time: number = 300) {
         const _this = this;
-        let resizeSetTime = null;
         
         //监听屏幕
         D.addEventListener('DOMContentLoaded', callback, false);
@@ -55,6 +78,7 @@ export default class Function {
      * @return {void}
      */
     public static resizeDom(): void {
+        const _this = this;
         Global.Width = Global.Window.innerWidth;
         Global.Height = Global.Window.innerHeight;
     }
@@ -65,7 +89,9 @@ export default class Function {
      * @return {void}
      */
     public static resizeAuto(callback?: Function): void {
-        Function.resizeWindow(() => {
+        const _this = this;
+        _this.resizeWindow(() => {
+            _this.resizeDom();
             callback && callback();
         });
     }

@@ -1,20 +1,22 @@
-import _Object from './_Object';
+import _Object from '../interface/Object';
+import Global from '../constant/Global';
 
 /**
  * 灯光
  */
-export default class LightMain extends _Object {
+export default class LightMain implements _Object {
+    public config: any = {};
+    public instance: any = {};
+    
     /**
      * 构造函数
      * @constructor LightMain
      */
     protected constructor() {
-        super();
-        
         const _this = this;
         
         _this.config = {
-            color: '#ffffff',
+            color: 0xFFFFFF,
             opacity: 0.3,
             x: 1,
             y: 1,
@@ -23,40 +25,74 @@ export default class LightMain extends _Object {
     }
     
     /**
+     * 初始化
+     * @return {void}
+     */
+    protected init(): void {
+        const _this = this;
+    }
+    
+    /**
+     * 创建
+     * @return {any} 实例
+     */
+    protected create(): void {
+        const _this = this;
+    }
+    
+    /**
+     * 更新
+     * @param {boolean} isResize 是否调整大小
+     * @return {void}
+     */
+    public update(isResize: boolean = false): void {
+        const _this = this;
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+    }
+    
+    /**
+     * 新增
+     * @param {string} type 类型
+     * @param {string} name 名称
+     * @return {void}
+     */
+    public add(type: string, name: string): void {
+        const _this = this;
+        
+        _this.instance[name] = _this[type]();
+    }
+    
+    /**
      * 自然光
-     * @param {object} config 配置
      * @return {object} 光对象
      */
-    private ambient(config: {
-        color?: string,
-        opacity?: number
-    } = {}) {
+    protected ambient() {
         const _this = this,
-            color = config.color || _this.config.color,
-            opacity = config.opacity || _this.config.opacity;
+            color = _this.config.color,
+            opacity = _this.config.opacity;
         
-        return new THREE.AmbientLight(color, opacity);
+        return new Global.THREE.AmbientLight(color, opacity);
     }
     
     /**
      * 角度自然光
-     * @param {object} config 配置
      * @return {object} 光对象
      */
-    private directiona(config: {
-        color?: string,
-        opacity?: number,
-        x?: number,
-        y?: number,
-        z?: number
-    } = {}) {
+    protected direction() {
         const _this = this,
-            color = config.color || _this.config.color,
-            opacity = config.opacity || _this.config.opacity,
-            x = config.x || _this.config.x,
-            y = config.y || _this.config.y,
-            z = config.z || _this.config.z,
-            light = new THREE.DirectionalLight(color, opacity);
+            color = _this.config.color,
+            opacity = _this.config.opacity,
+            x = _this.config.x,
+            y = _this.config.y,
+            z = _this.config.z,
+            light = new Global.THREE.DirectionalLight(color, opacity);
         
         light.position.set(x, y, z);
         

@@ -1,24 +1,27 @@
 import Global from '../constant/Global';
-import _Stage from './_Stage';
+import Stage from '../interface/Stage';
 
 /**
  * 场景
  */
-export default class StageMain extends _Stage {
+export default class StageMain implements Stage {
+    public config: any = {};
+    public instance: any = null;
+    
     /**
      * 构造函数
      * @constructor StageMain
      */
     protected constructor() {
-        super();
-        
         const _this = this,
             Object = Global.Object; // 对象
         
         _this.config = {
+            dom: Global.GameDom,
             Renderer: new Object.RendererMain(),
             Scene: new Object.SceneMain(),
-            Camera: new Object.CameraMain()
+            Camera: new Object.CameraMain(),
+            Light: Object.Light
         };
         
         _this.create();
@@ -31,9 +34,23 @@ export default class StageMain extends _Stage {
      */
     private create(): void {
         const _this = this;
+    
+        // 添加渲染器
+        _this.config.dom.appendChild(
+            _this.config.Renderer.instance.domElement
+        );
         
-        super.create();
+        // 添加主光源
+        _this.config.Light.add('ambient', 'ambientMain');
+        _this.config.Scene.instance.add(
+            _this.config.Light.instance['ambientMain']
+        );
         
+        // 添加角度光源
+        _this.config.Light.add('direction', 'directionMain');
+        _this.config.Scene.instance.add(
+            _this.config.Light.instance['directionMain']
+        );
     }
     
     /**
@@ -42,10 +59,6 @@ export default class StageMain extends _Stage {
      */
     private init(): void {
         const _this = this;
-        
-        super.init();
-        
-        
     }
     
     /**
@@ -56,8 +69,22 @@ export default class StageMain extends _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        super.update();
-        
+        _this.config.Renderer.instance.render(
+            _this.config.Scene.instance,
+            _this.config.Camera.instance,
+        );
+        _this.config.Scene.update(isResize);
+        _this.config.Camera.update(isResize);
         _this.config.Renderer.update(isResize);
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        
+        _this.instance = null;
     }
 }

@@ -5,6 +5,11 @@ const Object = Global.Object; // 对象
 const Stage = Global.Stage; // 对象
 const Function = Global.Function; // 函数
 
-Function.resizeDom();
-
 const StageMain = new Stage.StageMain();
+
+Function.refreshGame(() => {
+    StageMain.update();
+});
+Function.resizeAuto(() => { // 监听屏幕变化
+    StageMain.update(true);
+});

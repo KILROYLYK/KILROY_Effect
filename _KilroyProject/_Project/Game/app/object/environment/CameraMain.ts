@@ -1,19 +1,22 @@
 import Global from '../../constant/Global';
-import _Environment from './_Environment';
+import _Environment from '../../interface/Environment';
 
 /**
  * 相机
  */
-export default class CameraMain extends _Environment {
+export default class CameraMain implements _Environment {
+    public config: any = {};
+    public instance: any = null;
+    
+    protected isCreate: boolean = false;
+    
     /**
      * 构造函数
      * @constructor CameraMain
      */
     protected constructor() {
-        super();
-        
         const _this = this;
-    
+        
         _this.config = {
             dom: Global.GameDom,
             fov: 45, //摄像机视锥体垂直视野角度
@@ -33,10 +36,11 @@ export default class CameraMain extends _Environment {
      * 创建
      * @return {any} 实例
      */
-    private create(): void {
+    protected create(): void {
         const _this = this;
         
-        super.create();
+        if (_this.isCreate) return;
+        _this.isCreate = true;
         
         _this.instance = new Global.THREE.PerspectiveCamera(
             _this.config.fov,
@@ -50,10 +54,10 @@ export default class CameraMain extends _Environment {
      * 初始化
      * @return {void}
      */
-    private init(): void {
+    protected init(): void {
         const _this = this;
         
-        super.init();
+        if (!_this.isCreate) return;
         
         _this.instance.position.set(
             _this.config.x,
@@ -69,7 +73,24 @@ export default class CameraMain extends _Environment {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
+    
+        if (!_this.isCreate) return;
         
-        super.update();
+        if (isResize) {
+            _this.instance.aspect = Global.Width / Global.Height;
+            _this.instance.updateProjectionMatrix();
+        }
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        
+        if (!_this.isCreate) return;
+        _this.instance = null;
+        _this.isCreate = false;
     }
 }

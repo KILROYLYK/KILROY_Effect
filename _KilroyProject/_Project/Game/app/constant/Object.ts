@@ -13,5 +13,5 @@ export default class Object {
     readonly static SceneMain: SceneMain = SceneMain; // 主要场景
     readonly static CameraMain: CameraMain = CameraMain; // 主要相机
     
-    readonly static Light: Light = Light; // 灯光
+    readonly static Light: Light = new Light(); // 灯光
 }

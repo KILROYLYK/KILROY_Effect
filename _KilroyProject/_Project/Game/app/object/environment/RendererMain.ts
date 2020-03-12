@@ -1,18 +1,21 @@
 import Global from '../../constant/Global';
-import _Environment from './_Environment';
+import _Environment from '../../interface/Environment';
 import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 /**
  * 渲染器
  */
-export default class RendererMain extends _Environment {
+export default class RendererMain implements _Environment {
+    public config: any = {};
+    public instance: any = null;
+    
+    protected isCreate: boolean = false;
+    
     /**
      * 构造函数
      * @constructor RendererMain
      */
     protected constructor() {
-        super();
-        
         const _this = this;
         
         _this.config = {
@@ -30,29 +33,26 @@ export default class RendererMain extends _Environment {
      * 创建
      * @return {any} 实例
      */
-    private create(): void {
+    protected create(): void {
         const _this = this,
             Renderer = _this.getRendererType();
-        
-        super.create();
+    
+        if (_this.isCreate) return;
+        _this.isCreate = true;
         
         _this.instance = new Renderer({
             antialias: true
         });
-        
-        console.log(_this.instance);
-        
-        _this.config.dom.appendChild(_this.instance.domElement); // 添加渲染器
     }
     
     /**
      * 初始化
      * @return {void}
      */
-    public init(): void {
+    protected init(): void {
         const _this = this;
-        
-        super.init();
+    
+        if (!_this.isCreate) return;
         
         _this.instance.setSize(
             _this.config.width,
@@ -67,6 +67,8 @@ export default class RendererMain extends _Environment {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
+    
+        if (!_this.isCreate) return;
         
         if (isResize) {
             _this.config.width = Global.Width;
@@ -79,10 +81,22 @@ export default class RendererMain extends _Environment {
     }
     
     /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        
+        if (!_this.isCreate) return;
+        _this.instance = null;
+        _this.isCreate = false;
+    }
+    
+    /**
      * 获取Renderer类型
      * @return {function} Renderer对象
      */
-    private getRendererType(): any {
+    protected getRendererType(): any {
         const _this = this;
         
         if (_this.config.type === 'WebGL') {
