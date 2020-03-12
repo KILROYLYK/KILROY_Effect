@@ -1,8 +1,8 @@
-import StameMain from '../stage/StageMain';
+import StageMain from '../stage/StageMain';
 
 /**
  * Stage
  */
 export default class Stage {
-    readonly static StameMain: StameMain = StameMain; // 主要渲染器
+    readonly static StageMain: StageMain = StageMain; // 主要渲染器
 }

@@ -7,4 +7,4 @@ const Function = Global.Function; // 函数
 
 Function.resizeDom();
 
-const StameMain = new Stage.StameMain();
+const StageMain = new Stage.StageMain();
