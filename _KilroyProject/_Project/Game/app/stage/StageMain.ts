@@ -59,6 +59,11 @@ export default class StageMain implements Stage {
      */
     private init(): void {
         const _this = this;
+    
+        _this.config.Renderer.instance.render(
+            _this.config.Scene.instance,
+            _this.config.Camera.instance,
+        );
     }
     
     /**
@@ -68,11 +73,7 @@ export default class StageMain implements Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-        
-        _this.config.Renderer.instance.render(
-            _this.config.Scene.instance,
-            _this.config.Camera.instance,
-        );
+    
         _this.config.Scene.update(isResize);
         _this.config.Camera.update(isResize);
         _this.config.Renderer.update(isResize);

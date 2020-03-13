@@ -18,9 +18,16 @@ export default class LightMain implements _Object {
         _this.config = {
             color: 0xFFFFFF,
             opacity: 0.3,
+            scalar: 1.3,
             x: 1,
             y: 1,
-            z: 1
+            z: 1,
+            shadow: {
+                show: true,
+                map: 1024,
+                far: 1000,
+                position: 300
+            }
         };
     }
     
@@ -75,10 +82,14 @@ export default class LightMain implements _Object {
      */
     protected ambient() {
         const _this = this,
-            color = _this.config.color,
-            opacity = _this.config.opacity;
+            light = new Global.THREE.AmbientLight(
+                _this.config.color,
+                _this.config.opacity
+            );
         
-        return new Global.THREE.AmbientLight(color, opacity);
+        light.castShadow = _this.config.shadow.show;
+        
+        return light;
     }
     
     /**
@@ -87,14 +98,26 @@ export default class LightMain implements _Object {
      */
     protected direction() {
         const _this = this,
-            color = _this.config.color,
-            opacity = _this.config.opacity,
-            x = _this.config.x,
-            y = _this.config.y,
-            z = _this.config.z,
-            light = new Global.THREE.DirectionalLight(color, opacity);
+            light = new Global.THREE.DirectionalLight(
+                _this.config.color,
+                _this.config.opacity
+            );
         
-        light.position.set(x, y, z);
+        light.position.set( // 设置光源位置
+            _this.config.x,
+            _this.config.y,
+            _this.config.z
+        );
+        light.position.multiplyScalar(_this.config.scalar); // 标量相乘
+        
+        light.castShadow = _this.config.shadow.show;
+        light.shadow.mapSize.width = _this.config.shadow.map;
+        light.shadow.mapSize.height = _this.config.shadow.map;
+        light.shadow.camera.far = 1000;
+        light.shadow.camera.top = _this.config.shadow.position;
+        light.shadow.camera.left = -_this.config.shadow.position;
+        light.shadow.camera.right = _this.config.shadow.position;
+        light.shadow.camera.bottom = -_this.config.shadow.position;
         
         return light;
     }

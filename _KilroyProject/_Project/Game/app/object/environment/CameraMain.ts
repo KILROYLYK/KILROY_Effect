@@ -19,13 +19,13 @@ export default class CameraMain implements _Environment {
         
         _this.config = {
             dom: Global.GameDom,
-            fov: 45, //摄像机视锥体垂直视野角度
+            fov: 30, //摄像机视锥体垂直视野角度
             aspect: Global.Width / Global.Height, //摄像机视锥体长宽比
             near: 1, //摄像机视锥体近端面
             far: 1000, //摄像机视锥体远端面
-            x: 0,
-            y: 0,
-            z: 0
+            x: 1000,
+            y: 50,
+            z: 1500
         };
         
         _this.create();
