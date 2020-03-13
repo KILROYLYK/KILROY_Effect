@@ -1,5 +1,5 @@
 import { W, D } from '../../../_Base/javascript/window';
-import Global from './Global'; // 浏览器对象
+import Global from './Global';
 
 /**
  * Function

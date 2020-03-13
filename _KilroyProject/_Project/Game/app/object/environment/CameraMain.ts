@@ -24,7 +24,7 @@ export default class CameraMain implements _Environment {
             near: 1, //摄像机视锥体近端面
             far: 1000, //摄像机视锥体远端面
             x: 1000,
-            y: 50,
+            y: 250,
             z: 1500
         };
         

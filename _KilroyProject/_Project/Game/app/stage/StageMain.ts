@@ -17,11 +17,12 @@ export default class StageMain implements Stage {
             Object = Global.Object; // 对象
         
         _this.config = {
-            dom: Global.GameDom,
+            Dom: Global.GameDom,
             Renderer: new Object.RendererMain(),
             Scene: new Object.SceneMain(),
             Camera: new Object.CameraMain(),
-            Light: Object.Light
+            Light: new Object.LightMain(),
+            Ground: new Object.GroundMain()
         };
         
         _this.create();
@@ -34,23 +35,20 @@ export default class StageMain implements Stage {
      */
     private create(): void {
         const _this = this;
-    
+        
         // 添加渲染器
-        _this.config.dom.appendChild(
-            _this.config.Renderer.instance.domElement
-        );
+        _this.config.Dom.appendChild(_this.config.Renderer.instance.domElement);
         
         // 添加主光源
         _this.config.Light.add('ambient', 'ambientMain');
-        _this.config.Scene.instance.add(
-            _this.config.Light.instance['ambientMain']
-        );
+        _this.config.Scene.instance.add(_this.config.Light.instance['ambientMain']);
         
         // 添加角度光源
         _this.config.Light.add('direction', 'directionMain');
-        _this.config.Scene.instance.add(
-            _this.config.Light.instance['directionMain']
-        );
+        _this.config.Scene.instance.add(_this.config.Light.instance['directionMain']);
+        
+        // 添加地面
+        _this.config.Scene.instance.add(_this.config.Ground.instance.mesh);
     }
     
     /**
@@ -59,8 +57,8 @@ export default class StageMain implements Stage {
      */
     private init(): void {
         const _this = this;
-    
-        _this.config.Renderer.instance.render(
+        
+        _this.config.Renderer.instance.render( // 添加渲染器
             _this.config.Scene.instance,
             _this.config.Camera.instance,
         );
@@ -73,7 +71,7 @@ export default class StageMain implements Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-    
+        
         _this.config.Scene.update(isResize);
         _this.config.Camera.update(isResize);
         _this.config.Renderer.update(isResize);

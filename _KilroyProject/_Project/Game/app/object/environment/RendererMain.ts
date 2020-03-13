@@ -58,6 +58,8 @@ export default class RendererMain implements _Environment {
             _this.config.width,
             _this.config.height
         );
+        _this.instance.outputEncoding = Global.THREE.sRGBEncoding;
+        _this.instance.shadowMap.enabled = true;
     }
     
     /**

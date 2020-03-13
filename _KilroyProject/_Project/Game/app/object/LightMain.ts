@@ -19,9 +19,11 @@ export default class LightMain implements _Object {
             color: 0xFFFFFF,
             opacity: 0.3,
             scalar: 1.3,
-            x: 1,
-            y: 1,
-            z: 1,
+            position: {
+                x: 1,
+                y: 1,
+                z: 1
+            },
             shadow: {
                 show: true,
                 map: 1024,
@@ -29,14 +31,9 @@ export default class LightMain implements _Object {
                 position: 300
             }
         };
-    }
-    
-    /**
-     * 初始化
-     * @return {void}
-     */
-    protected init(): void {
-        const _this = this;
+        
+        _this.create();
+        _this.init();
     }
     
     /**
@@ -44,6 +41,14 @@ export default class LightMain implements _Object {
      * @return {any} 实例
      */
     protected create(): void {
+        const _this = this;
+    }
+    
+    /**
+     * 初始化
+     * @return {void}
+     */
+    protected init(): void {
         const _this = this;
     }
     
@@ -62,6 +67,8 @@ export default class LightMain implements _Object {
      */
     public destroy(): void {
         const _this = this;
+        
+        _this.instance = {};
     }
     
     /**
@@ -104,9 +111,9 @@ export default class LightMain implements _Object {
             );
         
         light.position.set( // 设置光源位置
-            _this.config.x,
-            _this.config.y,
-            _this.config.z
+            _this.config.position.x,
+            _this.config.position.y,
+            _this.config.position.z
         );
         light.position.multiplyScalar(_this.config.scalar); // 标量相乘
         
