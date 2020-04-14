@@ -1,9 +1,9 @@
 import Global from './constant/Global'; // 全局对象
 
-const Config = Global.Config; // 配置
-const Object = Global.Object; // 对象
-const Stage = Global.Stage; // 对象
-const Function = Global.Function; // 函数
+const Config = Global.Config, // 配置
+    Object = Global.Object, // 对象
+    Stage = Global.Stage, // 对象
+    Function = Global.Function; // 函数
 
 const StageMain = new Stage.StageMain();
 

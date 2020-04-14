@@ -6,7 +6,7 @@ import Global from '../constant/Global';
 export default class Camera {
     /**
      * 二维坐标转换三维坐标
-     * @return {"}
+     * @return {}
      */
     
     /**

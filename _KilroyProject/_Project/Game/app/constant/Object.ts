@@ -10,11 +10,11 @@ import GroundMain from '../object/GroundMain';
  * Object
  */
 export default class Object {
-    readonly static RendererMain: RendererMain = RendererMain; // 主要渲染器
-    readonly static SceneMain: SceneMain = SceneMain; // 主要场景
-    readonly static CameraMain: CameraMain = CameraMain; // 主要相机
+    readonly static RendererMain: Function = RendererMain; // 主要渲染器
+    readonly static SceneMain: Function = SceneMain; // 主要场景
+    readonly static CameraMain: Function = CameraMain; // 主要相机
     
-    readonly static LightMain: LightMain = LightMain; // 灯光
+    readonly static LightMain: Function = LightMain; // 灯光
     
-    readonly static GroundMain: GroundMain = GroundMain; // 地面
+    readonly static GroundMain: Function = GroundMain; // 地面
 }

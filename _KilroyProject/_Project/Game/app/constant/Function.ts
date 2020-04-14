@@ -6,7 +6,7 @@ import Global from './Global';
  */
 export default class Function {
     private static setTime: object = { // 定时器
-        resize: null
+        resize: 0 as number
     };
     
     /**
