@@ -5,8 +5,23 @@ import _Object from '../../../interface/object';
  * 灯光
  */
 export default class Light implements _Object {
-    public config: any = {};
-    public instance: any = {};
+    public readonly config: object = {
+        color: 0xFFFFFF,
+        opacity: 0.3,
+        scalar: 1.3,
+        position: {
+            x: 1,
+            y: 1,
+            z: 1
+        },
+        shadow: {
+            show: true,
+            map: 1024,
+            far: 1000,
+            position: 300
+        }
+    };
+    public instance: object = {};
     
     /**
      * 构造函数
@@ -14,23 +29,6 @@ export default class Light implements _Object {
      */
     protected constructor() {
         const _this = this;
-        
-        _this.config = {
-            color: 0xFFFFFF,
-            opacity: 0.3,
-            scalar: 1.3,
-            position: {
-                x: 1,
-                y: 1,
-                z: 1
-            },
-            shadow: {
-                show: true,
-                map: 1024,
-                far: 1000,
-                position: 300
-            }
-        };
         
         _this.create();
         _this.init();
@@ -87,14 +85,14 @@ export default class Light implements _Object {
      * 自然光
      * @return {object} 光对象
      */
-    protected ambient() {
+    private ambient(): object {
         const _this = this,
             light = new Global.THREE.AmbientLight(
                 _this.config.color,
                 _this.config.opacity
             );
         
-        light.castShadow = _this.config.shadow.show;
+        // light.castShadow = _this.config.shadow.show;
         
         return light;
     }
@@ -103,7 +101,7 @@ export default class Light implements _Object {
      * 角度自然光
      * @return {object} 光对象
      */
-    protected direction() {
+    private direction(): object {
         const _this = this,
             light = new Global.THREE.DirectionalLight(
                 _this.config.color,

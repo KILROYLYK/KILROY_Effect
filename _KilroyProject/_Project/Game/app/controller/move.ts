@@ -5,7 +5,7 @@ import Global from '../constant/global';
  */
 export default class Move {
     private readonly config: object = { // 配置
-        target: Global.THREE.Vector3(),
+        target: null,
         lon: 90, //经度
         lat: 0, //维度
         phi: 0, //弧度
@@ -41,6 +41,8 @@ export default class Move {
      */
     constructor(camera: object) {
         const _this = this;
+        
+        _this.config.target = new Global.THREE.Vector3();
         
         _this.camera = camera.instance;
         

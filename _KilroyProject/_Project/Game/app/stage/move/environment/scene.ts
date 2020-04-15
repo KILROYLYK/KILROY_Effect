@@ -5,24 +5,22 @@ import _Environment from '../../../interface/environment';
  * 场景
  */
 export default class Scene implements _Environment {
-    public config: any = {};
-    public instance: any = null;
-    
-    protected isCreate: boolean = false;
+    public readonly config: object = {
+        color: 0x69ABFF,
+        background: null,
+        fog: null
+    };
+    public instance: object = null;
     
     /**
      * 构造函数
      * @constructor Scene
      */
-    protected constructor() {
-        const _this = this,
-            color = 0x69ABFF;
+    constructor() {
+        const _this = this;
         
-        _this.config = {
-            color: color,
-            background: new Global.THREE.Color(color),
-            fog: new Global.THREE.FogExp2(color, 0)
-        };
+        _this.config.background = new Global.THREE.Color(_this.config.color);
+        _this.config.fog = new Global.THREE.FogExp2(_this.config.color, 0.0007)
         
         _this.create();
         _this.init();
@@ -32,12 +30,10 @@ export default class Scene implements _Environment {
      * 创建
      * @return {any} 实例
      */
-    protected create(): void {
+    private create(): void {
         const _this = this;
-        
-        if (_this.isCreate) return;
-        _this.isCreate = true;
-        
+    
+        if (_this.instance) return;
         _this.instance = new Global.THREE.Scene();
     }
     
@@ -45,10 +41,10 @@ export default class Scene implements _Environment {
      * 初始化
      * @return {void}
      */
-    protected init(): void {
+    private init(): void {
         const _this = this;
         
-        if (!_this.isCreate) return;
+        if (!_this.instance) return;
         
         _this.instance.background = _this.config.background;
         _this.instance.fog = _this.config.fog;
@@ -74,8 +70,7 @@ export default class Scene implements _Environment {
     public destroy(): void {
         const _this = this;
         
-        if (!_this.isCreate) return;
+        if (!_this.instance) return;
         _this.instance = null;
-        _this.isCreate = false;
     }
 }

@@ -23,40 +23,40 @@ import MoveController from '../../controller/move';
  * 场景
  */
 export default class Stage implements _Stage {
-    public config: any = {
-        Dom: null as Element, // 元素
+    public readonly config: object = {
+        dom: null as Element, // 元素
         
         // 环境
-        Renderer: null as Renderer,
-        Scene: null as Scene,
-        Camera: null as Camera,
+        renderer: null as Renderer,
+        scene: null as Scene,
+        camera: null as Camera,
         
         // 物体
-        Light: null as Light,
-        Ground: null as Ground,
+        light: null as Light,
+        ground: null as Ground,
         
         // 控制器
-        Controller: {}
+        controller: {}
     };
-    public instance: any = null;
+    public instance: object = null;
     
     /**
      * 构造函数
      * @constructor Stage
      */
-    protected constructor() {
+    constructor() {
         const _this = this;
         
-        _this.config.Dom = Global.GameDom;
+        _this.config.dom = Global.GameDom;
         
         // 环境
-        _this.config.Renderer = new Renderer();
-        _this.config.Scene = new Scene();
-        _this.config.Camera = new Camera();
+        _this.config.renderer = new Renderer();
+        _this.config.scene = new Scene();
+        _this.config.camera = new Camera();
         
         // 物体
-        _this.config.Light = new Light();
-        _this.config.Ground = new Ground();
+        _this.config.light = new Light();
+        _this.config.ground = new Ground();
         
         _this.create();
         _this.init();
@@ -70,18 +70,18 @@ export default class Stage implements _Stage {
         const _this = this;
         
         // 添加渲染器
-        _this.config.Dom.appendChild(_this.config.Renderer.instance.domElement);
+        _this.config.dom.appendChild(_this.config.renderer.instance.domElement);
         
         // 添加主光源
-        _this.config.Light.add('ambient', 'ambientMain');
-        _this.config.Scene.instance.add(_this.config.Light.instance['ambientMain']);
+        _this.config.light.add('ambient', 'ambient');
+        _this.config.scene.instance.add(_this.config.light.instance['ambient']);
         
         // 添加角度光源
-        _this.config.Light.add('direction', 'directionMain');
-        _this.config.Scene.instance.add(_this.config.Light.instance['directionMain']);
+        _this.config.light.add('direction', 'direction');
+        _this.config.scene.instance.add(_this.config.light.instance['direction']);
         
         // 添加地面
-        _this.config.Scene.instance.add(_this.config.Ground.instance.mesh);
+        _this.config.scene.instance.add(_this.config.ground.instance.mesh);
     }
     
     /**
@@ -90,13 +90,8 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this;
-        
-        _this.config.Renderer.instance.render( // 添加渲染器
-            _this.config.Scene.instance,
-            _this.config.Camera.instance,
-        );
-        
-        _this.config.Controller['move'] = new MoveController(_this.config.Camera);
+    
+        _this.config.controller['move'] = new MoveController(_this.config.camera);
     }
     
     /**
@@ -106,10 +101,17 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
+    
+        _this.config.controller['move'].update();
         
-        _this.config.Scene.update(isResize);
-        _this.config.Camera.update(isResize);
-        _this.config.Renderer.update(isResize);
+        _this.config.renderer.instance.render(
+            _this.config.scene.instance,
+            _this.config.camera.instance
+        );
+    
+        _this.config.camera.update(isResize);
+        _this.config.scene.update(isResize);
+        _this.config.renderer.update(isResize);
     }
     
     /**

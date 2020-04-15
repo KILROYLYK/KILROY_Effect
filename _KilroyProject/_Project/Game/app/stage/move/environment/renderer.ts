@@ -6,24 +6,20 @@ import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
  * 渲染器
  */
 export default class Renderer implements _Environment {
-    public config: any = {};
-    public instance: any = null;
-    
-    protected isCreate: boolean = false;
+    public readonly config: object = {
+        type: Global.Config.RendererType,
+        dom: Global.GameDom,
+        width: Global.Width,
+        height: Global.Height
+    };
+    public instance: object = null;
     
     /**
      * 构造函数
      * @constructor Renderer
      */
-    protected constructor() {
+    constructor() {
         const _this = this;
-        
-        _this.config = {
-            dom: Global.GameDom,
-            type: Global.Config.RendererType,
-            width: Global.Width,
-            height: Global.Height
-        };
         
         _this.create();
         _this.init();
@@ -33,13 +29,11 @@ export default class Renderer implements _Environment {
      * 创建
      * @return {any} 实例
      */
-    protected create(): void {
+    private create(): void {
         const _this = this,
             Renderer = _this.getRendererType();
-    
-        if (_this.isCreate) return;
-        _this.isCreate = true;
         
+        if (_this.instance) return;
         _this.instance = new Renderer({
             antialias: true
         });
@@ -49,15 +43,16 @@ export default class Renderer implements _Environment {
      * 初始化
      * @return {void}
      */
-    protected init(): void {
+    private init(): void {
         const _this = this;
-    
-        if (!_this.isCreate) return;
+        
+        if (_this.instance) return;
         
         _this.instance.setSize(
             _this.config.width,
             _this.config.height
         );
+        
         _this.instance.outputEncoding = Global.THREE.sRGBEncoding;
         _this.instance.shadowMap.enabled = true;
     }
@@ -69,12 +64,13 @@ export default class Renderer implements _Environment {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-    
-        if (!_this.isCreate) return;
+        
+        if (!_this.instance) return;
         
         if (isResize) {
             _this.config.width = Global.Width;
             _this.config.height = Global.Height;
+            
             _this.instance.setSize(
                 _this.config.width,
                 _this.config.height
@@ -89,16 +85,16 @@ export default class Renderer implements _Environment {
     public destroy(): void {
         const _this = this;
         
-        if (!_this.isCreate) return;
+        if (!_this.instance) return;
+        _this.instance.destroy(true);
         _this.instance = null;
-        _this.isCreate = false;
     }
     
     /**
      * 获取Renderer类型
      * @return {function} Renderer对象
      */
-    protected getRendererType(): any {
+    private getRendererType(): any {
         const _this = this;
         
         if (_this.config.type === 'WebGL') {

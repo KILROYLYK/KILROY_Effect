@@ -5,8 +5,16 @@ import _Object from '../../../interface/object';
  * 地面
  */
 export default class Ground implements _Object {
-    public config: any = {};
-    public instance: any = {
+    public readonly config: object = {
+        loader: null,
+        image: {
+            grass: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'
+        },
+        repeat: 25, // 重复
+        anisotropy: 16, // 各向异性
+        size: 20000 // 尺寸
+    };
+    public readonly instance: object = {
         texture: null,
         material: null,
         geometry: null,
@@ -17,18 +25,10 @@ export default class Ground implements _Object {
      * 构造函数
      * @constructor Ground
      */
-    protected constructor() {
+    constructor() {
         const _this = this;
         
-        _this.config = {
-            loader: new Global.THREE.TextureLoader(),
-            image: {
-                grass: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'
-            },
-            repeat: 25, // 重复
-            anisotropy: 16, // 各向异性
-            size: 20000 // 尺寸
-        };
+        _this.config.loader = new Global.THREE.TextureLoader();
         
         _this.create();
         _this.init();
@@ -38,7 +38,7 @@ export default class Ground implements _Object {
      * 创建
      * @return {any} 实例
      */
-    protected create(): void {
+    private create(): void {
         const _this = this;
         
         // 质地
@@ -72,7 +72,7 @@ export default class Ground implements _Object {
      * 初始化
      * @return {void}
      */
-    protected init(): void {
+    private init(): void {
         const _this = this;
     }
     
