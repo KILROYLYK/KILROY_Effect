@@ -1,29 +1,62 @@
-import Global from '../constant/Global';
-import Stage from '../interface/Stage';
+import Global from '../../constant/global';
+import _Stage from '../../interface/stage';
+
+/**
+ * Environment
+ */
+import Renderer from './environment/renderer';
+import Scene from './environment/scene';
+import Camera from './environment/camera';
+
+/**
+ * Object
+ */
+import Light from './object/light';
+import Ground from './object/ground';
+
+/**
+ * Controller
+ */
+import MoveController from '../../controller/move';
 
 /**
  * 场景
  */
-export default class StageMain implements Stage {
-    public config: any = {};
+export default class Stage implements _Stage {
+    public config: any = {
+        Dom: null as Element, // 元素
+        
+        // 环境
+        Renderer: null as Renderer,
+        Scene: null as Scene,
+        Camera: null as Camera,
+        
+        // 物体
+        Light: null as Light,
+        Ground: null as Ground,
+        
+        // 控制器
+        Controller: {}
+    };
     public instance: any = null;
     
     /**
      * 构造函数
-     * @constructor StageMain
+     * @constructor Stage
      */
     protected constructor() {
-        const _this = this,
-            Object = Global.Object; // 对象
+        const _this = this;
         
-        _this.config = {
-            Dom: Global.GameDom,
-            Renderer: new Object.RendererMain(),
-            Scene: new Object.SceneMain(),
-            Camera: new Object.CameraMain(),
-            Light: new Object.LightMain(),
-            Ground: new Object.GroundMain()
-        };
+        _this.config.Dom = Global.GameDom;
+        
+        // 环境
+        _this.config.Renderer = new Renderer();
+        _this.config.Scene = new Scene();
+        _this.config.Camera = new Camera();
+        
+        // 物体
+        _this.config.Light = new Light();
+        _this.config.Ground = new Ground();
         
         _this.create();
         _this.init();
@@ -62,6 +95,8 @@ export default class StageMain implements Stage {
             _this.config.Scene.instance,
             _this.config.Camera.instance,
         );
+        
+        _this.config.Controller['move'] = new MoveController(_this.config.Camera);
     }
     
     /**

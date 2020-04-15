@@ -1,4 +1,4 @@
-import Interface from './_Interface'; // 接口
+import Interface from './_interface'; // 接口
 
 /**
  * 场景接口

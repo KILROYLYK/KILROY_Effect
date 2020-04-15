@@ -1,11 +1,10 @@
-import Global from './constant/Global'; // 全局对象
+import Global from './constant/global'; // 全局对象
 
 const Config = Global.Config, // 配置
-    Object = Global.Object, // 对象
     Stage = Global.Stage, // 对象
     Function = Global.Function; // 函数
 
-const StageMain = new Stage.StageMain();
+const StageMain = new Stage.Move(); // 移动
 
 Function.refreshGame(() => {
     StageMain.update();

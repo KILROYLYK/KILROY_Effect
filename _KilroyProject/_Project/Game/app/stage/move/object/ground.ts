@@ -1,11 +1,10 @@
-import _Object from '../interface/Object';
-import Global from '../constant/Global';
-
+import Global from '../../../constant/global';
+import _Object from '../../../interface/object';
 
 /**
  * 地面
  */
-export default class GroundMain implements _Object {
+export default class Ground implements _Object {
     public config: any = {};
     public instance: any = {
         texture: null,
@@ -16,7 +15,7 @@ export default class GroundMain implements _Object {
     
     /**
      * 构造函数
-     * @constructor GroundMain
+     * @constructor Ground
      */
     protected constructor() {
         const _this = this;

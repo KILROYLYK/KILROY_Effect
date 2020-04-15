@@ -1,10 +1,10 @@
-import Global from '../../constant/Global';
-import _Environment from '../../interface/Environment';
+import Global from '../../../constant/global';
+import _Environment from '../../../interface/environment';
 
 /**
  * 相机
  */
-export default class CameraMain implements _Environment {
+export default class Camera implements _Environment {
     public config: any = {};
     public instance: any = null;
     
@@ -12,7 +12,7 @@ export default class CameraMain implements _Environment {
     
     /**
      * 构造函数
-     * @constructor CameraMain
+     * @constructor Camera
      */
     protected constructor() {
         const _this = this;

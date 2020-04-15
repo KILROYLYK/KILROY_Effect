@@ -1,16 +1,16 @@
-import _Object from '../interface/Object';
-import Global from '../constant/Global';
+import Global from '../../../constant/global';
+import _Object from '../../../interface/object';
 
 /**
  * 灯光
  */
-export default class LightMain implements _Object {
+export default class Light implements _Object {
     public config: any = {};
     public instance: any = {};
     
     /**
      * 构造函数
-     * @constructor LightMain
+     * @constructor Light
      */
     protected constructor() {
         const _this = this;

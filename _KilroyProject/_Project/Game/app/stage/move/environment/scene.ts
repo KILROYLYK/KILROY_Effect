@@ -1,10 +1,10 @@
-import Global from '../../constant/Global';
-import _Environment from '../../interface/Environment';
+import Global from '../../../constant/global';
+import _Environment from '../../../interface/environment';
 
 /**
  * 场景
  */
-export default class SceneMain implements _Environment {
+export default class Scene implements _Environment {
     public config: any = {};
     public instance: any = null;
     
@@ -12,11 +12,11 @@ export default class SceneMain implements _Environment {
     
     /**
      * 构造函数
-     * @constructor SceneMain
+     * @constructor Scene
      */
     protected constructor() {
         const _this = this,
-            color = 0x5AFFFD;
+            color = 0x69ABFF;
         
         _this.config = {
             color: color,

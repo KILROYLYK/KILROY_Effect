@@ -1,5 +1,5 @@
-import { W, D } from '../../../_Base/javascript/window';
-import Global from './Global';
+import { D, Base } from '../../../_Base/javascript/window';
+import Global from './global';
 
 /**
  * Function
@@ -12,9 +12,9 @@ export default class Function {
     /**
      * 获取或创建游戏节点
      * @param {string} domID 节点ID
-     * @return {D} 游戏节点
+     * @return {Element} 游戏节点
      */
-    public static getGameDom(domID: string): D {
+    public static getGameDom(domID: string): Element {
         let dom = D.getElementById(domID);
         
         if (!dom) { // 不存在则新建
@@ -52,28 +52,6 @@ export default class Function {
     }
     
     /**
-     * 监听屏幕变化
-     * @param {function} callback 回调
-     * @param {number} time 间隔时间
-     * @return {void}
-     */
-    public static resizeWindow(callback: Function, time: number = 300) {
-        const _this = this;
-        
-        //监听屏幕
-        D.addEventListener('DOMContentLoaded', callback, false);
-        W.addEventListener('onorientationchange' in W ? 'orientationchange' : 'resize', () => {
-            clearTimeout(_this.setTime.resize);
-            _this.setTime.resize = setTimeout(callback, time);
-        }, false);
-        W.addEventListener('pageshow', (e) => {
-            if (!e.persisted) return;
-            clearTimeout(_this.setTime.resize);
-            _this.setTime.resize = setTimeout(callback, time);
-        }, false);
-    }
-    
-    /**
      * 监听屏幕变化并更新全局尺寸
      * @return {void}
      */
@@ -90,7 +68,7 @@ export default class Function {
      */
     public static resizeAuto(callback?: Function): void {
         const _this = this;
-        _this.resizeWindow(() => {
+        Base.resize(() => {
             _this.resizeDom();
             callback && callback();
         });

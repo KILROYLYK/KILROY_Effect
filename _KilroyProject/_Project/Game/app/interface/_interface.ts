@@ -1,7 +1,7 @@
 /**
  * 接口
  */
-export default interface _Interface {
+export default interface _interface {
     config: any; // 配置
     instance: any; // 实例
     

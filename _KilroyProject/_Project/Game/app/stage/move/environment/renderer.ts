@@ -1,11 +1,11 @@
-import Global from '../../constant/Global';
-import _Environment from '../../interface/Environment';
+import Global from '../../../constant/global';
+import _Environment from '../../../interface/environment';
 import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 /**
  * 渲染器
  */
-export default class RendererMain implements _Environment {
+export default class Renderer implements _Environment {
     public config: any = {};
     public instance: any = null;
     
@@ -13,7 +13,7 @@ export default class RendererMain implements _Environment {
     
     /**
      * 构造函数
-     * @constructor RendererMain
+     * @constructor Renderer
      */
     protected constructor() {
         const _this = this;
