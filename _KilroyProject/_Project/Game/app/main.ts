@@ -6,9 +6,9 @@ const Config = Global.Config, // 配置
 
 const StageMain = new Stage.Move(); // 移动
 
-Function.refreshGame(() => {
+Function.autoUpdate(() => {
     StageMain.update();
 });
-Function.resizeAuto(() => { // 监听屏幕变化
+Function.resizeUpdate(() => { // 监听屏幕变化
     StageMain.update(true);
 });

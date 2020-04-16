@@ -36,22 +36,6 @@ export default class Function {
     }
     
     /**
-     * 自动刷新游戏
-     * @param {function} callback 回调
-     * @return {void}
-     */
-    public static refreshGame(callback) {
-        const _this = this;
-        
-        if (!callback) return;
-        
-        callback();
-        requestAnimationFrame(() => {
-            _this.refreshGame(callback);
-        });
-    }
-    
-    /**
      * 监听屏幕变化并更新全局尺寸
      * @return {void}
      */
@@ -62,11 +46,27 @@ export default class Function {
     }
     
     /**
+     * 自动刷新游戏
+     * @param {function} callback 回调
+     * @return {void}
+     */
+    public static autoUpdate(callback) {
+        const _this = this;
+        
+        if (!callback) return;
+        
+        callback();
+        requestAnimationFrame(() => {
+            _this.autoUpdate(callback);
+        });
+    }
+    
+    /**
      * 监听屏幕变化并更新
      * @param {function} callback 回调
      * @return {void}
      */
-    public static resizeAuto(callback?: Function): void {
+    public static resizeUpdate(callback?: Function): void {
         const _this = this;
         Base.resize(() => {
             _this.resizeDom();

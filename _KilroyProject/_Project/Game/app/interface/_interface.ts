@@ -2,8 +2,7 @@
  * 接口
  */
 export default interface _interface {
-    config: any; // 配置
-    instance: any; // 实例
+    readonly config?: object; // 配置
     
     /**
      * 构造函数
@@ -13,18 +12,18 @@ export default interface _interface {
     constructor();
     
     /**
-     * 初始化
-     * 执行创建类逻辑
-     * @return {void}
-     */
-    init(): void;
-    
-    /**
      * 创建
      * 创建实例
      * @return {void}
      */
     create(): void;
+    
+    /**
+     * 初始化
+     * 执行创建类逻辑
+     * @return {void}
+     */
+    init(): void;
     
     /**
      * 更新

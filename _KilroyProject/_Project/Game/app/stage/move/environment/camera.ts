@@ -5,17 +5,16 @@ import _Environment from '../../../interface/environment';
  * 相机
  */
 export default class Camera implements _Environment {
-    public readonly config: object = {
-        dom: Global.GameDom,
-        fov: 45, //摄像机视锥体垂直视野角度
+    public readonly config: object = { // 配置
+        fov: 60, //摄像机视锥体垂直视野角度
         aspect: Global.Width / Global.Height, //摄像机视锥体长宽比
         near: 1, //摄像机视锥体近端面
         far: 1000, //摄像机视锥体远端面
-        x: 1000,
-        y: 250,
-        z: 1500
+        x: 0,
+        y: 0,
+        z: 0
     };
-    public instance: object = null;
+    public instance: object = null; // 实例
     
     /**
      * 构造函数
@@ -30,12 +29,13 @@ export default class Camera implements _Environment {
     
     /**
      * 创建
-     * @return {any} 实例
+     * @return {void}
      */
     private create(): void {
         const _this = this;
         
         if (_this.instance) return;
+        
         _this.instance = new Global.THREE.PerspectiveCamera(
             _this.config.fov,
             _this.config.aspect,
@@ -62,18 +62,19 @@ export default class Camera implements _Environment {
     
     /**
      * 更新
-     * @param {boolean} isResize 是否调整大小
+     * @param {boolean} isResize 屏幕是否变化
      * @return {void}
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-    
+        
         if (!_this.instance) return;
         
-        if (isResize) {
-            _this.instance.aspect = Global.Width / Global.Height;
-            _this.instance.updateProjectionMatrix();
-        }
+        // 屏幕变化
+        if (!isResize) return;
+        _this.config.aspect = Global.Width / Global.Height;
+        _this.instance.aspect = _this.config.aspect;
+        _this.instance.updateProjectionMatrix();
     }
     
     /**
@@ -84,6 +85,6 @@ export default class Camera implements _Environment {
         const _this = this;
         
         if (!_this.instance) return;
-        _this.instance = null;
+        this.instance = null;
     }
 }
