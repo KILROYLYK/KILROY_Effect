@@ -19,6 +19,7 @@ export default class Ground implements _Object {
         ry: 0
     };
     public readonly instance: object = { // 实例
+        isCreate: false,
         texture: null,
         material: null,
         geometry: null,
@@ -44,6 +45,10 @@ export default class Ground implements _Object {
      */
     private create(): void {
         const _this = this;
+        
+        if (_this.instance.isCreate) return;
+        
+        _this.instance.isCreate = true;
         
         // 质地
         const texture = _this.config.loader.load(_this.config.image.grass);
@@ -80,6 +85,8 @@ export default class Ground implements _Object {
      */
     private init(): void {
         const _this = this;
+        
+        if (_this.instance.isCreate) return;
     }
     
     /**
@@ -89,6 +96,11 @@ export default class Ground implements _Object {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
+        
+        if (!_this.instance.isCreate) return;
+        
+        if (isResize) { // 屏幕变化
+        }
     }
     
     /**
@@ -97,6 +109,8 @@ export default class Ground implements _Object {
      */
     public destroy(): void {
         const _this = this;
+    
+        if (!_this.instance.isCreate) return;
         
         _this.instance.texture = null;
         _this.instance.material = null;

@@ -38,7 +38,6 @@ export default class Stage implements _Stage {
         // 控制器
         controller: {}
     };
-    public instance: object = null; // 实例
     
     /**
      * 构造函数
@@ -121,6 +120,5 @@ export default class Stage implements _Stage {
     public destroy(): void {
         const _this = this;
         
-        _this.instance = null;
     }
 }

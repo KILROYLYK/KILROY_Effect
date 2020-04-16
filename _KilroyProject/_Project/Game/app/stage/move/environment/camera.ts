@@ -70,11 +70,12 @@ export default class Camera implements _Environment {
         
         if (!_this.instance) return;
         
-        // 屏幕变化
-        if (!isResize) return;
-        _this.config.aspect = Global.Width / Global.Height;
-        _this.instance.aspect = _this.config.aspect;
-        _this.instance.updateProjectionMatrix();
+       
+        if (isResize) { // 屏幕变化
+            _this.config.aspect = Global.Width / Global.Height;
+            _this.instance.aspect = _this.config.aspect;
+            _this.instance.updateProjectionMatrix();
+        }
     }
     
     /**
@@ -85,6 +86,7 @@ export default class Camera implements _Environment {
         const _this = this;
         
         if (!_this.instance) return;
-        this.instance = null;
+        _this.instance.destroy(true)
+        _this.instance = null;
     }
 }

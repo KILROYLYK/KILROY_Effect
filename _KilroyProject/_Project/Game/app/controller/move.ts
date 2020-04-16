@@ -1,10 +1,11 @@
 import Global from '../constant/global';
+import _Controller from '../interface/controller';
 
 /**
  * 移动
  */
-export default class Move {
-    private readonly config: object = { // 配置
+export default class Move implements _Controller {
+    public readonly config: object = { // 配置
         target: null, // 目标对象
         far: 0, // 目标对象距离
         lon: 90, // 经度
@@ -33,7 +34,7 @@ export default class Move {
         walk: false
     };
     
-    private camera: object = null; // 相机对象
+    public camera: object = null; // 相机对象
     
     /**
      * 原型对象
@@ -42,7 +43,7 @@ export default class Move {
      */
     constructor(camera: object) {
         const _this = this;
-    
+        
         _this.camera = camera.instance;
         _this.config.target = new Global.THREE.Vector3();
         _this.config.far = _this.camera.far * 2;
@@ -67,6 +68,8 @@ export default class Move {
     update() {
         const _this = this;
         
+        if (!_this.camera) return;
+        
         _this.config.lat = Math.max(-85, Math.min(85, _this.config.lat));
         _this.config.phi = Global.THREE.Math.degToRad(90 - _this.config.lat);
         _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon);
@@ -77,11 +80,14 @@ export default class Move {
     }
     
     /**
-     * 调整更新
+     * 销毁
      * @return {void}
      */
-    resizeUpdate() {
+    public destroy(): void {
         const _this = this;
+        
+        if (!_this.camera) return;
+        _this.camera = null;
     }
     
     /**

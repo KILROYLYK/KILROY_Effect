@@ -12,13 +12,6 @@ export default interface _interface {
     constructor();
     
     /**
-     * 创建
-     * 创建实例
-     * @return {void}
-     */
-    create(): void;
-    
-    /**
      * 初始化
      * 执行创建类逻辑
      * @return {void}

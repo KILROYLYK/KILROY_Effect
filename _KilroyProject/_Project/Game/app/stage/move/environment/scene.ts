@@ -5,12 +5,12 @@ import _Environment from '../../../interface/environment';
  * 场景
  */
 export default class Scene implements _Environment {
-    public readonly config: object = {
+    public readonly config: object = { // 配置
         color: 0x69ABFF,
         background: null,
         fog: null
     };
-    public instance: object = null;
+    public instance: object = null; // 实例
     
     /**
      * 构造函数
@@ -34,6 +34,7 @@ export default class Scene implements _Environment {
         const _this = this;
     
         if (_this.instance) return;
+        
         _this.instance = new Global.THREE.Scene();
     }
     
@@ -58,7 +59,7 @@ export default class Scene implements _Environment {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        if (isResize) {
+        if (isResize) { // 屏幕变化
         
         }
     }

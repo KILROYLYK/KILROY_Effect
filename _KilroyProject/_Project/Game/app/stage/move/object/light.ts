@@ -5,7 +5,7 @@ import _Object from '../../../interface/object';
  * 灯光
  */
 export default class Light implements _Object {
-    public readonly config: object = {
+    public readonly config: object = { // 配置
         color: 0xFFFFFF,
         opacity: 1,
         scalar: 1.3,
@@ -21,7 +21,7 @@ export default class Light implements _Object {
             position: 300
         }
     };
-    public instance: object = {};
+    public instance: object = {}; // 实例
     
     /**
      * 构造函数
@@ -92,7 +92,7 @@ export default class Light implements _Object {
                 _this.config.opacity
             );
         
-        // light.castShadow = _this.config.shadow.show;
+        light.castShadow = _this.config.shadow.show;
         
         return light;
     }
@@ -115,14 +115,14 @@ export default class Light implements _Object {
         );
         light.position.multiplyScalar(_this.config.scalar); // 标量相乘
         
-        // light.castShadow = _this.config.shadow.show;
-        // light.shadow.mapSize.width = _this.config.shadow.map;
-        // light.shadow.mapSize.height = _this.config.shadow.map;
-        // light.shadow.camera.far = 1000;
-        // light.shadow.camera.top = _this.config.shadow.position;
-        // light.shadow.camera.left = -_this.config.shadow.position;
-        // light.shadow.camera.right = _this.config.shadow.position;
-        // light.shadow.camera.bottom = -_this.config.shadow.position;
+        light.castShadow = _this.config.shadow.show;
+        light.shadow.mapSize.width = _this.config.shadow.map;
+        light.shadow.mapSize.height = _this.config.shadow.map;
+        light.shadow.camera.far = 1000;
+        light.shadow.camera.top = _this.config.shadow.position;
+        light.shadow.camera.left = -_this.config.shadow.position;
+        light.shadow.camera.right = _this.config.shadow.position;
+        light.shadow.camera.bottom = -_this.config.shadow.position;
         
         return light;
     }

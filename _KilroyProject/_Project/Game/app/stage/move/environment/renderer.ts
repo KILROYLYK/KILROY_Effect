@@ -6,13 +6,13 @@ import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
  * 渲染器
  */
 export default class Renderer implements _Environment {
-    public readonly config: object = {
+    public readonly config: object = { // 配置
         type: Global.Config.RendererType,
         dom: Global.GameDom,
         width: Global.Width,
         height: Global.Height
     };
-    public instance: object = null;
+    public instance: object = null; // 实例
     
     /**
      * 构造函数
@@ -34,6 +34,7 @@ export default class Renderer implements _Environment {
             Renderer = _this.getRendererType();
         
         if (_this.instance) return;
+        
         _this.instance = new Renderer({
             antialias: true
         });
@@ -67,7 +68,7 @@ export default class Renderer implements _Environment {
         
         if (!_this.instance) return;
         
-        if (isResize) {
+        if (isResize) { // 屏幕变化
             _this.config.width = Global.Width;
             _this.config.height = Global.Height;
             
