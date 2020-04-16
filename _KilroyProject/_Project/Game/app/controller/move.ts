@@ -6,6 +6,7 @@ import Global from '../constant/global';
 export default class Move {
     private readonly config: object = { // 配置
         target: null, // 目标对象
+        far: 0, // 目标对象距离
         lon: 90, // 经度
         lat: 0, // 纬度
         theta: 0, // 角度
@@ -41,10 +42,10 @@ export default class Move {
      */
     constructor(camera: object) {
         const _this = this;
-        
-        _this.config.target = new Global.THREE.Vector3();
-        
+    
         _this.camera = camera.instance;
+        _this.config.target = new Global.THREE.Vector3();
+        _this.config.far = _this.camera.far * 2;
         
         _this.init();
     }
@@ -69,9 +70,9 @@ export default class Move {
         _this.config.lat = Math.max(-85, Math.min(85, _this.config.lat));
         _this.config.phi = Global.THREE.Math.degToRad(90 - _this.config.lat);
         _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon);
-        _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta) * _this.camera.far;
-        _this.config.target.y = Math.cos(_this.config.phi) * _this.camera.far;
-        _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta) * _this.camera.far;
+        _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta) * _this.config.far;
+        _this.config.target.y = Math.cos(_this.config.phi) * _this.config.far;
+        _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta) * _this.config.far;
         _this.camera.lookAt(_this.config.target);
     }
     
