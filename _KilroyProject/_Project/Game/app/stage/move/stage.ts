@@ -17,13 +17,13 @@ import Ground from './object/ground';
 /**
  * Controller
  */
-import MoveController from '../../controller/move';
+import Move from '../../controller/move';
 
 /**
  * 场景
  */
 export default class Stage implements _Stage {
-    public readonly config: object = {
+    public readonly config: object = { // 配置
         dom: null as Element, // 元素
         
         // 环境
@@ -38,7 +38,7 @@ export default class Stage implements _Stage {
         // 控制器
         controller: {}
     };
-    public instance: object = null;
+    public instance: object = null; // 实例
     
     /**
      * 构造函数
@@ -91,7 +91,7 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
     
-        _this.config.controller['move'] = new MoveController(_this.config.camera);
+        _this.config.controller['move'] = new Move(_this.config.camera);
     }
     
     /**
@@ -102,16 +102,16 @@ export default class Stage implements _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
     
-        _this.config.controller['move'].update();
-        
-        _this.config.renderer.instance.render(
-            _this.config.scene.instance,
-            _this.config.camera.instance
-        );
+        _this.config.controller['move'].update(isResize);
     
         _this.config.camera.update(isResize);
         _this.config.scene.update(isResize);
         _this.config.renderer.update(isResize);
+    
+        _this.config.renderer.instance.render(
+            _this.config.scene.instance,
+            _this.config.camera.instance
+        );
     }
     
     /**

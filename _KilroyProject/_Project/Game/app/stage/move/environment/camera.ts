@@ -11,7 +11,7 @@ export default class Camera implements _Environment {
         near: 1, //摄像机视锥体近端面
         far: 1000, //摄像机视锥体远端面
         x: 0,
-        y: 0,
+        y: 200,
         z: 0
     };
     public instance: object = null; // 实例

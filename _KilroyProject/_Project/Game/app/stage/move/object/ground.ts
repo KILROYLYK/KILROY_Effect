@@ -5,16 +5,20 @@ import _Object from '../../../interface/object';
  * 地面
  */
 export default class Ground implements _Object {
-    public readonly config: object = {
+    public readonly config: object = { // 配置
         loader: null,
         image: {
             grass: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'
         },
         repeat: 25, // 重复
         anisotropy: 16, // 各向异性
-        size: 20000 // 尺寸
+        size: 20000, // 尺寸
+        x: 0,
+        y: 0,
+        rx: -Math.PI / 2,
+        ry: 0
     };
-    public readonly instance: object = {
+    public readonly instance: object = { // 实例
         texture: null,
         material: null,
         geometry: null,
@@ -62,8 +66,10 @@ export default class Ground implements _Object {
         
         // 啮合
         const mesh = new Global.THREE.Mesh(geometry, material);
-        mesh.position.y = 0;
-        mesh.rotation.x = -Math.PI / 2; // 平放
+        mesh.position.x = _this.config.x;
+        mesh.position.y = _this.config.y;
+        mesh.rotation.x = _this.config.rx;
+        mesh.rotation.y = _this.config.ry;
         mesh.receiveShadow = true;
         _this.instance.mesh = mesh;
     }

@@ -5,11 +5,12 @@ import Global from '../constant/global';
  */
 export default class Move {
     private readonly config: object = { // 配置
-        target: null,
-        lon: 90, //经度
-        lat: 0, //维度
-        phi: 0, //弧度
-        theta: 0, //弧度
+        target: null, // 目标对象
+        far: 300, // 目标对象视距
+        lon: 90, // 经度
+        lat: 0, // 纬度
+        theta: 0, // 角度
+        phi: 0, // 弧度
         position: {
             touchX: 0,
             touchY: 0
@@ -69,9 +70,9 @@ export default class Move {
         _this.config.lat = Math.max(-85, Math.min(85, _this.config.lat));
         _this.config.phi = Global.THREE.Math.degToRad(90 - _this.config.lat);
         _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon);
-        _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta);
-        _this.config.target.y = Math.cos(_this.config.phi);
-        _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta);
+        _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta) * _this.config.far;
+        _this.config.target.y = Math.cos(_this.config.phi) * _this.config.far;
+        _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta) * _this.config.far;
         _this.camera.lookAt(_this.config.target);
     }
     
