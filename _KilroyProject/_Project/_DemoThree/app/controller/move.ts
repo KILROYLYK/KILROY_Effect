@@ -13,8 +13,8 @@ export interface MoveConfig { // 控制器配置
  */
 export default class Move implements _Controller {
     public readonly config: object = { // 配置
-        target: null, // 目标对象
-        far: 0, // 目标对象距离
+        target: null, // 视觉目标
+        far: 0, // 视觉目标距离
         lon: 90, // 经度
         lat: 0, // 纬度
         theta: 0, // 角度
@@ -56,8 +56,10 @@ export default class Move implements _Controller {
         const _this = this;
         
         _this.camera = camera.instance;
+        
         _this.config.target = new Global.THREE.Vector3();
         _this.config.far = _this.camera.far * 2;
+        
         _this.flag.turn = !!config.turn;
         _this.flag.focus = !!config.focus;
         _this.flag.walk = !!config.walk;
@@ -85,13 +87,20 @@ export default class Move implements _Controller {
         
         if (!_this.camera) return;
         
-        _this.config.lat = Math.max(-85, Math.min(85, _this.config.lat));
-        _this.config.phi = Global.THREE.Math.degToRad(90 - _this.config.lat);
-        _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon);
-        _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta) * _this.config.far;
-        _this.config.target.y = Math.cos(_this.config.phi) * _this.config.far;
-        _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta) * _this.config.far;
-        _this.camera.lookAt(_this.config.target);
+        if (_this.flag.turn) { // 转向
+            // 获取视角
+            _this.config.lat = Math.max(-85, Math.min(85, _this.config.lat));
+            _this.config.phi = Global.THREE.Math.degToRad(90 - _this.config.lat);
+            _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon);
+            
+            // 将视觉目标移至视角中心
+            _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta) * _this.config.far;
+            _this.config.target.y = Math.cos(_this.config.phi) * _this.config.far;
+            _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta) * _this.config.far;
+            
+            // 调整镜头看向目标
+            _this.camera.lookAt(_this.config.target);
+        }
     }
     
     /**
@@ -109,19 +118,19 @@ export default class Move implements _Controller {
      * 根据设备绑定方法
      * @return {void}
      */
-    switchPlatform() {
+    private switchPlatform(): void {
         const _this = this;
         
         Global.Base.isPSB.platform() === 'PC'
-            ? _this.clickMoveCamera()
-            : _this.touchMoveCamera();
+            ? _this.PCMoveCamera()
+            : _this.MobileMoveCamera();
     }
     
     /**
      * 点击移动相机
      * @return {void}
      */
-    clickMoveCamera() {
+    private PCMoveCamera(): void {
         const _this = this,
             D = Global.Document,
             mouse = {
@@ -181,15 +190,16 @@ export default class Move implements _Controller {
                 }
             };
         
-        D.addEventListener('mousedown', mouse.down, false);
-        D.addEventListener('wheel', mouse.wheel, false);
+        _this.flag.turn && D.addEventListener('mousedown', mouse.down, false); // 开启转向
+        _this.flag.focus && D.addEventListener('wheel', mouse.wheel, false); // 开启聚焦
+        
     }
     
     /**
      * 触摸移动相机
      * @return {void}
      */
-    touchMoveCamera() {
+    private MobileMoveCamera() {
         const _this = this,
             D = Global.Document,
             touch = {
@@ -241,6 +251,6 @@ export default class Move implements _Controller {
                 }
             };
         
-        D.addEventListener('touchstart', touch.start, false);
+        _this.flag.turn && D.addEventListener('touchstart', touch.start, false);
     }
 }

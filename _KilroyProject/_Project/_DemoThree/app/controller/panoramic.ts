@@ -27,6 +27,7 @@ export default class Panoramic implements _Controller {
         const _this = this;
         
         _this.scene = scene.instance;
+        
         _this.config.src = 'https://image.gaeamobile.net/image/20190717/181948/';
         _this.config.side = [
             {
