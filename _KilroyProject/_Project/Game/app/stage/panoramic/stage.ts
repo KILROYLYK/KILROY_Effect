@@ -80,7 +80,7 @@ export default class Stage implements _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        // _this.config.controller['move'].update(isResize);
+        _this.config.controller['move'].update(isResize);
         
         _this.config.camera.update(isResize);
         _this.config.scene.update(isResize);

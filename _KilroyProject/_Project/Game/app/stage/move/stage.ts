@@ -88,13 +88,15 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this;
-    
-        _this.config.controller['move'] = new Move(_this.config.camera,{
-            turn: true,
-            focus: true,
-            walk: true,
-            jump: true
-        });
+        
+        _this.config.controller['move'] = new Move(
+            _this.config.camera, {
+                turn: true,
+                focus: true,
+                walk: true,
+                jump: true
+            }
+        );
     }
     
     /**
@@ -104,13 +106,13 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-    
+        
         _this.config.controller['move'].update(isResize);
-    
+        
         _this.config.camera.update(isResize);
         _this.config.scene.update(isResize);
         _this.config.renderer.update(isResize);
-    
+        
         _this.config.renderer.instance.render(
             _this.config.scene.instance,
             _this.config.camera.instance

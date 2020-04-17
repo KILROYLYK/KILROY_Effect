@@ -102,9 +102,10 @@ export default class Panoramic implements _Controller {
             const side = _this.config.side[i],
                 img = D.createElement('img');
             
-            img.width = _this.config.width + 6;
+            img.width = _this.config.wh + 6;
+            img.height = _this.config.wh + 6;
             img.src = _this.config.src + side.name;
-            
+    
             const css3Loader = new CSS3DObject(img);
             css3Loader.position.fromArray(side.position);
             css3Loader.rotation.fromArray(side.rotation);
