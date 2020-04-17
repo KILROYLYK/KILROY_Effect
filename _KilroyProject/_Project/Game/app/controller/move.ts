@@ -1,6 +1,13 @@
 import Global from '../constant/global';
 import _Controller from '../interface/controller';
 
+export interface MoveConfig { // 控制器配置
+    turn: boolean // 开关转向
+    focus: boolean // 开关聚焦
+    walk: boolean // 开关步行
+    jump: boolean // 开关弹跳
+}
+
 /**
  * 移动
  */
@@ -29,19 +36,28 @@ export default class Move implements _Controller {
             bottom: 83
         }
     };
-    private readonly flag: object = { // 控制器
-        turn: false,
-        walk: false
-    };
     
-    public camera: object = null; // 相机对象
+    public camera: object = null; // 相机
+    
+    private readonly flag: MoveConfig = { // 控制器
+        turn: false,
+        focus: false,
+        walk: false,
+        jump: false
+    };
     
     /**
      * 原型对象
      * @constructor Move
      * @param {object} camera 相机
+     * @param {object} config 配置
      */
-    constructor(camera: object) {
+    constructor(camera: object, config: MoveConfig = {
+        turn: false,
+        focus: false,
+        walk: false,
+        jump: false
+    }) {
         const _this = this;
         
         _this.camera = camera.instance;

@@ -6,12 +6,12 @@ import _Environment from '../../../interface/environment';
  */
 export default class Camera implements _Environment {
     public readonly config: object = { // 配置
-        fov: 45, //摄像机视锥体垂直视野角度
+        fov: 60, //摄像机视锥体垂直视野角度
         aspect: Global.Width / Global.Height, //摄像机视锥体长宽比
         near: 1, //摄像机视锥体近端面
         far: 1000, //摄像机视锥体远端面
         x: 0,
-        y: 200,
+        y: 0,
         z: 0
     };
     public instance: object = null; // 实例

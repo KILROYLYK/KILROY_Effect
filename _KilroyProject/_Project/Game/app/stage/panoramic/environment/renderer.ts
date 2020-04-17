@@ -7,7 +7,7 @@ import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
  */
 export default class Renderer implements _Environment {
     public readonly config: object = { // 配置
-        type: 'CSS3D',
+        type: Global.Config.RendererType,
         dom: Global.GameDom,
         width: Global.Width,
         height: Global.Height
@@ -97,6 +97,13 @@ export default class Renderer implements _Environment {
      */
     private getRendererType(): any {
         const _this = this;
-        return CSS3DRenderer;
+        
+        if (_this.config.type === 'WebGL') {
+            return Global.THREE.WebGLRenderer;
+        } else if (_this.config.type === 'CSS3D') {
+            return CSS3DRenderer;
+        } else {
+            return Global.THREE.WebGLRenderer;
+        }
     }
 }
