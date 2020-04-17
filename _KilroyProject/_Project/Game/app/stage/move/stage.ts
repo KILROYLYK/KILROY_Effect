@@ -35,8 +35,7 @@ export default class Stage implements _Stage {
         light: null as Light,
         ground: null as Ground,
         
-        // 控制器
-        controller: {}
+        controller: {} // 控制器
     };
     
     /**
@@ -90,7 +89,12 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
     
-        _this.config.controller['move'] = new Move(_this.config.camera);
+        _this.config.controller['move'] = new Move(_this.config.camera,{
+            turn: true,
+            focus: true,
+            walk: true,
+            jump: true
+        });
     }
     
     /**
@@ -119,6 +123,5 @@ export default class Stage implements _Stage {
      */
     public destroy(): void {
         const _this = this;
-        
     }
 }

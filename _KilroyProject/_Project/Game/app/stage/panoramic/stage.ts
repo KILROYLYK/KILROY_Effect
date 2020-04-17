@@ -64,47 +64,12 @@ export default class Stage implements _Stage {
      * @return {void}
      */
     private init(): void {
-        const _this = this,
-            imageWH = 1024;
+        const _this = this;
         
-        _this.config.constructor['panoramic'] = new Panoramic(_this.config.scene, {
-            src: 'https://image.gaeamobile.net/image/20190717/181948/',
-            width: imageWH,
-            height: imageWH,
-            side: [
-                {
-                    name: 'img_before.jpg',
-                    position: [0, 0, -imageWH / 2],
-                    rotation: [0, 0, 0]
-                },
-                {
-                    name: 'img_after.jpg',
-                    position: [0, 0, imageWH / 2],
-                    rotation: [0, Math.PI, 0]
-                },
-                {
-                    name: 'img_top.jpg',
-                    position: [0, imageWH / 2, 0],
-                    rotation: [Math.PI / 2, 0, Math.PI]
-                },
-                {
-                    name: 'img_bottom.jpg',
-                    position: [0, -imageWH / 2, 0],
-                    rotation: [-Math.PI / 2, 0, Math.PI]
-                },
-                {
-                    name: 'img_left.jpg',
-                    position: [-imageWH / 2, 0, 0],
-                    rotation: [0, Math.PI / 2, 0]
-                },
-                {
-                    name: 'img_right.jpg',
-                    position: [imageWH / 2, 0, 0],
-                    rotation: [0, -Math.PI / 2, 0]
-                }
-            ]
-        })
-        _this.config.controller['move'] = new Move(_this.config.camera);
+        _this.config.constructor['panoramic'] = new Panoramic(_this.config.scene);
+        _this.config.controller['move'] = new Move(_this.config.camera,{
+            turn: true
+        });
     }
     
     /**
@@ -115,7 +80,7 @@ export default class Stage implements _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        _this.config.controller['move'].update(isResize);
+        // _this.config.controller['move'].update(isResize);
         
         _this.config.camera.update(isResize);
         _this.config.scene.update(isResize);
@@ -133,6 +98,5 @@ export default class Stage implements _Stage {
      */
     public destroy(): void {
         const _this = this;
-        
     }
 }

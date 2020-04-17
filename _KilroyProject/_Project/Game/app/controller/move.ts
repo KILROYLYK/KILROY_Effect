@@ -2,10 +2,10 @@ import Global from '../constant/global';
 import _Controller from '../interface/controller';
 
 export interface MoveConfig { // 控制器配置
-    turn: boolean // 开关转向
-    focus: boolean // 开关聚焦
-    walk: boolean // 开关步行
-    jump: boolean // 开关弹跳
+    turn?: boolean // 开关转向
+    focus?: boolean // 开关聚焦
+    walk?: boolean // 开关步行
+    jump?: boolean // 开关弹跳
 }
 
 /**
@@ -52,17 +52,16 @@ export default class Move implements _Controller {
      * @param {object} camera 相机
      * @param {object} config 配置
      */
-    constructor(camera: object, config: MoveConfig = {
-        turn: false,
-        focus: false,
-        walk: false,
-        jump: false
-    }) {
+    constructor(camera: object, config: MoveConfig = {}) {
         const _this = this;
         
         _this.camera = camera.instance;
         _this.config.target = new Global.THREE.Vector3();
         _this.config.far = _this.camera.far * 2;
+        _this.flag.turn = !!config.turn;
+        _this.flag.focus = !!config.focus;
+        _this.flag.walk = !!config.walk;
+        _this.flag.jump = !!config.jump;
         
         _this.init();
     }

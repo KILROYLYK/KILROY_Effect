@@ -69,7 +69,6 @@ export default class Camera implements _Environment {
         const _this = this;
         
         if (!_this.instance) return;
-        
        
         if (isResize) { // 屏幕变化
             _this.config.aspect = Global.Width / Global.Height;

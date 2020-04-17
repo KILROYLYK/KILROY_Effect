@@ -1,13 +1,11 @@
 import Global from '../../../constant/global';
 import _Environment from '../../../interface/environment';
-import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 /**
  * 渲染器
  */
 export default class Renderer implements _Environment {
     public readonly config: object = { // 配置
-        type: 'CSS3D',
         dom: Global.GameDom,
         width: Global.Width,
         height: Global.Height
@@ -97,6 +95,6 @@ export default class Renderer implements _Environment {
      */
     private getRendererType(): any {
         const _this = this;
-        return CSS3DRenderer;
+        return Global.THREE.WebGLRenderer;
     }
 }
