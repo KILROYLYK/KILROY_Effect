@@ -100,7 +100,6 @@ export default class Move implements _Controller {
         _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta) * _this.config.far;
         
         _this.flag.turn && _this.camera.lookAt(_this.config.target);  // 转向
-        
     }
     
     /**
@@ -120,7 +119,6 @@ export default class Move implements _Controller {
      */
     private switchPlatform(): void {
         const _this = this;
-        
         Global.Base.isPSB.platform() === 'PC'
             ? _this.PCMoveCamera()
             : _this.MobileMoveCamera();
@@ -196,11 +194,11 @@ export default class Move implements _Controller {
                  * @return {void}
                  */
                 walk: (e): void => {
-                    _this.camera.position.set(
-                        _this.camera.position.x,
-                        _this.camera.position.y,
-                        _this.camera.position.z
-                    );
+                    // _this.camera.position.set(
+                    //     _this.camera.position.x,
+                    //     _this.camera.position.y,
+                    //     _this.camera.position.z
+                    // );
                 },
                 
                 /**
@@ -279,6 +277,6 @@ export default class Move implements _Controller {
             };
         
         // 触摸事件
-        _this.flag.turn && D.addEventListener('touchstart', touch.start, false);
+        _this.flag.turn && D.addEventListener('touchstart', touch.start, false); // 转向
     }
 }
