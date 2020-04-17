@@ -15,10 +15,11 @@ export default class Move implements _Controller {
     public readonly config: object = { // 配置
         target: null, // 视觉目标
         far: 0, // 视觉目标距离
-        lon: 90, // 经度
-        lat: 0, // 纬度
+        lon: 0, // 经度x
+        lat: 0, // 纬度y
         theta: 0, // 角度
         phi: 0, // 弧度
+        maxLat: 85, // 上下最大纬度
         position: {
             touchX: 0,
             touchY: 0
@@ -33,7 +34,8 @@ export default class Move implements _Controller {
             top: 87,
             left: 65,
             right: 68,
-            bottom: 83
+            bottom: 83,
+            jump: 32
         }
     };
     
@@ -89,9 +91,9 @@ export default class Move implements _Controller {
         
         if (_this.flag.turn) { // 转向
             // 获取视角
-            _this.config.lat = Math.max(-85, Math.min(85, _this.config.lat));
+            _this.config.lat = Math.max(-_this.config.maxLat, Math.min(_this.config.maxLat, _this.config.lat));
             _this.config.phi = Global.THREE.Math.degToRad(90 - _this.config.lat);
-            _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon);
+            _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon - 90);
             
             // 将视觉目标移至视角中心
             _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta) * _this.config.far;
@@ -133,9 +135,9 @@ export default class Move implements _Controller {
     private PCMoveCamera(): void {
         const _this = this,
             D = Global.Document,
-            mouse = {
+            mouse = { // 鼠标
                 /**
-                 * 鼠标按下
+                 * 按下
                  * @param {Event} e 焦点对象
                  * @return {void}
                  */
@@ -148,7 +150,7 @@ export default class Move implements _Controller {
                 },
                 
                 /**
-                 * 鼠标移动
+                 * 移动
                  * @param {Event} e 焦点对象
                  * @return {void}
                  */
@@ -165,7 +167,7 @@ export default class Move implements _Controller {
                 },
                 
                 /**
-                 * 鼠标抬起
+                 * 抬起
                  * @param {Event} e 事件对象
                  * @return {void}
                  */
@@ -178,7 +180,7 @@ export default class Move implements _Controller {
                 },
                 
                 /**
-                 * 鼠标中键移动
+                 * 中键滚动
                  * @param {Event} e 焦点对象
                  * @return {void}
                  */
@@ -187,14 +189,20 @@ export default class Move implements _Controller {
                     
                     _this.camera.fov = Global.THREE.Math.clamp(fov, 45, 95);
                     _this.camera.updateProjectionMatrix();
-                },
-    
+                }
+            },
+            key = { // 键盘
                 /**
-                 * 走动
+                 * 按下
+                 * @param {Event} e 焦点对象
                  * @return {void}
                  */
+                down: (e): void => {
+                
+                },
             };
         
+        // 鼠标事件
         _this.flag.turn && D.addEventListener('mousedown', mouse.down, false); // 开启转向
         _this.flag.focus && D.addEventListener('wheel', mouse.wheel, false); // 开启聚焦
     }
@@ -206,9 +214,9 @@ export default class Move implements _Controller {
     private MobileMoveCamera() {
         const _this = this,
             D = Global.Document,
-            touch = {
+            touch = { // 触摸
                 /**
-                 * 触摸开始
+                 * 开始
                  * @param {Event} e 焦点对象
                  * @return {void}
                  */
@@ -225,7 +233,7 @@ export default class Move implements _Controller {
                 },
                 
                 /**
-                 * 触摸移动
+                 * 移动
                  * @param {Event} e 焦点对象
                  * @return {void}
                  */
@@ -242,7 +250,7 @@ export default class Move implements _Controller {
                 },
                 
                 /**
-                 * 触摸抬起
+                 * 抬起
                  * @param {Event} e 焦点对象
                  * @return {void}
                  */
@@ -255,6 +263,7 @@ export default class Move implements _Controller {
                 }
             };
         
+        // 触摸事件
         _this.flag.turn && D.addEventListener('touchstart', touch.start, false);
     }
 }
