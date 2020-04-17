@@ -136,7 +136,7 @@ export default class Move implements _Controller {
             mouse = {
                 /**
                  * 鼠标按下
-                 * @param {object} e 焦点对象
+                 * @param {Event} e 焦点对象
                  * @return {void}
                  */
                 down: (e): void => {
@@ -149,7 +149,7 @@ export default class Move implements _Controller {
                 
                 /**
                  * 鼠标移动
-                 * @param {object} e 焦点对象
+                 * @param {Event} e 焦点对象
                  * @return {void}
                  */
                 move: (e): void => {
@@ -179,7 +179,7 @@ export default class Move implements _Controller {
                 
                 /**
                  * 鼠标中键移动
-                 * @param {object} e 焦点对象
+                 * @param {Event} e 焦点对象
                  * @return {void}
                  */
                 wheel: (e): void => {
@@ -187,12 +187,16 @@ export default class Move implements _Controller {
                     
                     _this.camera.fov = Global.THREE.Math.clamp(fov, 45, 95);
                     _this.camera.updateProjectionMatrix();
-                }
+                },
+    
+                /**
+                 * 走动
+                 * @return {void}
+                 */
             };
         
         _this.flag.turn && D.addEventListener('mousedown', mouse.down, false); // 开启转向
         _this.flag.focus && D.addEventListener('wheel', mouse.wheel, false); // 开启聚焦
-        
     }
     
     /**
@@ -205,7 +209,7 @@ export default class Move implements _Controller {
             touch = {
                 /**
                  * 触摸开始
-                 * @param {object} e 焦点对象
+                 * @param {Event} e 焦点对象
                  * @return {void}
                  */
                 start: (e): void => {
@@ -222,7 +226,7 @@ export default class Move implements _Controller {
                 
                 /**
                  * 触摸移动
-                 * @param {object} e 焦点对象
+                 * @param {Event} e 焦点对象
                  * @return {void}
                  */
                 move: (e): void => {
@@ -239,7 +243,7 @@ export default class Move implements _Controller {
                 
                 /**
                  * 触摸抬起
-                 * @param {object} e 焦点对象
+                 * @param {Event} e 焦点对象
                  * @return {void}
                  */
                 end: (e): void => {
