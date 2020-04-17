@@ -1,4 +1,4 @@
-import { D, Base } from '../../../_Base/javascript/window';
+import { D, Base } from '../../../../_Base/javascript/window';
 import Global from './global';
 
 /**
