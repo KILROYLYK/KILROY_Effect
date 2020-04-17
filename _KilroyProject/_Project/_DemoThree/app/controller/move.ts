@@ -28,13 +28,13 @@ export default class Move implements _Controller {
             click: 0.0015,
             touch: 0.1,
             wheel: 0.008,
-            walk: 1
+            walk: 3
         },
         key: {
-            top: 87,
+            before: 87,
             left: 65,
             right: 68,
-            bottom: 83,
+            after: 83,
             jump: 32
         }
     };
@@ -89,20 +89,18 @@ export default class Move implements _Controller {
         
         if (!_this.camera) return;
         
-        if (_this.flag.turn) { // 转向
-            // 获取视角
-            _this.config.lat = Math.max(-_this.config.maxLat, Math.min(_this.config.maxLat, _this.config.lat));
-            _this.config.phi = Global.THREE.Math.degToRad(90 - _this.config.lat);
-            _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon - 90);
-            
-            // 将视觉目标移至视角中心
-            _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta) * _this.config.far;
-            _this.config.target.y = Math.cos(_this.config.phi) * _this.config.far;
-            _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta) * _this.config.far;
-            
-            // 调整镜头看向目标
-            _this.camera.lookAt(_this.config.target);
-        }
+        // 获取视角
+        _this.config.lat = Math.max(-_this.config.maxLat, Math.min(_this.config.maxLat, _this.config.lat));
+        _this.config.phi = Global.THREE.Math.degToRad(90 - _this.config.lat);
+        _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon - 90);
+        
+        // 将视觉目标移至视角中心
+        _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta) * _this.config.far;
+        _this.config.target.y = Math.cos(_this.config.phi) * _this.config.far;
+        _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta) * _this.config.far;
+        
+        _this.flag.turn && _this.camera.lookAt(_this.config.target);  // 转向
+        
     }
     
     /**
@@ -193,18 +191,35 @@ export default class Move implements _Controller {
             },
             key = { // 键盘
                 /**
-                 * 按下
+                 * 行走
                  * @param {Event} e 焦点对象
                  * @return {void}
                  */
-                down: (e): void => {
-                
+                walk: (e): void => {
+                    _this.camera.position.set(
+                        _this.camera.position.x,
+                        _this.camera.position.y,
+                        _this.camera.position.z
+                    );
                 },
+                
+                /**
+                 * 跳跃
+                 * @param {Event} e 焦点对象
+                 * @return {void}
+                 */
+                jump: (e): void => {
+                
+                }
             };
         
         // 鼠标事件
-        _this.flag.turn && D.addEventListener('mousedown', mouse.down, false); // 开启转向
-        _this.flag.focus && D.addEventListener('wheel', mouse.wheel, false); // 开启聚焦
+        _this.flag.turn && D.addEventListener('mousedown', mouse.down, false); // 转向
+        _this.flag.focus && D.addEventListener('wheel', mouse.wheel, false); // 聚焦
+        
+        // 键盘事件
+        _this.flag.walk && D.addEventListener('keydown', key.walk, false); // 行走
+        _this.flag.jump && D.addEventListener('keydown', key.jump, false); // 跳跃
     }
     
     /**
