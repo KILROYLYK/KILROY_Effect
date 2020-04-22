@@ -11,6 +11,7 @@
 *.mp3
 *.mp4
 main.js
+main.ts
 /webpack.config.js
 
 #Folders
