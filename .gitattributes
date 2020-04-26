@@ -1,18 +1,23 @@
 *.js linguist-language=js
+*.jsx linguist-language=js
 *.ts linguist-language=js
+*.tsx linguist-language=js
+
+*.json linguist-language=js
 
 *.css linguist-language=js
 *.less linguist-language=js
 *.sass linguist-language=js
 *.sess linguist-language=js
-*.json linguist-language=js
 
-*.png linguist-language=js
-*.jpg linguist-language=js
-*.jpeg linguist-language=js
-*.mp3 linguist-language=js
-*.mp4 linguist-language=js
+*.html linguist-language=js
 
 *.md linguist-language=js
-*.html linguist-language=js
-*.php linguist-language=js
+
+*.jpg linguist-language=js
+*.jpeg linguist-language=js
+*.png linguist-language=js
+*.svg linguist-language=js
+
+*.mp3 linguist-language=js
+*.mp4 linguist-language=js
