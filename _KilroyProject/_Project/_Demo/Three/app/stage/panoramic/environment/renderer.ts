@@ -30,11 +30,11 @@ export default class Renderer implements _Environment {
      */
     private create(): void {
         const _this = this,
-            Renderer = _this.getRendererType();
+            renderer = _this.getRendererType();
         
         if (_this.instance) return;
         
-        _this.instance = new Renderer({
+        _this.instance = new renderer({
             antialias: true
         });
     }
@@ -86,7 +86,7 @@ export default class Renderer implements _Environment {
         const _this = this;
         
         if (!_this.instance) return;
-        _this.instance.destroy(true);
+        (_this.instance as any).destroy(true);
         _this.instance = null;
     }
     

@@ -66,8 +66,8 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
         
-        _this.config.constructor['panoramic'] = new Panoramic(_this.config.scene);
-        _this.config.controller['move'] = new Move(_this.config.camera,{
+        _this.config.controller.panoramic = new Panoramic(_this.config.scene);
+        _this.config.controller.move = new Move(_this.config.camera,{
             turn: true
         });
     }
@@ -80,7 +80,7 @@ export default class Stage implements _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        _this.config.controller['move'].update(isResize);
+        _this.config.controller.move.update(isResize);
         
         _this.config.camera.update(isResize);
         _this.config.scene.update(isResize);

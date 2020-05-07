@@ -237,9 +237,9 @@ export default class Move implements _Controller {
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    const touch = e.touches[0];
-                    _this.config.position.touchX = touch.screenX;
-                    _this.config.position.touchY = touch.screenY;
+                    const t = e.touches[0];
+                    _this.config.position.touchX = t.screenX;
+                    _this.config.position.touchY = t.screenY;
                     
                     D.addEventListener('touchmove', touch.move, false);
                     D.addEventListener('touchend', touch.end, false);
@@ -254,12 +254,12 @@ export default class Move implements _Controller {
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    const touch = e.touches[0];
-                    _this.config.lon -= (touch.screenX - _this.config.position.touchX) * _this.config.speed.touch;
-                    _this.config.lat += (touch.screenY - _this.config.position.touchY) * _this.config.speed.touch;
+                    const t = e.touches[0];
+                    _this.config.lon -= (t.screenX - _this.config.position.touchX) * _this.config.speed.touch;
+                    _this.config.lat += (t.screenY - _this.config.position.touchY) * _this.config.speed.touch;
                     
-                    _this.config.position.touchX = touch.screenX;
-                    _this.config.position.touchY = touch.screenY;
+                    _this.config.position.touchX = t.screenX;
+                    _this.config.position.touchY = t.screenY;
                 },
                 
                 /**

@@ -6,10 +6,10 @@ import _Environment from '../../../interface/environment';
  */
 export default class Camera implements _Environment {
     public readonly config: object = { // 配置
-        fov: 60, //摄像机视锥体垂直视野角度
-        aspect: Global.Width / Global.Height, //摄像机视锥体长宽比
-        near: 1, //摄像机视锥体近端面
-        far: 1000, //摄像机视锥体远端面
+        fov: 60, // 摄像机视锥体垂直视野角度
+        aspect: Global.Width / Global.Height, // 摄像机视锥体长宽比
+        near: 1, // 摄像机视锥体近端面
+        far: 1000, // 摄像机视锥体远端面
         x: 0,
         y: 0,
         z: 0
@@ -69,7 +69,7 @@ export default class Camera implements _Environment {
         const _this = this;
         
         if (!_this.instance) return;
-       
+        
         if (isResize) { // 屏幕变化
             _this.config.aspect = Global.Width / Global.Height;
             _this.instance.aspect = _this.config.aspect;
@@ -85,7 +85,7 @@ export default class Camera implements _Environment {
         const _this = this;
         
         if (!_this.instance) return;
-        _this.instance.destroy(true)
+        (_this.instance as any).destroy(true)
         _this.instance = null;
     }
 }

@@ -72,11 +72,11 @@ export default class Stage implements _Stage {
         
         // 添加主光源
         _this.config.light.add('ambient', 'ambient');
-        _this.config.scene.instance.add(_this.config.light.instance['ambient']);
+        _this.config.scene.instance.add(_this.config.light.instance.ambient);
         
         // 添加角度光源
         _this.config.light.add('direction', 'direction');
-        _this.config.scene.instance.add(_this.config.light.instance['direction']);
+        _this.config.scene.instance.add(_this.config.light.instance.direction);
         
         // 添加地面
         _this.config.scene.instance.add(_this.config.ground.instance.mesh);
@@ -89,7 +89,7 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
         
-        _this.config.controller['move'] = new Move(
+        _this.config.controller.move = new Move(
             _this.config.camera, {
                 turn: true,
                 focus: true,
@@ -107,7 +107,7 @@ export default class Stage implements _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        _this.config.controller['move'].update(isResize);
+        _this.config.controller.move.update(isResize);
         
         _this.config.camera.update(isResize);
         _this.config.scene.update(isResize);

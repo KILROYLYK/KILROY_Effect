@@ -3,7 +3,7 @@ import Interface from './_interface'; // 接口
 /**
  * 对象接口
  */
-export default interface _Object extends Interface {
+export default interface Object extends Interface {
     instance: object; // 实例
     
     /**
