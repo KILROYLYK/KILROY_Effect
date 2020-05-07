@@ -5,3 +5,8 @@ const Config = Global.Config, // 配置
     Function = Global.Function; // 函数
 
 console.log(Global.PIXI);
+
+Function.autoUpdate(() => {
+});
+Function.resizeUpdate(() => {
+});
