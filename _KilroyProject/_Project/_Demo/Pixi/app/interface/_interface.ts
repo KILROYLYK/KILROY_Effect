@@ -1,15 +1,8 @@
 /**
  * 接口
  */
-export default interface _interface {
+export default interface Interface {
     readonly config?: object; // 配置
-    
-    /**
-     * 构造函数
-     * 配置基础信息
-     * @return {void}
-     */
-    constructor();
     
     /**
      * 初始化
