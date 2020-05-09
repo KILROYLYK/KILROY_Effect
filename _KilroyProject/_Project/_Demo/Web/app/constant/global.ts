@@ -13,7 +13,7 @@ export default class Global {
     readonly static Window: Window = W; // Window
     readonly static Document: Document = D; // Document
     
-    readonly static Base: any = Base; // Document
+    readonly static Base: any = Base;
     
     public static Width: number = W.innerWidth;
     public static Height: number = W.innerHeight;
