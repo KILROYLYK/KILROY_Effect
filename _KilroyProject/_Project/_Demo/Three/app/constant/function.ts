@@ -15,13 +15,16 @@ export default class Function {
      * @return {Element} 游戏节点
      */
     public static getGameDom(domID: string): Element {
+        const body = D.getElementsByTagName('body')[0],
+            lastChild = body.lastChild;
+        
         let dom = D.getElementById(domID);
         
         if (!dom) { // 不存在则新建
             dom = D.createElement('div');
             dom.id = domID;
             dom.setAttribute('data-name', 'GameContainer');
-            D.getElementsByTagName('body')[0].appendChild(dom);
+            lastChild ? body.insertBefore(dom, lastChild) : body.append(dom);
         }
         
         return dom;

@@ -1,8 +1,8 @@
-import Test from '../stage/test/stage';
+import Particle from '../stage/particle/stage';
 
 /**
  * Stage
  */
 export default class Stage {
-    readonly static Test: Function = Test; // 粒子
+    readonly static Particle: Function = Particle; // 粒子
 }
