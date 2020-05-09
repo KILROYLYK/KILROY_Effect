@@ -53,7 +53,7 @@ export default class Stage implements _Stage {
         
         _this.particle && _this.particle.update();
         
-        if(isResize){
+        if (isResize) {
             _this.particle && _this.particle.update(true);
         }
     }

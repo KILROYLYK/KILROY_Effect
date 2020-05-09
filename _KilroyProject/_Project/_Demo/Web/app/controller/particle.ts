@@ -31,8 +31,7 @@ export default class Particle {
             '#ffed00',
             '#8311e7'
         ] as string[],
-        total: 300, // 粒子总数
-        density: 3, // 密度
+        density: 5, // 密度
         radiusMax: 5, // 最大半径
         radiusMin: 1, // 最小半径
         first: true, // 第一次执行
@@ -42,7 +41,8 @@ export default class Particle {
         } as Position,
         mouseR: 50, // 鼠标半径
         mouseS: 100, // 鼠标推动速度（越大速度越慢）
-        restoreS: 5, // 恢复速度
+        interval: 300, // 运动间隔
+        restoreS: 10, // 恢复速度
         list: [] as Point[] // 点列表
     };
     private dom: HTMLElement = null; // 父元素
@@ -155,6 +155,7 @@ export default class Particle {
         const _this = this;
         
         _this.config.list.length = 0;
+        _this.clearCanvas();
         
         _this.context.fillStyle = '#ffffff';
         _this.context.font = `${ _this.config.size }px Times`;
@@ -262,9 +263,10 @@ export default class Particle {
         
         point.radius += point.direction;
         
-        point.vel.x = (point.position.x - point.target.x) / _this.config.total;
-        point.vel.y = (point.position.y - point.target.y) / _this.config.total;
-        if (distance < _this.config.mouseR) {
+        point.vel.x = (point.position.x - point.target.x) / _this.config.interval;
+        point.vel.y = (point.position.y - point.target.y) / _this.config.interval;
+        
+        if (distance < _this.config.mouseR) { // 推动
             point.vel.x += point.vel.x - (point.position.x - mouseX) / _this.config.mouseS;
             point.vel.y += point.vel.y - (point.position.y - mouseY) / _this.config.mouseS;
         }
