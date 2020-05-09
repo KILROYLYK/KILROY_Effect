@@ -52,6 +52,10 @@ export default class Stage implements _Stage {
         const _this = this;
         
         _this.particle && _this.particle.update();
+        
+        if(isResize){
+            _this.particle && _this.particle.update(true);
+        }
     }
     
     /**

@@ -29,10 +29,11 @@ export default class Particle {
             '#f3f1f3',
             '#084c8d',
             '#ffed00',
-            '#11e74d'
+            '#8311e7'
         ] as string[],
-        total: 200, // 粒子总数
-        radiusMax: 3, // 最大半径
+        total: 300, // 粒子总数
+        density: 3, // 密度
+        radiusMax: 5, // 最大半径
         radiusMin: 1, // 最小半径
         first: true, // 第一次执行
         mouseP: { // 鼠标位置
@@ -40,6 +41,8 @@ export default class Particle {
             y: -10000,
         } as Position,
         mouseR: 50, // 鼠标半径
+        mouseS: 100, // 鼠标推动速度（越大速度越慢）
+        restoreS: 5, // 恢复速度
         list: [] as Point[] // 点列表
     };
     private dom: HTMLElement = null; // 父元素
@@ -89,29 +92,30 @@ export default class Particle {
         };
         
         _this.dom.onmouseout = (e: MouseEvent) => { // 鼠标移出
-            _this.config.mouseP.x = -10000;
-            _this.config.mouseP.y = -10000;
+            _this.config.mouseP.x = -1000;
+            _this.config.mouseP.y = -1000;
         };
     }
     
     /**
      * 更新
+     * @param {boolean} isResize 是否调整大小
      * @return {void}
      */
-    public update(): void {
+    public update(isResize: boolean = false): void {
         const _this = this;
         
-        _this.canvas.width = _this.dom.clientWidth;
-        _this.canvas.height = _this.dom.clientHeight;
-        
-        return;
-        
-        // _this.clearCanvas();
+        _this.clearCanvas();
         
         _this.config.list.forEach((v, i, a) => {
             _this.updatePoint(v);
             _this.drawPoint(v);
         });
+        
+        if (isResize) {
+            _this.canvas.width = _this.dom.clientWidth;
+            _this.canvas.height = _this.dom.clientHeight;
+        }
     }
     
     /**
@@ -148,18 +152,20 @@ export default class Particle {
      * @return {void}
      */
     public writeText(text: string): void {
-        const _this = this,
-            x = _this.canvas.width * 0.5 - _this.context.measureText(text).width * 0.5,
-            y = _this.canvas.height * 0.5 + _this.config.size,
-            data = _this.context.getImageData(0, 0, _this.canvas.width, _this.canvas.height).data;
+        const _this = this;
         
         _this.config.list.length = 0;
         
         _this.context.fillStyle = '#ffffff';
         _this.context.font = `${ _this.config.size }px Times`;
-        _this.context.fillText(text, x, y);
+        _this.context.fillText(
+            text,
+            _this.canvas.width / 2 - _this.context.measureText(text).width / 2,
+            _this.canvas.height / 2 + _this.config.size / 4,
+        );
+        const data = _this.context.getImageData(0, 0, _this.canvas.width, _this.canvas.height).data;
         
-        data.forEach((v, i, a) => {
+        for (let i = 0; i < data.length; i += _this.config.density) {
             let temp = {
                 x: (i / 4) % _this.canvas.width,
                 y: ~~((i / 4) / _this.canvas.width)
@@ -202,7 +208,7 @@ export default class Particle {
                     });
                 }
             }
-        });
+        }
         
         _this.config.first = false;
     }
@@ -259,14 +265,14 @@ export default class Particle {
         point.vel.x = (point.position.x - point.target.x) / _this.config.total;
         point.vel.y = (point.position.y - point.target.y) / _this.config.total;
         if (distance < _this.config.mouseR) {
-            point.vel.x += point.vel.x - (point.position.x - mouseX) / 15;
-            point.vel.y += point.vel.y - (point.position.y - mouseY) / 15;
+            point.vel.x += point.vel.x - (point.position.x - mouseX) / _this.config.mouseS;
+            point.vel.y += point.vel.y - (point.position.y - mouseY) / _this.config.mouseS;
         }
         
         (point.radius >= _this.config.radiusMax) && (point.direction *= -1);
         (point.radius <= 1) && (point.direction *= -1);
         
-        point.position.x -= point.vel.x;
-        point.position.y -= point.vel.y;
+        point.position.x -= point.vel.x * _this.config.restoreS;
+        point.position.y -= point.vel.y * _this.config.restoreS;
     }
 }
