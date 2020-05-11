@@ -48,8 +48,8 @@ export default class Stage implements _Stage {
     
             setTimeout(() => {
                 _this.particle.writeText('KILROY');
-            }, 3000);
-        }, 3000);
+            }, 5000);
+        }, 5000);
     }
     
     /**

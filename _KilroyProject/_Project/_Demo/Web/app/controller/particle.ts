@@ -25,7 +25,7 @@ interface Point {
  */
 export default class Particle {
     public readonly config: object = { // 配置
-        size: 100,
+        size: 150,
         color: [
             '255,255,255',
             '151,19,55',
@@ -39,8 +39,8 @@ export default class Particle {
         radiusMin: 1, // 最小半径
         radiusS: 0.5, // 半径变化速度
         mouseP: { // 鼠标位置
-            x: -10000,
-            y: -10000,
+            x: -1000,
+            y: -1000,
         } as Position,
         mouseR: 50, // 鼠标半径
         mouseS: 100, // 鼠标推动速度（越大速度越慢）
@@ -110,10 +110,17 @@ export default class Particle {
         
         _this.clearCanvas();
         
-        _this.config.list.forEach((v, i, a) => {
-            _this.updatePoint(v);
-            _this.drawPoint(v);
-        });
+        for (let i = 0, n = _this.config.list.length; i < n; i++) {
+            const point = _this.config.list[i];
+            _this.updatePoint(point);
+            _this.drawPoint(point);
+            if (!point.show && point.opacity) {
+                const index = _this.config.list.indexOf(point);
+                _this.config.list.splice(index, 1);
+                i--;
+                n--;
+            }
+        }
         
         if (isResize) {
             _this.canvas.width = _this.dom.clientWidth;
@@ -155,9 +162,9 @@ export default class Particle {
      * @return {void}
      */
     public writeText(text: string): void {
-        const _this = this;
-        
-        let total = 0; // 绘制当前文字所需点的数量
+        const _this = this,
+            cList = _this.config.list,
+            list = [];
         
         _this.clearCanvas();
         
@@ -176,7 +183,6 @@ export default class Particle {
             _this.canvas.height
         ).data;
         
-        // 获取目标位置
         for (let i = 0; i < data.length; i += _this.config.density) {
             if (data[i] !== 0 && ~~(Math.random() * 5) === 1) {
                 if (data[i + 4] !== 255 ||
@@ -184,21 +190,48 @@ export default class Particle {
                     data[i + _this.canvas.width * 4] !== 255 ||
                     data[i - _this.canvas.width * 4] !== 255) {
                     
-                    total++;
-                    
                     const target = {
                         x: (i / 4) % _this.canvas.width,
                         y: ~~((i / 4) / _this.canvas.width)
                     };
                     
-                    _this.config.list[total]
-                        ? _this.config.list[total].target = target
-                        : _this.config.list.push(_this.createPoint(target));
+                    list.push(_this.createPoint(target));
                 }
             }
         }
         
-        _this.config.list.length = total;
+        const cListL = cList.length,
+            listL = list.length;
+        if (cListL === 0) {
+            _this.config.list = list;
+        } else if (cListL === listL) {
+            _this.config.list.forEach((v: Point, i: number, a: Point[]) => {
+                v.target = list[i].target;
+            });
+        } else if (cListL < listL) {
+            list.sort(() => {
+                return 0.5 - Math.random();
+            });
+            list.forEach((v: Point, i: number, a: Point[]) => {
+                cList[i] && (cList[i].target = v.target);
+            });
+            _this.config.list = cList.concat(list.slice(cListL, listL - 1));
+        } else if (cListL > listL) {
+            cList.sort(() => {
+                return 0.5 - Math.random();
+            });
+            cList.forEach((v: Point, i: number, a: Point[]) => {
+                if (list[i]) {
+                    v.target = list[i].target;
+                } else {
+                    v.show = false;
+                    v.target = {
+                        x: Math.random() * _this.canvas.width,
+                        y: Math.random() * _this.canvas.height
+                    };
+                }
+            });
+        }
     }
     
     /**
