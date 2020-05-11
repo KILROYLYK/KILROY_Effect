@@ -114,7 +114,7 @@ export default class Particle {
             const point = _this.config.list[i];
             _this.updatePoint(point);
             _this.drawPoint(point);
-            if (!point.show && point.opacity) {
+            if (!point.show && point.opacity === 0) {
                 const index = _this.config.list.indexOf(point);
                 _this.config.list.splice(index, 1);
                 i--;

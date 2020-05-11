@@ -42,14 +42,6 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
         _this.particle.writeText('KILROY');
-        
-        setTimeout(() => {
-            _this.particle.writeText('0723');
-    
-            setTimeout(() => {
-                _this.particle.writeText('KILROY');
-            }, 5000);
-        }, 5000);
     }
     
     /**
