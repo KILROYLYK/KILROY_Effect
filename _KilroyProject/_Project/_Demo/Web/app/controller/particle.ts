@@ -2,7 +2,7 @@
  * 坐标
  */
 interface Position {
-    x: number, // X轴
+    x: number // X轴
     y: number // Y轴
 }
 
@@ -10,12 +10,14 @@ interface Position {
  * 点
  */
 interface Point {
-    position: Position,
-    target: Position,
-    vel: Position
-    color: string, // 颜色
-    radius: number, // 半径
-    direction: number // 距离
+    show: boolean // 显示
+    position: Position // 当前位置
+    target: Position // 目标位置
+    speed: Position // 速度
+    color: number // 颜色
+    opacity: number // 不透明度
+    radius: number // 半径
+    direction: number // 方向 1 | -1
 }
 
 /**
@@ -23,18 +25,19 @@ interface Point {
  */
 export default class Particle {
     public readonly config: object = { // 配置
-        size: 200,
+        size: 100,
         color: [
-            '#bf1337',
-            '#f3f1f3',
-            '#084c8d',
-            '#ffed00',
-            '#8311e7'
+            '255,255,255',
+            '151,19,55',
+            '0,72,255',
+            '136,0,255',
+            '255,237,0'
         ] as string[],
-        density: 5, // 密度
-        radiusMax: 5, // 最大半径
+        colorS: 0.05, // 颜色变化速度
+        density: 3, // 密度（越大越稀疏）
+        radiusMax: 3, // 最大半径
         radiusMin: 1, // 最小半径
-        first: true, // 第一次执行
+        radiusS: 0.5, // 半径变化速度
         mouseP: { // 鼠标位置
             x: -10000,
             y: -10000,
@@ -154,7 +157,8 @@ export default class Particle {
     public writeText(text: string): void {
         const _this = this;
         
-        _this.config.list.length = 0;
+        let total = 0; // 绘制当前文字所需点的数量
+        
         _this.clearCanvas();
         
         _this.context.fillStyle = '#ffffff';
@@ -164,66 +168,63 @@ export default class Particle {
             _this.canvas.width / 2 - _this.context.measureText(text).width / 2,
             _this.canvas.height / 2 + _this.config.size / 4,
         );
-        const data = _this.context.getImageData(0, 0, _this.canvas.width, _this.canvas.height).data;
         
+        // 获取画布数据
+        const data = _this.context.getImageData(
+            0, 0,
+            _this.canvas.width,
+            _this.canvas.height
+        ).data;
+        
+        // 获取目标位置
         for (let i = 0; i < data.length; i += _this.config.density) {
-            let temp = {
-                x: (i / 4) % _this.canvas.width,
-                y: ~~((i / 4) / _this.canvas.width)
-            };
-            
             if (data[i] !== 0 && ~~(Math.random() * 5) === 1) {
                 if (data[i + 4] !== 255 ||
                     data[i - 4] !== 255 ||
                     data[i + _this.canvas.width * 4] !== 255 ||
                     data[i - _this.canvas.width * 4] !== 255) {
                     
-                    const sign = [-1, 1],
-                        color = _this.config.color[~~(Math.random() * _this.config.color.length)],
-                        radius = _this.config.radiusMax - Math.random() * _this.config.radiusMin;
+                    total++;
                     
-                    temp = {
-                        x: Math.random() * _this.canvas.width,
-                        y: Math.random() * _this.canvas.height
+                    const target = {
+                        x: (i / 4) % _this.canvas.width,
+                        y: ~~((i / 4) / _this.canvas.width)
                     };
-                    if (_this.config.first) {
-                        temp = {
-                            x: (i / 4) % _this.canvas.width,
-                            y: ~~((i / 4) / _this.canvas.width)
-                        };
-                    }
                     
-                    _this.config.list.push({
-                        position: temp,
-                        target: {
-                            x: (i / 4) % _this.canvas.width,
-                            y: ~~((i / 4) / _this.canvas.width)
-                        },
-                        vel: {
-                            x: 0,
-                            y: 0
-                        },
-                        color,
-                        radius,
-                        direction: sign[~~(Math.random() * 2)] * Math.random() / 10
-                    });
+                    _this.config.list[total]
+                        ? _this.config.list[total].target = target
+                        : _this.config.list.push(_this.createPoint(target));
                 }
             }
         }
         
-        _this.config.first = false;
+        _this.config.list.length = total;
     }
     
     /**
-     * 两点之间距离
-     * @param {Object} position 双坐标对象
-     * @return {number} 距离
+     * 创建点
+     * @param {Position} target 目标位置
      */
-    private distance(position): number {
-        return Math.sqrt(
-            Math.pow((position.x2 - position.x1), 2) +
-            Math.pow((position.y2 - position.y1), 2)
-        );
+    private createPoint(target: Position): Point {
+        const _this = this,
+            sign = [1, -1]; // 放大或缩小
+        
+        return {
+            show: true,
+            position: {
+                x: Math.random() * _this.canvas.width,
+                y: Math.random() * _this.canvas.height
+            },
+            target,
+            speed: {
+                x: 0,
+                y: 0
+            },
+            color: ~~(Math.random() * _this.config.color.length),
+            opacity: 0,
+            radius: _this.config.radiusMax - Math.random() * _this.config.radiusMin,
+            direction: sign[~~(Math.random() * 2)] * Math.random() / 10
+        }
     }
     
     /**
@@ -235,13 +236,14 @@ export default class Particle {
         const _this = this;
         
         _this.context.beginPath();
-        _this.context.fillStyle = point.color;
+        _this.context.fillStyle = `rgba(${ _this.config.color[point.color] },${ point.opacity })`;
         _this.context.arc(
             point.position.x,
             point.position.y,
             point.radius,
             0,
-            Math.PI * 2);
+            Math.PI * 2,
+            false);
         _this.context.fill();
     }
     
@@ -254,27 +256,49 @@ export default class Particle {
         const _this = this,
             mouseX = _this.config.mouseP.x,
             mouseY = _this.config.mouseP.y,
-            distance = _this.distance({
+            distance = _this.getDistance({
                 x1: point.position.x,
                 y1: point.position.y,
                 x2: mouseX,
                 y2: mouseY
             });
         
-        point.radius += point.direction;
+        // 颜色
+        point.show
+            ? point.opacity += _this.config.colorS
+            : point.opacity -= _this.config.colorS;
+        (point.opacity > 1) && (point.opacity = 1);
+        (point.opacity < 0) && (point.opacity = 0);
         
-        point.vel.x = (point.position.x - point.target.x) / _this.config.interval;
-        point.vel.y = (point.position.y - point.target.y) / _this.config.interval;
-        
-        if (distance < _this.config.mouseR) { // 推动
-            point.vel.x += point.vel.x - (point.position.x - mouseX) / _this.config.mouseS;
-            point.vel.y += point.vel.y - (point.position.y - mouseY) / _this.config.mouseS;
-        }
-        
+        // 半径
+        point.radius += point.direction * _this.config.radiusS;
         (point.radius >= _this.config.radiusMax) && (point.direction *= -1);
         (point.radius <= 1) && (point.direction *= -1);
         
-        point.position.x -= point.vel.x * _this.config.restoreS;
-        point.position.y -= point.vel.y * _this.config.restoreS;
+        // 速度
+        point.speed.x = (point.position.x - point.target.x) / _this.config.interval;
+        point.speed.y = (point.position.y - point.target.y) / _this.config.interval;
+        
+        // 鼠标推动约束
+        if (distance < _this.config.mouseR) {
+            point.speed.x += point.speed.x - (point.position.x - mouseX) / _this.config.mouseS;
+            point.speed.y += point.speed.y - (point.position.y - mouseY) / _this.config.mouseS;
+        }
+        
+        // 更新位置
+        point.position.x -= point.speed.x * _this.config.restoreS;
+        point.position.y -= point.speed.y * _this.config.restoreS;
+    }
+    
+    /**
+     * 获取两点之间距离
+     * @param {Object} position 双坐标对象
+     * @return {number} 距离
+     */
+    private getDistance(position): number {
+        return Math.sqrt(
+            Math.pow((position.x2 - position.x1), 2) +
+            Math.pow((position.y2 - position.y1), 2)
+        );
     }
 }

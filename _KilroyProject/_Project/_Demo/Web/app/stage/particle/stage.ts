@@ -1,6 +1,7 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 import Particle from '../../controller/particle';
+import set = Reflect.set;
 
 /**
  * 场景
@@ -41,6 +42,14 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
         _this.particle.writeText('KILROY');
+        
+        setTimeout(() => {
+            _this.particle.writeText('0723');
+    
+            setTimeout(() => {
+                _this.particle.writeText('KILROY');
+            }, 3000);
+        }, 3000);
     }
     
     /**
