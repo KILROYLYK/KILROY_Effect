@@ -41,7 +41,7 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this;
-        _this.particle.writeText('KILROY');
+        _this.particle.writeText('♥');
     }
     
     /**
