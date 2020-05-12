@@ -1,21 +1,26 @@
 import Global from '../constant/global';
 import * as PIXISound from 'pixi-sound';
 
+
+
 /**
  * 预加载
  */
-class Pre {
+export default class Preload {
     /**
      * 原型对象
-     * @constructor Pre
-     * @param {object} config 配置
+     * @constructor Preload
+     * @param {array} list 资源列表
      */
-    constructor(config = {}) {
+    constructor(list: object = {}) {
         const _this = this;
         
         _this.config = {
-            loadTotal: img.length + gameImg.length + gameAnimation.length * 2 + gameMusic.length,
-            loaded: 0,
+            list:{
+            
+            },
+            total: img.length + gameImg.length + gameAnimation.length * 2 + gameMusic.length,
+            finish: 0,
             loadingCallback: config.loadingCallback,
             finishCallback: config.finishCallback
         };
@@ -81,5 +86,3 @@ function loadGame(callback = null) {
             callback(resources);
         });
 }
-
-export default Pre;
