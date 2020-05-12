@@ -1,31 +1,37 @@
 import Global from '../constant/global';
-import * as PIXISound from 'pixi-sound';
+import 'pixi-sound';
 
-
+export interface PreloadConfig {
+    list?: string[],
+    loadingCallback?: Function,
+    finishCallback?: Function
+}
 
 /**
  * 预加载
  */
 export default class Preload {
+    private readonly config: object = { // 配置
+        loader: null, // 加载对象
+        list: [] as string[], // 资源列表
+        finish: 0 as number, // 完成总数
+        loadingCallback: null as Function,
+        finishCallback: null as Function
+    };
+    
     /**
      * 原型对象
      * @constructor Preload
-     * @param {array} list 资源列表
+     * @param {object} config 配置
      */
-    constructor(list: object = {}) {
+    constructor(config: PreloadConfig = {}) {
         const _this = this;
         
-        _this.config = {
-            list:{
-            
-            },
-            total: img.length + gameImg.length + gameAnimation.length * 2 + gameMusic.length,
-            finish: 0,
-            loadingCallback: config.loadingCallback,
-            finishCallback: config.finishCallback
-        };
+        _this.config.loader = new Global.PIXI.Loader();
         
-        _this.loader = new PIXI.Loader();
+        _this.config.list = config.list || [];
+        _this.config.loadingCallback = config.loadingCallback || null;
+        _this.config.finishCallback = config.finishCallback || null;
         
         _this.init();
     }
@@ -34,55 +40,29 @@ export default class Preload {
      * 初始化
      * @return {void}
      */
-    init() {
+    private init(): void {
         const _this = this;
         
-        loadPage.call(_this, () => {
-            loadGame.call(_this, (resources) => {
-                if (_this.config.finishCallback) _this.config.finishCallback(resources);
-            });
-        });
+        _this.load();
     }
-}
-
-/**
- * 加载页面素材
- * @param {function} callback 完成回调
- * @return {void}
- */
-function loadPage(callback = null) {
-    const _this = this;
     
-    Preload.process(img, {
-        loadingCallback() {
-            ++_this.config.loaded;
-            if (!_this.config.loadingCallback) return;
-            _this.config.loadingCallback(parseInt(_this.config.loaded / _this.config.loadTotal * 100));
-        },
-        finishCallback() {
-            callback();
-        }
-    });
-}
-
-/**
- * 加载游戏素材
- * @param {function} callback 完成回调
- * @return {void}
- */
-function loadGame(callback = null) {
-    const _this = this;
-    
-    _this.loader
-        .add(gameImg)
-        .add(gameAnimation)
-        .add(gameMusic)
-        .on('progress', () => {
-            ++_this.config.loaded;
-            if (!_this.config.loadingCallback) return;
-            _this.config.loadingCallback(parseInt(_this.config.loaded / _this.config.loadTotal * 100));
-        })
-        .load((load, resources) => {
-            callback(resources);
-        });
+    /**
+     * 加载游戏素材
+     * @return {void}
+     */
+    private load(): void {
+        const _this = this;
+        
+        _this.config.loader
+            .add(_this.config.list)
+            .on('progress', () => {
+                _this.config.finish++;
+                _this.config.loadingCallback && _this.config.loadingCallback(
+                    parseInt(String(_this.config.finish / _this.config.list.length * 100), 10)
+                );
+            })
+            .load((load, resources) => {
+                _this.config.finishCallback && _this.config.finishCallback(resources);
+            });
+    }
 }

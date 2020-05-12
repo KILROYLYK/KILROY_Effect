@@ -25,7 +25,7 @@ export default class Stage implements _Stage {
             x: 0,
             y: 0
         },
-        speed: -0.5 // 移动速度
+        speed: -0.05 // 移动速度
     };
     
     /**
@@ -65,20 +65,16 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this,
-            textureB = Global.PIXI.Texture.from(_this.config.imageB),
-            textureS = Global.PIXI.Texture.from(_this.config.imageS),
-            imageB = new Global.PIXI.Sprite.from(_this.config.imageB),
-            imageS = new Global.PIXI.Sprite.from(_this.config.imageS);
+            spriteB = new Global.PIXI.Sprite.from(_this.config.imageB),
+            spriteS = new Global.PIXI.Sprite.from(_this.config.imageS);
         
-        console.log(imageB);
+        spriteS.texture.baseTexture.wrapMode = Global.PIXI.WRAP_MODES.REPEAT;
+        _this.config.filter = new Global.PIXI.filters.DisplacementFilter(spriteS);
         
-        // imageS.texture.baseTexture.wrapMode = Global.PIXI.WRAP_MODES.REPEAT;
-        // _this.config.filter = new Global.PIXI.filters.DisplacementFilter(imageS);
+        _this.config.container.addChild(spriteB);
+        _this.config.container.addChild(spriteS);
         
-        // _this.config.container.addChild(imageB);
-        // _this.config.container.addChild(imageS);
-        
-        // _this.config.dom.addEventListener('mousemove', _this.mouseMove.bind(_this), false);
+        _this.config.dom.addEventListener('mousemove', _this.mouseMove.bind(_this), false);
     }
     
     /**
@@ -122,7 +118,7 @@ export default class Stage implements _Stage {
             duration: 1000,
             easing: 'easeOutSine',
             update: (a: any) => {
-                _this.config.stage.filters = [ _this.config.filter ];
+                _this.config.container.filters = [ _this.config.filter ];
                 _this.config.filter.scale.set(x, y);
             }
         });
