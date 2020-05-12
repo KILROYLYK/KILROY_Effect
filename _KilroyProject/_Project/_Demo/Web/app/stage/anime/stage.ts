@@ -1,8 +1,6 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 
-import Anime, { set } from 'animejs';
-
 /**
  * 场景
  */
@@ -29,8 +27,7 @@ export default class Stage implements _Stage {
      * @return {any} 实例
      */
     private create(): void {
-        const _this = this,
-            dom = Global.Document.createElement('div');
+        const _this = this;
     }
     
     /**
@@ -39,7 +36,6 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this;
-        
     }
     
     /**
@@ -49,7 +45,6 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-        
     }
     
     /**
