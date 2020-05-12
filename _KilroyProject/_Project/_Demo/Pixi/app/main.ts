@@ -4,7 +4,7 @@ const Config = Global.Config, // 配置
     Stage = Global.Stage, // 对象
     Function = Global.Function; // 函数
 
-console.log(Global.PIXI);
+const StageMain = new Stage.Stereoscopic(); // 动画
 
 Function.autoUpdate(() => {
 });
