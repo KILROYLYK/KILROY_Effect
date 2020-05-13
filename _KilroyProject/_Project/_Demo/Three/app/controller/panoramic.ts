@@ -7,16 +7,15 @@ import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
  */
 export default class Panoramic implements _Controller {
     public readonly config: object = { // 配置
-        src: '',
+        src: 'https://image.gaeamobile.net/image/20190717/181948/',
         wh: 1024,
         side: [] as {
             name: string // 图片名称
-            position: [number, number, number] // 位置
-            rotation: [number, number, number] // 角度
+            position: [ number, number, number ] // 位置
+            rotation: [ number, number, number ] // 角度
         }[]
     };
-    
-    public scene: object = null; // 场景
+    private scene: THREE.Scene = null; // 场景
     
     /**
      * 原型对象
@@ -26,43 +25,51 @@ export default class Panoramic implements _Controller {
     constructor(scene) {
         const _this = this;
         
-        _this.scene = scene.instance;
-        
-        _this.config.src = 'https://image.gaeamobile.net/image/20190717/181948/';
         _this.config.side = [
             {
                 name: 'img_before.jpg',
-                position: [0, 0, -_this.config.wh / 2],
-                rotation: [0, 0, 0]
+                position: [ 0, 0, -_this.config.wh / 2 ],
+                rotation: [ 0, 0, 0 ]
             },
             {
                 name: 'img_after.jpg',
-                position: [0, 0, _this.config.wh / 2],
-                rotation: [0, Math.PI, 0]
+                position: [ 0, 0, _this.config.wh / 2 ],
+                rotation: [ 0, Math.PI, 0 ]
             },
             {
                 name: 'img_top.jpg',
-                position: [0, _this.config.wh / 2, 0],
-                rotation: [Math.PI / 2, 0, Math.PI]
+                position: [ 0, _this.config.wh / 2, 0 ],
+                rotation: [ Math.PI / 2, 0, Math.PI ]
             },
             {
                 name: 'img_bottom.jpg',
-                position: [0, -_this.config.wh / 2, 0],
-                rotation: [-Math.PI / 2, 0, Math.PI]
+                position: [ 0, -_this.config.wh / 2, 0 ],
+                rotation: [ -Math.PI / 2, 0, Math.PI ]
             },
             {
                 name: 'img_left.jpg',
-                position: [-_this.config.wh / 2, 0, 0],
-                rotation: [0, Math.PI / 2, 0]
+                position: [ -_this.config.wh / 2, 0, 0 ],
+                rotation: [ 0, Math.PI / 2, 0 ]
             },
             {
                 name: 'img_right.jpg',
-                position: [_this.config.wh / 2, 0, 0],
-                rotation: [0, -Math.PI / 2, 0]
+                position: [ _this.config.wh / 2, 0, 0 ],
+                rotation: [ 0, -Math.PI / 2, 0 ]
             }
         ];
         
+        _this.scene = scene.instance;
+        
+        _this.create();
         _this.init();
+    }
+    
+    /**
+     * 创建
+     * @return {void}
+     */
+    private create(): void {
+        const _this = this;
     }
     
     /**
@@ -99,19 +106,19 @@ export default class Panoramic implements _Controller {
         const _this = this,
             D = Global.Document;
         
-        for (let i = 0; i < _this.config.side.length; i++) {
+        _this.config.side.forEach((v, i, a) => {
             const side = _this.config.side[i],
                 img = D.createElement('img');
             
             img.width = _this.config.wh + 6;
             img.height = _this.config.wh + 6;
             img.src = _this.config.src + side.name;
-    
+            
             const css3Loader = new CSS3DObject(img);
             css3Loader.position.fromArray(side.position);
             css3Loader.rotation.fromArray(side.rotation);
             
             _this.scene.add(css3Loader);
-        }
+        });
     }
 }

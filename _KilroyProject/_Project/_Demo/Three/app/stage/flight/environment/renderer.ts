@@ -2,23 +2,16 @@ import Global from '../../../constant/global';
 import _Environment from '../../../interface/environment';
 
 /**
- * 相机
+ * 渲染器
  */
-export default class Camera implements _Environment {
+export default class Renderer implements _Environment {
     public readonly config: object = { // 配置
-        fov: 45, // 摄像机视锥体垂直视野角度
-        aspect: Global.Width / Global.Height, // 摄像机视锥体长宽比
-        near: 1, // 摄像机视锥体近端面
-        far: 1000, // 摄像机视锥体远端面
-        x: 0,
-        y: 200,
-        z: 0
     };
-    public instance: THREE.PerspectiveCamera = null; // 实例
+    public instance: THREE.WebGLRenderer = null; // 实例
     
     /**
      * 构造函数
-     * @constructor Camera
+     * @constructor Renderer
      */
     constructor() {
         const _this = this;
@@ -36,12 +29,11 @@ export default class Camera implements _Environment {
         
         if (_this.instance) return;
         
-        _this.instance = new Global.THREE.PerspectiveCamera(
-            _this.config.fov,
-            _this.config.aspect,
-            _this.config.near,
-            _this.config.far
-        );
+        _this.instance = new Global.THREE.WebGLRenderer({
+            alpha: true,
+            antialias: true,
+            precision: 'mediump'
+        });
     }
     
     /**
@@ -51,18 +43,17 @@ export default class Camera implements _Environment {
     private init(): void {
         const _this = this;
         
-        if (!_this.instance) return;
+        if (_this.instance) return;
         
-        _this.instance.position.set(
-            _this.config.x,
-            _this.config.y,
-            _this.config.z
-        );
+        _this.instance.setSize(Global.Width, Global.Height);
+        _this.instance.setPixelRatio(Global.Window.devicePixelRatio);
+        _this.instance.setClearColor('#000000', 0);
+        _this.instance.sortObjects = true;
     }
     
     /**
      * 更新
-     * @param {boolean} isResize 屏幕是否变化
+     * @param {boolean} isResize 是否调整大小
      * @return {void}
      */
     public update(isResize: boolean = false): void {
@@ -70,11 +61,8 @@ export default class Camera implements _Environment {
         
         if (!_this.instance) return;
         
-       
         if (isResize) { // 屏幕变化
-            _this.config.aspect = Global.Width / Global.Height;
-            _this.instance.aspect = _this.config.aspect;
-            _this.instance.updateProjectionMatrix();
+            _this.instance.setSize(Global.Width, Global.Height);
         }
     }
     
@@ -86,7 +74,7 @@ export default class Camera implements _Environment {
         const _this = this;
         
         if (!_this.instance) return;
-        (_this.instance as any).destroy(true);
+        
         _this.instance = null;
     }
 }

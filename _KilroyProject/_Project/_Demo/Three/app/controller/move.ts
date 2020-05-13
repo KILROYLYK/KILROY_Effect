@@ -13,40 +13,38 @@ export interface MoveConfig { // 控制器配置
  */
 export default class Move implements _Controller {
     public readonly config: object = { // 配置
-        target: null, // 视觉目标
+        target: null as THREE.Vector3, // 视觉目标
         far: 0, // 视觉目标距离
         lon: 0, // 经度x
         lat: 0, // 纬度y
         theta: 0, // 角度
         phi: 0, // 弧度
         maxLat: 85, // 上下最大纬度
-        position: {
+        position: { // 位置
             touchX: 0,
             touchY: 0
         },
-        speed: {
+        speed: { // 速度
             click: 0.0015,
             touch: 0.1,
             wheel: 0.008,
             walk: 3
         },
-        key: {
-            before: 87,
-            left: 65,
-            right: 68,
-            after: 83,
-            jump: 32
+        key: { // 按键
+            before: 87, // 前 W
+            left: 65, // 左 A
+            right: 68, // 右 D
+            after: 83, // 后 S
+            jump: 32 // 跳 Space
         }
     };
-    
-    public camera: object = null; // 相机
-    
     private readonly flag: MoveConfig = { // 控制器
         turn: false,
         focus: false,
         walk: false,
         jump: false
     };
+    private camera: THREE.PerspectiveCamera = null; // 相机
     
     /**
      * 原型对象
@@ -57,8 +55,6 @@ export default class Move implements _Controller {
     constructor(camera: object, config: MoveConfig = {}) {
         const _this = this;
         
-        _this.camera = camera.instance;
-        
         _this.config.target = new Global.THREE.Vector3();
         _this.config.far = _this.camera.far * 2;
         
@@ -67,7 +63,18 @@ export default class Move implements _Controller {
         _this.flag.walk = !!config.walk;
         _this.flag.jump = !!config.jump;
         
+        _this.camera = camera.instance;
+        
+        _this.create();
         _this.init();
+    }
+    
+    /**
+     * 创建
+     * @return {void}
+     */
+    private create(): void {
+        const _this = this;
     }
     
     /**
@@ -110,6 +117,7 @@ export default class Move implements _Controller {
         const _this = this;
         
         if (!_this.camera) return;
+        
         _this.camera = null;
     }
     
@@ -119,6 +127,7 @@ export default class Move implements _Controller {
      */
     private switchPlatform(): void {
         const _this = this;
+        
         Global.Base.isPSB.platform() === 'PC'
             ? _this.PCMoveCamera()
             : _this.MobileMoveCamera();
@@ -134,10 +143,10 @@ export default class Move implements _Controller {
             mouse = { // 鼠标
                 /**
                  * 按下
-                 * @param {Event} e 焦点对象
+                 * @param {MouseEvent} e 焦点对象
                  * @return {void}
                  */
-                down: (e): void => {
+                down: (e: MouseEvent): void => {
                     e.preventDefault();
                     e.stopPropagation();
                     
@@ -147,15 +156,15 @@ export default class Move implements _Controller {
                 
                 /**
                  * 移动
-                 * @param {Event} e 焦点对象
+                 * @param {MouseEvent} e 焦点对象
                  * @return {void}
                  */
-                move: (e): void => {
+                move: (e: MouseEvent): void => {
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    const movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0,
-                        movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0,
+                    const movementX = e.movementX || 0,
+                        movementY = e.movementY || 0,
                         speed = _this.camera.fov * _this.config.speed.click;
                     
                     _this.config.lon -= movementX * speed;
@@ -164,10 +173,10 @@ export default class Move implements _Controller {
                 
                 /**
                  * 抬起
-                 * @param {Event} e 事件对象
+                 * @param {MouseEvent} e 事件对象
                  * @return {void}
                  */
-                up: (e): void => {
+                up: (e: MouseEvent): void => {
                     e.preventDefault();
                     e.stopPropagation();
                     
@@ -177,10 +186,10 @@ export default class Move implements _Controller {
                 
                 /**
                  * 中键滚动
-                 * @param {Event} e 焦点对象
+                 * @param {WheelEvent} e 焦点对象
                  * @return {void}
                  */
-                wheel: (e): void => {
+                wheel: (e: WheelEvent): void => {
                     const fov = _this.camera.fov + e.deltaY * _this.config.speed.wheel;
                     
                     _this.camera.fov = Global.THREE.Math.clamp(fov, 45, 95);
@@ -190,10 +199,10 @@ export default class Move implements _Controller {
             key = { // 键盘
                 /**
                  * 行走
-                 * @param {Event} e 焦点对象
+                 * @param {KeyboardEvent} e 焦点对象
                  * @return {void}
                  */
-                walk: (e): void => {
+                walk: (e: KeyboardEvent): void => {
                     // _this.camera.position.set(
                     //     _this.camera.position.x,
                     //     _this.camera.position.y,
@@ -203,10 +212,10 @@ export default class Move implements _Controller {
                 
                 /**
                  * 跳跃
-                 * @param {Event} e 焦点对象
+                 * @param {KeyboardEvent} e 焦点对象
                  * @return {void}
                  */
-                jump: (e): void => {
+                jump: (e: KeyboardEvent): void => {
                 
                 }
             };
@@ -230,10 +239,10 @@ export default class Move implements _Controller {
             touch = { // 触摸
                 /**
                  * 开始
-                 * @param {Event} e 焦点对象
+                 * @param {TouchEvent} e 焦点对象
                  * @return {void}
                  */
-                start: (e): void => {
+                start: (e: TouchEvent): void => {
                     e.preventDefault();
                     e.stopPropagation();
                     
@@ -247,10 +256,10 @@ export default class Move implements _Controller {
                 
                 /**
                  * 移动
-                 * @param {Event} e 焦点对象
+                 * @param {TouchEvent} e 焦点对象
                  * @return {void}
                  */
-                move: (e): void => {
+                move: (e: TouchEvent): void => {
                     e.preventDefault();
                     e.stopPropagation();
                     
@@ -264,10 +273,10 @@ export default class Move implements _Controller {
                 
                 /**
                  * 抬起
-                 * @param {Event} e 焦点对象
+                 * @param {TouchEvent} e 焦点对象
                  * @return {void}
                  */
-                end: (e): void => {
+                end: (e: TouchEvent): void => {
                     e.preventDefault();
                     e.stopPropagation();
                     
