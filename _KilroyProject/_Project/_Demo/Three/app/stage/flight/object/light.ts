@@ -33,7 +33,7 @@ export default class Light implements _Object {
         
         _this.config.color = new THREE.Color();
         
-        _this.instance = new Global.THREE.PointLight('#FFFFFF', 4, 1000);
+        _this.instance = new Global.THREE.PointLight('#ffffff', 4, 1000);
     }
     
     /**
@@ -72,6 +72,8 @@ export default class Light implements _Object {
      */
     public destroy(): void {
         const _this = this;
+    
+        if (!_this.instance) return;
         
         _this.instance = null;
     }

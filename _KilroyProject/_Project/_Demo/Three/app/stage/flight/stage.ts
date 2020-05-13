@@ -1,16 +1,9 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 
-/**
- * Environment
- */
 import Renderer from './environment/renderer';
 import Scene from './environment/scene';
 import Camera from './environment/camera';
-
-/**
- * Object
- */
 import Light from './object/light';
 
 /**
@@ -51,8 +44,6 @@ export default class Stage implements _Stage {
         _this.camera = new Camera();
         
         _this.object.light = new Light();
-    
-        Global.GameDom.appendChild(_this.renderer.instance.domElement);
     }
     
     /**
@@ -61,6 +52,8 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this;
+    
+        Global.GameDom.appendChild(_this.renderer.instance.domElement);
     }
     
     /**

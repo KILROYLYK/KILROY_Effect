@@ -6,25 +6,16 @@ import _Object from '../../../interface/object';
  */
 export default class Ground implements _Object {
     public readonly config: object = { // 配置
-        loader: null,
-        image: {
-            grass: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'
-        },
-        repeat: 25, // 重复
-        anisotropy: 16, // 各向异性
-        size: 20000, // 尺寸
-        x: 0,
-        y: 0,
-        rx: -Math.PI / 2,
-        ry: 0
+        image: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg',
     };
     public readonly instance: object = { // 实例
-        isCreate: false,
-        texture: null,
-        material: null,
-        geometry: null,
-        mesh: null
+        texture: null as THREE.Texture, // 质地
+        material: null as THREE.MeshLambertMaterial, // 材料
+        geometry: null as THREE.PlaneBufferGeometry, // 几何
+        mesh: null as THREE.Mesh // 啮合
     };
+    private loader: THREE.TextureLoader = null; // 加载
+    
     
     /**
      * 构造函数
@@ -33,50 +24,45 @@ export default class Ground implements _Object {
     constructor() {
         const _this = this;
         
-        _this.config.loader = new Global.THREE.TextureLoader();
-        
         _this.create();
         _this.init();
     }
     
     /**
      * 创建
-     * @return {any} 实例
+     * @return {void}
      */
     private create(): void {
         const _this = this;
         
-        if (_this.instance.isCreate) return;
+        if (_this.instance.mesh) return;
         
-        _this.instance.isCreate = true;
+        _this.loader = new Global.THREE.TextureLoader();
         
         // 质地
-        const texture = _this.config.loader.load(_this.config.image.grass);
-        texture.wrapS = texture.wrapT = Global.THREE.RepeatWrapping;
-        texture.repeat.set(_this.config.repeat, _this.config.repeat);
-        texture.anisotropy = _this.config.anisotropy;
-        texture.encoding = Global.THREE.sRGBEncoding;
-        _this.instance.texture = texture;
+        _this.instance.texture = _this.loader.load(_this.config.image);
+        _this.instance.texture.wrapS
+            = _this.instance.texture.wrapT
+            = Global.THREE.RepeatWrapping;
+        _this.instance.texture.repeat.set(25, 25);
+        _this.instance.texture.anisotropy = 16;
+        _this.instance.texture.encoding = Global.THREE.sRGBEncoding;
         
         // 材料
-        const material = new Global.THREE.MeshLambertMaterial({ map: texture });
-        _this.instance.material = material;
+        _this.instance.material = new Global.THREE.MeshLambertMaterial({
+            map: _this.instance.texture
+        });
         
         // 几何
-        const geometry = new Global.THREE.PlaneBufferGeometry(
-            _this.config.size,
-            _this.config.size
-        );
-        _this.instance.geometry = geometry;
+        _this.instance.geometry = new Global.THREE.PlaneBufferGeometry(20000, 20000);
         
         // 啮合
-        const mesh = new Global.THREE.Mesh(geometry, material);
-        mesh.position.x = _this.config.x;
-        mesh.position.y = _this.config.y;
-        mesh.rotation.x = _this.config.rx;
-        mesh.rotation.y = _this.config.ry;
-        mesh.receiveShadow = true;
-        _this.instance.mesh = mesh;
+        _this.instance.mesh = new Global.THREE.Mesh(_this.instance.geometry, _this.instance.material);
+        _this.instance.mesh.position.x = 0;
+        _this.instance.mesh.position.y = 0;
+        _this.instance.mesh.rotation.x = -Math.PI / 2;
+        _this.instance.mesh.rotation.y = 0;
+        _this.instance.mesh.receiveShadow = true;
     }
     
     /**
@@ -86,7 +72,7 @@ export default class Ground implements _Object {
     private init(): void {
         const _this = this;
         
-        if (_this.instance.isCreate) return;
+        if (_this.instance.mesh) return;
     }
     
     /**
@@ -97,7 +83,7 @@ export default class Ground implements _Object {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        if (!_this.instance.isCreate) return;
+        if (!_this.instance.mesh) return;
         
         if (isResize) { // 屏幕变化
         }
@@ -109,9 +95,10 @@ export default class Ground implements _Object {
      */
     public destroy(): void {
         const _this = this;
-    
-        if (!_this.instance.isCreate) return;
         
+        if (!_this.instance.mesh) return;
+        
+        _this.loader = null;
         _this.instance.texture = null;
         _this.instance.material = null;
         _this.instance.geometry = null;

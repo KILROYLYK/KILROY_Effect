@@ -54,6 +54,8 @@ export default class Move implements _Controller {
      */
     constructor(camera: object, config: MoveConfig = {}) {
         const _this = this;
+    
+        _this.camera = camera.instance;
         
         _this.config.target = new Global.THREE.Vector3();
         _this.config.far = _this.camera.far * 2;
@@ -62,8 +64,6 @@ export default class Move implements _Controller {
         _this.flag.focus = !!config.focus;
         _this.flag.walk = !!config.walk;
         _this.flag.jump = !!config.jump;
-        
-        _this.camera = camera.instance;
         
         _this.create();
         _this.init();

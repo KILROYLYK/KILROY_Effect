@@ -1,22 +1,12 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 
-/**
- * Environment
- */
 import Renderer from './environment/renderer';
 import Scene from './environment/scene';
 import Camera from './environment/camera';
-
-/**
- * Object
- */
-import Light from './object/light';
 import Ground from './object/ground';
-
-/**
- * Controller
- */
+import LightNatural from './object/lightNatural';
+import LightAngle from './object/lightAngle';
 import Move from '../../controller/move';
 
 /**
@@ -24,18 +14,16 @@ import Move from '../../controller/move';
  */
 export default class Stage implements _Stage {
     public readonly config: object = { // 配置
-        dom: null as Element, // 元素
-        
-        // 环境
-        renderer: null as Renderer,
-        scene: null as Scene,
-        camera: null as Camera,
-        
-        // 物体
-        light: null as Light,
-        ground: null as Ground,
-        
-        controller: {} // 控制器
+    };
+    private renderer: Renderer = null; // 渲染器
+    private scene: Scene = null; // 场景
+    private camera: Camera = null; // 相机
+    private object: object = { // 对象
+        lightNatural: null as LightNatural, // 灯光-自然光
+        lightAngle: null as LightAngle, // 灯光-角度光
+        ground: null as Ground // 地面
+    };
+    private controller: object = { // 控制器
     };
     
     /**
@@ -45,41 +33,24 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        _this.config.dom = Global.GameDom;
-        
-        // 环境
-        _this.config.renderer = new Renderer();
-        _this.config.scene = new Scene();
-        _this.config.camera = new Camera();
-        
-        // 物体
-        _this.config.light = new Light();
-        _this.config.ground = new Ground();
-        
         _this.create();
         _this.init();
     }
     
     /**
      * 创建
-     * @return {any} 实例
+     * @return {void}
      */
     private create(): void {
         const _this = this;
         
-        // 添加渲染器
-        _this.config.dom.appendChild(_this.config.renderer.instance.domElement);
+        _this.renderer = new Renderer();
+        _this.scene = new Scene();
+        _this.camera = new Camera();
         
-        // 添加主光源
-        _this.config.light.add('ambient', 'ambient');
-        _this.config.scene.instance.add(_this.config.light.instance.ambient);
-        
-        // 添加角度光源
-        _this.config.light.add('direction', 'direction');
-        _this.config.scene.instance.add(_this.config.light.instance.direction);
-        
-        // 添加地面
-        _this.config.scene.instance.add(_this.config.ground.instance.mesh);
+        _this.object.ground = new Ground();
+        _this.object.lightNatural = new LightNatural();
+        _this.object.lightAngle = new LightAngle();
     }
     
     /**
@@ -89,8 +60,18 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
         
-        _this.config.controller.move = new Move(
-            _this.config.camera, {
+        Global.GameDom.appendChild(_this.renderer.instance.domElement);
+        
+        // 地面
+        _this.scene.instance.add(_this.object.ground.instance.mesh);
+    
+        // 光
+        _this.scene.instance.add(_this.object.lightNatural.instance);
+        _this.scene.instance.add(_this.object.lightAngle.instance);
+        
+        // 移动控制器
+        _this.controller.move = new Move(
+            _this.camera, {
                 turn: true,
                 focus: true,
                 walk: true,
@@ -107,15 +88,15 @@ export default class Stage implements _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        _this.config.controller.move.update(isResize);
+        _this.controller.move.update();
         
-        _this.config.camera.update(isResize);
-        _this.config.scene.update(isResize);
-        _this.config.renderer.update(isResize);
+        _this.camera.update(isResize);
+        _this.scene.update(isResize);
+        _this.renderer.update(isResize);
         
-        _this.config.renderer.instance.render(
-            _this.config.scene.instance,
-            _this.config.camera.instance
+        _this.renderer.instance.render(
+            _this.scene.instance,
+            _this.camera.instance
         );
     }
     
@@ -125,5 +106,14 @@ export default class Stage implements _Stage {
      */
     public destroy(): void {
         const _this = this;
+        
+        _this.camera.destroy();
+        _this.scene.destroy();
+        _this.renderer.destroy();
+        
+        _this.object.light.destroy();
+        _this.object.ground.destroy();
+        
+        _this.controller.move.destroy();
     }
 }
