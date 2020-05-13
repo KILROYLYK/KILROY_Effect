@@ -7,11 +7,8 @@ import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
  */
 export default class Renderer implements _Environment {
     public readonly config: object = { // 配置
-        dom: Global.GameDom,
-        width: Global.Width,
-        height: Global.Height
     };
-    public instance: object = null; // 实例
+    public instance: CSS3DRenderer = null; // 实例
     
     /**
      * 构造函数
@@ -26,17 +23,14 @@ export default class Renderer implements _Environment {
     
     /**
      * 创建
-     * @return {any} 实例
+     * @return {void}
      */
     private create(): void {
-        const _this = this,
-            renderer = _this.getRendererType();
+        const _this = this;
         
         if (_this.instance) return;
         
-        _this.instance = new renderer({
-            antialias: true
-        });
+        _this.instance = new CSS3DRenderer();
     }
     
     /**
@@ -47,14 +41,8 @@ export default class Renderer implements _Environment {
         const _this = this;
         
         if (_this.instance) return;
-        
-        _this.instance.setSize(
-            _this.config.width,
-            _this.config.height
-        );
-        
-        _this.instance.outputEncoding = Global.THREE.sRGBEncoding;
-        _this.instance.shadowMap.enabled = true;
+    
+        _this.instance.setSize(Global.Width, Global.Height);
     }
     
     /**
@@ -68,13 +56,7 @@ export default class Renderer implements _Environment {
         if (!_this.instance) return;
         
         if (isResize) { // 屏幕变化
-            _this.config.width = Global.Width;
-            _this.config.height = Global.Height;
-            
-            _this.instance.setSize(
-                _this.config.width,
-                _this.config.height
-            );
+            _this.instance.setSize(Global.Width, Global.Height);
         }
     }
     
@@ -86,16 +68,7 @@ export default class Renderer implements _Environment {
         const _this = this;
         
         if (!_this.instance) return;
-        (_this.instance as any).destroy(true);
+ 
         _this.instance = null;
-    }
-    
-    /**
-     * 获取Renderer类型
-     * @return {function} Renderer对象
-     */
-    private getRendererType(): any {
-        const _this = this;
-        return CSS3DRenderer;
     }
 }

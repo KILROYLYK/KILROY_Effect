@@ -15,7 +15,7 @@ export default class Global {
     readonly static Window: Window = W; // Window
     readonly static Document: Document = D; // Document
     
-    readonly static Base: object = Base;
+    readonly static Base: any = Base;
     
     readonly static THREE: any = THREE; // ThreeJS
     
@@ -23,9 +23,9 @@ export default class Global {
     public static Height: number = W.innerHeight;
     readonly static GameDom: Element = Function.getGameDom('game');
     
-    readonly static Config: object = Config; // 配置
-    readonly static Stage: object = Stage; // 场景
-    readonly static Function: object = Function; // 函数
+    readonly static Config: any = Config; // 配置
+    readonly static Stage: any = Stage; // 场景
+    readonly static Function: any = Function; // 函数
     
     public static Instance: any = {}; // 实例
 }
