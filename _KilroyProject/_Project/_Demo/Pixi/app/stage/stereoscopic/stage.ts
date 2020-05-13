@@ -11,6 +11,8 @@ import Anime from 'animejs';
 export default class Stage implements _Stage {
     public readonly config: object = { // 配置
         dom: null as Element, // 元素
+        width: 900, // 画布宽
+        height: 600, // 画布高
         
         app: null as PIXI.Application, // 应用
         container: null as PIXI.Container, // 容器
@@ -25,7 +27,7 @@ export default class Stage implements _Stage {
             x: 0,
             y: 0
         },
-        speed: -0.05 // 移动速度
+        speed: -0.03 // 移动速度
     };
     
     /**
@@ -49,8 +51,8 @@ export default class Stage implements _Stage {
         const _this = this;
         
         _this.config.app = new Global.PIXI.Application({
-            width: 1500,
-            height: 1000,
+            width: _this.config.width,
+            height: _this.config.height,
             transparent: true
         });
         _this.config.dom.appendChild(_this.config.app.view);
@@ -68,13 +70,20 @@ export default class Stage implements _Stage {
             spriteB = new Global.PIXI.Sprite.from(_this.config.imageB),
             spriteS = new Global.PIXI.Sprite.from(_this.config.imageS);
         
+        spriteB.width = _this.config.width;
+        spriteB.height = _this.config.height;
+    
+        spriteS.width = _this.config.width;
+        spriteS.height = _this.config.height;
+        
         spriteS.texture.baseTexture.wrapMode = Global.PIXI.WRAP_MODES.REPEAT;
         _this.config.filter = new Global.PIXI.filters.DisplacementFilter(spriteS);
         
         _this.config.container.addChild(spriteB);
         _this.config.container.addChild(spriteS);
         
-        _this.config.dom.addEventListener('mousemove', _this.mouseMove.bind(_this), false);
+        Global.Window.addEventListener('mousemove', _this.mouseMove.bind(_this), false);
+        Global.Window.addEventListener('mouseout', _this.mouseOut.bind(_this), false);
     }
     
     /**
@@ -84,13 +93,6 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-        
-        if (isResize) {
-            _this.config.centerP = {
-                x: Global.Width / 2,
-                y: Global.Height / 2
-            };
-        }
     }
     
     /**
@@ -102,24 +104,47 @@ export default class Stage implements _Stage {
     }
     
     /**
-     * 鼠标移动执行动画
+     * 鼠标移动事件
      * @param {MouseEvent} e 鼠标事件
      * @return {void}
      */
     private mouseMove(e: MouseEvent): void {
+        const _this = this;
+        _this.anime(e.clientX, e.clientY);
+    }
+    
+    /**
+     * 鼠标移出事件
+     * @param {MouseEvent} e 鼠标事件
+     * @return {void}
+     */
+    private mouseOut(e: MouseEvent): void {
+        const _this = this;
+        _this.anime(
+            _this.config.centerP.x,
+            _this.config.centerP.y
+        );
+    }
+    
+    /**
+     * 动画
+     * @param {number} x X轴坐标
+     * @param {number} y Y轴坐标
+     * @return {void}
+     */
+    private anime(x: number, y: number): void {
         const _this = this,
-            x = (_this.config.moveP.x - _this.config.centerP.x) * _this.config.speed,
-            y = (_this.config.moveP.y - _this.config.centerP.y) * _this.config.speed * 2;
+            xS = (_this.config.moveP.x - _this.config.centerP.x) * _this.config.speed,
+            yS = (_this.config.moveP.y - _this.config.centerP.y) * _this.config.speed * 2;
         
         Anime({
             targets: _this.config.moveP,
-            x: e.clientX,
-            y: e.clientY,
+            x, y,
             duration: 1000,
             easing: 'easeOutSine',
             update: (a: any) => {
                 _this.config.container.filters = [ _this.config.filter ];
-                _this.config.filter.scale.set(x, y);
+                _this.config.filter.scale.set(xS, yS);
             }
         });
     }

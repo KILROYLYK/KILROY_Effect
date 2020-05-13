@@ -6,7 +6,9 @@ const Config = Global.Config, // 配置
 
 const StageMain = new Stage.Stereoscopic(); // 动画
 
-Function.autoUpdate(() => {
-});
-Function.resizeUpdate(() => {
-});
+// Function.autoUpdate(() => {
+//     StageMain.update();
+// });
+// Function.resizeUpdate(() => {
+//     StageMain.update(true);
+// });
