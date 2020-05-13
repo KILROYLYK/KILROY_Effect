@@ -24,14 +24,14 @@ export default class Light implements _Object {
     
     /**
      * 创建
-     * @return {any} 实例
+     * @return {void}
      */
     protected create(): void {
         const _this = this;
     
         if (_this.instance) return;
         
-        _this.config.color = new THREE.Color();
+        _this.config.color = new Global.THREE.Color();
         
         _this.instance = new Global.THREE.PointLight('#ffffff', 4, 1000);
     }

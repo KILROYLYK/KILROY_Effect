@@ -22,6 +22,4 @@ export default class Global {
     readonly static Config: any = Config; // 配置
     readonly static Stage: any = Stage; // 场景
     readonly static Function: any = Function; // 函数
-    
-    public static Instance: any = {}; // 实例
 }

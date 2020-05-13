@@ -1,33 +1,30 @@
 /**
  * 接口
  */
-export default interface _interface {
+export default interface Interface {
     readonly config?: object; // 配置
+    instance?: any; // 实例
     
     /**
-     * 构造函数
-     * 配置基础信息
+     * 创建
      * @return {void}
      */
-    constructor();
+    create(): void;
     
     /**
      * 初始化
-     * 执行创建类逻辑
      * @return {void}
      */
     init(): void;
     
     /**
      * 更新
-     * 更新对象
      * @return {void}
      */
     update(): void;
     
     /**
      * 销毁
-     * 销毁对象
      * @return {void}
      */
     destroy(): void;

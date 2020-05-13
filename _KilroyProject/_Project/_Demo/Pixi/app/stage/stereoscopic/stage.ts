@@ -45,7 +45,7 @@ export default class Stage implements _Stage {
     
     /**
      * 创建
-     * @return {any} 实例
+     * @return {void}
      */
     private create(): void {
         const _this = this;

@@ -68,7 +68,7 @@ export default class Particle {
     
     /**
      * 创建
-     * @return {any} 实例
+     * @return {void}
      */
     private create(): void {
         const _this = this;

@@ -22,7 +22,7 @@ export default class Light implements _Object {
     
     /**
      * 创建
-     * @return {any} 实例
+     * @return {void}
      */
     protected create(): void {
         const _this = this;
