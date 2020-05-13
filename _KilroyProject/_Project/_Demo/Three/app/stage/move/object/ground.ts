@@ -5,7 +5,7 @@ import _Object from '../../../interface/object';
  * 地面
  */
 export default class Ground implements _Object {
-    public readonly config: object = { // 配置
+    private readonly config: object = { // 配置
         image: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg',
     };
     public readonly instance: object = { // 实例

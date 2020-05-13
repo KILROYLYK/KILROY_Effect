@@ -6,7 +6,7 @@ import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
  * 全景
  */
 export default class Panoramic implements _Controller {
-    public readonly config: object = { // 配置
+    private readonly config: object = { // 配置
         src: 'https://image.gaeamobile.net/image/20190717/181948/',
         wh: 1024,
         side: [] as {

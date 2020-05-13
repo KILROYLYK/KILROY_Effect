@@ -12,7 +12,7 @@ export interface MoveConfig { // 控制器配置
  * 移动
  */
 export default class Move implements _Controller {
-    public readonly config: object = { // 配置
+    private readonly config: object = { // 配置
         target: null as THREE.Vector3, // 视觉目标
         far: 0, // 视觉目标距离
         lon: 0, // 经度x
@@ -89,9 +89,10 @@ export default class Move implements _Controller {
     
     /**
      * 更新
+     * @param {boolean} isResize 屏幕是否变化
      * @return {void}
      */
-    update() {
+    update(isResize: boolean = false) {
         const _this = this;
         
         if (!_this.camera) return;

@@ -5,8 +5,6 @@ import _Object from '../../../interface/object';
  * 灯光-自然光
  */
 export default class Light implements _Object {
-    public readonly config: object = { // 配置
-    };
     public instance: THREE.AmbientLight = null; // 实例
     
     /**

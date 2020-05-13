@@ -5,7 +5,7 @@ import _Environment from '../../../interface/environment';
  * 场景
  */
 export default class Scene implements _Environment {
-    public readonly config: object = { // 配置
+    private readonly config: object = { // 配置
         color: '#a0c5ff'
     };
     public instance: THREE.Scene = null; // 实例

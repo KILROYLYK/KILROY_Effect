@@ -5,8 +5,6 @@ import _Environment from '../../../interface/environment';
  * 渲染器
  */
 export default class Renderer implements _Environment {
-    public readonly config: object = { // 配置
-    };
     public instance: THREE.WebGLRenderer = null; // 实例
     
     /**

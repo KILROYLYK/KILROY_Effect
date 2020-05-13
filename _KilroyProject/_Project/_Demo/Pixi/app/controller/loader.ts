@@ -1,16 +1,17 @@
 import Global from '../constant/global';
+import _Controller from '../interface/controller';
 import 'pixi-sound';
 
-export interface PreloadConfig {
-    list?: string[],
+export interface LoadConfig {
+    list: string[],
     loadingCallback?: Function,
     finishCallback?: Function
 }
 
 /**
- * 预加载
+ * 加载
  */
-export default class Preload {
+export default class Loader implements _Controller {
     private readonly config: object = { // 配置
         loader: null, // 加载对象
         list: [] as string[], // 资源列表
@@ -21,10 +22,10 @@ export default class Preload {
     
     /**
      * 原型对象
-     * @constructor Preload
+     * @constructor Loader
      * @param {object} config 配置
      */
-    constructor(config: PreloadConfig = {}) {
+    constructor(config: LoadConfig = { list: [] }) {
         const _this = this;
         
         _this.config.loader = new Global.PIXI.Loader();
@@ -33,7 +34,16 @@ export default class Preload {
         _this.config.loadingCallback = config.loadingCallback || null;
         _this.config.finishCallback = config.finishCallback || null;
         
+        _this.create();
         _this.init();
+    }
+    
+    /**
+     * 创建
+     * @return {void}
+     */
+    private create(): void {
+        const _this = this;
     }
     
     /**
@@ -47,7 +57,24 @@ export default class Preload {
     }
     
     /**
-     * 加载游戏素材
+     * 更新
+     * @param {boolean} isResize 屏幕是否变化
+     * @return {void}
+     */
+    public update(isResize: boolean = false): void {
+        const _this = this;
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+    }
+    
+    /**
+     * 加载素材
      * @return {void}
      */
     private load(): void {

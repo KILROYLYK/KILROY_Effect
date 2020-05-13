@@ -9,7 +9,7 @@ import Anime from 'animejs';
  * 场景
  */
 export default class Stage implements _Stage {
-    public readonly config: object = { // 配置
+    private readonly config: object = { // 配置
         dom: null as Element, // 元素
         width: 900, // 画布宽
         height: 600, // 画布高

@@ -5,8 +5,6 @@ import _Environment from '../../../interface/environment';
  * 相机
  */
 export default class Camera implements _Environment {
-    public readonly config: object = { // 配置
-    };
     public instance: THREE.PerspectiveCamera = null; // 实例
     
     /**

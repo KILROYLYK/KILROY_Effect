@@ -10,8 +10,6 @@ import Light from './object/light';
  * 场景
  */
 export default class Stage implements _Stage {
-    public readonly config: object = { // 配置
-    };
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机

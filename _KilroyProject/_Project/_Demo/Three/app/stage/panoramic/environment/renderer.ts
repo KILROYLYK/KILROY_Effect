@@ -6,8 +6,6 @@ import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
  * 渲染器
  */
 export default class Renderer implements _Environment {
-    public readonly config: object = { // 配置
-    };
     public instance: CSS3DRenderer = null; // 实例
     
     /**

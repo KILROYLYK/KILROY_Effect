@@ -6,7 +6,7 @@ import Particle from './particle';
  * 场景
  */
 export default class Stage implements _Stage {
-    public readonly config: object = { // 配置
+    private readonly config: object = { // 配置
         dom: null as Element, // 元素
     };
     private particle = null as Particle // 粒子对象

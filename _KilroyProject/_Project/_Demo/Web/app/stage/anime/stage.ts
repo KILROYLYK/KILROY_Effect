@@ -5,7 +5,7 @@ import _Stage from '../../interface/stage';
  * 场景
  */
 export default class Stage implements _Stage {
-    public readonly config: object = { // 配置
+    private readonly config: object = { // 配置
         dom: null as Element, // 元素
     };
     

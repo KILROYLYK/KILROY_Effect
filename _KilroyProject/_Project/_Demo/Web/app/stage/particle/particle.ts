@@ -24,7 +24,7 @@ interface Point {
  * 粒子控制器
  */
 export default class Particle {
-    public readonly config: object = { // 配置
+    private readonly config: object = { // 配置
         size: 150,
         color: [
             '255,255,255',

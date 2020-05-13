@@ -5,7 +5,7 @@ import _Object from '../../../interface/object';
  * 灯光
  */
 export default class Light implements _Object {
-    public readonly config: object = { // 配置
+    private readonly config: object = { // 配置
         hue: 0.038, // 色调
         color: null as THREE.Color // 全局颜色
     };
