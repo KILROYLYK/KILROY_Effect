@@ -19,7 +19,7 @@ export default class Stage implements _Stage {
                     path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/star.png'
                 },
                 {
-                    name: 'terrain2',
+                    name: 'terrain',
                     path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/terrain2.jpg'
                 },
                 {

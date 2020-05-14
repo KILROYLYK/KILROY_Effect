@@ -1,6 +1,9 @@
 import Global from '../constant/global';
 import _Controller from '../interface/controller';
+import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
 export interface Resources {
     name: string,
@@ -18,10 +21,14 @@ export interface LoadConfig {
  */
 export default class Loader implements _Controller {
     private readonly config: object = { // 配置
-        loader: { // 加载对象
-            texture: null as THREE.TextureLoader, // 图片
-            model: null as OBJLoader, // 模型
-            music: null // 音频
+        loader: {
+            image: null as THREE.TextureLoader,
+            json: null as THREE.ObjectLoader,
+            audio: null as THREE.AudioLoader,
+            svg: null as SVGLoader,
+            obj: null as OBJLoader,
+            mtl: null as MTLLoader,
+            fbx: null as FBXLoader
         },
         list: [] as Resources[], // 资源列表
         finish: 0 as number, // 完成总数
@@ -62,16 +69,7 @@ export default class Loader implements _Controller {
         const _this = this,
             promiseList = _this.config.list.map(async (v: Resources, i: number, a: Resources[]) => {
                 if (!v.name || !v.path) return Promise.resolve();
-                if (v.path.indexOf('.jpg') > -1 || v.path.indexOf('.jpeg') > -1 || v.path.indexOf('.png') > -1) {
-                    await _this.loadImage(v);
-                } else if (v.path.indexOf('.obj') > -1) {
-                    await _this.loadModel(v);
-                } else {
-                    return Promise.resolve();
-                }
-                _this.config.loadingCallback && _this.config.loadingCallback(
-                    parseInt(String(_this.config.finish / _this.config.list.length * 100), 10)
-                );
+                return await _this.load(v);
             });
         
         await Promise.all(promiseList);
@@ -97,57 +95,73 @@ export default class Loader implements _Controller {
     }
     
     /**
-     * 加载图片
+     * 加载
      * @param {Resources} res 资源
      * @return {void}
      */
-    private async loadImage(res: Resources): Promise<any> {
+    private async load(res: Resources): Promise<any> {
         const _this = this;
         
-        !_this.config.loader.texture && (_this.config.loader.texture = new Global.THREE.TextureLoader());
+        let loader = null,
+            type = '';
+        
+        if (res.path.indexOf('.jpg') > -1 ||
+            res.path.indexOf('.jpeg') > -1 ||
+            res.path.indexOf('.png') > -1) {
+            type = 'Image';
+            !_this.config.loader.image &&
+            (_this.config.loader.image = new Global.THREE.TextureLoader());
+            loader = _this.config.loader.image;
+        } else if (res.path.indexOf('.json') > -1) {
+            type = 'Json';
+            !_this.config.loader.json &&
+            (_this.config.loader.json = new Global.THREE.ObjectLoader());
+            loader = _this.config.loader.json;
+        } else if (res.path.indexOf('.mp3') > -1) {
+            type = 'Audio';
+            !_this.config.loader.audio &&
+            (_this.config.loader.audio = new Global.THREE.AudioLoader());
+            loader = _this.config.loader.audio;
+        } else if (res.path.indexOf('.svg') > -1) {
+            type = 'SVG';
+            !_this.config.loader.svg &&
+            (_this.config.loader.svg = new SVGLoader());
+            loader = _this.config.loader.svg;
+        } else if (res.path.indexOf('.obj') > -1) {
+            type = 'OBJ';
+            !_this.config.loader.obj &&
+            (_this.config.loader.obj = new OBJLoader());
+            loader = _this.config.loader.obj;
+        } else if (res.path.indexOf('.mtl') > -1) {
+            type = 'MTL';
+            !_this.config.loader.mtl &&
+            (_this.config.loader.mtl = new MTLLoader());
+            loader = _this.config.loader.mtl;
+        } else if (res.path.indexOf('.fbx') > -1) {
+            type = 'FBX';
+            !_this.config.loader.fbx &&
+            (_this.config.loader.fbx = new FBXLoader());
+            loader = _this.config.loader.fbx;
+        }
+        
+        if (type === '') return Promise.resolve();
         
         return new Promise((resolve, reject) => {
-            _this.config.loader.texture.load(
+            loader.load(
                 res.path,
-                (data: THREE.Texture) => {
+                (object: any) => { // 加载完成
                     _this.config.finish++;
-                    _this.config.data[res.name] = data;
+                    _this.config.data[res.name] = object;
+                    _this.config.loadingCallback && _this.config.loadingCallback(
+                        parseInt(String(_this.config.finish / _this.config.list.length * 100), 10)
+                    );
                     resolve();
                 },
-                () => {
+                (xhr) => { // 加载进度
                 },
-                () => {
+                (error) => { // 加载失败
                     _this.config.data[res.name] = '';
-                    console.log(`图片加载错误：名称-${ res.name }`);
-                    resolve();
-                }
-            );
-        });
-    }
-    
-    /**
-     * 加载模型
-     * @param {Resources} res 资源
-     * @return {void}
-     */
-    private async loadModel(res: Resources): Promise<any> {
-        const _this = this;
-        
-        !_this.config.loader.model && (_this.config.loader.model = new OBJLoader());
-        
-        return new Promise((resolve, reject) => {
-            _this.config.loader.model.load(
-                res.path,
-                (data: THREE.Object3D) => {
-                    _this.config.finish++;
-                    _this.config.data[res.name] = data;
-                    resolve();
-                },
-                () => {
-                },
-                () => {
-                    _this.config.data[res.name] = '';
-                    console.log(`模型加载错误：名称-${ res.name }`);
+                    console.log(`${ type }加载错误：名称-${ res.name }`);
                     resolve();
                 }
             );
