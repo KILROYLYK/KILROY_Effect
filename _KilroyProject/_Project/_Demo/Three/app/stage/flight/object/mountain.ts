@@ -7,19 +7,17 @@ import _Object from '../../../interface/object';
 export default class Mountain implements _Object {
     private scene: THREE.Scene = null; // 场景
     
-    private readonly config: object = { // 配置
-        moveP: { // 移动坐标
-            x: 0,
-            y: 0,
-            z: -3500
-        },
-        lookP: { // 视觉坐标
-            x: 0,
-            y: 0,
-            z: 0
-        },
-    };
     private ground: THREE.Object3D = null; // 3D对象
+    private readonly moveP: object = { // 移动坐标
+        x: 0,
+        y: 0,
+        z: -3500
+    };
+    private readonly lookP: object = { // 视觉坐标
+        x: 0,
+        y: 0,
+        z: 0
+    };
     
     public instance: THREE.PointLight = null; // 实例
     
@@ -43,10 +41,10 @@ export default class Mountain implements _Object {
      */
     protected create(): void {
         const _this = this;
-    
-        _this.config.group = new THREE.Object3D();
-        _this.group.position.set(this.move.x, this.move.y, this.move.z);
-        _this.group.rotation.set(this.look.x, this.look.y, this.look.z);
+        
+        _this.ground = new THREE.Object3D();
+        _this.ground.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
+        _this.ground.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
     }
     
     /**
