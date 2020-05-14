@@ -37,8 +37,6 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        _this.config.dom = Global.GameDom;
-        
         _this.create();
         _this.init();
     }
