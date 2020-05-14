@@ -5,6 +5,8 @@ import _Object from '../../../interface/object';
  * 山
  */
 export default class Mountain implements _Object {
+    private scene: THREE.Scene = null; // 场景
+    
     private readonly config: object = { // 配置
         moveP: { // 移动坐标
             x: 0,
@@ -17,9 +19,9 @@ export default class Mountain implements _Object {
             z: 0
         },
     };
-    public instance: THREE.PointLight = null; // 实例
-    private scene: THREE.Scene = null; // 场景
     private ground: THREE.Object3D = null; // 3D对象
+    
+    public instance: THREE.PointLight = null; // 实例
     
     /**
      * 构造函数

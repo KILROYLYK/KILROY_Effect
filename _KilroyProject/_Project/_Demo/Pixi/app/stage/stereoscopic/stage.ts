@@ -9,26 +9,26 @@ import Anime from 'animejs';
  * 场景
  */
 export default class Stage implements _Stage {
-    private readonly config: object = { // 配置
-        dom: null as Element, // 元素
+    private app: PIXI.Application = null; // 应用
+    private container: PIXI.Container = null; // 容器
+    private filter: PIXI.filters.DisplacementFilter = null; // 过滤器
+    private readonly size: object = { // 画布尺寸
         width: 900, // 画布宽
-        height: 600, // 画布高
-        
-        app: null as PIXI.Application, // 应用
-        container: null as PIXI.Container, // 容器
-        filter: null as PIXI.filters.DisplacementFilter, // 过滤器
-        imageB: 'https://image.gaeamobile.net/image/20200512/164439/imageB.jpg', // 背景图
-        imageS: 'https://image.gaeamobile.net/image/20200512/164439/imageS.jpg', // 阴影图
-        centerP: { // 中心位置
-            x: Global.Width / 2,
-            y: Global.Height / 2
-        },
-        moveP: { // 移动位置
-            x: 0,
-            y: 0
-        },
-        speed: -0.03 // 移动速度
+        height: 600 // 画布高
     };
+    private readonly src = { // 资源地址
+        background: 'https://image.gaeamobile.net/image/20200512/164439/imageB.jpg', // 背景
+        shadow: 'https://image.gaeamobile.net/image/20200512/164439/imageS.jpg' // 阴影
+    };
+    private readonly centerP: object = { // 中心位置
+        x: Global.Width / 2,
+        y: Global.Height / 2
+    };
+    private readonly moveP: object = { // 移动位置
+        x: 0,
+        y: 0
+    };
+    private readonly speed: number = -0.03; // 移动速度
     
     /**
      * 构造函数
@@ -50,15 +50,13 @@ export default class Stage implements _Stage {
     private create(): void {
         const _this = this;
         
-        _this.config.app = new Global.PIXI.Application({
-            width: _this.config.width,
-            height: _this.config.height,
+        _this.app = new Global.PIXI.Application({
+            width: _this.size.width,
+            height: _this.size.height,
             transparent: true
         });
-        _this.config.dom.appendChild(_this.config.app.view);
         
-        _this.config.container = new Global.PIXI.Container();
-        _this.config.app.stage.addChild(_this.config.container);
+        _this.container = new Global.PIXI.Container();
     }
     
     /**
@@ -67,20 +65,23 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this,
-            spriteB = new Global.PIXI.Sprite.from(_this.config.imageB),
-            spriteS = new Global.PIXI.Sprite.from(_this.config.imageS);
+            spriteB = new Global.PIXI.Sprite.from(_this.src.background),
+            spriteS = new Global.PIXI.Sprite.from(_this.src.shadow);
         
-        spriteB.width = _this.config.width;
-        spriteB.height = _this.config.height;
-    
-        spriteS.width = _this.config.width;
-        spriteS.height = _this.config.height;
+        spriteB.width = _this.size.width;
+        spriteB.height = _this.size.height;
+        
+        spriteS.width = _this.size.width;
+        spriteS.height = _this.size.height;
         
         spriteS.texture.baseTexture.wrapMode = Global.PIXI.WRAP_MODES.REPEAT;
-        _this.config.filter = new Global.PIXI.filters.DisplacementFilter(spriteS);
+        _this.filter = new Global.PIXI.filters.DisplacementFilter(spriteS);
         
-        _this.config.container.addChild(spriteB);
-        _this.config.container.addChild(spriteS);
+        _this.container.addChild(spriteB);
+        _this.container.addChild(spriteS);
+        
+        _this.app.stage.addChild(_this.container);
+        Global.GameDom.appendChild(_this.app.view);
         
         Global.Window.addEventListener('mousemove', _this.mouseMove.bind(_this), false);
         Global.Window.addEventListener('mouseout', _this.mouseOut.bind(_this), false);
@@ -121,8 +122,8 @@ export default class Stage implements _Stage {
     private mouseOut(e: MouseEvent): void {
         const _this = this;
         _this.anime(
-            _this.config.centerP.x,
-            _this.config.centerP.y
+            _this.centerP.x,
+            _this.centerP.y
         );
     }
     
@@ -134,17 +135,17 @@ export default class Stage implements _Stage {
      */
     private anime(x: number, y: number): void {
         const _this = this,
-            xS = (_this.config.moveP.x - _this.config.centerP.x) * _this.config.speed,
-            yS = (_this.config.moveP.y - _this.config.centerP.y) * _this.config.speed * 2;
+            xS = (_this.moveP.x - _this.centerP.x) * _this.speed,
+            yS = (_this.moveP.y - _this.centerP.y) * _this.speed * 2;
         
         Anime({
-            targets: _this.config.moveP,
+            targets: _this.moveP,
             x, y,
             duration: 1000,
             easing: 'easeOutSine',
             update: (a: any) => {
-                _this.config.container.filters = [ _this.config.filter ];
-                _this.config.filter.scale.set(xS, yS);
+                _this.container.filters = [ _this.filter ];
+                _this.filter.scale.set(xS, yS);
             }
         });
     }

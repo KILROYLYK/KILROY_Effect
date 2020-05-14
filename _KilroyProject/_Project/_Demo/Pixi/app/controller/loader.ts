@@ -2,7 +2,7 @@ import Global from '../constant/global';
 import _Controller from '../interface/controller';
 import 'pixi-sound';
 
-export interface LoadConfig {
+interface LoadConfig {
     list: string[],
     loadingCallback?: Function,
     finishCallback?: Function
@@ -12,13 +12,12 @@ export interface LoadConfig {
  * 加载
  */
 export default class Loader implements _Controller {
-    private readonly config: object = { // 配置
-        loader: null, // 加载对象
-        list: [] as string[], // 资源列表
-        finish: 0 as number, // 完成总数
-        loadingCallback: null as Function,
-        finishCallback: null as Function
-    };
+    private loader: object = null; // 加载器对象
+    private list: string[] = []; // 资源列表
+    private data: object = {}; // 资源对象
+    private finish: number = 0; // 完成总数
+    private loadedCallback: Function = null; // 加载完成（单个资源）
+    private finishCallback: Function = null; // 加载完成（全部资源）
     
     /**
      * 原型对象
@@ -28,11 +27,9 @@ export default class Loader implements _Controller {
     constructor(config: LoadConfig = { list: [] }) {
         const _this = this;
         
-        _this.config.loader = new Global.PIXI.Loader();
-        
-        _this.config.list = config.list || [];
-        _this.config.loadingCallback = config.loadingCallback || null;
-        _this.config.finishCallback = config.finishCallback || null;
+        _this.list = config.list || [];
+        _this.loadingCallback = config.loadingCallback || null;
+        _this.finishCallback = config.finishCallback || null;
         
         _this.create();
         _this.init();
@@ -44,6 +41,8 @@ export default class Loader implements _Controller {
      */
     private create(): void {
         const _this = this;
+        
+        _this.loader = new Global.PIXI.Loader();
     }
     
     /**
@@ -80,16 +79,16 @@ export default class Loader implements _Controller {
     private load(): void {
         const _this = this;
         
-        _this.config.loader
-            .add(_this.config.list)
+        _this.loader
+            .add(_this.list)
             .on('progress', () => {
-                _this.config.finish++;
-                _this.config.loadingCallback && _this.config.loadingCallback(
-                    parseInt(String(_this.config.finish / _this.config.list.length * 100), 10)
+                _this.finish++;
+                _this.loadedCallback && _this.loadedCallback(
+                    parseInt(String(_this.finish / _this.list.length * 100), 10)
                 );
             })
             .load((load, res) => {
-                _this.config.finishCallback && _this.config.finishCallback(res);
+                _this.finishCallback && _this.finishCallback(res);
             });
     }
 }
