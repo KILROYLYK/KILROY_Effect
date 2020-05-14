@@ -1,5 +1,6 @@
 import Global from '../constant/global';
 import _Controller from '../interface/controller';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
 export interface Resources {
     name: string,
@@ -19,7 +20,7 @@ export default class Loader implements _Controller {
     private readonly config: object = { // 配置
         loader: { // 加载对象
             texture: null as THREE.TextureLoader, // 图片
-            model: null, // 模型
+            model: null as OBJLoader, // 模型
             music: null // 音频
         },
         list: [] as Resources[], // 资源列表
@@ -36,6 +37,10 @@ export default class Loader implements _Controller {
      */
     constructor(config: LoadConfig = { list: [] }) {
         const _this = this;
+        
+        _this.config.list = config.list || [];
+        _this.config.loadingCallback = config.loadingCallback || null;
+        _this.config.finishCallback = config.finishCallback || null;
         
         _this.create();
         _this.init();
@@ -57,9 +62,9 @@ export default class Loader implements _Controller {
         const _this = this,
             promiseList = _this.config.list.map(async (v: Resources, i: number, a: Resources[]) => {
                 if (!v.name || !v.path) return Promise.resolve();
-                if (v.path.indexOf('.jpg') || v.path.indexOf('.jpeg') || v.path.indexOf('.png')) {
+                if (v.path.indexOf('.jpg') > -1 || v.path.indexOf('.jpeg') > -1 || v.path.indexOf('.png') > -1) {
                     await _this.loadImage(v);
-                } else if (v.path.indexOf('.obj')) {
+                } else if (v.path.indexOf('.obj') > -1) {
                     await _this.loadModel(v);
                 } else {
                     return Promise.resolve();
@@ -100,19 +105,24 @@ export default class Loader implements _Controller {
         const _this = this;
         
         !_this.config.loader.texture && (_this.config.loader.texture = new Global.THREE.TextureLoader());
-        _this.config.loader.texture.load(
-            res.path,
-            (data: THREE.Texture) => {
-                _this.config.finish++;
-                _this.config.data[res.name] = data;
-            },
-            () => {
-            },
-            () => {
-                _this.config.data[res.name] = '';
-                console.log(`图片加载错误：名称-${ res.name }`)
-            }
-        );
+        
+        return new Promise((resolve, reject) => {
+            _this.config.loader.texture.load(
+                res.path,
+                (data: THREE.Texture) => {
+                    _this.config.finish++;
+                    _this.config.data[res.name] = data;
+                    resolve();
+                },
+                () => {
+                },
+                () => {
+                    _this.config.data[res.name] = '';
+                    console.log(`图片加载错误：名称-${ res.name }`);
+                    resolve();
+                }
+            );
+        });
     }
     
     /**
@@ -123,19 +133,24 @@ export default class Loader implements _Controller {
     private async loadModel(res: Resources): Promise<any> {
         const _this = this;
         
-        !_this.config.loader.model && (_this.config.loader.texture = new Global.THREE.OBJLoader());
-        _this.config.loader.model.load(
-            res.path,
-            (data: THREE.Object3D) => {
-                _this.config.finish++;
-                _this.config.data[res.name] = data;
-            },
-            () => {
-            },
-            () => {
-                _this.config.data[res.name] = '';
-                console.log(`模型加载错误：名称-${ res.name }`)
-            }
-        );
+        !_this.config.loader.model && (_this.config.loader.model = new OBJLoader());
+        
+        return new Promise((resolve, reject) => {
+            _this.config.loader.model.load(
+                res.path,
+                (data: THREE.Object3D) => {
+                    _this.config.finish++;
+                    _this.config.data[res.name] = data;
+                    resolve();
+                },
+                () => {
+                },
+                () => {
+                    _this.config.data[res.name] = '';
+                    console.log(`模型加载错误：名称-${ res.name }`);
+                    resolve();
+                }
+            );
+        });
     }
 }

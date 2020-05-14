@@ -5,11 +5,35 @@ import Renderer from './environment/renderer';
 import Scene from './environment/scene';
 import Camera from './environment/camera';
 import Light from './object/light';
+import Loader from '../../controller/loader';
 
 /**
  * 场景
  */
 export default class Stage implements _Stage {
+    private readonly config: object = { // 配置
+        resources: { // 资源
+            path: [ // 地址
+                {
+                    name: 'star',
+                    path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/star.png'
+                },
+                {
+                    name: 'terrain2',
+                    path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/terrain2.jpg'
+                },
+                {
+                    name: 'water',
+                    path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/water.jpg'
+                },
+                {
+                    name: 'fighter',
+                    path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/models/SpaceFighter03/SpaceFighter03.obj'
+                }
+            ] as object[],
+            data: {} as object // 数据
+        } as object
+    };
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
@@ -50,8 +74,18 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this;
-    
+        
         Global.GameDom.appendChild(_this.renderer.instance.domElement);
+        
+        _this.controller.loader = new Loader({
+            list: _this.config.resources.path,
+            loadingCallback(progress) {
+                // console.log(progress);
+            },
+            finishCallback(data) {
+                _this.config.resources.data = data;
+            }
+        });
     }
     
     /**
