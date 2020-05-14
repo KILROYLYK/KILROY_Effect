@@ -5,37 +5,35 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
-export interface Resources {
-    name: string,
-    path: string
+interface Resource { // 资源
+    name: string // 名称
+    path: string // 地址
 }
 
-export interface LoadConfig {
-    list: Resources[],
-    loadingCallback?: Function,
-    finishCallback?: Function
+interface LoadConfig { // 控制器配置
+    list: Resource[] // 资源列表
+    loadedCallback?: Function // 加载完成（单个资源）
+    finishCallback?: Function // 加载完成（全部资源）
 }
 
 /**
  * 加载
  */
 export default class Loader implements _Controller {
-    private readonly config: object = { // 配置
-        loader: {
-            image: null as THREE.TextureLoader,
-            json: null as THREE.ObjectLoader,
-            audio: null as THREE.AudioLoader,
-            svg: null as SVGLoader,
-            obj: null as OBJLoader,
-            mtl: null as MTLLoader,
-            fbx: null as FBXLoader
-        },
-        list: [] as Resources[], // 资源列表
-        finish: 0 as number, // 完成总数
-        data: {} as object, // 完成资源对象
-        loadingCallback: null as Function,
-        finishCallback: null as Function
+    private readonly loader: object = { // 加载器对象
+        image: null as THREE.TextureLoader,
+        json: null as THREE.ObjectLoader,
+        audio: null as THREE.AudioLoader,
+        svg: null as SVGLoader,
+        obj: null as OBJLoader,
+        mtl: null as MTLLoader,
+        fbx: null as FBXLoader
     };
+    private list: Resource[] = []; // 资源列表
+    private data: object = {}; // 资源对象
+    private finish: number = 0; // 完成总数
+    private loadedCallback: Function = null; // 加载完成（单个资源）
+    private finishCallback: Function = null; // 加载完成（全部资源）
     
     /**
      * 构造函数
@@ -45,9 +43,9 @@ export default class Loader implements _Controller {
     constructor(config: LoadConfig = { list: [] }) {
         const _this = this;
         
-        _this.config.list = config.list || [];
-        _this.config.loadingCallback = config.loadingCallback || null;
-        _this.config.finishCallback = config.finishCallback || null;
+        _this.list = config.list || [];
+        _this.loadedCallback = config.loadedCallback || null;
+        _this.finishCallback = config.finishCallback || null;
         
         _this.create();
         _this.init();
@@ -67,14 +65,14 @@ export default class Loader implements _Controller {
      */
     private async init(): Promise<any> {
         const _this = this,
-            promiseList = _this.config.list.map(async (v: Resources, i: number, a: Resources[]) => {
+            promiseList = _this.list.map(async (v: Resource, i: number, a: Resource[]) => {
                 if (!v.name || !v.path) return Promise.resolve();
                 return await _this.load(v);
             });
         
         await Promise.all(promiseList);
         
-        _this.config.finishCallback && _this.config.finishCallback(_this.config.data);
+        _this.finishCallback && _this.finishCallback(_this.data);
     }
     
     /**
@@ -92,14 +90,17 @@ export default class Loader implements _Controller {
      */
     public destroy(): void {
         const _this = this;
+        
+        _this.list = [];
+        _this.data = {};
     }
     
     /**
      * 加载
-     * @param {Resources} res 资源
+     * @param {Resource} res 资源
      * @return {void}
      */
-    private async load(res: Resources): Promise<any> {
+    private async load(res: Resource): Promise<any> {
         const _this = this;
         
         let loader = null,
@@ -109,39 +110,39 @@ export default class Loader implements _Controller {
             res.path.indexOf('.jpeg') > -1 ||
             res.path.indexOf('.png') > -1) {
             type = 'Image';
-            !_this.config.loader.image &&
-            (_this.config.loader.image = new Global.THREE.TextureLoader());
-            loader = _this.config.loader.image;
+            !_this.loader.image &&
+            (_this.loader.image = new Global.THREE.TextureLoader());
+            loader = _this.loader.image;
         } else if (res.path.indexOf('.json') > -1) {
             type = 'Json';
-            !_this.config.loader.json &&
-            (_this.config.loader.json = new Global.THREE.ObjectLoader());
-            loader = _this.config.loader.json;
+            !_this.loader.json &&
+            (_this.loader.json = new Global.THREE.ObjectLoader());
+            loader = _this.loader.json;
         } else if (res.path.indexOf('.mp3') > -1) {
             type = 'Audio';
-            !_this.config.loader.audio &&
-            (_this.config.loader.audio = new Global.THREE.AudioLoader());
-            loader = _this.config.loader.audio;
+            !_this.loader.audio &&
+            (_this.loader.audio = new Global.THREE.AudioLoader());
+            loader = _this.loader.audio;
         } else if (res.path.indexOf('.svg') > -1) {
             type = 'SVG';
-            !_this.config.loader.svg &&
-            (_this.config.loader.svg = new SVGLoader());
-            loader = _this.config.loader.svg;
+            !_this.loader.svg &&
+            (_this.loader.svg = new SVGLoader());
+            loader = _this.loader.svg;
         } else if (res.path.indexOf('.obj') > -1) {
             type = 'OBJ';
-            !_this.config.loader.obj &&
-            (_this.config.loader.obj = new OBJLoader());
-            loader = _this.config.loader.obj;
+            !_this.loader.obj &&
+            (_this.loader.obj = new OBJLoader());
+            loader = _this.loader.obj;
         } else if (res.path.indexOf('.mtl') > -1) {
             type = 'MTL';
-            !_this.config.loader.mtl &&
-            (_this.config.loader.mtl = new MTLLoader());
-            loader = _this.config.loader.mtl;
+            !_this.loader.mtl &&
+            (_this.loader.mtl = new MTLLoader());
+            loader = _this.loader.mtl;
         } else if (res.path.indexOf('.fbx') > -1) {
             type = 'FBX';
-            !_this.config.loader.fbx &&
-            (_this.config.loader.fbx = new FBXLoader());
-            loader = _this.config.loader.fbx;
+            !_this.loader.fbx &&
+            (_this.loader.fbx = new FBXLoader());
+            loader = _this.loader.fbx;
         }
         
         if (type === '') return Promise.resolve();
@@ -150,17 +151,19 @@ export default class Loader implements _Controller {
             loader.load(
                 res.path,
                 (object: any) => { // 加载完成
-                    _this.config.finish++;
-                    _this.config.data[res.name] = object;
-                    _this.config.loadingCallback && _this.config.loadingCallback(
-                        parseInt(String(_this.config.finish / _this.config.list.length * 100), 10)
+                    _this.finish++;
+                    _this.data[res.name] = object;
+                    _this.loadedCallback && _this.loadedCallback(
+                        _this.finish,
+                        _this.list.length,
+                        parseInt(String(_this.finish / _this.list.length * 100), 10)
                     );
                     resolve();
                 },
                 (xhr) => { // 加载进度
                 },
                 (error) => { // 加载失败
-                    _this.config.data[res.name] = '';
+                    _this.data[res.name] = '';
                     console.log(`${ type }加载错误：名称-${ res.name }`);
                     resolve();
                 }

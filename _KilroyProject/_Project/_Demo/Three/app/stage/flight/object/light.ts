@@ -5,10 +5,8 @@ import _Object from '../../../interface/object';
  * 灯光
  */
 export default class Light implements _Object {
-    private readonly config: object = { // 配置
-        hue: 0.038, // 色调
-        color: null as THREE.Color // 全局颜色
-    };
+    private color: THREE.Color = null;  // 颜色
+    
     public instance: THREE.PointLight = null; // 实例
     
     /**
@@ -28,10 +26,10 @@ export default class Light implements _Object {
      */
     protected create(): void {
         const _this = this;
-    
+        
         if (_this.instance) return;
         
-        _this.config.color = new Global.THREE.Color();
+        _this.color = new Global.THREE.Color();
         
         _this.instance = new Global.THREE.PointLight('#ffffff', 4, 1000);
     }
@@ -42,14 +40,14 @@ export default class Light implements _Object {
      */
     protected init(): void {
         const _this = this;
-    
+        
         if (_this.instance) return;
-    
-        _this.config.color.setHSL(_this.config.hue, 0.8, 0.5);
-    
+        
+        _this.color.setHSL(0.038, 0.8, 0.5);
+        
         _this.instance.position.set(0, 200, -500);
         _this.instance.castShadow = false;
-        _this.instance.color = _this.config.color;
+        _this.instance.color = _this.color;
     }
     
     /**
@@ -59,9 +57,9 @@ export default class Light implements _Object {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-    
+        
         if (!_this.instance) return;
-    
+        
         if (isResize) { // 屏幕变化
         }
     }
@@ -72,7 +70,7 @@ export default class Light implements _Object {
      */
     public destroy(): void {
         const _this = this;
-    
+        
         if (!_this.instance) return;
         
         _this.instance = null;

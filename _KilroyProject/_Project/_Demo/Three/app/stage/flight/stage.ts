@@ -5,6 +5,7 @@ import Renderer from './environment/renderer';
 import Scene from './environment/scene';
 import Camera from './environment/camera';
 import Light from './object/light';
+import Meteor from './object/meteor';
 import Loader from '../../controller/loader';
 
 /**
@@ -12,7 +13,7 @@ import Loader from '../../controller/loader';
  */
 export default class Stage implements _Stage {
     private readonly config: object = { // 配置
-        resources: { // 资源
+        resource: { // 资源
             path: [ // 地址
                 {
                     name: 'star',
@@ -38,9 +39,11 @@ export default class Stage implements _Stage {
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
     private object: object = { // 对象
-        light: null as Light // 灯光
+        light: null as Light, // 灯光
+        meteor: null as Meteor, // 流星
     };
     private controller: object = { // 控制器
+        loader: null as Loader // 加载
     };
     
     /**
@@ -66,6 +69,17 @@ export default class Stage implements _Stage {
         _this.camera = new Camera();
         
         _this.object.light = new Light();
+        _this.object.meteor = new Meteor(_this.scene);
+    
+        _this.controller.loader = new Loader({
+            list: _this.config.resource.path,
+            loadedCallback(index, total, progress) {
+                // console.log(`加载进度：${ index } ${ total } ${ progress }`);
+            },
+            finishCallback(data) {
+                _this.config.resource.data = data;
+            }
+        });
     }
     
     /**
@@ -75,17 +89,8 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
         
+        Global.GameDom.style.cursor = 'none'; // 隐藏鼠标
         Global.GameDom.appendChild(_this.renderer.instance.domElement);
-        
-        _this.controller.loader = new Loader({
-            list: _this.config.resources.path,
-            loadingCallback(progress) {
-                // console.log(progress);
-            },
-            finishCallback(data) {
-                _this.config.resources.data = data;
-            }
-        });
     }
     
     /**
@@ -95,6 +100,8 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
+        
+        _this.object.meteor.update();
         
         _this.camera.update(isResize);
         _this.scene.update(isResize);
@@ -118,5 +125,6 @@ export default class Stage implements _Stage {
         _this.renderer.destroy();
         
         _this.object.light.destroy();
+        _this.object.meteor.destroy();
     }
 }

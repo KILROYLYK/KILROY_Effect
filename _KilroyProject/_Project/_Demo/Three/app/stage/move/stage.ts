@@ -22,6 +22,7 @@ export default class Stage implements _Stage {
         ground: null as Ground // 地面
     };
     private controller: object = { // 控制器
+        move: null as Move // 移动
     };
     
     /**
@@ -61,7 +62,7 @@ export default class Stage implements _Stage {
         Global.GameDom.appendChild(_this.renderer.instance.domElement);
         
         // 地面
-        _this.scene.instance.add(_this.object.ground.instance.mesh);
+        _this.scene.instance.add(_this.object.ground.instance);
     
         // 光
         _this.scene.instance.add(_this.object.lightNatural.instance);

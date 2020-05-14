@@ -24,7 +24,7 @@ export default class Scene implements _Environment {
      */
     private create(): void {
         const _this = this;
-    
+        
         if (_this.instance) return;
         
         _this.instance = new Global.THREE.Scene();
@@ -47,9 +47,9 @@ export default class Scene implements _Environment {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-    
+        
         if (!_this.instance) return;
-    
+        
         if (isResize) { // 屏幕变化
         }
     }

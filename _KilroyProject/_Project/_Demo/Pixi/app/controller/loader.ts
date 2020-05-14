@@ -88,8 +88,8 @@ export default class Loader implements _Controller {
                     parseInt(String(_this.config.finish / _this.config.list.length * 100), 10)
                 );
             })
-            .load((load, resources) => {
-                _this.config.finishCallback && _this.config.finishCallback(resources);
+            .load((load, res) => {
+                _this.config.finishCallback && _this.config.finishCallback(res);
             });
     }
 }

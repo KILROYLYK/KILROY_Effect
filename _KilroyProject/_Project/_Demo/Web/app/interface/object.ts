@@ -1,7 +1,7 @@
-import Interface from './_interface'; // 接口
+import _Interface from './_interface'; // 接口
 
 /**
  * 对象接口
  */
-export default interface Object extends Interface {
+export default interface Object extends _Interface {
 }

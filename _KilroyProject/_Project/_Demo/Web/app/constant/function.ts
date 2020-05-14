@@ -10,7 +10,7 @@ export default class Function {
      * @param {string} domID 节点ID
      * @return {Element} 游戏节点
      */
-    public static getGameDom(domID: string): Element {
+    public static getGameDom(domID: string): HTMLElement {
         const body = D.getElementsByTagName('body')[0],
             lastChild = body.lastChild;
         

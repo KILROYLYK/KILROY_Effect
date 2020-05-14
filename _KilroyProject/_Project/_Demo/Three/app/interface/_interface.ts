@@ -2,7 +2,6 @@
  * 接口
  */
 export default interface Interface {
-    readonly config?: object; // 配置
     instance?: any; // 实例
     
     /**

@@ -1,7 +1,7 @@
 import Global from '../constant/global';
 import _Controller from '../interface/controller';
 
-export interface MoveConfig { // 控制器配置
+interface MoveConfig { // 控制器配置
     turn?: boolean // 开关转向
     focus?: boolean // 开关聚焦
     walk?: boolean // 开关步行
@@ -12,39 +12,42 @@ export interface MoveConfig { // 控制器配置
  * 移动
  */
 export default class Move implements _Controller {
-    private readonly config: object = { // 配置
-        target: null as THREE.Vector3, // 视觉目标
-        far: 0, // 视觉目标距离
-        lon: 0, // 经度x
-        lat: 0, // 纬度y
-        theta: 0, // 角度
-        phi: 0, // 弧度
-        maxLat: 85, // 上下最大纬度
-        position: { // 位置
-            touchX: 0,
-            touchY: 0
-        },
-        speed: { // 速度
-            click: 0.0015,
-            touch: 0.1,
-            wheel: 0.008,
-            walk: 3
-        },
-        key: { // 按键
-            before: 87, // 前 W
-            left: 65, // 左 A
-            right: 68, // 右 D
-            after: 83, // 后 S
-            jump: 32 // 跳 Space
-        }
+    private camera: THREE.PerspectiveCamera = null; // 相机
+    
+    private targetP: THREE.Vector3 = null; // 视觉目标
+    private readonly focusP: object = { // 焦点位置
+        mouseX: 0,
+        mouseY: 0,
+        touchX: 0,
+        touchY: 0
     };
-    private readonly flag: MoveConfig = { // 控制器
+    private readonly focusLL: object = { // 焦点经纬度
+        far: 0, // 视觉目标距离
+        lon: 0, // 经度 X
+        lat: 0, // 纬度 Y
+        maxLat: 85, // 上下最大纬度
+        theta: 0, // 角度
+        phi: 0 // 弧度
+    };
+    private readonly speed: object = { // 速度
+        click: 0.0015,
+        touch: 0.1,
+        wheel: 0.008,
+        walk: 3
+    };
+    private readonly key: object = { // 按键
+        before: 87, // 前 W
+        left: 65, // 左 A
+        right: 68, // 右 D
+        after: 83, // 后 S
+        jump: 32 // 跳 Space
+    };
+    private readonly flag: MoveConfig = { // 开关
         turn: false,
         focus: false,
         walk: false,
         jump: false
     };
-    private camera: THREE.PerspectiveCamera = null; // 相机
     
     /**
      * 原型对象
@@ -54,12 +57,11 @@ export default class Move implements _Controller {
      */
     constructor(camera: object, config: MoveConfig = {}) {
         const _this = this;
-    
+        
         _this.camera = camera.instance;
         
-        _this.config.target = new Global.THREE.Vector3();
-        _this.config.far = _this.camera.far * 2;
-        
+        _this.targetP = new Global.THREE.Vector3();
+        _this.focusLL.far = _this.camera.far * 2;
         _this.flag.turn = !!config.turn;
         _this.flag.focus = !!config.focus;
         _this.flag.walk = !!config.walk;
@@ -89,25 +91,24 @@ export default class Move implements _Controller {
     
     /**
      * 更新
-     * @param {boolean} isResize 屏幕是否变化
      * @return {void}
      */
-    update(isResize: boolean = false) {
+    update() {
         const _this = this;
         
         if (!_this.camera) return;
         
         // 获取视角
-        _this.config.lat = Math.max(-_this.config.maxLat, Math.min(_this.config.maxLat, _this.config.lat));
-        _this.config.phi = Global.THREE.Math.degToRad(90 - _this.config.lat);
-        _this.config.theta = Global.THREE.Math.degToRad(_this.config.lon - 90);
+        _this.focusLL.lat = Math.max(-_this.focusLL.maxLat, Math.min(_this.focusLL.maxLat, _this.focusLL.lat));
+        _this.focusLL.phi = Global.THREE.Math.degToRad(90 - _this.focusLL.lat);
+        _this.focusLL.theta = Global.THREE.Math.degToRad(_this.focusLL.lon - 90);
         
         // 将视觉目标移至视角中心
-        _this.config.target.x = Math.sin(_this.config.phi) * Math.cos(_this.config.theta) * _this.config.far;
-        _this.config.target.y = Math.cos(_this.config.phi) * _this.config.far;
-        _this.config.target.z = Math.sin(_this.config.phi) * Math.sin(_this.config.theta) * _this.config.far;
+        _this.targetP.x = Math.sin(_this.focusLL.phi) * Math.cos(_this.focusLL.theta) * _this.focusLL.far;
+        _this.targetP.y = Math.cos(_this.focusLL.phi) * _this.focusLL.far;
+        _this.targetP.z = Math.sin(_this.focusLL.phi) * Math.sin(_this.focusLL.theta) * _this.focusLL.far;
         
-        _this.flag.turn && _this.camera.lookAt(_this.config.target);  // 转向
+        _this.flag.turn && _this.camera.lookAt(_this.targetP);  // 转向
     }
     
     /**
@@ -140,7 +141,7 @@ export default class Move implements _Controller {
      */
     private PCMoveCamera(): void {
         const _this = this,
-            D = Global.Document,
+            W = Global.Window,
             mouse = { // 鼠标
                 /**
                  * 按下
@@ -151,8 +152,8 @@ export default class Move implements _Controller {
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    D.addEventListener('mousemove', mouse.move, false);
-                    D.addEventListener('mouseup', mouse.up, false);
+                    W.addEventListener('mousemove', mouse.move, false);
+                    W.addEventListener('mouseup', mouse.up, false);
                 },
                 
                 /**
@@ -166,10 +167,10 @@ export default class Move implements _Controller {
                     
                     const movementX = e.movementX || 0,
                         movementY = e.movementY || 0,
-                        speed = _this.camera.fov * _this.config.speed.click;
+                        speed = _this.camera.fov * _this.speed.click;
                     
-                    _this.config.lon -= movementX * speed;
-                    _this.config.lat += movementY * speed;
+                    _this.focusLL.lon -= movementX * speed;
+                    _this.focusLL.lat += movementY * speed;
                 },
                 
                 /**
@@ -181,8 +182,8 @@ export default class Move implements _Controller {
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    D.removeEventListener('mousemove', mouse.move, false);
-                    D.removeEventListener('mouseup', mouse.up, false);
+                    W.removeEventListener('mousemove', mouse.move, false);
+                    W.removeEventListener('mouseup', mouse.up, false);
                 },
                 
                 /**
@@ -191,7 +192,7 @@ export default class Move implements _Controller {
                  * @return {void}
                  */
                 wheel: (e: WheelEvent): void => {
-                    const fov = _this.camera.fov + e.deltaY * _this.config.speed.wheel;
+                    const fov = _this.camera.fov + e.deltaY * _this.speed.wheel;
                     
                     _this.camera.fov = Global.THREE.Math.clamp(fov, 45, 95);
                     _this.camera.updateProjectionMatrix();
@@ -222,12 +223,12 @@ export default class Move implements _Controller {
             };
         
         // 鼠标事件
-        _this.flag.turn && D.addEventListener('mousedown', mouse.down, false); // 转向
-        _this.flag.focus && D.addEventListener('wheel', mouse.wheel, false); // 聚焦
+        _this.flag.turn && W.addEventListener('mousedown', mouse.down, false); // 转向
+        _this.flag.focus && W.addEventListener('wheel', mouse.wheel, false); // 聚焦
         
         // 键盘事件
-        _this.flag.walk && D.addEventListener('keydown', key.walk, false); // 行走
-        _this.flag.jump && D.addEventListener('keydown', key.jump, false); // 跳跃
+        _this.flag.walk && W.addEventListener('keydown', key.walk, false); // 行走
+        _this.flag.jump && W.addEventListener('keydown', key.jump, false); // 跳跃
     }
     
     /**
@@ -236,7 +237,7 @@ export default class Move implements _Controller {
      */
     private MobileMoveCamera() {
         const _this = this,
-            D = Global.Document,
+            W = Global.Window,
             touch = { // 触摸
                 /**
                  * 开始
@@ -248,11 +249,11 @@ export default class Move implements _Controller {
                     e.stopPropagation();
                     
                     const t = e.touches[0];
-                    _this.config.position.touchX = t.screenX;
-                    _this.config.position.touchY = t.screenY;
+                    _this.focusP.touchX = t.screenX;
+                    _this.focusP.touchY = t.screenY;
                     
-                    D.addEventListener('touchmove', touch.move, false);
-                    D.addEventListener('touchend', touch.end, false);
+                    W.addEventListener('touchmove', touch.move, false);
+                    W.addEventListener('touchend', touch.end, false);
                 },
                 
                 /**
@@ -265,11 +266,11 @@ export default class Move implements _Controller {
                     e.stopPropagation();
                     
                     const t = e.touches[0];
-                    _this.config.lon -= (t.screenX - _this.config.position.touchX) * _this.config.speed.touch;
-                    _this.config.lat += (t.screenY - _this.config.position.touchY) * _this.config.speed.touch;
+                    _this.focusLL.lon -= (t.screenX - _this.focusP.touchX) * _this.speed.touch;
+                    _this.focusLL.lat += (t.screenY - _this.focusP.touchY) * _this.speed.touch;
                     
-                    _this.config.position.touchX = t.screenX;
-                    _this.config.position.touchY = t.screenY;
+                    _this.focusP.touchX = t.screenX;
+                    _this.focusP.touchY = t.screenY;
                 },
                 
                 /**
@@ -281,12 +282,12 @@ export default class Move implements _Controller {
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    D.removeEventListener('touchmove', touch.move, false);
-                    D.removeEventListener('touchend', touch.end, false);
+                    W.removeEventListener('touchmove', touch.move, false);
+                    W.removeEventListener('touchend', touch.end, false);
                 }
             };
         
         // 触摸事件
-        _this.flag.turn && D.addEventListener('touchstart', touch.start, false); // 转向
+        _this.flag.turn && W.addEventListener('touchstart', touch.start, false); // 转向
     }
 }

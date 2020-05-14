@@ -1,7 +1,7 @@
-import Interface from './_interface'; // 接口
+import _Interface from './_interface'; // 接口
 
 /**
  * 环境接口
  */
-export default interface Environment extends Interface {
+export default interface Environment extends _Interface {
 }

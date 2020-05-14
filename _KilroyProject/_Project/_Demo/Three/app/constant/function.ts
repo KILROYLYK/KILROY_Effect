@@ -14,7 +14,7 @@ export default class Function {
      * @param {string} domID 节点ID
      * @return {Element} 游戏节点
      */
-    public static getGameDom(domID: string): Element {
+    public static getGameDom(domID: string): HTMLElement {
         const body = D.getElementsByTagName('body')[0],
             lastChild = body.lastChild;
         
@@ -75,5 +75,18 @@ export default class Function {
             _this.resizeDom();
             callback && callback();
         });
+    }
+    
+    /**
+     * 缓冲效果
+     * @param {object} position 当前位置
+     * @param {object} targetP 目标位置
+     * @param {number} ease 缓冲系数
+     * @return {void}
+     */
+    public ease(position: object, targetP: object, ease: number): void {
+        position.x += (targetP.x - position.x) / ease;
+        position.y += (targetP.y - position.y) / ease;
+        position.z += (targetP.z - position.z) / ease;
     }
 }

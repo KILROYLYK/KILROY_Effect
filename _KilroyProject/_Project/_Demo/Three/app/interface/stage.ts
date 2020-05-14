@@ -1,7 +1,7 @@
-import Interface from './_interface'; // 接口
+import _Interface from './_interface'; // 接口
 
 /**
  * 场景接口
  */
-export default interface Stage extends Interface {
+export default interface Stage extends _Interface {
 }

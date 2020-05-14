@@ -15,6 +15,8 @@ export default class Stage implements _Stage {
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
     private controller: object = { // 控制器
+        panoramic: null as Panoramic, // 全景
+        move: null as Move // 移动
     };
     
     /**
@@ -66,7 +68,7 @@ export default class Stage implements _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        _this.controller.move.update(isResize);
+        _this.controller.move.update();
         
         _this.camera.update(isResize);
         _this.scene.update(isResize);
