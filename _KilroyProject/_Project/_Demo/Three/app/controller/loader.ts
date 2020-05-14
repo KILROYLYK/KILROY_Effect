@@ -11,7 +11,6 @@ interface Resource { // 资源
 }
 
 interface LoadConfig { // 控制器配置
-    list: Resource[] // 资源列表
     loadedCallback?: Function // 加载完成（单个资源）
     finishCallback?: Function // 加载完成（全部资源）
 }
@@ -38,12 +37,13 @@ export default class Loader implements _Controller {
     /**
      * 构造函数
      * @constructor Loader
+     * @param {Resource[]} list 资源列表
      * @param {object} config 配置
      */
-    constructor(config: LoadConfig = { list: [] }) {
+    constructor(list: Resource[] = [], config: LoadConfig = {}) {
         const _this = this;
         
-        _this.list = config.list || [];
+        _this.list = list;
         _this.loadedCallback = config.loadedCallback || null;
         _this.finishCallback = config.finishCallback || null;
         

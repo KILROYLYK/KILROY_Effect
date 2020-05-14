@@ -70,9 +70,8 @@ export default class Stage implements _Stage {
         
         _this.object.light = new Light();
         _this.object.meteor = new Meteor(_this.scene);
-    
-        _this.controller.loader = new Loader({
-            list: _this.config.resource.path,
+        
+        _this.controller.loader = new Loader(_this.config.resource.path, {
             loadedCallback(index, total, progress) {
                 // console.log(`加载进度：${ index } ${ total } ${ progress }`);
             },
