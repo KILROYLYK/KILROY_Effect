@@ -1,15 +1,12 @@
-/**
- * 坐标
- */
-interface Position {
-    x: number // X轴
-    y: number // Y轴
+import Global from '../../constant/global';
+import _Controller from "../../interface/controller";
+
+interface Position { // 位置
+    x: number // X 轴
+    y: number // Y 轴
 }
 
-/**
- * 点
- */
-interface Point {
+interface Point { // 点
     show: boolean // 显示
     position: Position // 当前位置
     target: Position // 目标位置
@@ -21,46 +18,42 @@ interface Point {
 }
 
 /**
- * 粒子控制器
+ * 粒子
  */
-export default class Particle {
-    private readonly config: object = { // 配置
-        size: 150,
-        color: [
-            '255,255,255',
-            '151,19,55',
-            '0,72,255',
-            '136,0,255',
-            '255,237,0'
-        ] as string[],
-        colorS: 0.05, // 颜色变化速度
-        density: 3, // 密度（越大越稀疏）
-        radiusMax: 3, // 最大半径
-        radiusMin: 1, // 最小半径
-        radiusS: 0.5, // 半径变化速度
-        mouseP: { // 鼠标位置
-            x: -1000,
-            y: -1000,
-        } as Position,
-        mouseR: 50, // 鼠标半径
-        mouseS: 100, // 鼠标推动速度（越大速度越慢）
-        interval: 300, // 运动间隔
-        restoreS: 10, // 恢复速度
-        list: [] as Point[] // 点列表
-    };
-    private dom: HTMLElement = null; // 父元素
+export default class Particle implements _Controller {
     private canvas: HTMLCanvasElement = null; // Canvas
     private context: CanvasRenderingContext2D = null; // Context
+    private readonly size: number = 150; // 字体大小
+    private readonly density: number = 3; // 密度（越大越稀疏）
+    private readonly color: string[] = [ // 颜色列表（RGB）
+        '255,255,255',
+        '151,19,55',
+        '0,72,255',
+        '136,0,255',
+        '255,237,0'
+    ];
+    private readonly colorS: number = 0.05; // 颜色变化速度
+    private readonly radius: object = { // 半径变化
+        min: 1,
+        max: 3,
+        speed: 0.5
+    };
+    private readonly mouse: object = { // 鼠标
+        x: -1000,
+        y: -1000,
+        radius: 50, // 推离半径
+        speed: 100 // 鼠标推动速度（越大速度越慢）
+    };
+    private readonly interval: number = 300; // 运动间隔
+    private readonly restoreS: number = 10; // 恢复速度
+    private list: Point[] = []; // 点列表
     
     /**
      * 构造函数
      * @constructor Particle
-     * @param {HTMLElement} dom 父元素
      */
-    constructor(dom: HTMLElement) {
+    constructor() {
         const _this = this;
-        
-        _this.dom = dom;
         
         _this.create();
         _this.init();
@@ -73,13 +66,13 @@ export default class Particle {
     private create(): void {
         const _this = this;
         
-        _this.canvas = document.createElement('canvas');
-        _this.canvas.width = _this.dom.clientWidth;
-        _this.canvas.height = _this.dom.clientHeight;
+        _this.canvas = Global.Document.createElement('canvas');
+        _this.canvas.width = Global.Width;
+        _this.canvas.height = Global.Height;
         
         _this.context = _this.canvas.getContext('2d');
         
-        _this.dom.appendChild(_this.canvas);
+        Global.GameDom.appendChild(_this.canvas);
     }
     
     /**
@@ -89,15 +82,14 @@ export default class Particle {
     private init(): void {
         const _this = this;
         
-        _this.dom.onmousemove = (e: MouseEvent) => { // 鼠标移动
-            _this.config.mouseP.x = e.clientX;
-            _this.config.mouseP.y = e.clientY;
-        };
-        
-        _this.dom.onmouseout = (e: MouseEvent) => { // 鼠标移出
-            _this.config.mouseP.x = -1000;
-            _this.config.mouseP.y = -1000;
-        };
+        Global.Window.addEventListener('mousemove', (e: MouseEvent) => { // 鼠标移动
+            _this.mouse.x = e.clientX;
+            _this.mouse.y = e.clientY;
+        }, false);
+        Global.Window.addEventListener('onmouseout', (e: MouseEvent) => { // 鼠标移出
+            _this.mouse.x = -1000;
+            _this.mouse.y = -1000;
+        }, false);
     }
     
     /**
@@ -110,21 +102,21 @@ export default class Particle {
         
         _this.clearCanvas();
         
-        for (let i = 0, n = _this.config.list.length; i < n; i++) {
-            const point = _this.config.list[i];
+        for (let i = 0, n = _this.list.length; i < n; i++) {
+            const point = _this.list[i];
             _this.updatePoint(point);
             _this.drawPoint(point);
             if (!point.show && point.opacity === 0) {
-                const index = _this.config.list.indexOf(point);
-                _this.config.list.splice(index, 1);
+                const index = _this.list.indexOf(point);
+                _this.list.splice(index, 1);
                 i--;
                 n--;
             }
         }
         
         if (isResize) {
-            _this.canvas.width = _this.dom.clientWidth;
-            _this.canvas.height = _this.dom.clientHeight;
+            _this.canvas.width = Global.Width;
+            _this.canvas.height = Global.Height;
         }
     }
     
@@ -134,8 +126,8 @@ export default class Particle {
      */
     public destroy(): void {
         const _this = this;
-        
-        _this.dom.removeChild(_this.canvas);
+    
+        Global.GameDom.removeChild(_this.canvas);
         
         _this.context = null;
         _this.canvas = null;
@@ -163,17 +155,17 @@ export default class Particle {
      */
     public writeText(text: string): void {
         const _this = this,
-            cList = _this.config.list,
+            cList = _this.list,
             list = [];
         
         _this.clearCanvas();
         
         _this.context.fillStyle = '#ffffff';
-        _this.context.font = `${ _this.config.size }px Times`;
+        _this.context.font = `${ _this.size }px Times`;
         _this.context.fillText(
             text,
             _this.canvas.width / 2 - _this.context.measureText(text).width / 2,
-            _this.canvas.height / 2 + _this.config.size / 4,
+            _this.canvas.height / 2 + _this.size / 4,
         );
         
         // 获取画布数据
@@ -183,7 +175,7 @@ export default class Particle {
             _this.canvas.height
         ).data;
         
-        for (let i = 0; i < data.length; i += _this.config.density) {
+        for (let i = 0; i < data.length; i += _this.density) {
             if (data[i] !== 0 && ~~(Math.random() * 5) === 1) {
                 if (data[i + 4] !== 255 ||
                     data[i - 4] !== 255 ||
@@ -203,9 +195,9 @@ export default class Particle {
         const cListL = cList.length,
             listL = list.length;
         if (cListL === 0) {
-            _this.config.list = list;
+            _this.list = list;
         } else if (cListL === listL) {
-            _this.config.list.forEach((v: Point, i: number, a: Point[]) => {
+            _this.list.forEach((v: Point, i: number, a: Point[]) => {
                 v.target = list[i].target;
             });
         } else if (cListL < listL) {
@@ -215,7 +207,7 @@ export default class Particle {
             list.forEach((v: Point, i: number, a: Point[]) => {
                 cList[i] && (cList[i].target = v.target);
             });
-            _this.config.list = cList.concat(list.slice(cListL, listL - 1));
+            _this.list = cList.concat(list.slice(cListL, listL - 1));
         } else if (cListL > listL) {
             cList.sort(() => {
                 return 0.5 - Math.random();
@@ -240,7 +232,7 @@ export default class Particle {
      */
     private createPoint(target: Position): Point {
         const _this = this,
-            sign = [1, -1]; // 放大或缩小
+            sign = [ 1, -1 ]; // 放大或缩小
         
         return {
             show: true,
@@ -253,9 +245,9 @@ export default class Particle {
                 x: 0,
                 y: 0
             },
-            color: ~~(Math.random() * _this.config.color.length),
+            color: ~~(Math.random() * _this.color.length),
             opacity: 0,
-            radius: _this.config.radiusMax - Math.random() * _this.config.radiusMin,
+            radius: _this.radius.max - Math.random() * _this.radius.min,
             direction: sign[~~(Math.random() * 2)] * Math.random() / 10
         }
     }
@@ -269,7 +261,7 @@ export default class Particle {
         const _this = this;
         
         _this.context.beginPath();
-        _this.context.fillStyle = `rgba(${ _this.config.color[point.color] },${ point.opacity })`;
+        _this.context.fillStyle = `rgba(${ _this.color[point.color] },${ point.opacity })`;
         _this.context.arc(
             point.position.x,
             point.position.y,
@@ -287,8 +279,8 @@ export default class Particle {
      */
     private updatePoint(point: Point): void {
         const _this = this,
-            mouseX = _this.config.mouseP.x,
-            mouseY = _this.config.mouseP.y,
+            mouseX = _this.mouse.x,
+            mouseY = _this.mouse.y,
             distance = _this.getDistance({
                 x1: point.position.x,
                 y1: point.position.y,
@@ -298,29 +290,29 @@ export default class Particle {
         
         // 颜色
         point.show
-            ? point.opacity += _this.config.colorS
-            : point.opacity -= _this.config.colorS;
+            ? point.opacity += _this.colorS
+            : point.opacity -= _this.colorS;
         (point.opacity > 1) && (point.opacity = 1);
         (point.opacity < 0) && (point.opacity = 0);
         
         // 半径
-        point.radius += point.direction * _this.config.radiusS;
-        (point.radius >= _this.config.radiusMax) && (point.direction *= -1);
+        point.radius += point.direction * _this.radius.speed;
+        (point.radius >= _this.radius.max) && (point.direction *= -1);
         (point.radius <= 1) && (point.direction *= -1);
         
         // 速度
-        point.speed.x = (point.position.x - point.target.x) / _this.config.interval;
-        point.speed.y = (point.position.y - point.target.y) / _this.config.interval;
+        point.speed.x = (point.position.x - point.target.x) / _this.interval;
+        point.speed.y = (point.position.y - point.target.y) / _this.interval;
         
         // 鼠标推动约束
-        if (distance < _this.config.mouseR) {
-            point.speed.x += point.speed.x - (point.position.x - mouseX) / _this.config.mouseS;
-            point.speed.y += point.speed.y - (point.position.y - mouseY) / _this.config.mouseS;
+        if (distance < _this.mouse.radius) {
+            point.speed.x += point.speed.x - (point.position.x - mouseX) / _this.mouse.speed;
+            point.speed.y += point.speed.y - (point.position.y - mouseY) / _this.mouse.speed;
         }
         
         // 更新位置
-        point.position.x -= point.speed.x * _this.config.restoreS;
-        point.position.y -= point.speed.y * _this.config.restoreS;
+        point.position.x -= point.speed.x * _this.restoreS;
+        point.position.y -= point.speed.y * _this.restoreS;
     }
     
     /**

@@ -5,18 +5,12 @@ import _Stage from '../../interface/stage';
  * 场景
  */
 export default class Stage implements _Stage {
-    private readonly config: object = { // 配置
-        dom: null as Element, // 元素
-    };
-    
     /**
      * 构造函数
      * @constructor Stage
      */
     constructor() {
         const _this = this;
-        
-        _this.config.dom = Global.GameDom;
         
         _this.create();
         _this.init();

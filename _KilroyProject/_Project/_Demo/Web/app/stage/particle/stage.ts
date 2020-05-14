@@ -1,15 +1,13 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
+
 import Particle from './particle';
 
 /**
  * 场景
  */
 export default class Stage implements _Stage {
-    private readonly config: object = { // 配置
-        dom: null as Element, // 元素
-    };
-    private particle = null as Particle // 粒子对象
+    private particle = null as Particle; // 粒子对象
     
     /**
      * 构造函数
@@ -17,8 +15,6 @@ export default class Stage implements _Stage {
      */
     constructor() {
         const _this = this;
-        
-        _this.config.dom = Global.GameDom;
         
         _this.create();
         _this.init();
@@ -31,7 +27,7 @@ export default class Stage implements _Stage {
     private create(): void {
         const _this = this;
         
-        _this.particle = new Particle(_this.config.dom);
+        _this.particle = new Particle();
     }
     
     /**
