@@ -113,9 +113,9 @@ export default class Ground implements _Object {
      */
     public update(): void {
         const _this = this,
-            factor = 300,
-            scale = 30,
-            speed = 0.0015,
+            factor = 350,
+            scale = 40,
+            speed = 0.002,
             ease = 30;
         
         for (const vertex of _this.geometry.vertices) {

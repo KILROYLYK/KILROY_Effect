@@ -596,7 +596,7 @@ const setupScene = () => {
         deviceInfo.screenRatio(),
         0.1,
         20000
-);
+    );
     camera.position.set(0, 0, 300);
     camera.rotation.set(0, 0, 0);
     camera.lookAt(scene.position);

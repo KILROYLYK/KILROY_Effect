@@ -129,8 +129,8 @@ export default class Mountain implements _Object {
     public update(): void {
         const _this = this,
             factor = 1000,
-            scale = 500,
-            speed = 0.0005,
+            scale = 600,
+            speed = 0.001,
             ease = 30;
         
         for (const vertex of _this.geometry.vertices) {
