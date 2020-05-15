@@ -373,6 +373,7 @@ const groundPlain = {
         this.group.rotation.set(this.look.x, this.look.y, this.look.z);
         
         this.geometry = new THREE.PlaneGeometry(4000, 2000, 128, 64);
+        
         this.material = new THREE.MeshLambertMaterial({
             color: 0xffffff,
             opacity: 1,

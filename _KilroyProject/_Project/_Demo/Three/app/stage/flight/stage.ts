@@ -6,6 +6,7 @@ import Scene from './environment/scene';
 import Camera from './environment/camera';
 import Light from './object/light';
 import Mountain from './object/mountain';
+import Ground from './object/ground';
 import Meteor from './object/meteor';
 import Loader from '../../controller/loader';
 
@@ -21,7 +22,7 @@ export default class Stage implements _Stage {
                 path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/star.png'
             },
             {
-                name: 'terrain',
+                name: 'mountain',
                 path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/terrain2.jpg'
             },
             {
@@ -40,6 +41,8 @@ export default class Stage implements _Stage {
     private camera: Camera = null; // 相机
     private object: object = { // 对象
         light: null as Light, // 灯光
+        mountain: null as Mountain, // 山脉
+        ground: null as Ground, // 地形
         meteor: null as Meteor, // 流星
     };
     private controller: object = { // 控制器
@@ -80,11 +83,12 @@ export default class Stage implements _Stage {
         _this.camera = new Camera();
         
         _this.object.light = new Light(_this.scene);
-        _this.object.meteor = new Meteor(_this.scene);
-        _this.object.terrain = new Mountain(
+        _this.object.mountain = new Mountain(
             _this.scene,
-            _this.resource.data.terrain
+            _this.resource.data.mountain
         );
+        _this.object.ground = new Ground(_this.scene);
+        _this.object.meteor = new Meteor(_this.scene);
     }
     
     /**
@@ -112,7 +116,8 @@ export default class Stage implements _Stage {
         
         _this.object.light.destroy();
         _this.object.meteor.destroy();
-        _this.object.terrain.destroy();
+        _this.object.ground.destroy();
+        _this.object.mountain.destroy();
     }
     
     /**
@@ -126,7 +131,9 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         
         _this.object.meteor.update();
-        _this.object.terrain.update();
+        _this.object.ground.update();
+        _this.object.mountain.update();
+        _this.object.light.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

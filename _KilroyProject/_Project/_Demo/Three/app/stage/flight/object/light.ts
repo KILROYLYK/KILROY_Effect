@@ -8,6 +8,7 @@ export default class Light implements _Object {
     private scene: THREE.Scene = null; // 场景
     
     private color: THREE.Color = null;  // 颜色
+    private hue: number = 0.038;
     
     public instance: THREE.PointLight = null; // 实例
     
@@ -18,7 +19,7 @@ export default class Light implements _Object {
      */
     constructor(scene: object) {
         const _this = this;
-    
+        
         _this.scene = scene.instance;
         
         _this.create();
@@ -44,12 +45,12 @@ export default class Light implements _Object {
     private init(): void {
         const _this = this;
         
-        _this.color.setHSL(0.038, 0.8, 0.5);
+        _this.color.setHSL(_this.hue, 0.8, 0.5);
         
         _this.instance.position.set(0, 200, -500);
         _this.instance.color = _this.color;
         _this.instance.castShadow = false;
-    
+        
         _this.scene.add(_this.instance);
     }
     
@@ -63,5 +64,19 @@ export default class Light implements _Object {
         if (!_this.instance) return;
         
         _this.instance = null;
+    }
+    
+    /**
+     * 更新
+     * @return {void}
+     */
+    public update(): void {
+        const _this = this;
+        
+        if (!_this.instance) return;
+        
+        _this.hue += 0.001;
+        _this.hue >= 1 && (_this.hue = 0);
+        _this.color.setHSL(_this.hue, 0.8, 0.5);
     }
 }

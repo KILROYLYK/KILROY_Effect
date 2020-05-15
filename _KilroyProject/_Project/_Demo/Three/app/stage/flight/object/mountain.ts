@@ -11,9 +11,9 @@ export default class Mountain implements _Object {
     
     private simplex: SimplexNoise = null; // 简单声音
     private geometry: THREE.PlaneGeometry = null; // 几何体
-    private light: THREE.PointLight = null; // 灯光
     private material: THREE.MeshPhongMaterial = null; // 材料
-    private terrain: THREE.Mesh = null; // 实例
+    private terrain: THREE.Mesh = null; // 地形
+    private light: THREE.PointLight = null; // 灯光
     private cycle: number = 0; // 周期
     private readonly centerP: object = { // 中心位置
         x: 0,
@@ -131,19 +131,18 @@ export default class Mountain implements _Object {
             factor = 1000,
             scale = 500,
             speed = 0.0005,
-            ease = 10;
-        
-        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * 0.2);
+            ease = 30;
         
         for (const vertex of _this.geometry.vertices) {
             const xoff = (vertex.x / factor),
                 yoff = (vertex.y / factor) + _this.cycle,
                 rand = _this.simplex.noise3d(xoff, yoff, 0) * scale;
-            
             vertex.z = rand;
         }
         _this.geometry.verticesNeedUpdate = true;
         _this.cycle -= speed;
+    
+        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * 0.2);
         
         Global.Function.setEasePosition(_this.instance.position, _this.moveP, ease);
         Global.Function.setEasePosition(_this.instance.rotation, _this.lookP, ease);
