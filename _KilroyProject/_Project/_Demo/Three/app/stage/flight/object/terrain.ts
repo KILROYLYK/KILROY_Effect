@@ -10,7 +10,7 @@ export default class Terrain implements _Object {
     private texture: THREE.Texture = null; // 纹理
     
     private simplex: SimplexNoise = null; // 简单声音
-    private geometry: THREE.PlaneGeometry = null; // 几何
+    private geometry: THREE.PlaneGeometry = null; // 几何体
     private light: THREE.PointLight = null; // 灯光
     private material: THREE.MeshPhongMaterial = null; // 材料
     private terrain: THREE.Mesh = null; // 实例

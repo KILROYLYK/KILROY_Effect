@@ -46,7 +46,7 @@ export default class Ground implements _Object {
             map: _this.texture
         });
         
-        // 几何
+        // 几何体
         const geometry = new Global.THREE.PlaneBufferGeometry(20000, 20000);
         
         // 啮合

@@ -6,11 +6,22 @@ import Scene from './environment/scene';
 import Camera from './environment/camera';
 import Panoramic from '../../controller/panoramic';
 import Move from '../../controller/move';
+import Loader from "../../controller/loader";
 
 /**
  * 场景
  */
 export default class Stage implements _Stage {
+    private isInit: boolean = false; // 是否初始化
+    private readonly resource: object = { // 资源
+        path: [ // 地址
+            {
+                name: 'map',
+                path: 'https://image.gaeamobile.net/image/20200515/140131/map.jpg'
+            }
+        ] as object[],
+        data: null as object // 数据
+    };
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
@@ -26,8 +37,17 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        _this.create();
-        _this.init();
+        _this.controller.loader = new Loader(_this.resource.path, {
+            loadedCallback(index, total, progress) {
+                // console.log(`加载进度：${ index } ${ total } ${ progress }`);
+            },
+            finishCallback(data) {
+                _this.resource.data = data;
+                
+                _this.create();
+                _this.init();
+            }
+        });
     }
     
     /**
@@ -36,7 +56,7 @@ export default class Stage implements _Stage {
      */
     private create(): void {
         const _this = this;
-    
+        
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
@@ -49,13 +69,15 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
     
+        _this.isInit = true;
+        
         Global.GameDom.appendChild(_this.renderer.instance.domElement);
-    
+        
         // 全景控制器
-        _this.controller.panoramic = new Panoramic(_this.scene);
-    
+        _this.controller.panoramic = new Panoramic(_this.scene, _this.resource.data.map);
+        
         // 移动控制器
-        _this.controller.move = new Move(_this.camera,{
+        _this.controller.move = new Move(_this.camera, {
             turn: true
         });
     }
@@ -67,6 +89,8 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
+    
+        if (!_this.isInit) return;
         
         _this.controller.move.update();
         
@@ -85,11 +109,11 @@ export default class Stage implements _Stage {
      */
     public destroy(): void {
         const _this = this;
-    
+        
         _this.camera.destroy();
         _this.scene.destroy();
         _this.renderer.destroy();
-    
+        
         _this.controller.panoramic.destroy();
         _this.controller.move.destroy();
     }

@@ -1,12 +1,11 @@
 import Global from '../../../constant/global';
 import _Environment from '../../../interface/environment';
-import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 
 /**
  * 渲染器
  */
 export default class Renderer implements _Environment {
-    public instance: CSS3DRenderer = null; // 实例
+    public instance: THREE.WebGLRenderer = null; // 实例
     
     /**
      * 构造函数
@@ -26,7 +25,9 @@ export default class Renderer implements _Environment {
     private create(): void {
         const _this = this;
         
-        _this.instance = new CSS3DRenderer();
+        _this.instance = new Global.THREE.WebGLRenderer({
+            logarithmicDepthBuffer: true
+        });
     }
     
     /**
@@ -35,8 +36,11 @@ export default class Renderer implements _Environment {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.instance.setSize(Global.Width, Global.Height);
+        _this.instance.setPixelRatio(Global.Window.devicePixelRatio);
+        _this.instance.sortObjects = false;
+        _this.instance.autoClear = false;
     }
     
     /**

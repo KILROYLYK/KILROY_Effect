@@ -73,7 +73,7 @@ export default class Meteor implements _Object {
     private createStar(): void {
         const _this = this,
             spread = 1000, // 扩散范围
-            geometry = new Global.THREE.CylinderGeometry(0, 2, 120, 10), // 几何
+            geometry = new Global.THREE.CylinderGeometry(0, 2, 120, 10), // 几何体
             material = new Global.THREE.MeshBasicMaterial({ // 材质
                 color: '#ffffff',
                 opacity: 1,
