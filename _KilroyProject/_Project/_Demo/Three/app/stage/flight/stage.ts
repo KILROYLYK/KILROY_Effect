@@ -53,7 +53,7 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        // Global.Function.hideGameCursor();
+        Global.Function.hideCursor();
         
         _this.controller.loader = new Loader(_this.resource.path, {
             loadedCallback(index, total, progress) {

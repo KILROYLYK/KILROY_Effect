@@ -10,7 +10,7 @@ export default class Function {
      * @param {string} domID 节点ID
      * @return {Element} 游戏节点
      */
-    public static getGameDom(domID: string): HTMLElement {
+    public static getGame(domID: string): HTMLElement {
         const _this = this,
             body = D.getElementsByTagName('body')[0],
             lastChild = body.lastChild;
@@ -41,7 +41,7 @@ export default class Function {
      * 获取游戏宽高比
      * @return {number} 宽高比
      */
-    public static getGameAspect(): number {
+    public static getAspect(): number {
         const _this = this;
         return Global.Width / Global.Height;
     }
@@ -50,7 +50,7 @@ export default class Function {
      * 隐藏游戏鼠标
      * @return {void}
      */
-    public static hideGameCursor(): void {
+    public static hideCursor(): void {
         const _this = this;
         Global.GameDom.style.cursor = 'none'; // 隐藏鼠标
     }

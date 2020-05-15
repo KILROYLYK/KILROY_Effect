@@ -26,7 +26,7 @@ export default class Camera implements _Environment {
         const _this = this;
         
         _this.instance = new Global.THREE.PerspectiveCamera(
-            60, Global.Function.getGameAspect(), 0.1, 20000
+            60, Global.Function.getAspect(), 0.1, 20000
         );
     }
     

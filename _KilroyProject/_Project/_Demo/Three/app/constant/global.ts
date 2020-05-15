@@ -21,7 +21,7 @@ export default class Global {
     
     public static Width: number = W.innerWidth;
     public static Height: number = W.innerHeight;
-    readonly static GameDom: HTMLElement = Function.getGameDom('game');
+    readonly static GameDom: HTMLElement = Function.getGame('game');
     
     readonly static Config: any = Config; // 配置
     readonly static Stage: any = Stage; // 场景

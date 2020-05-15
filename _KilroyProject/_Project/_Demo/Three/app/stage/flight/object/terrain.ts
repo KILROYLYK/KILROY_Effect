@@ -145,7 +145,7 @@ export default class Terrain implements _Object {
         _this.geometry.verticesNeedUpdate = true;
         _this.cycle -= speed;
         
-        Global.Function.ease(_this.instance.position, _this.moveP, ease);
-        Global.Function.ease(_this.instance.rotation, _this.lookP, ease);
+        Global.Function.setEasePosition(_this.instance.position, _this.moveP, ease);
+        Global.Function.setEasePosition(_this.instance.rotation, _this.lookP, ease);
     }
 }
