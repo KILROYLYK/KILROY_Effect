@@ -5,7 +5,9 @@ import _Object from '../../../interface/object';
  * 地面
  */
 export default class Ground implements _Object {
-    private readonly src: string = 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'; // 资源地址
+    private scene: THREE.Scene = null; // 场景
+    private texture: THREE.Texture = null; // 纹理
+    
     private loader: THREE.TextureLoader = null; // 加载
     
     public instance: THREE.Mesh = null; // 实例
@@ -14,9 +16,14 @@ export default class Ground implements _Object {
     /**
      * 构造函数
      * @constructor Ground
+     * @param {object} scene 场景
+     * @param {THREE.Texture} texture 纹理
      */
-    constructor() {
+    constructor(scene: object, texture: THREE.Texture) {
         const _this = this;
+    
+        _this.scene = scene.instance;
+        _this.texture = texture;
         
         _this.create();
         _this.init();
@@ -29,22 +36,18 @@ export default class Ground implements _Object {
     private create(): void {
         const _this = this;
         
-        if (_this.instance) return;
-        
         _this.loader = new Global.THREE.TextureLoader();
-        
-        // 质地
-        const texture = _this.loader.load(_this.src);
-        texture.wrapS
-            = texture.wrapT
+    
+        _this.texture.wrapS
+            = _this.texture.wrapT
             = Global.THREE.RepeatWrapping;
-        texture.repeat.set(25, 25);
-        texture.anisotropy = 16;
-        texture.encoding = Global.THREE.sRGBEncoding;
+        _this.texture.repeat.set(25, 25);
+        _this.texture.anisotropy = 16;
+        _this.texture.encoding = Global.THREE.sRGBEncoding;
         
         // 材料
         const material = new Global.THREE.MeshLambertMaterial({
-            map: texture
+            map: _this.texture
         });
         
         // 几何
@@ -66,21 +69,7 @@ export default class Ground implements _Object {
     private init(): void {
         const _this = this;
         
-        if (_this.instance) return;
-    }
-    
-    /**
-     * 更新
-     * @param {boolean} isResize 是否调整大小
-     * @return {void}
-     */
-    public update(isResize: boolean = false): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-        
-        if (isResize) { // 屏幕变化
-        }
+        _this.scene.add(_this.instance);
     }
     
     /**

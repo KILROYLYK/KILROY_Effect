@@ -25,8 +25,6 @@ export default class Renderer implements _Environment {
     private create(): void {
         const _this = this;
         
-        if (_this.instance) return;
-        
         _this.instance = new Global.THREE.WebGLRenderer({
             antialias: true
         });
@@ -39,11 +37,21 @@ export default class Renderer implements _Environment {
     private init(): void {
         const _this = this;
         
-        if (_this.instance) return;
-        
         _this.instance.setSize(Global.Width, Global.Height);
         _this.instance.outputEncoding = Global.THREE.sRGBEncoding;
         _this.instance.shadowMap.enabled = true;
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        
+        if (!_this.instance) return;
+        
+        _this.instance = null;
     }
     
     /**
@@ -59,17 +67,5 @@ export default class Renderer implements _Environment {
         if (isResize) { // 屏幕变化
             _this.instance.setSize(Global.Width, Global.Height);
         }
-    }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-        
-        _this.instance = null;
     }
 }

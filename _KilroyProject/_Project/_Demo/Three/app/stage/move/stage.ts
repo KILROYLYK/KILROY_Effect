@@ -7,12 +7,23 @@ import Camera from './environment/camera';
 import Ground from './object/ground';
 import LightNatural from './object/lightNatural';
 import LightAngle from './object/lightAngle';
+import Loader from '../../controller/loader';
 import Move from '../../controller/move';
 
 /**
  * 场景
  */
 export default class Stage implements _Stage {
+    private isInit: boolean = false; // 是否初始化
+    private readonly resource: object = { // 资源
+        path: [ // 地址
+            {
+                name: 'grassland',
+                path: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'
+            }
+        ] as object[],
+        data: null as object // 数据
+    };
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
@@ -22,6 +33,7 @@ export default class Stage implements _Stage {
         ground: null as Ground // 地面
     };
     private controller: object = { // 控制器
+        loader: null as Loader, // 加载
         move: null as Move // 移动
     };
     
@@ -32,8 +44,17 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        _this.create();
-        _this.init();
+        _this.controller.loader = new Loader(_this.resource.path, {
+            loadedCallback(index, total, progress) {
+                // console.log(`加载进度：${ index } ${ total } ${ progress }`);
+            },
+            finishCallback(data) {
+                _this.resource.data = data;
+                
+                _this.create();
+                _this.init();
+            }
+        });
     }
     
     /**
@@ -47,9 +68,9 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.object.ground = new Ground();
-        _this.object.lightNatural = new LightNatural();
-        _this.object.lightAngle = new LightAngle();
+        _this.object.ground = new Ground(_this.scene,_this.resource.data.grassland);
+        _this.object.lightNatural = new LightNatural(_this.scene);
+        _this.object.lightAngle = new LightAngle(_this.scene);
     }
     
     /**
@@ -60,13 +81,6 @@ export default class Stage implements _Stage {
         const _this = this;
         
         Global.GameDom.appendChild(_this.renderer.instance.domElement);
-        
-        // 地面
-        _this.scene.instance.add(_this.object.ground.instance);
-    
-        // 光
-        _this.scene.instance.add(_this.object.lightNatural.instance);
-        _this.scene.instance.add(_this.object.lightAngle.instance);
         
         // 移动控制器
         _this.controller.move = new Move(
@@ -87,10 +101,11 @@ export default class Stage implements _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
         
+        if (!_this.isInit) return;
+        
         _this.controller.move.update();
         
         _this.camera.update(isResize);
-        _this.scene.update(isResize);
         _this.renderer.update(isResize);
         
         _this.renderer.instance.render(
