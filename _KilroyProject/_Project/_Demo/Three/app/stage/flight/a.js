@@ -373,7 +373,6 @@ const groundPlain = {
         this.group.rotation.set(this.look.x, this.look.y, this.look.z);
         
         this.geometry = new THREE.PlaneGeometry(4000, 2000, 128, 64);
-        
         this.material = new THREE.MeshLambertMaterial({
             color: 0xffffff,
             opacity: 1,
@@ -578,11 +577,7 @@ const setupScene = () => {
     };
     
     // setup renderer
-    const renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true,
-        precision: 'mediump'
-    });
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, precision: 'mediump' });
     renderer.setSize(deviceInfo.screenWidth(), deviceInfo.screenHeight());
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setClearColor(0x000000, 0);
@@ -591,12 +586,7 @@ const setupScene = () => {
     document.body.appendChild(renderer.domElement);
     
     // setup camera
-    const camera = new THREE.PerspectiveCamera(
-        60,
-        deviceInfo.screenRatio(),
-        0.1,
-        20000
-    );
+    const camera = new THREE.PerspectiveCamera(60, deviceInfo.screenRatio(), 0.1, 20000);
     camera.position.set(0, 0, 300);
     camera.rotation.set(0, 0, 0);
     camera.lookAt(scene.position);

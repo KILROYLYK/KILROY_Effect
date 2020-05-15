@@ -10,6 +10,8 @@ import Ground from './object/ground';
 import Meteor from './object/meteor';
 import Loader from '../../controller/loader';
 
+import './flight.less';
+
 /**
  * 场景
  */
@@ -19,19 +21,19 @@ export default class Stage implements _Stage {
         path: [ // 地址
             {
                 name: 'star',
-                path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/star.png'
+                path: 'https://image.gaeamobile.net/image/20200515/164632/star.png'
             },
             {
                 name: 'mountain',
-                path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/terrain2.jpg'
+                path: 'https://image.gaeamobile.net/image/20200515/164632/mountain.jpg'
             },
             {
-                name: 'water',
-                path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/images/water.jpg'
+                name: 'engine',
+                path: 'https://image.gaeamobile.net/image/20200515/164632/engine.jpg'
             },
             {
                 name: 'fighter',
-                path: 'https://raw.githubusercontent.com/rainner/codepen-assets/master/models/SpaceFighter03/SpaceFighter03.obj'
+                path: 'https://image.gaeamobile.net/image/20200515/164632/ship_01.obj'
             }
         ] as object[],
         data: null as object // 数据
@@ -56,7 +58,7 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        Global.Function.hideCursor();
+        // Global.Function.hideCursor();
         
         _this.controller.loader = new Loader(_this.resource.path, {
             loadedCallback(index, total, progress) {
@@ -110,14 +112,16 @@ export default class Stage implements _Stage {
     public destroy(): void {
         const _this = this;
         
+        if (!_this.isInit) return;
+        
+        _this.object.light.destroy();
+        _this.object.mountain.destroy();
+        _this.object.ground.destroy();
+        _this.object.meteor.destroy();
+        
         _this.camera.destroy();
         _this.scene.destroy();
         _this.renderer.destroy();
-        
-        _this.object.light.destroy();
-        _this.object.meteor.destroy();
-        _this.object.ground.destroy();
-        _this.object.mountain.destroy();
     }
     
     /**
@@ -130,10 +134,10 @@ export default class Stage implements _Stage {
         
         if (!_this.isInit) return;
         
-        _this.object.meteor.update();
-        _this.object.ground.update();
-        _this.object.mountain.update();
         _this.object.light.update();
+        _this.object.mountain.update();
+        _this.object.ground.update();
+        _this.object.meteor.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

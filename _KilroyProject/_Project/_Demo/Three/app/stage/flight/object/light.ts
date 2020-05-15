@@ -75,8 +75,8 @@ export default class Light implements _Object {
         
         if (!_this.instance) return;
         
-        _this.hue += 0.001;
-        _this.hue >= 1 && (_this.hue = 0);
-        _this.color.setHSL(_this.hue, 0.8, 0.5);
+        // _this.hue += 0.001;
+        // _this.hue >= 1 && (_this.hue = 0);
+        // _this.color.setHSL(_this.hue, 0.8, 0.5);
     }
 }
