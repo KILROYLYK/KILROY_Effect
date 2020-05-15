@@ -36,7 +36,19 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this;
+        
         _this.particle.writeText('♥');
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        
+        _this.particle.destroy();
+        _this.particle = null;
     }
     
     /**
@@ -52,15 +64,5 @@ export default class Stage implements _Stage {
         if (isResize) {
             _this.particle && _this.particle.update(true);
         }
-    }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        _this.particle.destroy();
-        _this.particle = null;
     }
 }
