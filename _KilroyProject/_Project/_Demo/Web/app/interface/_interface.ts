@@ -17,14 +17,14 @@ export default interface Interface {
     init(): void;
     
     /**
-     * 更新
-     * @return {void}
-     */
-    update(): void;
-    
-    /**
      * 销毁
      * @return {void}
      */
-    destroy(): void;
+    destroy?(): void;
+    
+    /**
+     * 更新
+     * @return {void}
+     */
+    update?(): void;
 }

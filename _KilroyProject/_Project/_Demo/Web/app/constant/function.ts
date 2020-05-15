@@ -11,7 +11,8 @@ export default class Function {
      * @return {Element} 游戏节点
      */
     public static getGameDom(domID: string): HTMLElement {
-        const body = D.getElementsByTagName('body')[0],
+        const _this = this,
+            body = D.getElementsByTagName('body')[0],
             lastChild = body.lastChild;
         
         let dom = D.getElementById(domID);
@@ -27,13 +28,31 @@ export default class Function {
     }
     
     /**
-     * 监听屏幕变化并更新全局尺寸
+     * 更新游戏尺寸
      * @return {void}
      */
-    public static resizeDom(): void {
+    public static resizeGame(): void {
         const _this = this;
         Global.Width = Global.Window.innerWidth;
         Global.Height = Global.Window.innerHeight;
+    }
+    
+    /**
+     * 获取游戏宽高比
+     * @return {number} 宽高比
+     */
+    public static getGameAspect(): number {
+        const _this = this;
+        return Global.Width / Global.Height;
+    }
+    
+    /**
+     * 隐藏游戏鼠标
+     * @return {void}
+     */
+    public static hideGameCursor(): void {
+        const _this = this;
+        Global.GameDom.style.cursor = 'none'; // 隐藏鼠标
     }
     
     /**
@@ -60,7 +79,7 @@ export default class Function {
     public static resizeUpdate(callback?: Function): void {
         const _this = this;
         Base.resize(() => {
-            _this.resizeDom();
+            _this.resizeGame();
             callback && callback();
         });
     }

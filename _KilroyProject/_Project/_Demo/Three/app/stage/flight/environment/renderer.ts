@@ -25,8 +25,6 @@ export default class Renderer implements _Environment {
     private create(): void {
         const _this = this;
         
-        if (_this.instance) return;
-        
         _this.instance = new Global.THREE.WebGLRenderer({
             alpha: true,
             antialias: true,
@@ -41,12 +39,22 @@ export default class Renderer implements _Environment {
     private init(): void {
         const _this = this;
         
-        if (_this.instance) return;
-        
         _this.instance.setSize(Global.Width, Global.Height);
         _this.instance.setPixelRatio(Global.Window.devicePixelRatio);
         _this.instance.setClearColor('#000000', 0);
         _this.instance.sortObjects = true;
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        
+        if (!_this.instance) return;
+        
+        _this.instance = null;
     }
     
     /**
@@ -62,17 +70,5 @@ export default class Renderer implements _Environment {
         if (isResize) { // 屏幕变化
             _this.instance.setSize(Global.Width, Global.Height);
         }
-    }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-        
-        _this.instance = null;
     }
 }

@@ -1,13 +1,17 @@
 import Global from '../../../constant/global';
 import _Object from '../../../interface/object';
+import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise';
 
 /**
- * 山
+ * 地形
  */
-export default class Mountain implements _Object {
+export default class Terrain implements _Object {
     private scene: THREE.Scene = null; // 场景
+    private texture: THREE.Texture = null; // 纹理
     
     private ground: THREE.Object3D = null; // 3D对象
+    private simplex: SimplexNoise = null; // 简单声音
+    private geometry: THREE.PlaneGeometry = null; // 几何
     private readonly moveP: object = { // 移动坐标
         x: 0,
         y: 0,
@@ -23,13 +27,15 @@ export default class Mountain implements _Object {
     
     /**
      * 构造函数
-     * @constructor Star
+     * @constructor Terrain
      * @param {object} scene 场景
+     * @para {THREE.Texture} texture 纹理
      */
-    constructor(scene: object) {
+    constructor(scene: object, texture: THREE.Texture) {
         const _this = this;
-        
-        _this.scene = scene.instance as THREE.Scene;
+    
+        _this.scene = scene.instance;
+        _this.texture = texture;
         
         _this.create();
         _this.init();
@@ -42,9 +48,13 @@ export default class Mountain implements _Object {
     protected create(): void {
         const _this = this;
         
-        _this.ground = new THREE.Object3D();
+        _this.ground = new Global.THREE.Object3D();
         _this.ground.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.ground.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
+        
+        _this.simplex = new SimplexNoise();
+        this.geometry = new Global.THREE.PlaneGeometry(10000, 1000, 128, 32);
+        
     }
     
     /**
@@ -56,18 +66,18 @@ export default class Mountain implements _Object {
     }
     
     /**
-     * 更新
-     * @return {void}
-     */
-    public update(): void {
-        const _this = this;
-    }
-    
-    /**
      * 销毁
      * @return {void}
      */
     public destroy(): void {
+        const _this = this;
+    }
+    
+    /**
+     * 更新
+     * @return {void}
+     */
+    public update(): void {
         const _this = this;
     }
 }

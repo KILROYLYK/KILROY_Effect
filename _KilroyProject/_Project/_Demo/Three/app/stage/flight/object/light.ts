@@ -5,6 +5,8 @@ import _Object from '../../../interface/object';
  * 灯光
  */
 export default class Light implements _Object {
+    private scene: THREE.Scene = null; // 场景
+    
     private color: THREE.Color = null;  // 颜色
     
     public instance: THREE.PointLight = null; // 实例
@@ -12,9 +14,12 @@ export default class Light implements _Object {
     /**
      * 构造函数
      * @constructor Light
+     * @param {object} scene 场景
      */
-    constructor() {
+    constructor(scene: object) {
         const _this = this;
+    
+        _this.scene = scene.instance;
         
         _this.create();
         _this.init();
@@ -26,8 +31,6 @@ export default class Light implements _Object {
      */
     protected create(): void {
         const _this = this;
-        
-        if (_this.instance) return;
         
         _this.color = new Global.THREE.Color();
         
@@ -41,27 +44,13 @@ export default class Light implements _Object {
     protected init(): void {
         const _this = this;
         
-        if (_this.instance) return;
-        
         _this.color.setHSL(0.038, 0.8, 0.5);
         
         _this.instance.position.set(0, 200, -500);
-        _this.instance.castShadow = false;
         _this.instance.color = _this.color;
-    }
+        _this.instance.castShadow = false;
     
-    /**
-     * 更新
-     * @param {boolean} isResize 是否调整大小
-     * @return {void}
-     */
-    public update(isResize: boolean = false): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-        
-        if (isResize) { // 屏幕变化
-        }
+        _this.scene.add(_this.instance);
     }
     
     /**

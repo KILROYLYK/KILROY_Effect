@@ -11,13 +11,13 @@ export default class Meteor implements _Object {
     
     /**
      * 构造函数
-     * @constructor Star
+     * @constructor Meteor
      * @param {object} scene 场景
      */
     constructor(scene: object) {
         const _this = this;
         
-        _this.scene = scene.instance as THREE.Scene;
+        _this.scene = scene.instance;
         
         _this.create();
         _this.init();
@@ -40,6 +40,15 @@ export default class Meteor implements _Object {
     }
     
     /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        _this.list = [];
+    }
+    
+    /**
      * 更新
      * @return {void}
      */
@@ -55,15 +64,6 @@ export default class Meteor implements _Object {
             }
             v.position.z -= 20;
         });
-    }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        _this.list = [];
     }
     
     /**
