@@ -85,7 +85,7 @@ export default class Meteor implements _Object {
                 depthTest: true
             }),
             cylinder = new THREE.Mesh(geometry, material), // 圆柱
-            random = THREE.Math.randInt(-spread, spread); // 随机整数
+            random = THREE.MathUtils.randInt(-spread, spread); // 随机整数
         cylinder.position.set(random, 300, 200);
         cylinder.rotation.set(Math.PI / 2, 0, 0);
         _this.list.push(cylinder);

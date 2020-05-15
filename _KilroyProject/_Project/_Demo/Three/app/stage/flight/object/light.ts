@@ -36,7 +36,7 @@ export default class Light implements _Object {
         
         _this.color = new THREE.Color();
         
-        _this.instance = new THREE.PointLight('#ffffff', 4, 1000);
+        _this.instance = new THREE.PointLight('#ffffff', 4, 700);
         
     }
     

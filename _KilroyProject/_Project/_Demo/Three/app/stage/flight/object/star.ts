@@ -69,12 +69,12 @@ export default class Star implements _Object {
         
         for (let i = 0; i < 400; i++) {
             const angle = (Math.random() * Math.PI * 2),
-                radius = THREE.Math.randInt(0, spread);
+                radius = THREE.MathUtils.randInt(0, spread);
             
             geometry.vertices.push(new THREE.Vector3(
                 Math.cos(angle) * radius,
                 Math.sin(angle) * radius / 10,
-                THREE.Math.randInt(-spread, 0)
+                THREE.MathUtils.randInt(-spread, 0)
             ));
         }
         
@@ -88,6 +88,13 @@ export default class Star implements _Object {
      */
     private init(): void {
         const _this = this;
+    
+        _this.centerP.x
+            = _this.mouseP.x
+            = Global.Width / 2;
+        _this.centerP.y
+            = _this.mouseP.y
+            = Global.Height / 2;
         
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);

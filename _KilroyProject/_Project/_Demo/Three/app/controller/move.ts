@@ -102,8 +102,8 @@ export default class Move implements _Controller {
         
         // 获取视角
         _this.focusLL.lat = Math.max(-_this.focusLL.maxLat, Math.min(_this.focusLL.maxLat, _this.focusLL.lat));
-        _this.focusLL.phi = THREE.Math.degToRad(90 - _this.focusLL.lat);
-        _this.focusLL.theta = THREE.Math.degToRad(_this.focusLL.lon - 90);
+        _this.focusLL.phi = THREE.MathUtils.degToRad(90 - _this.focusLL.lat);
+        _this.focusLL.theta = THREE.MathUtils.degToRad(_this.focusLL.lon - 90);
         
         // 将视觉目标移至视角中心
         Global.Function.setEasePosition(_this.targetP, {
@@ -197,7 +197,7 @@ export default class Move implements _Controller {
                 wheel: (e: WheelEvent): void => {
                     const fov = _this.camera.fov + e.deltaY * _this.speed.wheel;
                     
-                    _this.camera.fov = THREE.Math.clamp(fov, 45, 95);
+                    _this.camera.fov = THREE.MathUtils.clamp(fov, 45, 95);
                     _this.camera.updateProjectionMatrix();
                 }
             },

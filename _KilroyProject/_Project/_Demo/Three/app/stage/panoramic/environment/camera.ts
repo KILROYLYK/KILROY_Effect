@@ -1,6 +1,8 @@
 import Global from '../../../constant/global';
 import _Environment from '../../../interface/environment';
 
+import * as THREE from 'three';
+
 /**
  * 相机
  */
@@ -25,7 +27,7 @@ export default class Camera implements _Environment {
     private create(): void {
         const _this = this;
         
-        _this.instance = new Global.THREE.PerspectiveCamera(
+        _this.instance = new THREE.PerspectiveCamera(
             60, Global.Function.getAspect(), 1, 1000
         );
     }

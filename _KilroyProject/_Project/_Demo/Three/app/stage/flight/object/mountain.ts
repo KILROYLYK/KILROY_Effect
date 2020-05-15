@@ -68,10 +68,10 @@ export default class Mountain implements _Object {
             = THREE.RepeatWrapping;
         
         _this.simplex = new SimplexNoise();
-        _this.geometry = new THREE.PlaneGeometry(10000, 1000, 128, 32);
+        _this.geometry = new THREE.PlaneGeometry(12000, 1000, 128, 32);
         
         // 灯光
-        _this.light = new THREE.PointLight('#ffffff', 8, 5500);
+        _this.light = new THREE.PointLight('#ffffff', 0.8, 5500);
         _this.light.position.set(0, 1200, -3500);
         _this.light.color = color;
         _this.light.castShadow = false;
@@ -88,8 +88,8 @@ export default class Mountain implements _Object {
         });
         
         _this.terrain = new THREE.Mesh(_this.geometry, _this.material);
-        _this.terrain.position.set(0, -500, -3000);
-        _this.terrain.rotation.x = (Math.PI / 2) + 1.35;
+        _this.terrain.position.set(0, -300, -3000);
+        _this.terrain.rotation.x = (Math.PI / 2) + 0.8;
         
         _this.instance = new THREE.Object3D();
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
@@ -103,8 +103,12 @@ export default class Mountain implements _Object {
     private init(): void {
         const _this = this;
         
-        _this.centerP.x = Global.Width / 2;
-        _this.centerP.y = Global.Height / 2;
+        _this.centerP.x
+            = _this.mouseP.x
+            = Global.Width / 2;
+        _this.centerP.y
+            = _this.mouseP.y
+            = Global.Height / 2;
         
         _this.instance.add(_this.light);
         _this.instance.add(_this.terrain);
@@ -130,21 +134,20 @@ export default class Mountain implements _Object {
      */
     public update(): void {
         const _this = this,
-            factor = 1000,
-            scale = 600,
-            speed = 0.001,
-            ease = 30;
+            factor = 1000, // 顶点系数（越大越平缓）
+            scale = 300, // 陡峭倍数
+            speed = 0.0005,
+            ease = 15; // 缓冲系数
         
         for (const vertex of _this.geometry.vertices) {
-            const xoff = (vertex.x / factor),
-                yoff = (vertex.y / factor) + _this.cycle,
-                rand = _this.simplex.noise3d(xoff, yoff, 0) * scale;
-            vertex.z = rand;
+            const x = (vertex.x / factor),
+                y = (vertex.y / factor) + _this.cycle;
+            vertex.z = _this.simplex.noise(x, y) * scale;
         }
         _this.geometry.verticesNeedUpdate = true;
         _this.cycle -= speed;
-    
-        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * 0.2);
+        
+        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * 0.5);
         
         Global.Function.setEasePosition(_this.instance.position, _this.moveP, ease);
         Global.Function.setEasePosition(_this.instance.rotation, _this.lookP, ease);

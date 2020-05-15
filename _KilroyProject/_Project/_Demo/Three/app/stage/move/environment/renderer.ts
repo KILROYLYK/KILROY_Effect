@@ -1,6 +1,8 @@
 import Global from '../../../constant/global';
 import _Environment from '../../../interface/environment';
 
+import * as THREE from 'three';
+
 /**
  * 渲染器
  */
@@ -25,7 +27,7 @@ export default class Renderer implements _Environment {
     private create(): void {
         const _this = this;
         
-        _this.instance = new Global.THREE.WebGLRenderer({
+        _this.instance = new THREE.WebGLRenderer({
             antialias: true
         });
     }
@@ -38,7 +40,7 @@ export default class Renderer implements _Environment {
         const _this = this;
         
         _this.instance.setSize(Global.Width, Global.Height);
-        _this.instance.outputEncoding = Global.THREE.sRGBEncoding;
+        _this.instance.outputEncoding = THREE.sRGBEncoding;
         _this.instance.shadowMap.enabled = true;
     }
     

@@ -1,6 +1,8 @@
 import Global from '../../../constant/global';
 import _Environment from '../../../interface/environment';
 
+import * as THREE from 'three';
+
 /**
  * 相机
  */

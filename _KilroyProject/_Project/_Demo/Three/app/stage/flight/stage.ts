@@ -60,7 +60,7 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        // Global.Function.hideCursor();
+        Global.Function.hideCursor();
         
         _this.controller.loader = new Loader(_this.resource.path, {
             loadedCallback(index, total, progress) {
@@ -87,11 +87,11 @@ export default class Stage implements _Stage {
         _this.camera = new Camera();
         
         _this.object.light = new Light(_this.scene);
-        // _this.object.mountain = new Mountain(
-        //     _this.scene,
-        //     _this.resource.data.mountain
-        // );
-        // _this.object.ground = new Ground(_this.scene);
+        _this.object.mountain = new Mountain(
+            _this.scene,
+            _this.resource.data.mountain
+        );
+        _this.object.ground = new Ground(_this.scene);
         _this.object.star = new Star(
             _this.scene,
             _this.resource.data.star
@@ -121,8 +121,8 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         
         _this.object.light.destroy();
-        // _this.object.mountain.destroy();
-        // _this.object.ground.destroy();
+        _this.object.mountain.destroy();
+        _this.object.ground.destroy();
         _this.object.star.destroy();
         _this.object.meteor.destroy();
         
@@ -141,8 +141,8 @@ export default class Stage implements _Stage {
         
         if (!_this.isInit) return;
         
-        // _this.object.mountain.update();
-        // _this.object.ground.update();
+        _this.object.mountain.update();
+        _this.object.ground.update();
         _this.object.star.update();
         _this.object.meteor.update();
         

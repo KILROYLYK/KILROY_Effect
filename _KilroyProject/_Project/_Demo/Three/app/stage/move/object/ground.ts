@@ -1,6 +1,8 @@
 import Global from '../../../constant/global';
 import _Object from '../../../interface/object';
 
+import * as THREE from 'three';
+
 /**
  * 地面
  */
@@ -36,21 +38,21 @@ export default class Ground implements _Object {
     
         _this.texture.wrapS
             = _this.texture.wrapT
-            = Global.THREE.RepeatWrapping;
+            = THREE.RepeatWrapping;
         _this.texture.repeat.set(25, 25);
         _this.texture.anisotropy = 16;
-        _this.texture.encoding = Global.THREE.sRGBEncoding;
+        _this.texture.encoding = THREE.sRGBEncoding;
         
         // 材料
-        const material = new Global.THREE.MeshLambertMaterial({
+        const material = new THREE.MeshLambertMaterial({
             map: _this.texture
         });
         
         // 几何体
-        const geometry = new Global.THREE.PlaneBufferGeometry(20000, 20000);
+        const geometry = new THREE.PlaneBufferGeometry(20000, 20000);
         
         // 啮合
-        _this.instance = new Global.THREE.Mesh(geometry, material);
+        _this.instance = new THREE.Mesh(geometry, material);
         _this.instance.position.x = 0;
         _this.instance.position.y = 0;
         _this.instance.rotation.x = -Math.PI / 2;

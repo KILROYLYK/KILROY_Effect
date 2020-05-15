@@ -1,6 +1,8 @@
 import Global from '../../../constant/global';
 import _Object from '../../../interface/object';
 
+import * as THREE from 'three';
+
 /**
  * 灯光-角度光
  */
@@ -30,7 +32,7 @@ export default class Light implements _Object {
     private create(): void {
         const _this = this;
         
-        _this.instance = new Global.THREE.DirectionalLight('#ffffff', 1);
+        _this.instance = new THREE.DirectionalLight('#ffffff', 1);
         _this.instance.position.set(1, 1, 1);
         _this.instance.position.multiplyScalar(1.3); // 标量相乘
     }

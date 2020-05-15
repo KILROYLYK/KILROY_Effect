@@ -1,6 +1,8 @@
 import Global from '../../../constant/global';
 import _Environment from '../../../interface/environment';
 
+import * as THREE from 'three';
+
 /**
  * 渲染器
  */
@@ -25,7 +27,7 @@ export default class Renderer implements _Environment {
     private create(): void {
         const _this = this;
         
-        _this.instance = new Global.THREE.WebGLRenderer({
+        _this.instance = new THREE.WebGLRenderer({
             logarithmicDepthBuffer: true
         });
     }

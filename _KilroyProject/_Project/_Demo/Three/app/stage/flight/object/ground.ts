@@ -12,7 +12,7 @@ export default class Ground implements _Object {
     
     private simplex: SimplexNoise = null; // 简单声音
     private geometry: THREE.PlaneGeometry = null; // 几何体
-    private material: THREE.MeshPhongMaterial = null; // 材料
+    private material: THREE.MeshLambertMaterial = null; // 材料
     private plane: THREE.Mesh = null; // 平原
     private cycle: number = 0; // 周期
     private readonly centerP: object = { // 中心位置
@@ -64,7 +64,7 @@ export default class Ground implements _Object {
         this.simplex = new SimplexNoise();
         
         this.geometry = new THREE.PlaneGeometry(4000, 2000, 128, 64);
-       
+        
         this.material = new THREE.MeshLambertMaterial({
             color: '#ffffff',
             opacity: 1,
@@ -85,9 +85,13 @@ export default class Ground implements _Object {
      */
     private init(): void {
         const _this = this;
-        
-        _this.centerP.x = Global.Width / 2;
-        _this.centerP.y = Global.Height / 2;
+    
+        _this.centerP.x
+            = _this.mouseP.x
+            = Global.Width / 2;
+        _this.centerP.y
+            = _this.mouseP.y
+            = Global.Height / 2;
         
         _this.instance.add(_this.plane);
         _this.scene.add(_this.instance);
@@ -116,16 +120,15 @@ export default class Ground implements _Object {
      */
     public update(): void {
         const _this = this,
-            factor = 350,
-            scale = 40,
+            factor = 350, // 顶点系数（越大越平缓）
+            scale = 60, // 陡峭倍数
             speed = 0.002,
-            ease = 30;
+            ease = 15; // 缓冲系数
         
         for (const vertex of _this.geometry.vertices) {
-            const xoff = (vertex.x / factor),
-                yoff = (vertex.y / factor) + _this.cycle,
-                rand = _this.simplex.noise3d(xoff, yoff, 0) * scale;
-            vertex.z = rand;
+            const x = (vertex.x / factor),
+                y = (vertex.y / factor) + _this.cycle;
+            vertex.z = _this.simplex.noise(x, y) * scale;
         }
         _this.geometry.verticesNeedUpdate = true;
         _this.cycle += speed;

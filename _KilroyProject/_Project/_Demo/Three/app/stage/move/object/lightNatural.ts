@@ -1,6 +1,8 @@
 import Global from '../../../constant/global';
 import _Object from '../../../interface/object';
 
+import * as THREE from 'three';
+
 /**
  * 灯光-自然光
  */
@@ -30,7 +32,7 @@ export default class Light implements _Object {
     private create(): void {
         const _this = this;
         
-        _this.instance = new Global.THREE.AmbientLight('#ffffff', 1);
+        _this.instance = new THREE.AmbientLight('#ffffff', 1);
     }
     
     /**
