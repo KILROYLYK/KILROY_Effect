@@ -2,8 +2,6 @@ import './style'; // 样式
 
 import { W, D, Base } from '../../../../_Base/javascript/window'; // 浏览器对象
 
-import * as PIXI from 'pixi.js'; // 游戏引擎
-
 import Config from './config'; // 配置
 import Stage from './stage'; // 场景
 import Function from './function'; // 函数
@@ -17,11 +15,9 @@ export default class Global {
     
     readonly static Base: any = Base;
     
-    readonly static PIXI: any = PIXI; // PixiJS
-    
     public static Width: number = W.innerWidth;
     public static Height: number = W.innerHeight;
-    readonly static GameDom: HTMLElement = Function.getGameDom('game');
+    readonly static GameDom: HTMLElement = Function.getGame('game');
     
     readonly static Config: any = Config; // 配置
     readonly static Stage: any = Stage; // 场景

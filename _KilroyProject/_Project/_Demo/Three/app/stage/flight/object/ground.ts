@@ -1,5 +1,7 @@
 import Global from '../../../constant/global';
 import _Object from '../../../interface/object';
+
+import * as THREE from 'three';
 import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise';
 
 /**
@@ -55,24 +57,25 @@ export default class Ground implements _Object {
     private create(): void {
         const _this = this;
         
-        _this.instance = new Global.THREE.Object3D();
+        _this.instance = new THREE.Object3D();
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         
-        this.simplex = new SimplexNoise()
-        this.geometry = new Global.THREE.PlaneGeometry(4000, 2000, 128, 64);
+        this.simplex = new SimplexNoise();
         
-        this.material = new Global.THREE.MeshLambertMaterial({
+        this.geometry = new THREE.PlaneGeometry(4000, 2000, 128, 64);
+       
+        this.material = new THREE.MeshLambertMaterial({
             color: '#ffffff',
             opacity: 1,
-            blending: Global.THREE.NoBlending,
-            side: Global.THREE.FrontSide,
+            blending: THREE.NoBlending,
+            side: THREE.FrontSide,
             transparent: false,
             depthTest: false,
             wireframe: true
         });
         
-        this.plane = new Global.THREE.Mesh(this.geometry, this.material);
+        this.plane = new THREE.Mesh(this.geometry, this.material);
         this.plane.position.set(0, 0, 0);
     }
     
@@ -82,13 +85,13 @@ export default class Ground implements _Object {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.centerP.x = Global.Width / 2;
         _this.centerP.y = Global.Height / 2;
         
         _this.instance.add(_this.plane);
         _this.scene.add(_this.instance);
-    
+        
         Global.Window.addEventListener('mousemove', (e: MouseEvent) => {
             _this.mouseP.x = e.clientX;
             _this.mouseP.y = e.clientY;

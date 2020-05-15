@@ -1,5 +1,7 @@
 import Global from '../constant/global';
 import _Controller from '../interface/controller';
+
+import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
@@ -102,17 +104,17 @@ export default class Loader implements _Controller {
             res.path.indexOf('.png') > -1) {
             type = 'Image';
             !_this.loader.image &&
-            (_this.loader.image = new Global.THREE.TextureLoader());
+            (_this.loader.image = new THREE.TextureLoader());
             loader = _this.loader.image;
         } else if (res.path.indexOf('.json') > -1) {
             type = 'Json';
             !_this.loader.json &&
-            (_this.loader.json = new Global.THREE.ObjectLoader());
+            (_this.loader.json = new THREE.ObjectLoader());
             loader = _this.loader.json;
         } else if (res.path.indexOf('.mp3') > -1) {
             type = 'Audio';
             !_this.loader.audio &&
-            (_this.loader.audio = new Global.THREE.AudioLoader());
+            (_this.loader.audio = new THREE.AudioLoader());
             loader = _this.loader.audio;
         } else if (res.path.indexOf('.svg') > -1) {
             type = 'SVG';

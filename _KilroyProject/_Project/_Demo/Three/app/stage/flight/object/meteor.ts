@@ -1,6 +1,8 @@
 import Global from '../../../constant/global';
 import _Object from '../../../interface/object';
 
+import * as THREE from 'three';
+
 /**
  * 流星
  */
@@ -73,17 +75,17 @@ export default class Meteor implements _Object {
     private createStar(): void {
         const _this = this,
             spread = 1000, // 扩散范围
-            geometry = new Global.THREE.CylinderGeometry(0, 2, 120, 10), // 几何体
-            material = new Global.THREE.MeshBasicMaterial({ // 材质
+            geometry = new THREE.CylinderGeometry(0, 2, 120, 10), // 几何体
+            material = new THREE.MeshBasicMaterial({ // 材质
                 color: '#ffffff',
                 opacity: 1,
-                blending: Global.THREE.AdditiveBlending,
-                side: Global.THREE.FrontSide,
+                blending: THREE.AdditiveBlending,
+                side: THREE.FrontSide,
                 transparent: false,
                 depthTest: true
             }),
-            cylinder = new Global.THREE.Mesh(geometry, material), // 圆柱
-            random = Global.THREE.Math.randInt(-spread, spread); // 随机整数
+            cylinder = new THREE.Mesh(geometry, material), // 圆柱
+            random = THREE.Math.randInt(-spread, spread); // 随机整数
         cylinder.position.set(random, 300, 200);
         cylinder.rotation.set(Math.PI / 2, 0, 0);
         _this.list.push(cylinder);

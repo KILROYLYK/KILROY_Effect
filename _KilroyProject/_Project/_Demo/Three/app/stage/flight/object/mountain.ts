@@ -1,5 +1,7 @@
 import Global from '../../../constant/global';
 import _Object from '../../../interface/object';
+
+import * as THREE from 'three';
 import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise';
 
 /**
@@ -58,38 +60,38 @@ export default class Mountain implements _Object {
      */
     private create(): void {
         const _this = this,
-            color = new Global.THREE.Color();
+            color = new THREE.Color();
         color.setHSL(0.038, 0.8, 0.5);
         
         _this.texture.wrapT
             = _this.texture.wrapS
-            = Global.THREE.RepeatWrapping;
+            = THREE.RepeatWrapping;
         
         _this.simplex = new SimplexNoise();
-        _this.geometry = new Global.THREE.PlaneGeometry(10000, 1000, 128, 32);
+        _this.geometry = new THREE.PlaneGeometry(10000, 1000, 128, 32);
         
         // 灯光
-        _this.light = new Global.THREE.PointLight('#ffffff', 8, 5500);
+        _this.light = new THREE.PointLight('#ffffff', 8, 5500);
         _this.light.position.set(0, 1200, -3500);
         _this.light.color = color;
         _this.light.castShadow = false;
         
         // 材料
-        _this.material = new Global.THREE.MeshPhongMaterial({
+        _this.material = new THREE.MeshPhongMaterial({
             color: '#ffffff',
             opacity: 1,
             map: _this.texture,
-            blending: Global.THREE.NoBlending,
-            side: Global.THREE.BackSide,
+            blending: THREE.NoBlending,
+            side: THREE.BackSide,
             transparent: true,
             depthTest: false
         });
         
-        _this.terrain = new Global.THREE.Mesh(_this.geometry, _this.material);
+        _this.terrain = new THREE.Mesh(_this.geometry, _this.material);
         _this.terrain.position.set(0, -500, -3000);
         _this.terrain.rotation.x = (Math.PI / 2) + 1.35;
         
-        _this.instance = new Global.THREE.Object3D();
+        _this.instance = new THREE.Object3D();
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
     }

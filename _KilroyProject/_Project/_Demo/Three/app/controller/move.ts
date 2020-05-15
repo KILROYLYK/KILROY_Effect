@@ -1,6 +1,8 @@
 import Global from '../constant/global';
 import _Controller from '../interface/controller';
 
+import * as THREE from 'three';
+
 interface MoveConfig { // 控制器配置
     turn?: boolean // 开关转向
     focus?: boolean // 开关聚焦
@@ -35,18 +37,18 @@ export default class Move implements _Controller {
         wheel: 0.008,
         walk: 3
     };
+    private readonly flag: MoveConfig = { // 开关
+        turn: false,
+        focus: false,
+        walk: false,
+        jump: false
+    };
     private readonly key: object = { // 按键
         before: 87, // 前 W
         left: 65, // 左 A
         right: 68, // 右 D
         after: 83, // 后 S
         jump: 32 // 跳 Space
-    };
-    private readonly flag: MoveConfig = { // 开关
-        turn: false,
-        focus: false,
-        walk: false,
-        jump: false
     };
     
     /**
@@ -60,7 +62,7 @@ export default class Move implements _Controller {
         
         _this.camera = camera.instance;
         
-        _this.targetP = new Global.THREE.Vector3();
+        _this.targetP = new THREE.Vector3();
         _this.focusLL.far = _this.camera.far * 2;
         _this.flag.turn = !!config.turn;
         _this.flag.focus = !!config.focus;
@@ -100,8 +102,8 @@ export default class Move implements _Controller {
         
         // 获取视角
         _this.focusLL.lat = Math.max(-_this.focusLL.maxLat, Math.min(_this.focusLL.maxLat, _this.focusLL.lat));
-        _this.focusLL.phi = Global.THREE.Math.degToRad(90 - _this.focusLL.lat);
-        _this.focusLL.theta = Global.THREE.Math.degToRad(_this.focusLL.lon - 90);
+        _this.focusLL.phi = THREE.Math.degToRad(90 - _this.focusLL.lat);
+        _this.focusLL.theta = THREE.Math.degToRad(_this.focusLL.lon - 90);
         
         // 将视觉目标移至视角中心
         Global.Function.setEasePosition(_this.targetP, {
@@ -195,7 +197,7 @@ export default class Move implements _Controller {
                 wheel: (e: WheelEvent): void => {
                     const fov = _this.camera.fov + e.deltaY * _this.speed.wheel;
                     
-                    _this.camera.fov = Global.THREE.Math.clamp(fov, 45, 95);
+                    _this.camera.fov = THREE.Math.clamp(fov, 45, 95);
                     _this.camera.updateProjectionMatrix();
                 }
             },

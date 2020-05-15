@@ -1,6 +1,8 @@
 import Global from '../../../constant/global';
 import _Environment from '../../../interface/environment';
 
+import * as THREE from 'three';
+
 /**
  * 场景
  */
@@ -25,7 +27,7 @@ export default class Scene implements _Environment {
     private create(): void {
         const _this = this;
         
-        _this.instance = new Global.THREE.Scene();
+        _this.instance = new THREE.Scene();
     }
     
     /**

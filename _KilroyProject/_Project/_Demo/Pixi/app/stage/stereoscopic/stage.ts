@@ -1,9 +1,11 @@
-import './stereoscopic.less';
-
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 
+import * as PIXI from 'pixi.js';
+
 import Anime from 'animejs';
+
+import './stereoscopic.less';
 
 /**
  * 场景
@@ -48,13 +50,13 @@ export default class Stage implements _Stage {
     private create(): void {
         const _this = this;
         
-        _this.app = new Global.PIXI.Application({
+        _this.app = new PIXI.Application({
             width: _this.size.width,
             height: _this.size.height,
             transparent: true
         });
         
-        _this.container = new Global.PIXI.Container();
+        _this.container = new PIXI.Container();
     }
     
     /**
@@ -63,8 +65,8 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this,
-            spriteB = new Global.PIXI.Sprite.from(_this.src.background),
-            spriteS = new Global.PIXI.Sprite.from(_this.src.shadow);
+            spriteB = new PIXI.Sprite.from(_this.src.background),
+            spriteS = new PIXI.Sprite.from(_this.src.shadow);
         
         spriteB.width = _this.size.width;
         spriteB.height = _this.size.height;
@@ -72,8 +74,8 @@ export default class Stage implements _Stage {
         spriteS.width = _this.size.width;
         spriteS.height = _this.size.height;
         
-        spriteS.texture.baseTexture.wrapMode = Global.PIXI.WRAP_MODES.REPEAT;
-        _this.filter = new Global.PIXI.filters.DisplacementFilter(spriteS);
+        spriteS.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+        _this.filter = new PIXI.filters.DisplacementFilter(spriteS);
         
         _this.container.addChild(spriteB);
         _this.container.addChild(spriteS);

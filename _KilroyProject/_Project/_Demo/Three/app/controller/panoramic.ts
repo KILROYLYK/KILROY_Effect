@@ -1,11 +1,7 @@
 import Global from '../constant/global';
 import _Controller from '../interface/controller';
 
-interface Resource { // 资源
-    name: string // 图片名称
-    position: [ number, number, number ] // 位置
-    rotation: [ number, number, number ] // 角度
-}
+import * as THREE from 'three';
 
 /**
  * 全景
@@ -43,15 +39,15 @@ export default class Panoramic implements _Controller {
     private create(): void {
         const _this = this;
         
-        _this.geometry = new Global.THREE.SphereGeometry(500, 50, 50);
+        _this.geometry = new THREE.SphereGeometry(500, 50, 50);
         _this.geometry.scale(-1, 0.5, 0.5);
         _this.geometry.rotateY(-Math.PI / 2);
         
-        _this.material = new Global.THREE.MeshBasicMaterial({
+        _this.material = new THREE.MeshBasicMaterial({
             map: _this.texture
         });
         
-        _this.instance = new Global.THREE.Mesh(_this.geometry, _this.material);
+        _this.instance = new THREE.Mesh(_this.geometry, _this.material);
     }
     
     /**
