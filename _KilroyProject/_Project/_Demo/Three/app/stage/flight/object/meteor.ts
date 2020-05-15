@@ -57,7 +57,7 @@ export default class Meteor implements _Object {
     public update(): void {
         const _this = this;
         
-        Math.random() > 0.99 && _this.createStar();
+        Math.random() > 0.95 && _this.createStar();
         
         _this.list.forEach((v: THREE.Mesh, i: number, a: THREE.Mesh[]) => {
             if (v.position.z < -3000) {

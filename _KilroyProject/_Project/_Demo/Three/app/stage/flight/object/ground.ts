@@ -120,8 +120,8 @@ export default class Ground implements _Object {
      */
     public update(): void {
         const _this = this,
-            factor = 350, // 顶点系数（越大越平缓）
-            scale = 60, // 陡峭倍数
+            factor = 300, // 顶点系数（越大越平缓）
+            scale = 30, // 陡峭倍数
             speed = 0.002,
             ease = 15; // 缓冲系数
         
