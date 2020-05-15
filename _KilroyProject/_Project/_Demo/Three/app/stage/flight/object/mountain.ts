@@ -3,9 +3,9 @@ import _Object from '../../../interface/object';
 import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise';
 
 /**
- * 地形
+ * 山脉
  */
-export default class Terrain implements _Object {
+export default class Mountain implements _Object {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
@@ -38,7 +38,7 @@ export default class Terrain implements _Object {
     
     /**
      * 构造函数
-     * @constructor Terrain
+     * @constructor Mountain
      * @param {object} scene 场景
      * @param {THREE.Texture} texture 纹理
      */

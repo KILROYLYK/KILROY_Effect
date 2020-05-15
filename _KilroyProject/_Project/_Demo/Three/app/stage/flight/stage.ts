@@ -5,7 +5,7 @@ import Renderer from './environment/renderer';
 import Scene from './environment/scene';
 import Camera from './environment/camera';
 import Light from './object/light';
-import Terrain from './object/terrain';
+import Mountain from './object/mountain';
 import Meteor from './object/meteor';
 import Loader from '../../controller/loader';
 
@@ -81,7 +81,7 @@ export default class Stage implements _Stage {
         
         _this.object.light = new Light(_this.scene);
         _this.object.meteor = new Meteor(_this.scene);
-        _this.object.terrain = new Terrain(
+        _this.object.terrain = new Mountain(
             _this.scene,
             _this.resource.data.terrain
         );

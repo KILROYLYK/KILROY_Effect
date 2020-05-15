@@ -44,7 +44,7 @@ export default class Panoramic implements _Controller {
         const _this = this;
         
         _this.geometry = new Global.THREE.SphereGeometry(500, 50, 50);
-        _this.geometry.scale(-1, 1, 1);
+        _this.geometry.scale(-1, 0.5, 0.5);
         _this.geometry.rotateY(-Math.PI / 2);
         
         _this.material = new Global.THREE.MeshBasicMaterial({
