@@ -76,15 +76,6 @@ export default class Loader implements _Controller {
     }
     
     /**
-     * 更新
-     * @param {boolean} isResize 屏幕是否变化
-     * @return {void}
-     */
-    public update(isResize: boolean = false): void {
-        const _this = this;
-    }
-    
-    /**
      * 销毁
      * @return {void}
      */

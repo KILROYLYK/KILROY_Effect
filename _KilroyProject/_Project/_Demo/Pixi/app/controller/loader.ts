@@ -56,20 +56,15 @@ export default class Loader implements _Controller {
     }
     
     /**
-     * 更新
-     * @param {boolean} isResize 屏幕是否变化
-     * @return {void}
-     */
-    public update(isResize: boolean = false): void {
-        const _this = this;
-    }
-    
-    /**
      * 销毁
      * @return {void}
      */
     public destroy(): void {
         const _this = this;
+        
+        _this.loader = null;
+        _this.list = [];
+        _this.data = {};
     }
     
     /**
@@ -84,11 +79,14 @@ export default class Loader implements _Controller {
             .on('progress', () => {
                 _this.finish++;
                 _this.loadedCallback && _this.loadedCallback(
+                    _this.finish,
+                    _this.list.length,
                     parseInt(String(_this.finish / _this.list.length * 100), 10)
                 );
             })
             .load((load, res) => {
-                _this.finishCallback && _this.finishCallback(res);
+                _this.data = res;
+                _this.finishCallback && _this.finishCallback(_this.data);
             });
     }
 }
