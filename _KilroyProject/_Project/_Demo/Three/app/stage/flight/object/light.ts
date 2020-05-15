@@ -29,7 +29,7 @@ export default class Light implements _Object {
      * 创建
      * @return {void}
      */
-    protected create(): void {
+    private create(): void {
         const _this = this;
         
         _this.color = new Global.THREE.Color();
@@ -41,7 +41,7 @@ export default class Light implements _Object {
      * 初始化
      * @return {void}
      */
-    protected init(): void {
+    private init(): void {
         const _this = this;
         
         _this.color.setHSL(0.038, 0.8, 0.5);

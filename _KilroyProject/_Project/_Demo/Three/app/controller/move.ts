@@ -104,10 +104,11 @@ export default class Move implements _Controller {
         _this.focusLL.theta = Global.THREE.Math.degToRad(_this.focusLL.lon - 90);
         
         // 将视觉目标移至视角中心
-        _this.targetP.x = Math.sin(_this.focusLL.phi) * Math.cos(_this.focusLL.theta) * _this.focusLL.far;
-        _this.targetP.y = Math.cos(_this.focusLL.phi) * _this.focusLL.far;
-        _this.targetP.z = Math.sin(_this.focusLL.phi) * Math.sin(_this.focusLL.theta) * _this.focusLL.far;
-        
+        Global.Function.setEasePosition(_this.targetP, {
+            x: Math.sin(_this.focusLL.phi) * Math.cos(_this.focusLL.theta) * _this.focusLL.far,
+            y: Math.cos(_this.focusLL.phi) * _this.focusLL.far,
+            z: Math.sin(_this.focusLL.phi) * Math.sin(_this.focusLL.theta) * _this.focusLL.far
+        }, 10);
         _this.flag.turn && _this.camera.lookAt(_this.targetP);  // 转向
     }
     

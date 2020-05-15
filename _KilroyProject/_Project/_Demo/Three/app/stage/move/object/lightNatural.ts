@@ -14,7 +14,7 @@ export default class Light implements _Object {
      * @constructor Light
      * @param {object} scene 场景
      */
-    protected constructor(scene: object) {
+     constructor(scene: object) {
         const _this = this;
         
         _this.scene = scene.instance;
@@ -27,7 +27,7 @@ export default class Light implements _Object {
      * 创建
      * @return {void}
      */
-    protected create(): void {
+    private create(): void {
         const _this = this;
         
         _this.instance = new Global.THREE.AmbientLight('#ffffff', 1);
@@ -37,10 +37,8 @@ export default class Light implements _Object {
      * 初始化
      * @return {void}
      */
-    protected init(): void {
+    private init(): void {
         const _this = this;
-        
-        _this.instance.castShadow = true;
         
         _this.scene.add(_this.instance);
     }

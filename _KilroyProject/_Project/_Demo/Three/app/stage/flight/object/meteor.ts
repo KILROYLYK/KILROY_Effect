@@ -27,7 +27,7 @@ export default class Meteor implements _Object {
      * 创建
      * @return {void}
      */
-    protected create(): void {
+    private create(): void {
         const _this = this;
     }
     
@@ -35,7 +35,7 @@ export default class Meteor implements _Object {
      * 初始化
      * @return {void}
      */
-    protected init(): void {
+    private init(): void {
         const _this = this;
     }
     

@@ -26,8 +26,6 @@ export default class Renderer implements _Environment {
     private create(): void {
         const _this = this;
         
-        if (_this.instance) return;
-        
         _this.instance = new CSS3DRenderer();
     }
     
@@ -37,10 +35,20 @@ export default class Renderer implements _Environment {
      */
     private init(): void {
         const _this = this;
-        
-        if (_this.instance) return;
     
         _this.instance.setSize(Global.Width, Global.Height);
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        
+        if (!_this.instance) return;
+        
+        _this.instance = null;
     }
     
     /**
@@ -56,17 +64,5 @@ export default class Renderer implements _Environment {
         if (isResize) { // 屏幕变化
             _this.instance.setSize(Global.Width, Global.Height);
         }
-    }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
- 
-        _this.instance = null;
     }
 }

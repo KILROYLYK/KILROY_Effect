@@ -8,8 +8,6 @@ export default class Ground implements _Object {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private loader: THREE.TextureLoader = null; // 加载
-    
     public instance: THREE.Mesh = null; // 实例
     
     
@@ -35,8 +33,6 @@ export default class Ground implements _Object {
      */
     private create(): void {
         const _this = this;
-        
-        _this.loader = new Global.THREE.TextureLoader();
     
         _this.texture.wrapS
             = _this.texture.wrapT
@@ -80,8 +76,7 @@ export default class Ground implements _Object {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.loader = null;
+
         _this.instance = null;
     }
 }

@@ -14,7 +14,7 @@ export default class Light implements _Object {
      * @constructor Light
      * @param {object} scene 场景
      */
-    protected constructor(scene: object) {
+     constructor(scene: object) {
         const _this = this;
         
         _this.scene = scene.instance;
@@ -27,21 +27,20 @@ export default class Light implements _Object {
      * 创建
      * @return {void}
      */
-    protected create(): void {
+    private create(): void {
         const _this = this;
         
         _this.instance = new Global.THREE.DirectionalLight('#ffffff', 1);
+        _this.instance.position.set(1, 1, 1);
+        _this.instance.position.multiplyScalar(1.3); // 标量相乘
     }
     
     /**
      * 初始化
      * @return {void}
      */
-    protected init(): void {
+    private init(): void {
         const _this = this;
-        
-        _this.instance.position.set(1, 1, 1);
-        _this.instance.position.multiplyScalar(1.3); // 标量相乘
         
         // 阴影
         _this.instance.castShadow = true;

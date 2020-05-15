@@ -71,7 +71,6 @@ export default class Stage implements _Stage {
         _this.controller.move.update();
         
         _this.camera.update(isResize);
-        _this.scene.update(isResize);
         _this.renderer.update(isResize);
         
         _this.renderer.instance.render(

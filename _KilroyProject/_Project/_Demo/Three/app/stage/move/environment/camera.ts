@@ -63,7 +63,7 @@ export default class Camera implements _Environment {
         if (!_this.instance) return;
         
         if (isResize) { // 屏幕变化
-            _this.instance.aspect = _this.getAspect();
+            _this.instance.aspect = Global.Function.getAspect();
             _this.instance.updateProjectionMatrix();
         }
     }

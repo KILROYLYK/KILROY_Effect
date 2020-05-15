@@ -25,10 +25,8 @@ export default class Camera implements _Environment {
     private create(): void {
         const _this = this;
         
-        if (_this.instance) return;
-        
         _this.instance = new Global.THREE.PerspectiveCamera(
-         60, _this.getAspect(), 1,  1000
+            60, Global.Function.getAspect(), 1, 1000
         );
     }
     
@@ -39,25 +37,7 @@ export default class Camera implements _Environment {
     private init(): void {
         const _this = this;
         
-        if (!_this.instance) return;
-        
-        _this.instance.position.set(0,0,0);
-    }
-    
-    /**
-     * 更新
-     * @param {boolean} isResize 屏幕是否变化
-     * @return {void}
-     */
-    public update(isResize: boolean = false): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-        
-        if (isResize) { // 屏幕变化
-            _this.instance.aspect = _this.getAspect();
-            _this.instance.updateProjectionMatrix();
-        }
+        _this.instance.position.set(0, 0, 0);
     }
     
     /**
@@ -73,11 +53,18 @@ export default class Camera implements _Environment {
     }
     
     /**
-     * 获取屏幕宽高比
-     * @return {number} 宽高比
+     * 更新
+     * @param {boolean} isResize 屏幕是否变化
+     * @return {void}
      */
-    private getAspect(): number {
+    public update(isResize: boolean = false): void {
         const _this = this;
-        return Global.Width / Global.Height;
+        
+        if (!_this.instance) return;
+        
+        if (isResize) { // 屏幕变化
+            _this.instance.aspect = Global.Function.getAspect();
+            _this.instance.updateProjectionMatrix();
+        }
     }
 }

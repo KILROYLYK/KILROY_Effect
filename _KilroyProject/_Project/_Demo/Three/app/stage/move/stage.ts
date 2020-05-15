@@ -50,7 +50,6 @@ export default class Stage implements _Stage {
             },
             finishCallback(data) {
                 _this.resource.data = data;
-                
                 _this.create();
                 _this.init();
             }
@@ -68,7 +67,7 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.object.ground = new Ground(_this.scene,_this.resource.data.grassland);
+        _this.object.ground = new Ground(_this.scene, _this.resource.data.grassland);
         _this.object.lightNatural = new LightNatural(_this.scene);
         _this.object.lightAngle = new LightAngle(_this.scene);
     }
@@ -79,6 +78,8 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this;
+        
+        _this.isInit = true;
         
         Global.GameDom.appendChild(_this.renderer.instance.domElement);
         
