@@ -53,7 +53,7 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        Global.Function.hideGameCursor();
+        // Global.Function.hideGameCursor();
         
         _this.controller.loader = new Loader(_this.resource.path, {
             loadedCallback(index, total, progress) {
@@ -112,6 +112,7 @@ export default class Stage implements _Stage {
         
         _this.object.light.destroy();
         _this.object.meteor.destroy();
+        _this.object.terrain.destroy();
     }
     
     /**
@@ -125,6 +126,7 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         
         _this.object.meteor.update();
+        _this.object.terrain.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

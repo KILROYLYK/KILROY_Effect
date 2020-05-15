@@ -91,7 +91,7 @@ export default class Function {
      * @param {number} ease 缓冲系数
      * @return {void}
      */
-    public ease(position: object, targetP: object, ease: number): void {
+    public static ease(position: object, targetP: object, ease: number): void {
         const _this = this;
         position.x += (targetP.x - position.x) / ease;
         position.y += (targetP.y - position.y) / ease;
