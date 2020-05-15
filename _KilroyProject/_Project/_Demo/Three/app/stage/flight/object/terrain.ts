@@ -131,7 +131,7 @@ export default class Terrain implements _Object {
             factor = 1000,
             scale = 500,
             speed = 0.0005,
-            ease = 18;
+            ease = 10;
         
         _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * 0.2);
         
