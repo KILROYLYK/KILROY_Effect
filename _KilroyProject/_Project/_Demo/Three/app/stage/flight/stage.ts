@@ -9,6 +9,7 @@ import Mountain from './object/mountain';
 import Ground from './object/ground';
 import Star from './object/star';
 import Meteor from './object/meteor';
+import Spaceship from './object/spaceship';
 import Loader from '../../controller/loader';
 
 import './flight.less';
@@ -33,8 +34,8 @@ export default class Stage implements _Stage {
                 path: 'https://image.gaeamobile.net/image/20200515/164632/engine.jpg'
             },
             {
-                name: 'fighter',
-                path: 'https://image.gaeamobile.net/image/20200515/164632/ship_01.obj'
+                name: 'spaceship',
+                path: 'https://image.gaeamobile.net/image/20200515/164632/ship_03.obj'
             }
         ] as object[],
         data: null as object // 数据
@@ -46,8 +47,9 @@ export default class Stage implements _Stage {
         light: null as Light, // 灯光
         mountain: null as Mountain, // 山脉
         ground: null as Ground, // 地形
-        star: null as Star, // 流星
+        star: null as Star, // 星星
         meteor: null as Meteor, // 流星
+        spaceship: null as Spaceship // 飞船
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -97,6 +99,11 @@ export default class Stage implements _Stage {
             _this.resource.data.star
         );
         _this.object.meteor = new Meteor(_this.scene);
+        _this.object.spaceship = new Spaceship(
+            _this.scene,
+            _this.resource.data.spaceship,
+            _this.resource.data.engine
+        );
     }
     
     /**
@@ -125,6 +132,7 @@ export default class Stage implements _Stage {
         _this.object.ground.destroy();
         _this.object.star.destroy();
         _this.object.meteor.destroy();
+        _this.object.spaceship.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();
@@ -145,6 +153,7 @@ export default class Stage implements _Stage {
         _this.object.ground.update();
         _this.object.star.update();
         _this.object.meteor.update();
+        _this.object.spaceship.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

@@ -10,6 +10,7 @@ export default class Star implements _Object {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
+    private point: THREE.Points = null; // 点
     private readonly centerP: object = { // 中心位置
         x: 0,
         y: 0
@@ -53,24 +54,12 @@ export default class Star implements _Object {
      */
     private create(): void {
         const _this = this,
-            spread = 8000, // 扩散范围
-            geometry = new THREE.Geometry(), // 几何体
-            material = new THREE.PointsMaterial({ // 点材质
-                size: 64,
-                color: '#ffffff',
-                opacity: 1,
-                map: _this.texture,
-                blending: THREE.AdditiveBlending,
-                vertexColors: false,
-                transparent: true,
-                depthTest: false
-            }),
-            point = new THREE.Points(geometry, material);
+            spread = 8000; // 扩散范围
         
+        const geometry = new THREE.Geometry();
         for (let i = 0; i < 400; i++) {
             const angle = (Math.random() * Math.PI * 2),
                 radius = THREE.MathUtils.randInt(0, spread);
-            
             geometry.vertices.push(new THREE.Vector3(
                 Math.cos(angle) * radius,
                 Math.sin(angle) * radius / 10,
@@ -78,8 +67,20 @@ export default class Star implements _Object {
             ));
         }
         
+        const material = new THREE.PointsMaterial({ // 点材质
+            size: 64,
+            color: '#ffffff',
+            opacity: 1,
+            map: _this.texture,
+            blending: THREE.AdditiveBlending,
+            vertexColors: false,
+            transparent: true,
+            depthTest: false
+        });
+        
+        _this.point = new THREE.Points(geometry, material);
+        
         _this.instance = new THREE.Object3D();
-        _this.instance.add(point);
     }
     
     /**
@@ -88,7 +89,7 @@ export default class Star implements _Object {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.centerP.x
             = _this.mouseP.x
             = Global.Width / 2;
@@ -98,6 +99,7 @@ export default class Star implements _Object {
         
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
+        _this.instance.add(_this.point);
         _this.scene.add(_this.instance);
         
         Global.Window.addEventListener('mousemove', (e: MouseEvent) => {
@@ -124,11 +126,12 @@ export default class Star implements _Object {
      */
     public update(): void {
         const _this = this,
-            ease = 15;
+            ease = 15,
+            mouseS = 0.1; // 鼠标速度
         
         if (!_this.instance) return;
         
-        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * 0.1);
+        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * mouseS);
         
         Global.Function.setEasePosition(_this.instance.position, _this.moveP, ease);
         Global.Function.setEasePosition(_this.instance.rotation, _this.lookP, ease);

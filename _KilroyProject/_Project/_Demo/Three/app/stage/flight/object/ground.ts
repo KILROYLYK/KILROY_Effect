@@ -10,9 +10,8 @@ import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise';
 export default class Ground implements _Object {
     private scene: THREE.Scene = null; // 场景
     
-    private simplex: SimplexNoise = null; // 简单声音
+    private simplex: SimplexNoise = null; // 单纯形
     private geometry: THREE.PlaneGeometry = null; // 几何体
-    private material: THREE.MeshLambertMaterial = null; // 材料
     private plane: THREE.Mesh = null; // 平原
     private cycle: number = 0; // 周期
     private readonly centerP: object = { // 中心位置
@@ -57,15 +56,7 @@ export default class Ground implements _Object {
     private create(): void {
         const _this = this;
         
-        _this.instance = new THREE.Object3D();
-        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
-        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
-        
-        this.simplex = new SimplexNoise();
-        
-        this.geometry = new THREE.PlaneGeometry(4000, 2000, 128, 64);
-        
-        this.material = new THREE.MeshLambertMaterial({
+        const material = new THREE.MeshLambertMaterial({
             color: '#ffffff',
             opacity: 1,
             blending: THREE.NoBlending,
@@ -74,9 +65,17 @@ export default class Ground implements _Object {
             depthTest: false,
             wireframe: true
         });
+    
+        _this.simplex = new SimplexNoise();
+    
+        _this.geometry = new THREE.PlaneGeometry(
+            4000, 2000, 128, 64
+        );
+    
+        _this.plane = new THREE.Mesh(_this.geometry, material);
+        _this.plane.position.set(0, 0, 0);
         
-        this.plane = new THREE.Mesh(this.geometry, this.material);
-        this.plane.position.set(0, 0, 0);
+        _this.instance = new THREE.Object3D();
     }
     
     /**
@@ -85,14 +84,16 @@ export default class Ground implements _Object {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.centerP.x
             = _this.mouseP.x
             = Global.Width / 2;
         _this.centerP.y
             = _this.mouseP.y
             = Global.Height / 2;
-        
+    
+        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
+        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.instance.add(_this.plane);
         _this.scene.add(_this.instance);
         
@@ -120,10 +121,13 @@ export default class Ground implements _Object {
      */
     public update(): void {
         const _this = this,
+            ease = 15, // 缓冲系数
             factor = 300, // 顶点系数（越大越平缓）
             scale = 30, // 陡峭倍数
-            speed = 0.002,
-            ease = 15; // 缓冲系数
+            cycleS = 0.08, // 周期速度
+            mouseS = 0.5; // 鼠标速度
+        
+        if (!_this.instance) return;
         
         for (const vertex of _this.geometry.vertices) {
             const x = (vertex.x / factor),
@@ -131,9 +135,9 @@ export default class Ground implements _Object {
             vertex.z = _this.simplex.noise(x, y) * scale;
         }
         _this.geometry.verticesNeedUpdate = true;
-        _this.cycle += speed;
+        _this.cycle += cycleS;
         
-        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * 0.4);
+        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * mouseS);
         
         Global.Function.setEasePosition(_this.instance.position, _this.moveP, ease);
         Global.Function.setEasePosition(_this.instance.rotation, _this.lookP, ease);

@@ -9,7 +9,7 @@ import * as THREE from 'three';
 export default class Meteor implements _Object {
     private scene: THREE.Scene = null; // 场景
     
-    private list: THREE.Mesh[] = []; // 流星列表
+    private instance: THREE.Mesh[] = []; // 流星列表
     
     /**
      * 构造函数
@@ -47,7 +47,8 @@ export default class Meteor implements _Object {
      */
     public destroy(): void {
         const _this = this;
-        _this.list = [];
+        
+        _this.instance = [];
     }
     
     /**
@@ -59,9 +60,9 @@ export default class Meteor implements _Object {
         
         Math.random() > 0.95 && _this.createStar();
         
-        _this.list.forEach((v: THREE.Mesh, i: number, a: THREE.Mesh[]) => {
+        _this.instance.forEach((v: THREE.Mesh, i: number, a: THREE.Mesh[]) => {
             if (v.position.z < -3000) {
-                _this.list.splice(i, 1);
+                _this.instance.splice(i, 1);
                 this.scene.remove(v);
             }
             v.position.z -= 20;
@@ -74,21 +75,26 @@ export default class Meteor implements _Object {
      */
     private createStar(): void {
         const _this = this,
-            spread = 1000, // 扩散范围
-            geometry = new THREE.CylinderGeometry(0, 2, 120, 10), // 几何体
-            material = new THREE.MeshBasicMaterial({ // 材质
+            spread = 1000; // 扩散范围
+    
+        const random = THREE.MathUtils.randInt(-spread, spread); // 随机整数
+        
+        const geometry = new THREE.CylinderGeometry(0, 2, 120, 10); // 几何体
+       
+        const material = new THREE.MeshBasicMaterial({ // 材质
                 color: '#ffffff',
                 opacity: 1,
                 blending: THREE.AdditiveBlending,
                 side: THREE.FrontSide,
                 transparent: false,
                 depthTest: true
-            }),
-            cylinder = new THREE.Mesh(geometry, material), // 圆柱
-            random = THREE.MathUtils.randInt(-spread, spread); // 随机整数
+            });
+        
+        const cylinder = new THREE.Mesh(geometry, material); // 圆柱
         cylinder.position.set(random, 300, 200);
         cylinder.rotation.set(Math.PI / 2, 0, 0);
-        _this.list.push(cylinder);
+        
+        _this.instance.push(cylinder);
         _this.scene.add(cylinder);
     }
 }
