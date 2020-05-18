@@ -93,8 +93,6 @@ export default class Stage implements _Stage {
         _this.object.star = new Star(_this.scene, resource.star);
         _this.object.meteor = new Meteor(_this.scene);
         _this.object.spaceship = new Spaceship(_this.scene, resource.spaceship, resource.engine);
-        
-        console.log(_this.scene);
     }
     
     /**
