@@ -15,7 +15,7 @@ export default class Spaceship implements _Object {
     
     private light: THREE.PointLight = null; // 灯光
     private fire: THREE.Mesh = null; // 火焰
-    private bullet = []; // 子弹列表
+    private bullet: THREE.Mesh[] = []; // 子弹列表
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 0,
@@ -82,12 +82,16 @@ export default class Spaceship implements _Object {
         _this.instance.add(_this.fire);
         _this.scene.add(_this.instance);
         
+        
         Global.Window.addEventListener('wheel', (e: WheelEvent) => {
             const z = _this.moveP.z;
             let d = z + (e.deltaY | 0);
             d = (d < -20) ? -20 : d;
             d = (d > 20) ? 20 : d;
             _this.moveP.z = d;
+        });
+        Global.Window.addEventListener('click', (e: MouseEvent) => {
+            _this.createBullet();
         });
     }
     
@@ -131,6 +135,16 @@ export default class Spaceship implements _Object {
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);
         Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);
+        
+        // 更新子弹
+        _this.bullet.forEach((v: THREE.Mesh, i: number, a: THREE.Mesh[]) => {
+            const cylinder = _this.bullet[i];
+            if (cylinder.position.z < -300) {
+                _this.bullet.splice(i, 1);
+                _this.instance.remove(cylinder);
+            }
+            cylinder.position.z -= 6;
+        });
     }
     
     /**
@@ -180,5 +194,37 @@ export default class Spaceship implements _Object {
         );
         _this.fire.position.set(0, 0.4, 257);
         _this.fire.rotation.set(Math.PI / 2, 0, 0);
+    }
+    
+    /**
+     * 创建子弹
+     * @return {void}
+     */
+    private createBullet(): void {
+        const _this = this,
+            position = _this.instance.position;
+        
+        const color = new THREE.Color();
+        color.setHSL(Math.random(), 1, .5);
+        
+        const geometry = new THREE.CylinderGeometry(
+            .3, 0, 20, 10
+        );
+        
+        const material = new THREE.MeshBasicMaterial({
+            color,
+            opacity: .8,
+            blending: THREE.AdditiveBlending,
+            side: THREE.FrontSide,
+            transparent: true,
+            depthTest: true
+        });
+        
+        const cylinder = new THREE.Mesh(geometry, material);
+        cylinder.position.set(position.x, position.y, position.z + 200);
+        cylinder.rotation.set(11, 0, 0);
+        
+        _this.bullet.push(cylinder);
+        _this.instance.add(cylinder);
     }
 }

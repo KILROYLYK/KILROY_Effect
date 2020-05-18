@@ -125,7 +125,7 @@ export default class Mountain implements _Object {
             ease = 15, // 缓冲系数
             moveS = 0.1, // 移动速度
             cycleS = 0.0008, // 周期速度
-            factor = 1000, // 顶点系数（越大越平缓）
+            factor = 1300, // 顶点系数（越大越平缓）
             scale = 300; // 陡峭倍数
         
         
