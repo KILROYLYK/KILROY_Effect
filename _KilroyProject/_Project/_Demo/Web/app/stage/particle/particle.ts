@@ -71,8 +71,6 @@ export default class Particle implements _Controller {
         _this.canvas.height = Global.Height;
         
         _this.context = _this.canvas.getContext('2d');
-        
-        Global.GameDom.appendChild(_this.canvas);
     }
     
     /**
@@ -81,15 +79,16 @@ export default class Particle implements _Controller {
      */
     private init(): void {
         const _this = this;
-        
-        Global.Window.addEventListener('mousemove', (e: MouseEvent) => { // 鼠标移动
-            _this.mouse.x = e.clientX;
-            _this.mouse.y = e.clientY;
-        }, false);
-        Global.Window.addEventListener('onmouseout', (e: MouseEvent) => { // 鼠标移出
-            _this.mouse.x = -1000;
-            _this.mouse.y = -1000;
-        }, false);
+    
+        Global.Dom.appendChild(_this.canvas);
+        Global.Function.updateMouse();
+        Global.Function.updateFrame(() => {
+            _this.update();
+        });
+        Global.Function.updateResize(() => {
+            Global.Function.resizeDom();
+            _this.update(true);
+        });
     }
     
     /**
@@ -127,7 +126,7 @@ export default class Particle implements _Controller {
     public destroy(): void {
         const _this = this;
     
-        Global.GameDom.removeChild(_this.canvas);
+        Global.Dom.removeChild(_this.canvas);
         
         _this.context = null;
         _this.canvas = null;
@@ -279,8 +278,8 @@ export default class Particle implements _Controller {
      */
     private updatePoint(point: Point): void {
         const _this = this,
-            mouseX = _this.mouse.x,
-            mouseY = _this.mouse.y,
+            mouseX = Global.mouseP.x,
+            mouseY = Global.mouseP.y,
             distance = _this.getDistance({
                 x1: point.position.x,
                 y1: point.position.y,

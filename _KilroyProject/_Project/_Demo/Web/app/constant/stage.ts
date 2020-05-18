@@ -1,10 +1,8 @@
-import Anime from '../stage/anime/stage';
 import Particle from '../stage/particle/stage';
 
 /**
- * Stage
+ * 场景
  */
-export default class Stage {
-    readonly static Anime: Function = Anime; // 动画
+export default class GlobalStage {
     readonly static Particle: Function = Particle; // 粒子
 }
