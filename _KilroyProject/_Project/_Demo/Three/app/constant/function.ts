@@ -147,8 +147,9 @@ export default class GlobalFunction {
         }, false);
         
         Global.Window.addEventListener('mouseout', (e: MouseEvent) => {
-            Global.mouseP.x = 0;
-            Global.mouseP.y = 0;
+            const centerP = _this.getDomCenter();
+            Global.mouseP.x = centerP.x;
+            Global.mouseP.y = centerP.y;
         }, false);
     }
 }

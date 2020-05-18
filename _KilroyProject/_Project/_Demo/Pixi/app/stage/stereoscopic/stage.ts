@@ -22,14 +22,6 @@ export default class Stage implements _Stage {
         background: 'https://image.gaeamobile.net/image/20200512/164439/imageB.jpg', // 背景
         shadow: 'https://image.gaeamobile.net/image/20200512/164439/imageS.jpg' // 阴影
     };
-    private readonly centerP: object = { // 中心位置
-        x: Global.Width / 2,
-        y: Global.Height / 2
-    };
-    private readonly moveP: object = { // 移动位置
-        x: 0,
-        y: 0
-    };
     private readonly speed: number = -0.03; // 移动速度
     
     /**
@@ -82,9 +74,6 @@ export default class Stage implements _Stage {
         
         _this.app.stage.addChild(_this.container);
         Global.Dom.appendChild(_this.app.view);
-        
-        Global.Window.addEventListener('mousemove', _this.mouseMove.bind(_this), false);
-        Global.Window.addEventListener('mouseout', _this.mouseOut.bind(_this), false);
     }
     
     /**
@@ -101,46 +90,15 @@ export default class Stage implements _Stage {
      * @return {void}
      */
     public update(isResize: boolean = false): void {
-        const _this = this;
-    }
-    
-    /**
-     * 鼠标移动事件
-     * @param {MouseEvent} e 鼠标事件
-     * @return {void}
-     */
-    private mouseMove(e: MouseEvent): void {
-        const _this = this;
-        _this.anime(e.clientX, e.clientY);
-    }
-    
-    /**
-     * 鼠标移出事件
-     * @param {MouseEvent} e 鼠标事件
-     * @return {void}
-     */
-    private mouseOut(e: MouseEvent): void {
-        const _this = this;
-        _this.anime(
-            _this.centerP.x,
-            _this.centerP.y
-        );
-    }
-    
-    /**
-     * 动画
-     * @param {number} x X轴坐标
-     * @param {number} y Y轴坐标
-     * @return {void}
-     */
-    private anime(x: number, y: number): void {
         const _this = this,
-            xS = (_this.moveP.x - _this.centerP.x) * _this.speed,
-            yS = (_this.moveP.y - _this.centerP.y) * _this.speed * 2;
+            centerP = Global.Function.getDomCenter(),
+            xS = (Global.mouseP.x - centerP.x) * _this.speed,
+            yS = (Global.mouseP.y - centerP.y) * _this.speed * 2;
         
         Anime({
-            targets: _this.moveP,
-            x, y,
+            targets: Global.mouseP,
+            x: Global.mouseP.x,
+            y: Global.mouseP.y,
             duration: 1000,
             easing: 'easeOutSine',
             update: (a: any) => {
