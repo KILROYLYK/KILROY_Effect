@@ -11,10 +11,10 @@ export default class Mountain implements _Object {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
+    private light: THREE.PointLight = null; // 灯光
     private simplex: SimplexNoise = null; // 单纯形
     private geometry: THREE.PlaneGeometry = null; // 几何体
     private terrain: THREE.Mesh = null; // 地形
-    private light: THREE.PointLight = null; // 灯光
     private cycle: number = 0; // 周期
     private readonly centerP: object = { // 中心位置
         x: 0,
@@ -76,6 +76,11 @@ export default class Mountain implements _Object {
         _this.texture.wrapT
             = _this.texture.wrapS
             = THREE.RepeatWrapping;
+    
+        _this.light = new THREE.PointLight('#ffffff', 0.5, 3000);
+        _this.light.position.set(0, 1200, -3500);
+        _this.light.color = color;
+        _this.light.castShadow = false;
         
         _this.simplex = new SimplexNoise();
         
@@ -86,11 +91,6 @@ export default class Mountain implements _Object {
         _this.terrain = new THREE.Mesh(_this.geometry, material);
         _this.terrain.position.set(0, -300, -3000);
         _this.terrain.rotation.x = (Math.PI / 2) + 0.8;
-        
-        _this.light = new THREE.PointLight('#ffffff', 0.5, 3000);
-        _this.light.position.set(0, 1200, -3500);
-        _this.light.color = color;
-        _this.light.castShadow = false;
         
         _this.instance = new THREE.Object3D();
     }

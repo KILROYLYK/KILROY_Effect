@@ -11,8 +11,8 @@ export default class Spaceship implements _Object {
     private model: THREE.Object3D = null; // 模型
     private texture: THREE.Texture = null; // 纹理
     
-    private fire: THREE.Mesh = null; // 火焰
     private light: THREE.PointLight = null; // 灯光
+    private fire: THREE.Mesh = null; // 火焰
     private bullet = []; // 子弹
     private readonly centerP: object = { // 中心位置
         x: 0,
@@ -79,7 +79,7 @@ export default class Spaceship implements _Object {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.centerP.x
             = _this.mouseP.x
             = Global.Width / 2;
@@ -89,9 +89,9 @@ export default class Spaceship implements _Object {
         
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
+        _this.instance.add(_this.light);
         _this.instance.add(_this.model);
         _this.instance.add(_this.fire);
-        _this.instance.add(_this.light);
         _this.scene.add(_this.instance);
         
         Global.Window.addEventListener('mousemove', (e: MouseEvent) => {
@@ -109,6 +109,9 @@ export default class Spaceship implements _Object {
         
         if (!_this.instance) return;
         
+        _this.light = null;
+        _this.model = null;
+        _this.bullet = [];
         _this.instance = null;
     }
     
@@ -124,7 +127,7 @@ export default class Spaceship implements _Object {
         
         _this.texture.offset.y -= 0.06;
         _this.texture.needsUpdate = true;
-    
+        
         _this.moveP.x = (_this.mouseP.x - _this.centerP.x) * 0.05;
         _this.moveP.y = -((_this.mouseP.y - _this.centerP.y) * 0.04) - 4;
         _this.lookP.z = (_this.mouseP.x - _this.centerP.x) * 0.0004;

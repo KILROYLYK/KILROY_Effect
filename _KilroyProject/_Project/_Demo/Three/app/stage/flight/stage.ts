@@ -82,28 +82,19 @@ export default class Stage implements _Stage {
      * @return {void}
      */
     private create(): void {
-        const _this = this;
+        const _this = this,
+            resource = _this.resource.data;
         
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
         
         _this.object.light = new Light(_this.scene);
-        _this.object.mountain = new Mountain(
-            _this.scene,
-            _this.resource.data.mountain
-        );
+        _this.object.mountain = new Mountain(_this.scene, resource.mountain);
         _this.object.ground = new Ground(_this.scene);
-        _this.object.star = new Star(
-            _this.scene,
-            _this.resource.data.star
-        );
+        _this.object.star = new Star(_this.scene, resource.star);
         _this.object.meteor = new Meteor(_this.scene);
-        _this.object.spaceship = new Spaceship(
-            _this.scene,
-            _this.resource.data.spaceship,
-            _this.resource.data.engine
-        );
+        _this.object.spaceship = new Spaceship(_this.scene, resource.spaceship, resource.engine);
     }
     
     /**
