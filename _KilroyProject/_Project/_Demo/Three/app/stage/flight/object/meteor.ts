@@ -14,8 +14,8 @@ export default class Meteor implements _Object {
     public star: THREE.Mesh[] = []; // 流星列表
     private readonly moveP: object = { // 移动位置
         x: 0,
-        y: 0,
-        z: 0
+        y: 300,
+        z: 200
     };
     private readonly lookP: object = { // 视觉位置
         x: 0,
@@ -122,12 +122,12 @@ export default class Meteor implements _Object {
             opacity: 1,
             blending: THREE.AdditiveBlending,
             side: THREE.FrontSide,
-            transparent: false,
+            transparent: true,
             depthTest: true
         });
         
         const cylinder = new THREE.Mesh(geometry, material); // 圆柱
-        cylinder.position.set(random, 300, 200);
+        cylinder.position.set(random, 0, 0);
         cylinder.rotation.set(Math.PI / 2, 0, 0);
         
         _this.star.push(cylinder);

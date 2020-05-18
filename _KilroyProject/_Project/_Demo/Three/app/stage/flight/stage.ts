@@ -87,8 +87,8 @@ export default class Stage implements _Stage {
         
         _this.object.mountain = new Mountain(_this.scene, resource.mountain);
         _this.object.ground = new Ground(_this.scene);
-        // _this.object.star = new Star(_this.scene, resource.star);
-        // _this.object.meteor = new Meteor(_this.scene);
+        _this.object.star = new Star(_this.scene, resource.star);
+        _this.object.meteor = new Meteor(_this.scene);
         _this.object.spaceship = new Spaceship(_this.scene, resource.spaceship, resource.engine);
     }
     
@@ -146,8 +146,8 @@ export default class Stage implements _Stage {
         
         _this.object.mountain.update();
         _this.object.ground.update();
-        // _this.object.star.update();
-        // _this.object.meteor.update();
+        _this.object.star.update();
+        _this.object.meteor.update();
         _this.object.spaceship.update();
         
         _this.camera.update(isResize);

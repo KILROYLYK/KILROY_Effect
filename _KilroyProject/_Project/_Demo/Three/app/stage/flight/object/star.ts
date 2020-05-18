@@ -67,9 +67,7 @@ export default class Star implements _Object {
             opacity: 1,
             map: _this.texture,
             blending: THREE.AdditiveBlending,
-            vertexColors: false,
-            transparent: true,
-            depthTest: false
+            transparent: true
         });
         
         _this.point = new THREE.Points(geometry, material);
