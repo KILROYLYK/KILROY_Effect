@@ -7,10 +7,12 @@ import * as THREE from 'three';
  * 星星
  */
 export default class Star implements _Object {
+    private readonly name: string = 'Star-星星';
+    
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private point: THREE.Points = null; // 点
+    private point: THREE.Points = null; // 点集合
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 1200,
@@ -22,7 +24,7 @@ export default class Star implements _Object {
         z: 0
     };
     
-    public instance: THREE.Object3D = null; // 3D对象
+    public instance: THREE.Object3D = null; // 实例
     
     /**
      * 构造函数
@@ -82,6 +84,7 @@ export default class Star implements _Object {
     private init(): void {
         const _this = this;
         
+        _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.instance.add(_this.point);
@@ -97,6 +100,7 @@ export default class Star implements _Object {
         
         if (!_this.instance) return;
         
+        _this.point = null;
         _this.instance = null;
     }
     
@@ -106,11 +110,11 @@ export default class Star implements _Object {
      */
     public update(): void {
         const _this = this,
-            ease = 15,
+            ease = 15, // 缓冲系数
             mouseS = 0.1; // 鼠标速度
         
         if (!_this.instance) return;
-    
+        
         _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * mouseS);
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);

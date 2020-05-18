@@ -8,6 +8,8 @@ import { SimplexNoise } from 'three/examples/jsm/math/SimplexNoise';
  * 地面
  */
 export default class Ground implements _Object {
+    private readonly name: string = 'Ground-地面';
+    
     private scene: THREE.Scene = null; // 场景
     
     private simplex: SimplexNoise = null; // 单纯形
@@ -76,7 +78,8 @@ export default class Ground implements _Object {
      */
     private init(): void {
         const _this = this;
-        
+    
+        _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.instance.add(_this.plane);

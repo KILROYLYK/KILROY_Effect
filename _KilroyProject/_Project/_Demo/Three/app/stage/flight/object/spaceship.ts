@@ -7,13 +7,15 @@ import * as THREE from 'three';
  * 飞船
  */
 export default class Spaceship implements _Object {
+    private readonly name: string = 'Spaceship-飞船';
+    
     private scene: THREE.Scene = null; // 场景
     private model: THREE.Object3D = null; // 模型
     private texture: THREE.Texture = null; // 纹理
     
     private light: THREE.PointLight = null; // 灯光
     private fire: THREE.Mesh = null; // 火焰
-    private bullet = []; // 子弹
+    private bullet = []; // 子弹列表
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 0,
@@ -71,7 +73,8 @@ export default class Spaceship implements _Object {
      */
     private init(): void {
         const _this = this;
-        
+    
+        _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.instance.add(_this.light);
