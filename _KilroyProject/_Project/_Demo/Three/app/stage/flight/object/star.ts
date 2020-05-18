@@ -11,14 +11,6 @@ export default class Star implements _Object {
     private texture: THREE.Texture = null; // 纹理
     
     private point: THREE.Points = null; // 点
-    private readonly centerP: object = { // 中心位置
-        x: 0,
-        y: 0
-    };
-    private readonly mouseP: object = { // 鼠标位置
-        x: 0,
-        y: 0
-    };
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 1200,
@@ -90,22 +82,10 @@ export default class Star implements _Object {
     private init(): void {
         const _this = this;
         
-        _this.centerP.x
-            = _this.mouseP.x
-            = Global.Width / 2;
-        _this.centerP.y
-            = _this.mouseP.y
-            = Global.Height / 2;
-        
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.instance.add(_this.point);
         _this.scene.add(_this.instance);
-        
-        Global.Window.addEventListener('mousemove', (e: MouseEvent) => {
-            _this.mouseP.x = e.clientX;
-            _this.mouseP.y = e.clientY;
-        }, false);
     }
     
     /**
@@ -130,10 +110,10 @@ export default class Star implements _Object {
             mouseS = 0.1; // 鼠标速度
         
         if (!_this.instance) return;
+    
+        _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * mouseS);
         
-        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * mouseS);
-        
-        Global.Function.setEasePosition(_this.instance.position, _this.moveP, ease);
-        Global.Function.setEasePosition(_this.instance.rotation, _this.lookP, ease);
+        Global.Function.setEase(_this.instance.position, _this.moveP, ease);
+        Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);
     }
 }

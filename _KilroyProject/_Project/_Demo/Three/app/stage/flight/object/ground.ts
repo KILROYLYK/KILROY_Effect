@@ -14,14 +14,6 @@ export default class Ground implements _Object {
     private geometry: THREE.PlaneGeometry = null; // 几何体
     private plane: THREE.Mesh = null; // 平原
     private cycle: number = 0; // 周期
-    private readonly centerP: object = { // 中心位置
-        x: 0,
-        y: 0
-    };
-    private readonly mouseP: object = { // 鼠标位置
-        x: 0,
-        y: 0
-    };
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: -300,
@@ -65,13 +57,13 @@ export default class Ground implements _Object {
             depthTest: false,
             wireframe: true
         });
-    
+        
         _this.simplex = new SimplexNoise();
-    
+        
         _this.geometry = new THREE.PlaneGeometry(
             4000, 2000, 128, 64
         );
-    
+        
         _this.plane = new THREE.Mesh(_this.geometry, material);
         _this.plane.position.set(0, 0, 0);
         
@@ -85,22 +77,10 @@ export default class Ground implements _Object {
     private init(): void {
         const _this = this;
         
-        _this.centerP.x
-            = _this.mouseP.x
-            = Global.Width / 2;
-        _this.centerP.y
-            = _this.mouseP.y
-            = Global.Height / 2;
-    
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.instance.add(_this.plane);
         _this.scene.add(_this.instance);
-        
-        Global.Window.addEventListener('mousemove', (e: MouseEvent) => {
-            _this.mouseP.x = e.clientX;
-            _this.mouseP.y = e.clientY;
-        }, false);
     }
     
     /**
@@ -137,9 +117,9 @@ export default class Ground implements _Object {
         _this.geometry.verticesNeedUpdate = true;
         _this.cycle += cycleS;
         
-        _this.moveP.x = -((_this.mouseP.x - _this.centerP.x) * mouseS);
+        _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * mouseS);
         
-        Global.Function.setEasePosition(_this.instance.position, _this.moveP, ease);
-        Global.Function.setEasePosition(_this.instance.rotation, _this.lookP, ease);
+        Global.Function.setEase(_this.instance.position, _this.moveP, ease);
+        Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);
     }
 }

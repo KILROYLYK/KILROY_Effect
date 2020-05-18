@@ -62,8 +62,6 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        Global.Function.hideCursor();
-        
         _this.controller.loader = new Loader(_this.resource.path, {
             loadedCallback(index, total, progress) {
                 // console.log(`加载进度：${ index } ${ total } ${ progress }`);
@@ -106,7 +104,18 @@ export default class Stage implements _Stage {
         
         _this.isInit = true;
         
-        Global.GameDom.appendChild(_this.renderer.instance.domElement);
+        console.log(Global.Base.Name);
+        
+        Global.Dom.appendChild(_this.renderer.instance.domElement);
+        Global.Function.showCursor(false);
+        Global.Function.updateMouse();
+        Global.Function.updateFrame(() => {
+            _this.update();
+        });
+        Global.Function.updateResize(() => {
+            Global.Function.resizeDom();
+            _this.update(true);
+        });
     }
     
     /**

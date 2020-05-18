@@ -7,9 +7,9 @@ interface Position { // 位置
 }
 
 /**
- * Function
+ * 函数
  */
-export default class Function {
+export default class GlobalFunction {
     /**
      * 获取节点
      * @overview 获取节点，不存在则创建
@@ -84,7 +84,7 @@ export default class Function {
      * @param {boolean} show 显示
      * @return {void}
      */
-    public static showCursor(show: boolean = false): void {
+    public static showCursor(show: boolean = true): void {
         const _this = this;
         Global.Dom.style.cursor = show ? 'default' : 'none';
     }
@@ -104,18 +104,18 @@ export default class Function {
     }
     
     /**
-     * 自动更新
+     * 更新帧
      * @param {function} callback 回调
      * @return {void}
      */
-    public static autoUpdate(callback): void {
+    public static updateFrame(callback: Function = null): void {
         const _this = this;
         
         if (!callback) return;
         
         callback();
         requestAnimationFrame(() => {
-            _this.autoUpdate(callback);
+            _this.updateFrame(callback);
         });
     }
     
@@ -124,10 +124,31 @@ export default class Function {
      * @param {function} callback 回调
      * @return {void}
      */
-    public static resizeUpdate(callback): void {
+    public static updateResize(callback: Function = null): void {
         const _this = this;
+        
+        if (!callback) return;
+        
         Base.resize(() => {
             callback && callback();
         });
+    }
+    
+    /**
+     * 更新鼠标位置
+     * @return {void}
+     */
+    public static updateMouse(): void {
+        const _this = this;
+        
+        Global.Window.addEventListener('mousemove', (e: MouseEvent) => {
+            Global.mouseP.x = e.clientX;
+            Global.mouseP.y = e.clientY;
+        }, false);
+        
+        Global.Window.addEventListener('mouseout', (e: MouseEvent) => {
+            Global.mouseP.x = 0;
+            Global.mouseP.y = 0;
+        }, false);
     }
 }

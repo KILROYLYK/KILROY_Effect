@@ -79,7 +79,9 @@ export default class Meteor implements _Object {
     
         const random = THREE.MathUtils.randInt(-spread, spread); // 随机整数
         
-        const geometry = new THREE.CylinderGeometry(0, 2, 120, 10); // 几何体
+        const geometry = new THREE.CylinderGeometry( // 几何体
+            0, 2, 120, 10
+        );
        
         const material = new THREE.MeshBasicMaterial({ // 材质
                 color: '#ffffff',

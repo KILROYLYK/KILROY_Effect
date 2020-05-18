@@ -1,5 +1,5 @@
 /**
- * Config
+ * 配置
  */
-export default class Config {
+export default class GlobalConfig {
 }
