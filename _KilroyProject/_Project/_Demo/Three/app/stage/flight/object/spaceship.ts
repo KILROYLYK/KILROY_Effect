@@ -141,7 +141,7 @@ export default class Spaceship implements _Object {
             const cylinder = _this.bullet[i];
             if (cylinder.position.z < -300) {
                 _this.bullet.splice(i, 1);
-                _this.instance.remove(cylinder);
+                _this.scene.remove(cylinder);
             }
             cylinder.position.z -= 6;
         });
@@ -221,10 +221,10 @@ export default class Spaceship implements _Object {
         });
         
         const cylinder = new THREE.Mesh(geometry, material);
-        cylinder.position.set(position.x, position.y, position.z + 200);
+        cylinder.position.set(position.x, position.y, position.z + 250);
         cylinder.rotation.set(11, 0, 0);
         
         _this.bullet.push(cylinder);
-        _this.instance.add(cylinder);
+        _this.scene.add(cylinder);
     }
 }
