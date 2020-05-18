@@ -12,17 +12,18 @@ export default class Ground implements _Object {
     
     private scene: THREE.Scene = null; // 场景
     
+    private light: THREE.PointLight = null; // 灯光
     private simplex: SimplexNoise = null; // 单纯形
     private geometry: THREE.PlaneGeometry = null; // 几何体
     private plane: THREE.Mesh = null; // 平原
     private cycle: number = 0; // 周期
     private readonly moveP: object = { // 移动位置
         x: 0,
-        y: -300,
+        y: -350,
         z: -1000
     };
     private readonly lookP: object = { // 视觉位置
-        x: 29.8,
+        x: Math.PI / 2,
         y: 0,
         z: 0
     };
@@ -49,16 +50,24 @@ export default class Ground implements _Object {
      */
     private create(): void {
         const _this = this;
+    
+        const color = new THREE.Color();
+        color.setHSL(0.038, 0.8, 0.5);
         
         const material = new THREE.MeshLambertMaterial({
             color: '#ffffff',
             opacity: 1,
             blending: THREE.NoBlending,
             side: THREE.FrontSide,
-            transparent: false,
-            depthTest: false,
+            transparent: true,
+            depthTest: true,
             wireframe: true
         });
+    
+        _this.light = new THREE.PointLight('#ffffff', 4, 1000);
+        _this.light.color = color;
+        _this.light.castShadow = false;
+        _this.light.position.set(0, 50, 500);
         
         _this.simplex = new SimplexNoise();
         
@@ -68,6 +77,7 @@ export default class Ground implements _Object {
         
         _this.plane = new THREE.Mesh(_this.geometry, material);
         _this.plane.position.set(0, 0, 0);
+        _this.plane.rotation.set(0, 0, 0);
         
         _this.instance = new THREE.Object3D();
     }
@@ -82,6 +92,7 @@ export default class Ground implements _Object {
         _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
+        _this.instance.add(_this.light);
         _this.instance.add(_this.plane);
         _this.scene.add(_this.instance);
     }
@@ -106,7 +117,7 @@ export default class Ground implements _Object {
         const _this = this,
             ease = 15, // 缓冲系数
             factor = 300, // 顶点系数（越大越平缓）
-            scale = 30, // 陡峭倍数
+            scale = 40, // 陡峭倍数
             cycleS = 0.08, // 周期速度
             mouseS = 0.5; // 鼠标速度
         
@@ -118,7 +129,7 @@ export default class Ground implements _Object {
             vertex.z = _this.simplex.noise(x, y) * scale;
         }
         _this.geometry.verticesNeedUpdate = true;
-        _this.cycle += cycleS;
+        _this.cycle -= cycleS;
         
         _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * mouseS);
         

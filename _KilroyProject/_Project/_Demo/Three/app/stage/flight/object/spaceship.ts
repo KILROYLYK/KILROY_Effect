@@ -19,7 +19,7 @@ export default class Spaceship implements _Object {
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 0,
-        z: -40
+        z: 0
     };
     private readonly lookP: object = { // 视觉位置
         x: 0,
@@ -61,8 +61,8 @@ export default class Spaceship implements _Object {
         _this.createSpaceship();
         _this.createEngine();
         
-        _this.light = new THREE.PointLight('#ffffff', 0.4, 600);
-        _this.light.position.set(0, 0, 600);
+        _this.light = new THREE.PointLight('#ffffff', 15, 300);
+        _this.light.position.set(0, 100, 0);
         
         _this.instance = new THREE.Object3D();
     }
@@ -73,7 +73,7 @@ export default class Spaceship implements _Object {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
@@ -105,6 +105,11 @@ export default class Spaceship implements _Object {
     public update(): void {
         const _this = this,
             ease = 12, // 缓冲系数
+            moveS = { // 移动速度
+                x: 0.07,
+                y: 0.06
+            },
+            lookS = 0.0004, // 视觉速度
             centerP = Global.Function.getDomCenter(); // 中心位置
         
         if (!_this.instance) return;
@@ -112,9 +117,9 @@ export default class Spaceship implements _Object {
         _this.texture.offset.y -= 0.06;
         _this.texture.needsUpdate = true;
         
-        _this.moveP.x = (Global.mouseP.x - centerP.x) * 0.05;
-        _this.moveP.y = -((Global.mouseP.y - centerP.y) * 0.04) - 4;
-        _this.lookP.z = (Global.mouseP.x - centerP.x) * 0.0004;
+        _this.moveP.x = (Global.mouseP.x - centerP.x) * moveS.x;
+        _this.moveP.y = -((Global.mouseP.y - centerP.y) * moveS.y) - 4;
+        _this.lookP.z = (Global.mouseP.x - centerP.x) * lookS;
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);
         Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);
@@ -131,12 +136,11 @@ export default class Spaceship implements _Object {
             color: '#ffffff',
             blending: THREE.NoBlending,
             side: THREE.FrontSide,
-            transparent: false,
-            depthTest: true,
-            wireframe: false
+            transparent: true,
+            depthTest: true
         });
         
-        _this.model.position.set(0, 0, 300);
+        _this.model.position.set(0, 0, 250);
         _this.model.rotation.set(0, Math.PI, 0);
         _this.model.traverse((child) => {
             child instanceof THREE.Mesh && (child.material = material);
@@ -162,11 +166,11 @@ export default class Spaceship implements _Object {
         
         _this.fire = new THREE.Mesh(
             new THREE.CylinderGeometry(
-                0, .4, 8,
+                0, 0.4, 10,
                 32, 32, true
             ), material
         );
-        _this.fire.position.set(0, .4, 307);
-        _this.fire.rotation.x = Math.PI / 2;
+        _this.fire.position.set(0, 0.4, 257);
+        _this.fire.rotation.set(Math.PI / 2, 0, 0);
     }
 }

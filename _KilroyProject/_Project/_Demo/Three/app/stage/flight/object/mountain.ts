@@ -20,8 +20,8 @@ export default class Mountain implements _Object {
     private cycle: number = 0; // 周期
     private readonly moveP: object = { // 移动位置
         x: 0,
-        y: 0,
-        z: -3500
+        y: -500,
+        z: -6000
     };
     private readonly lookP: object = { // 视觉位置
         x: 0,
@@ -70,21 +70,21 @@ export default class Mountain implements _Object {
         _this.texture.wrapT
             = _this.texture.wrapS
             = THREE.RepeatWrapping;
-    
-        _this.light = new THREE.PointLight('#ffffff', 0.5, 3000);
-        _this.light.position.set(0, 1200, -3500);
+        
+        _this.light = new THREE.PointLight('#ffffff', 2.2, 2000);
         _this.light.color = color;
         _this.light.castShadow = false;
+        _this.light.position.set(0, 500, 0);
         
         _this.simplex = new SimplexNoise();
         
         _this.geometry = new THREE.PlaneGeometry(
-            12000, 1000, 128, 32
+            12000, 1400, 128, 32
         );
         
         _this.terrain = new THREE.Mesh(_this.geometry, material);
-        _this.terrain.position.set(0, -300, -3000);
-        _this.terrain.rotation.x = (Math.PI / 2) + 0.8;
+        _this.terrain.position.set(0, 0, 0);
+        _this.terrain.rotation.set((Math.PI / 2) + 0.8, 0, 0);
         
         _this.instance = new THREE.Object3D();
     }
@@ -95,7 +95,7 @@ export default class Mountain implements _Object {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
@@ -123,10 +123,11 @@ export default class Mountain implements _Object {
     public update(): void {
         const _this = this,
             ease = 15, // 缓冲系数
+            moveS = 0.1, // 移动速度
+            cycleS = 0.0008, // 周期速度
             factor = 1000, // 顶点系数（越大越平缓）
-            scale = 300, // 陡峭倍数
-            cycleS = 0.0005, // 周期速度
-            mouseS = 0.1; // 鼠标速度
+            scale = 300; // 陡峭倍数
+        
         
         if (!_this.instance) return;
         
@@ -137,8 +138,8 @@ export default class Mountain implements _Object {
         }
         _this.geometry.verticesNeedUpdate = true;
         _this.cycle -= cycleS;
-    
-        _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * mouseS);
+        
+        _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * moveS);
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);
         Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);
