@@ -59,12 +59,12 @@ export default class Ground implements _Object {
             opacity: 1,
             blending: THREE.NoBlending,
             side: THREE.FrontSide,
-            transparent: true,
+            transparent: false,
             depthTest: true,
             wireframe: true
         });
     
-        _this.light = new THREE.PointLight('#ffffff', 4, 1000);
+        _this.light = new THREE.PointLight('#ffffff', 3, 800);
         _this.light.color = color;
         _this.light.castShadow = false;
         _this.light.position.set(0, 50, 500);

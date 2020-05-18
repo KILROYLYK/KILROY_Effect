@@ -81,6 +81,14 @@ export default class Spaceship implements _Object {
         _this.instance.add(_this.model);
         _this.instance.add(_this.fire);
         _this.scene.add(_this.instance);
+        
+        Global.Window.addEventListener('wheel', (e: WheelEvent) => {
+            const z = _this.moveP.z;
+            let d = z + (e.deltaY | 0);
+            d = (d < -20) ? -20 : d;
+            d = (d > 20) ? 20 : d;
+            _this.moveP.z = d;
+        });
     }
     
     /**

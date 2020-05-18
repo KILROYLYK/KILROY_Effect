@@ -63,15 +63,15 @@ export default class Mountain implements _Object {
             map: _this.texture,
             blending: THREE.NoBlending,
             side: THREE.BackSide,
-            transparent: true,
-            depthTest: false
+            transparent: false,
+            depthTest: true
         });
         
         _this.texture.wrapT
             = _this.texture.wrapS
             = THREE.RepeatWrapping;
         
-        _this.light = new THREE.PointLight('#ffffff', 2.2, 2000);
+        _this.light = new THREE.PointLight('#ffffff', 1, 1000);
         _this.light.color = color;
         _this.light.castShadow = false;
         _this.light.position.set(0, 500, 0);

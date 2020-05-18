@@ -11,7 +11,7 @@ import Meteor from './object/meteor';
 import Spaceship from './object/spaceship';
 import Loader from '../../controller/loader';
 
-// import './flight.less';
+import './flight.less';
 
 /**
  * 场景
