@@ -1,8 +1,8 @@
 import Stereoscopic from '../stage/stereoscopic/stage';
 
 /**
- * Stage
+ * 场景
  */
-export default class Stage {
+export default class GlobalStage {
     readonly static Stereoscopic: Function = Stereoscopic; // 立体
 }

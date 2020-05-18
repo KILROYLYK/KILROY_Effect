@@ -6,8 +6,13 @@ import GlobalStage from './stage'; // 场景
 
 import './style'; // 样式
 
+interface Position { // 位置
+    x: number,
+    y: number
+}
+
 /**
- * Global
+ * 全局
  */
 export default class Global {
     public readonly static Window: Window = W; // Window
@@ -18,7 +23,7 @@ export default class Global {
     public readonly static Dom: HTMLElement = GlobalFunction.getDom();
     public static Width: number = Global.Dom.clientWidth;
     public static Height: number = Global.Dom.clientHeight;
-    public static mouseP: object = { // 鼠标位置
+    public static mouseP: Position = { // 鼠标位置
         x: 0,
         y: 0
     };

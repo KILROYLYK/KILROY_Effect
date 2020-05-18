@@ -81,7 +81,7 @@ export default class Stage implements _Stage {
         _this.container.addChild(spriteS);
         
         _this.app.stage.addChild(_this.container);
-        Global.GameDom.appendChild(_this.app.view);
+        Global.Dom.appendChild(_this.app.view);
         
         Global.Window.addEventListener('mousemove', _this.mouseMove.bind(_this), false);
         Global.Window.addEventListener('mouseout', _this.mouseOut.bind(_this), false);

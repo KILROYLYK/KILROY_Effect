@@ -1,5 +1,7 @@
 import Global from '../constant/global';
 import _Controller from '../interface/controller';
+
+import * as PIXI from 'pixi.js';
 import 'pixi-sound';
 
 interface LoadConfig {
@@ -42,7 +44,7 @@ export default class Loader implements _Controller {
     private create(): void {
         const _this = this;
         
-        _this.loader = new Global.PIXI.Loader();
+        _this.loader = new PIXI.Loader();
     }
     
     /**
