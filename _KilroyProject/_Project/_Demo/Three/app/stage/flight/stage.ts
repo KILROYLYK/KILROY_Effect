@@ -104,8 +104,6 @@ export default class Stage implements _Stage {
         
         _this.isInit = true;
         
-        console.log(Global.Base.Name);
-        
         Global.Dom.appendChild(_this.renderer.instance.domElement);
         Global.Function.showCursor(false);
         Global.Function.updateMouse();
@@ -126,6 +124,7 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+        _this.isInit = false;
         
         _this.object.light.destroy();
         _this.object.mountain.destroy();

@@ -26,7 +26,7 @@ export default class GlobalFunction {
         if (!dom) { // 不存在则创建
             dom = D.createElement('div');
             dom.id = id;
-            dom.setAttribute('data-name', 'GameContainer');
+            dom.setAttribute('data-name', 'AppContainer');
             lastChild ? body.insertBefore(dom, lastChild) : body.append(dom);
         }
         

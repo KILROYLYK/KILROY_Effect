@@ -50,6 +50,7 @@ export default class Stage implements _Stage {
             },
             finishCallback(data) {
                 _this.resource.data = data;
+                
                 _this.create();
                 _this.init();
             }
@@ -81,8 +82,6 @@ export default class Stage implements _Stage {
         
         _this.isInit = true;
         
-        Global.GameDom.appendChild(_this.renderer.instance.domElement);
-        
         // 移动控制器
         _this.controller.move = new Move(
             _this.camera, {
@@ -92,6 +91,35 @@ export default class Stage implements _Stage {
                 jump: true
             }
         );
+    
+        Global.Dom.appendChild(_this.renderer.instance.domElement);
+        Global.Function.updateFrame(() => {
+            _this.update();
+        });
+        Global.Function.updateResize(() => {
+            Global.Function.resizeDom();
+            _this.update(true);
+        });
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+    
+        if (!_this.isInit) return;
+        _this.isInit = false;
+        
+        _this.camera.destroy();
+        _this.scene.destroy();
+        _this.renderer.destroy();
+        
+        _this.object.light.destroy();
+        _this.object.ground.destroy();
+        
+        _this.controller.move.destroy();
     }
     
     /**
@@ -113,22 +141,5 @@ export default class Stage implements _Stage {
             _this.scene.instance,
             _this.camera.instance
         );
-    }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        _this.camera.destroy();
-        _this.scene.destroy();
-        _this.renderer.destroy();
-        
-        _this.object.light.destroy();
-        _this.object.ground.destroy();
-        
-        _this.controller.move.destroy();
     }
 }

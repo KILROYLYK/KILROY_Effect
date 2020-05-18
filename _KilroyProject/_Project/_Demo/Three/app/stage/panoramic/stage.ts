@@ -4,9 +4,9 @@ import _Stage from '../../interface/stage';
 import Renderer from './environment/renderer';
 import Scene from './environment/scene';
 import Camera from './environment/camera';
+import Loader from '../../controller/loader';
 import Panoramic from '../../controller/panoramic';
 import Move from '../../controller/move';
-import Loader from "../../controller/loader";
 
 /**
  * 场景
@@ -26,6 +26,7 @@ export default class Stage implements _Stage {
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
     private controller: object = { // 控制器
+        loader: null as Loader, // 加载
         panoramic: null as Panoramic, // 全景
         move: null as Move // 移动
     };
@@ -68,10 +69,8 @@ export default class Stage implements _Stage {
      */
     private init(): void {
         const _this = this;
-    
-        _this.isInit = true;
         
-        Global.GameDom.appendChild(_this.renderer.instance.domElement);
+        _this.isInit = true;
         
         // 全景控制器
         _this.controller.panoramic = new Panoramic(_this.scene, _this.resource.data.map);
@@ -80,6 +79,33 @@ export default class Stage implements _Stage {
         _this.controller.move = new Move(_this.camera, {
             turn: true
         });
+        
+        Global.Dom.appendChild(_this.renderer.instance.domElement);
+        Global.Function.updateFrame(() => {
+            _this.update();
+        });
+        Global.Function.updateResize(() => {
+            Global.Function.resizeDom();
+            _this.update(true);
+        });
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+    
+        if (!_this.isInit) return;
+        _this.isInit = false;
+        
+        _this.camera.destroy();
+        _this.scene.destroy();
+        _this.renderer.destroy();
+        
+        _this.controller.panoramic.destroy();
+        _this.controller.move.destroy();
     }
     
     /**
@@ -89,7 +115,7 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-    
+        
         if (!_this.isInit) return;
         
         _this.controller.move.update();
@@ -101,20 +127,5 @@ export default class Stage implements _Stage {
             _this.scene.instance,
             _this.camera.instance
         );
-    }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        _this.camera.destroy();
-        _this.scene.destroy();
-        _this.renderer.destroy();
-        
-        _this.controller.panoramic.destroy();
-        _this.controller.move.destroy();
     }
 }

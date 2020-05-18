@@ -106,7 +106,7 @@ export default class Move implements _Controller {
         _this.focusLL.theta = THREE.MathUtils.degToRad(_this.focusLL.lon - 90);
         
         // 将视觉目标移至视角中心
-        Global.Function.setEasePosition(_this.targetP, {
+        Global.Function.setEase(_this.targetP, {
             x: Math.sin(_this.focusLL.phi) * Math.cos(_this.focusLL.theta) * _this.focusLL.far,
             y: Math.cos(_this.focusLL.phi) * _this.focusLL.far,
             z: Math.sin(_this.focusLL.phi) * Math.sin(_this.focusLL.theta) * _this.focusLL.far
