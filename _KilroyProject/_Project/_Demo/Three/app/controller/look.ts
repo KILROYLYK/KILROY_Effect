@@ -3,17 +3,15 @@ import _Controller from '../interface/controller';
 
 import * as THREE from 'three';
 
-interface MoveConfig { // 控制器配置
+interface LookConfig { // 控制器配置
     turn?: boolean // 开关转向
     focus?: boolean // 开关聚焦
-    walk?: boolean // 开关步行
-    jump?: boolean // 开关弹跳
 }
 
 /**
  * 移动
  */
-export default class Move implements _Controller {
+export default class Look implements _Controller {
     private camera: THREE.PerspectiveCamera = null; // 相机
     
     private targetP: THREE.Vector3 = null; // 视觉目标
@@ -37,27 +35,18 @@ export default class Move implements _Controller {
         wheel: 0.008,
         walk: 3
     };
-    private readonly flag: MoveConfig = { // 开关
+    private readonly flag: LookConfig = { // 开关
         turn: false,
-        focus: false,
-        walk: false,
-        jump: false
-    };
-    private readonly key: object = { // 按键
-        before: 87, // 前 W
-        left: 65, // 左 A
-        right: 68, // 右 D
-        after: 83, // 后 S
-        jump: 32 // 跳 Space
+        focus: false
     };
     
     /**
      * 原型对象
-     * @constructor Move
+     * @constructor Look
      * @param {object} camera 相机
      * @param {object} config 配置
      */
-    constructor(camera: object, config: MoveConfig = {}) {
+    constructor(camera: object, config: LookConfig = {}) {
         const _this = this;
         
         _this.camera = camera.instance;
@@ -66,8 +55,6 @@ export default class Move implements _Controller {
         _this.focusLL.far = _this.camera.far * 2;
         _this.flag.turn = !!config.turn;
         _this.flag.focus = !!config.focus;
-        _this.flag.walk = !!config.walk;
-        _this.flag.jump = !!config.jump;
         
         _this.create();
         _this.init();
@@ -85,7 +72,7 @@ export default class Move implements _Controller {
      * 初始化
      * @return {object} 场景对象
      */
-    init() {
+    private init(): void {
         const _this = this;
         
         _this.switchPlatform();
@@ -95,7 +82,7 @@ export default class Move implements _Controller {
      * 更新
      * @return {void}
      */
-    update() {
+    public update(): void {
         const _this = this;
         
         if (!_this.camera) return;
@@ -134,15 +121,15 @@ export default class Move implements _Controller {
         const _this = this;
         
         Global.Base.isPSB.platform() === 'PC'
-            ? _this.PCMoveCamera()
-            : _this.MobileMoveCamera();
+            ? _this.mouseMove()
+            : _this.touchMove();
     }
     
     /**
-     * 点击移动相机
+     * 点击移动
      * @return {void}
      */
-    private PCMoveCamera(): void {
+    private mouseMove(): void {
         const _this = this,
             W = Global.Window,
             mouse = { // 鼠标
@@ -200,45 +187,18 @@ export default class Move implements _Controller {
                     _this.camera.fov = THREE.MathUtils.clamp(fov, 45, 95);
                     _this.camera.updateProjectionMatrix();
                 }
-            },
-            key = { // 键盘
-                /**
-                 * 行走
-                 * @param {KeyboardEvent} e 焦点对象
-                 * @return {void}
-                 */
-                walk: (e: KeyboardEvent): void => {
-                    // _this.camera.position.set(
-                    //     _this.camera.position.x,
-                    //     _this.camera.position.y,
-                    //     _this.camera.position.z
-                    // );
-                },
-                
-                /**
-                 * 跳跃
-                 * @param {KeyboardEvent} e 焦点对象
-                 * @return {void}
-                 */
-                jump: (e: KeyboardEvent): void => {
-                
-                }
             };
         
         // 鼠标事件
         _this.flag.turn && W.addEventListener('mousedown', mouse.down, false); // 转向
         _this.flag.focus && W.addEventListener('wheel', mouse.wheel, false); // 聚焦
-        
-        // 键盘事件
-        _this.flag.walk && W.addEventListener('keydown', key.walk, false); // 行走
-        _this.flag.jump && W.addEventListener('keydown', key.jump, false); // 跳跃
     }
     
     /**
-     * 触摸移动相机
+     * 触摸移动
      * @return {void}
      */
-    private MobileMoveCamera() {
+    private touchMove() {
         const _this = this,
             W = Global.Window,
             touch = { // 触摸

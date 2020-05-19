@@ -4,9 +4,9 @@ import _Stage from '../../interface/stage';
 import Renderer from './environment/renderer';
 import Scene from './environment/scene';
 import Camera from './environment/camera';
+import Sphere from './object/sphere';
 import Loader from '../../controller/loader';
-import Panoramic from '../../controller/panoramic';
-import Move from '../../controller/move';
+import Look from '../../controller/look';
 
 /**
  * 场景
@@ -25,10 +25,12 @@ export default class Stage implements _Stage {
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
+    private object: object = { // 对象
+        sphere: null as Sphere // 球体
+    };
     private controller: object = { // 控制器
         loader: null as Loader, // 加载
-        panoramic: null as Panoramic, // 全景
-        move: null as Move // 移动
+        look: null as Look // 观看
     };
     
     /**
@@ -38,17 +40,20 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        _this.controller.loader = new Loader(_this.resource.path, {
-            loadedCallback(index, total, progress) {
-                // console.log(`加载进度：${ index } ${ total } ${ progress }`);
-            },
-            finishCallback(data) {
-                _this.resource.data = data;
-                
-                _this.create();
-                _this.init();
+        _this.controller.loader = new Loader(
+            _this.resource.path,
+            {
+                loadedCallback(index, total, progress) {
+                    // console.log(`加载进度：${ index } ${ total } ${ progress }`);
+                },
+                finishCallback(data) {
+                    _this.resource.data = data;
+                    
+                    _this.create();
+                    _this.init();
+                }
             }
-        });
+        );
     }
     
     /**
@@ -56,11 +61,19 @@ export default class Stage implements _Stage {
      * @return {void}
      */
     private create(): void {
-        const _this = this;
+        const _this = this,
+            resource = _this.resource.data;
         
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
+        
+        _this.object.sphere = new Sphere(_this.scene, resource.map);
+        
+        _this.controller.look = new Look(_this.camera, {
+            turn: true,
+            focus: true
+        });
     }
     
     /**
@@ -71,14 +84,6 @@ export default class Stage implements _Stage {
         const _this = this;
         
         _this.isInit = true;
-        
-        // 全景控制器
-        _this.controller.panoramic = new Panoramic(_this.scene, _this.resource.data.map);
-        
-        // 移动控制器
-        _this.controller.move = new Move(_this.camera, {
-            turn: true
-        });
         
         Global.Dom.appendChild(_this.renderer.instance.domElement);
         Global.Function.updateFrame(() => {
@@ -96,16 +101,15 @@ export default class Stage implements _Stage {
      */
     public destroy(): void {
         const _this = this;
-    
+        
         if (!_this.isInit) return;
         _this.isInit = false;
+        
+        _this.controller.loader.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();
         _this.renderer.destroy();
-        
-        _this.controller.panoramic.destroy();
-        _this.controller.move.destroy();
     }
     
     /**
@@ -118,7 +122,7 @@ export default class Stage implements _Stage {
         
         if (!_this.isInit) return;
         
-        _this.controller.move.update();
+        _this.controller.look.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

@@ -35,11 +35,9 @@ export default class Scene implements _Environment {
      * @return {void}
      */
     private init(): void {
-        const _this = this,
-            color = '#a0c5ff';
+        const _this = this;
         
-        _this.instance.background = new THREE.Color(color);
-        _this.instance.fog = new THREE.FogExp2(color, 0.0007);
+        _this.instance.background = new THREE.Color('#000000');
     }
     
     /**
