@@ -42,7 +42,7 @@ export default class Stage implements _Stage {
             },
             finishCallback(data) {
                 _this.resource.data = data;
-                
+            
                 _this.create();
                 _this.init();
             }

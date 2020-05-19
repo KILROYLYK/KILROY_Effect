@@ -1,14 +1,9 @@
-import Move from '../stage/move/stage';
-import Panoramic from '../stage/panoramic/stage';
-import Flight from '../stage/flight/stage';
-import Universe from '../stage/universe/stage';
+// import GlobalStage from '../stage/move/stage'; // 移动
+// import GlobalStage from '../stage/panoramic/stage'; // 全景
+// import GlobalStage from '../stage/flight/stage'; // 飞行
+import GlobalStage from '../stage/universe/stage'; // 宇宙
 
 /**
  * 场景
  */
-export default class GlobalStage {
-    readonly static Move: Function = Move; // 移动
-    readonly static Panoramic: Function = Panoramic; // 全景
-    readonly static Flight: Function = Flight; // 飞行
-    readonly static Universe: Function = Universe; // 宇宙
-}
+export default GlobalStage;
