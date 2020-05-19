@@ -70,3 +70,13 @@ export default class Camera implements _Environment {
         }
     }
 }
+
+// _this.instance = new TrackballControls(_this.camera);
+// _this.instance.enabled = true; // 是否启用控件
+// _this.instance.domElement = Global.Dom; // 监听节点
+// _this.instance.staticMoving = false; // 是否禁用阻尼
+// _this.instance.dynamicDampingFactor = 0.2; // 阻尼强度
+// _this.instance.keys = []; // 用于控制交互的键码
+// _this.instance.noPan = false; // 是否禁用平移
+// _this.instance.noRotate = false; // 是否禁用旋转
+// _this.instance.noZoom = false; // 是否禁用缩放

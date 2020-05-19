@@ -8,7 +8,6 @@ import Ground from './object/ground';
 import LightNatural from './object/lightNatural';
 import LightAngle from './object/lightAngle';
 import Loader from '../../controller/loader';
-import Move from '../../controller/move';
 
 /**
  * 场景
@@ -33,8 +32,7 @@ export default class Stage implements _Stage {
         ground: null as Ground // 地面
     };
     private controller: object = { // 控制器
-        loader: null as Loader, // 加载
-        move: null as Move // 移动
+        loader: null as Loader // 加载
     };
     
     /**
@@ -81,16 +79,6 @@ export default class Stage implements _Stage {
         const _this = this;
         
         _this.isInit = true;
-        
-        // 移动控制器
-        _this.controller.move = new Move(
-            _this.camera, {
-                turn: true,
-                focus: true,
-                walk: true,
-                jump: true
-            }
-        );
     
         Global.Dom.appendChild(_this.renderer.instance.domElement);
         Global.Function.updateFrame(() => {
@@ -111,15 +99,15 @@ export default class Stage implements _Stage {
     
         if (!_this.isInit) return;
         _this.isInit = false;
+    
+        _this.controller.loader.destroy();
+    
+        _this.object.light.destroy();
+        _this.object.ground.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();
         _this.renderer.destroy();
-        
-        _this.object.light.destroy();
-        _this.object.ground.destroy();
-        
-        _this.controller.move.destroy();
     }
     
     /**
@@ -131,8 +119,6 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-        
-        _this.controller.move.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
