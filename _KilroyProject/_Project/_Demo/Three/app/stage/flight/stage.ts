@@ -1,3 +1,5 @@
+import '../../../src/css/flight.less';
+
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 
@@ -10,8 +12,6 @@ import Star from './object/star';
 import Meteor from './object/meteor';
 import Spaceship from './object/spaceship';
 import Loader from '../../controller/loader';
-
-import '../../../src/css/flight.less';
 
 /**
  * 场景
