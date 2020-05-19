@@ -5,7 +5,7 @@ import * as PIXI from 'pixi.js';
 
 import Anime from 'animejs';
 
-import './stereoscopic.less';
+import '../../../src/css/stereoscopic.less';
 
 /**
  * 场景
