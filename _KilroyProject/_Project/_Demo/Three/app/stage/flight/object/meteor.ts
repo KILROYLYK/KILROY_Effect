@@ -46,7 +46,7 @@ export default class Meteor implements _Object {
      */
     private create(): void {
         const _this = this;
-    
+        
         _this.instance = new THREE.Object3D();
     }
     
@@ -56,7 +56,7 @@ export default class Meteor implements _Object {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
@@ -69,7 +69,7 @@ export default class Meteor implements _Object {
      */
     public destroy(): void {
         const _this = this;
-    
+        
         if (!_this.instance) return;
         
         _this.star = [];
@@ -84,7 +84,7 @@ export default class Meteor implements _Object {
         const _this = this,
             ease = 15, // 缓冲系数
             mouseS = 0.1; // 鼠标速度
-    
+        
         if (!_this.instance) return;
         
         Math.random() > 0.95 && _this.createStar();
@@ -96,7 +96,7 @@ export default class Meteor implements _Object {
             }
             v.position.z -= 20;
         });
-    
+        
         _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * mouseS);
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);

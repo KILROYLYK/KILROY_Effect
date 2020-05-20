@@ -16,7 +16,7 @@ export default class Light implements _Object {
      * @constructor Light
      * @param {object} scene 场景
      */
-     constructor(scene: object) {
+    constructor(scene: object) {
         const _this = this;
         
         _this.scene = scene.instance;
@@ -51,7 +51,7 @@ export default class Light implements _Object {
         _this.instance.shadow.camera.far = 1000;
         _this.instance.shadow.camera.top = _this.instance.shadow.camera.right = 300;
         _this.instance.shadow.camera.bottom = _this.instance.shadow.camera.left = -300;
-    
+        
         _this.scene.add(_this.instance);
     }
     

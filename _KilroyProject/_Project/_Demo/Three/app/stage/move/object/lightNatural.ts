@@ -16,7 +16,7 @@ export default class Light implements _Object {
      * @constructor Light
      * @param {object} scene 场景
      */
-     constructor(scene: object) {
+    constructor(scene: object) {
         const _this = this;
         
         _this.scene = scene.instance;

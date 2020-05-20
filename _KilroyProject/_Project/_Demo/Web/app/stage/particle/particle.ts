@@ -79,7 +79,7 @@ export default class Particle implements _Controller {
      */
     private init(): void {
         const _this = this;
-    
+        
         Global.Dom.appendChild(_this.canvas);
         Global.Function.updateMouse();
         Global.Function.updateFrame(() => {
@@ -125,7 +125,7 @@ export default class Particle implements _Controller {
      */
     public destroy(): void {
         const _this = this;
-    
+        
         Global.Dom.removeChild(_this.canvas);
         
         _this.context = null;
