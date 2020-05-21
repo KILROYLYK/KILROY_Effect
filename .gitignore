@@ -23,9 +23,11 @@ main.tsx
 /_KilroyProject/_Project/$Cache
 /_KilroyProject/_Project/_Base
 /_KilroyProject/_Project/_SDK
-$cache/
 $dist/
 
 # Media
 *.mp3
 *.mp4
+
+# Pack
+*.zip
