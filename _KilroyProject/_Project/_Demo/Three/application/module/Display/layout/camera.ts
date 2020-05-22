@@ -2,13 +2,13 @@ import Global from '../../../constant/global';
 import Layout from '../../../interface/layout';
 
 import * as THREE from 'three';
-import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 /**
  * 相机
  */
 export default class Camera implements Layout {
-    private controller: FirstPersonControls = null; // 控制器
+    private controller: OrbitControls = null; // 控制器
     
     public instance: THREE.PerspectiveCamera = null; // 实例
     
@@ -31,20 +31,14 @@ export default class Camera implements Layout {
         const _this = this;
         
         _this.instance = new THREE.PerspectiveCamera(
-            45, Global.Function.getDomAspect(), 1, 1000
+            60, Global.Function.getDomAspect(), 1, 10000
         );
         
-        _this.controller = new FirstPersonControls(_this.instance);
-        _this.controller.enabled = true; // 是否启用控件
-        _this.controller.domElement = Global.Dom; // 监听节点
-        _this.controller.autoForward = false; // 是否自动向前移动
-        _this.controller.movementSpeed = 1; // 移动速度
-        _this.controller.activeLook = true; // 是否可以环顾四周
-        _this.controller.lookVertical = true; // 是否可以垂直环顾四周
-        _this.controller.lookSpeed = 0.0005; // 环顾四周的速度
-        _this.controller.constrainVertical = true; // 是否受到垂直约束
-        _this.controller.verticalMin = 0; // 垂直约束Min
-        _this.controller.verticalMax = Math.PI; //  垂直约束Max
+        _this.controller = new OrbitControls(_this.instance, Global.Dom);
+        _this.controller.enableDamping = true;
+        _this.controller.maxPolarAngle = Math.PI * 0.5;
+        _this.controller.minDistance = 1000;
+        _this.controller.maxDistance = 5000;
     }
     
     /**
@@ -54,7 +48,7 @@ export default class Camera implements Layout {
     private init(): void {
         const _this = this;
         
-        _this.instance.position.set(0, 200, 0);
+        _this.instance.position.set(0, 200, 1500);
     }
     
     /**
@@ -66,10 +60,7 @@ export default class Camera implements Layout {
         
         if (!_this.instance) return;
         
-        _this.controller.destroy();
         _this.controller = null;
-        
-        _this.instance.destroy();
         _this.instance = null;
     }
     
@@ -83,13 +74,11 @@ export default class Camera implements Layout {
         
         if (!_this.instance) return;
         
-        _this.controller.update(1);
+        _this.controller.update();
         
         if (isResize) { // 屏幕变化
             _this.instance.aspect = Global.Function.getDomAspect();
             _this.instance.updateProjectionMatrix();
-            
-            _this.controller.handleResize();
         }
     }
 }

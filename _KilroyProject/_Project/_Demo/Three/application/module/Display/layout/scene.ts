@@ -36,10 +36,10 @@ export default class Scene implements Layout {
      */
     private init(): void {
         const _this = this,
-            color = '#a0c5ff';
+            color = '#f1f1f1';
         
         _this.instance.background = new THREE.Color(color);
-        _this.instance.fog = new THREE.FogExp2(color, 0.0007);
+        _this.instance.fog = new THREE.FogExp2(color, 0.0002);
     }
     
     /**
