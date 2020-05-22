@@ -32,6 +32,10 @@ export default class Renderer implements Layout {
             antialias: true,
             precision: 'mediump'
         });
+        _this.instance.setSize(Global.Width, Global.Height);
+        _this.instance.setPixelRatio(Global.W.devicePixelRatio);
+        _this.instance.setClearColor('#000000', 0);
+        _this.instance.sortObjects = true;
     }
     
     /**
@@ -40,11 +44,6 @@ export default class Renderer implements Layout {
      */
     private init(): void {
         const _this = this;
-        
-        _this.instance.setSize(Global.Width, Global.Height);
-        _this.instance.setPixelRatio(Global.W.devicePixelRatio);
-        _this.instance.setClearColor('#000000', 0);
-        _this.instance.sortObjects = true;
     }
     
     /**

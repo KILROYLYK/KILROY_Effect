@@ -12,7 +12,6 @@ export default class Star implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private point: THREE.Points = null; // 点集合
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 1200,
@@ -70,9 +69,10 @@ export default class Star implements Component {
             transparent: true
         });
         
-        _this.point = new THREE.Points(geometry, material);
-        
-        _this.instance = new THREE.Object3D();
+        _this.instance = new THREE.Points(geometry, material);
+        _this.instance.name = _this.name;
+        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
+        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
     }
     
     /**
@@ -82,10 +82,6 @@ export default class Star implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.name = _this.name;
-        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
-        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
-        _this.instance.add(_this.point);
         _this.scene.add(_this.instance);
     }
     
@@ -98,7 +94,6 @@ export default class Star implements Component {
         
         if (!_this.instance) return;
         
-        _this.point = null;
         _this.instance = null;
     }
     

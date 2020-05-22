@@ -30,6 +30,8 @@ export default class Camera implements Layout {
         _this.instance = new THREE.PerspectiveCamera(
             60, Global.Function.getDomAspect(), 0.1, 20000
         );
+        _this.instance.position.set(0, 0, 300);
+        _this.instance.rotation.set(0, 0, 0);
     }
     
     /**
@@ -38,9 +40,6 @@ export default class Camera implements Layout {
      */
     private init(): void {
         const _this = this;
-        
-        _this.instance.position.set(0, 0, 300);
-        _this.instance.rotation.set(0, 0, 0);
     }
     
     /**

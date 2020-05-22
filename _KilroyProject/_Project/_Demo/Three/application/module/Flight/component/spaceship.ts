@@ -58,13 +58,14 @@ export default class Spaceship implements Component {
             = _this.texture.wrapS
             = THREE.RepeatWrapping;
         
+        _this.instance = new THREE.Object3D();
+        _this.instance.name = _this.name;
+        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
+        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
+        
+        _this.createLight();
         _this.createSpaceship();
         _this.createEngine();
-        
-        _this.light = new THREE.PointLight('#ffffff', 15, 300);
-        _this.light.position.set(0, 100, 0);
-        
-        _this.instance = new THREE.Object3D();
     }
     
     /**
@@ -74,9 +75,6 @@ export default class Spaceship implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.name = _this.name;
-        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
-        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.instance.add(_this.light);
         _this.instance.add(_this.model);
         _this.instance.add(_this.fire);
@@ -167,6 +165,17 @@ export default class Spaceship implements Component {
         _this.model.traverse((child) => {
             child instanceof THREE.Mesh && (child.material = material);
         });
+    }
+    
+    /**
+     * 创建光源
+     * @return {void}
+     */
+    private createLight(): void {
+        const _this = this;
+        
+        _this.light = new THREE.PointLight('#ffffff', 15, 300);
+        _this.light.position.set(0, 100, 0);
     }
     
     /**

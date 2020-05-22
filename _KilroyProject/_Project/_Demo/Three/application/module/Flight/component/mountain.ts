@@ -54,39 +54,17 @@ export default class Mountain implements Component {
     private create(): void {
         const _this = this;
         
-        const color = new THREE.Color();
-        color.setHSL(0.038, 0.8, 0.5);
-        
-        const material = new THREE.MeshPhongMaterial({ // 材料
-            color: '#ffffff',
-            opacity: 1,
-            map: _this.texture,
-            blending: THREE.NoBlending,
-            side: THREE.BackSide,
-            transparent: false,
-            depthTest: true
-        });
-        
         _this.texture.wrapT
             = _this.texture.wrapS
             = THREE.RepeatWrapping;
         
-        _this.light = new THREE.PointLight('#ffffff', 1, 1000);
-        _this.light.color = color;
-        _this.light.castShadow = false;
-        _this.light.position.set(0, 500, 0);
-        
-        _this.simplex = new SimplexNoise();
-        
-        _this.geometry = new THREE.PlaneGeometry(
-            12000, 1400, 128, 32
-        );
-        
-        _this.terrain = new THREE.Mesh(_this.geometry, material);
-        _this.terrain.position.set(0, 0, 0);
-        _this.terrain.rotation.set((Math.PI / 2) + 0.8, 0, 0);
-        
         _this.instance = new THREE.Object3D();
+        _this.instance.name = _this.name;
+        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
+        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
+        
+        _this.createTerrain();
+        _this.createLight();
     }
     
     /**
@@ -96,9 +74,6 @@ export default class Mountain implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.name = _this.name;
-        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
-        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.instance.add(_this.light);
         _this.instance.add(_this.terrain);
         _this.scene.add(_this.instance);
@@ -143,5 +118,49 @@ export default class Mountain implements Component {
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);
         Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);
+    }
+    
+    /**
+     * 创建光源
+     * @return {void}
+     */
+    private createLight(): void {
+        const _this = this;
+        
+        const color = new THREE.Color();
+        color.setHSL(0.038, 0.8, 0.5);
+        
+        _this.light = new THREE.PointLight('#ffffff', 1, 1000);
+        _this.light.color = color;
+        _this.light.castShadow = false;
+        _this.light.position.set(0, 500, 0);
+    }
+    
+    /**
+     * 创建地形
+     * @return {void}
+     */
+    private createTerrain(): void {
+        const _this = this;
+        
+        const material = new THREE.MeshPhongMaterial({ // 材料
+            color: '#ffffff',
+            opacity: 1,
+            map: _this.texture,
+            blending: THREE.NoBlending,
+            side: THREE.BackSide,
+            transparent: false,
+            depthTest: true
+        });
+        
+        _this.simplex = new SimplexNoise();
+        
+        _this.geometry = new THREE.PlaneGeometry(
+            12000, 1400, 128, 32
+        );
+        
+        _this.terrain = new THREE.Mesh(_this.geometry, material);
+        _this.terrain.position.set(0, 0, 0);
+        _this.terrain.rotation.set((Math.PI / 2) + 0.8, 0, 0);
     }
 }

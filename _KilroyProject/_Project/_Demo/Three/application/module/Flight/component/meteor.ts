@@ -48,6 +48,9 @@ export default class Meteor implements Component {
         const _this = this;
         
         _this.instance = new THREE.Object3D();
+        _this.instance.name = _this.name;
+        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
+        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
     }
     
     /**
@@ -57,9 +60,6 @@ export default class Meteor implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.name = _this.name;
-        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
-        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.scene.add(_this.instance);
     }
     

@@ -51,35 +51,13 @@ export default class Ground implements Component {
     private create(): void {
         const _this = this;
         
-        const color = new THREE.Color();
-        color.setHSL(0.038, 0.8, 0.5);
-        
-        const material = new THREE.MeshLambertMaterial({
-            color: '#ffffff',
-            opacity: 1,
-            blending: THREE.NoBlending,
-            side: THREE.FrontSide,
-            transparent: false,
-            depthTest: true,
-            wireframe: true
-        });
-        
-        _this.light = new THREE.PointLight('#ffffff', 3, 800);
-        _this.light.color = color;
-        _this.light.castShadow = false;
-        _this.light.position.set(0, 50, 500);
-        
-        _this.simplex = new SimplexNoise();
-        
-        _this.geometry = new THREE.PlaneGeometry(
-            4000, 2000, 128, 64
-        );
-        
-        _this.plane = new THREE.Mesh(_this.geometry, material);
-        _this.plane.position.set(0, 0, 0);
-        _this.plane.rotation.set(0, 0, 0);
-        
         _this.instance = new THREE.Object3D();
+        _this.instance.name = _this.name;
+        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
+        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
+        
+        _this.createLight();
+        _this.createPlane();
     }
     
     /**
@@ -89,9 +67,6 @@ export default class Ground implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.name = _this.name;
-        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
-        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         _this.instance.add(_this.light);
         _this.instance.add(_this.plane);
         _this.scene.add(_this.instance);
@@ -135,5 +110,49 @@ export default class Ground implements Component {
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);
         Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);
+    }
+    
+    /**
+     * 创建光源
+     * @return {void}
+     */
+    private createLight(): void {
+        const _this = this;
+        
+        const color = new THREE.Color();
+        color.setHSL(0.038, 0.8, 0.5);
+        
+        _this.light = new THREE.PointLight('#ffffff', 3, 800);
+        _this.light.color = color;
+        _this.light.castShadow = false;
+        _this.light.position.set(0, 50, 500);
+    }
+    
+    /**
+     * 创建平面
+     * @return {void}
+     */
+    private createPlane(): void {
+        const _this = this;
+        
+        const material = new THREE.MeshLambertMaterial({
+            color: '#ffffff',
+            opacity: 1,
+            blending: THREE.NoBlending,
+            side: THREE.FrontSide,
+            transparent: false,
+            depthTest: true,
+            wireframe: true
+        });
+        
+        _this.simplex = new SimplexNoise();
+        
+        _this.geometry = new THREE.PlaneGeometry(
+            4000, 2000, 128, 64
+        );
+        
+        _this.plane = new THREE.Mesh(_this.geometry, material);
+        _this.plane.position.set(0, 0, 0);
+        _this.plane.rotation.set(0, 0, 0);
     }
 }
