@@ -59,7 +59,7 @@ export default class Wave implements Component {
         
         const material = new THREE.ShaderMaterial({
             uniforms: {
-                color: { value: new THREE.Color('#000000') },
+                color: { value: new THREE.Color('#ffffff') },
             },
             vertexShader: 'attribute float scale;' +
                 'void main() {' +
@@ -84,6 +84,7 @@ export default class Wave implements Component {
     private init(): void {
         const _this = this;
         
+        _this.instance.position.set(0, -500, 0);
         _this.scene.add(_this.instance);
     }
     
