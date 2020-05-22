@@ -78,6 +78,7 @@ export default class Wave implements Component {
         
         _this.instance = new THREE.Points(geometry, material);
         _this.instance.name = _this.name;
+        _this.instance.position.set(0, -120, 0);
     }
     
     /**
@@ -87,7 +88,7 @@ export default class Wave implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.position.set(0, -120, 0);
+
         _this.scene.add(_this.instance);
     }
     

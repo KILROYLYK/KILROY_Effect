@@ -30,6 +30,9 @@ export default class Renderer implements Layout {
         _this.instance = new THREE.WebGLRenderer({
             antialias: true
         });
+        _this.instance.setSize(Global.Width, Global.Height);
+        _this.instance.outputEncoding = THREE.sRGBEncoding;
+        _this.instance.shadowMap.enabled = true;
     }
     
     /**
@@ -38,10 +41,6 @@ export default class Renderer implements Layout {
      */
     private init(): void {
         const _this = this;
-        
-        _this.instance.setSize(Global.Width, Global.Height);
-        _this.instance.outputEncoding = THREE.sRGBEncoding;
-        _this.instance.shadowMap.enabled = true;
     }
     
     /**

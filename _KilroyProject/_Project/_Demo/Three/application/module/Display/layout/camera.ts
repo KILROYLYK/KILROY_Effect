@@ -33,12 +33,9 @@ export default class Camera implements Layout {
         _this.instance = new THREE.PerspectiveCamera(
             60, Global.Function.getDomAspect(), 1, 10000
         );
+        _this.instance.position.set(0, 1500, 1500);
         
-        _this.controller = new OrbitControls(_this.instance, Global.Dom);
-        _this.controller.enableDamping = true;
-        _this.controller.maxPolarAngle = Math.PI * 0.5;
-        _this.controller.minDistance = 1000;
-        _this.controller.maxDistance = 5000;
+        _this.createController();
     }
     
     /**
@@ -47,8 +44,6 @@ export default class Camera implements Layout {
      */
     private init(): void {
         const _this = this;
-        
-        _this.instance.position.set(0, 1500, 1500);
     }
     
     /**
@@ -80,5 +75,19 @@ export default class Camera implements Layout {
             _this.instance.aspect = Global.Function.getDomAspect();
             _this.instance.updateProjectionMatrix();
         }
+    }
+    
+    /**
+     * 创建控制器
+     * @return {void}
+     */
+    private createController(): void {
+        const _this = this;
+        
+        _this.controller = new OrbitControls(_this.instance, Global.Dom);
+        _this.controller.enableDamping = true;
+        _this.controller.maxPolarAngle = Math.PI * 0.5;
+        _this.controller.minDistance = 1000;
+        _this.controller.maxDistance = 5000;
     }
 }

@@ -7,6 +7,8 @@ import * as THREE from 'three';
  * 网格
  */
 export default class Grid implements Component {
+    private readonly name: string = 'Grid-网格';
+    
     private scene: THREE.Scene = null; // 场景
     
     private size: number = 10000; // 尺寸
@@ -35,11 +37,46 @@ export default class Grid implements Component {
     private create(): void {
         const _this = this;
         
+        _this.instance = new THREE.Object3D();
+        _this.instance.name = _this.name;
+        _this.instance.position.set(0, 0, 0);
+        _this.instance.rotation.set(Math.PI / 2, 0, 0);
+        
+        _this.createGrid();
+    }
+    
+    /**
+     * 初始化
+     * @return {void}
+     */
+    private init(): void {
+        const _this = this;
+        
+        _this.scene.add(_this.instance);
+    }
+    
+    /**
+     * 销毁
+     * @return {void}
+     */
+    public destroy(): void {
+        const _this = this;
+        
+        if (!_this.instance) return;
+        
+        _this.instance = null;
+    }
+    
+    /**
+     * 创建网格
+     * @return {void}
+     */
+    private createGrid(): void {
+        const _this = this;
+        
         const geometry = new THREE.Geometry();
         geometry.vertices.push(new THREE.Vector3(-_this.size / 2, 0, 0));
         geometry.vertices.push(new THREE.Vector3(_this.size / 2, 0, 0));
-    
-        _this.instance = new THREE.Object3D();
         
         for (let i = 0, len = _this.size / _this.division; i <= len; i++) {
             const lineX = new THREE.Line(geometry,
@@ -60,29 +97,5 @@ export default class Grid implements Component {
             _this.instance.add(lineX);
             _this.instance.add(lineY);
         }
-    }
-    
-    /**
-     * 初始化
-     * @return {void}
-     */
-    private init(): void {
-        const _this = this;
-    
-        _this.instance.position.set(0,0,0);
-        _this.instance.rotation.set(Math.PI / 2,0,0);
-        _this.scene.add(_this.instance);
-    }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-        
-        _this.instance = null;
     }
 }

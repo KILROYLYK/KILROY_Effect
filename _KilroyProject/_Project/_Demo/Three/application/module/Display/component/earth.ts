@@ -12,7 +12,8 @@ export default class Earth implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private sphere: THREE.Mesh = null; // 球体
+    private light: THREE.PointLight = null; // 光源
+    private sphere: THREE.Mesh = null; // 光源
     
     public instance: THREE.Object3D = null; // 实例
     
@@ -38,10 +39,15 @@ export default class Earth implements Component {
      */
     private create(): void {
         const _this = this;
-    
+        
+        _this.texture.anisotropy = 4;
+        _this.texture.encoding = THREE.sRGBEncoding;
+        
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
+        _this.instance.position.set(0, 450, 0);
         
+        _this.createLight();
         _this.createSphere();
     }
     
@@ -52,8 +58,8 @@ export default class Earth implements Component {
     private init(): void {
         const _this = this;
         
+        _this.instance.add(_this.light);
         _this.instance.add(_this.sphere);
-        _this.instance.position.set(0, 500, 0);
         _this.scene.add(_this.instance);
     }
     
@@ -80,24 +86,37 @@ export default class Earth implements Component {
     }
     
     /**
+     * 创建光源
+     * @return {void}
+     */
+    private createLight(): void {
+        const _this = this;
+        
+        _this.light = new THREE.PointLight('#ffffff', 3, 800);
+        _this.light.castShadow = true;
+        _this.light.position.set(0, 600, 600);
+    }
+    
+    /**
      * 创建球体
      * @return {void}
      */
     private createSphere(): void {
         const _this = this;
         
-        const geometry = new THREE.SphereGeometry(
-            450, 32, 32
-        );
-        
-        const material = new THREE.MeshBasicMaterial({
-            color: '#ff0000',
-            metalness: 0,
-            roughness: 0
+        const ballMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.5,
+            metalness: 1.0,
+            metalnessMap: _this.texture,
+            needsUpdate: true
         });
         
-        _this.sphere = new THREE.Mesh(geometry, material);
+        const ballGeometry = new THREE.SphereBufferGeometry(
+            400, 32, 32
+        );
+        
+        _this.sphere = new THREE.Mesh(ballGeometry, ballMat);
         _this.sphere.position.set(0, 0, 0);
-        _this.sphere.rotation.set(0, 0, 0);
     }
 }

@@ -25,7 +25,7 @@ export default class Loader implements Controller {
         mtl: null as MTLLoader,
         fbx: null as FBXLoader
     };
-    private resource: object = {}; // 资源列表
+    private path: object = {}; // 资源列表
     private data: object = {}; // 资源对象
     private finish: number = 0; // 完成总数
     private loadedCallback: Function = null; // 加载完成（单个资源）
@@ -34,13 +34,13 @@ export default class Loader implements Controller {
     /**
      * 构造函数
      * @constructor Loader
-     * @param {object} resource 资源列表
+     * @param {object} path 资源列表
      * @param {object} config 配置
      */
-    constructor(resource: object = {}, config: LoadConfig = {}) {
+    constructor(path: object = {}, config: LoadConfig = {}) {
         const _this = this;
         
-        _this.resource = resource;
+        _this.path = path;
         _this.loadedCallback = config.loadedCallback || null;
         _this.finishCallback = config.finishCallback || null;
         
@@ -64,9 +64,9 @@ export default class Loader implements Controller {
         const _this = this,
             promiseList = [];
         
-        for (const key in _this.resource) {
-            if (_this.resource[key] === '') return Promise.resolve();
-            await _this.load(key, _this.resource[key]);
+        for (const key in _this.path) {
+            if (_this.path[key] === '') return Promise.resolve();
+            await _this.load(key, _this.path[key]);
         }
         
         await Promise.all(promiseList);
@@ -81,7 +81,7 @@ export default class Loader implements Controller {
     public destroy(): void {
         const _this = this;
         
-        _this.resource = [];
+        _this.path = [];
         _this.data = {};
     }
     
@@ -93,7 +93,7 @@ export default class Loader implements Controller {
      */
     private async load(name: string, path: string): Promise<any> {
         const _this = this,
-            length = Object.keys(_this.resource);
+            length = Object.keys(_this.path);
         
         let loader = null,
             type = '';
