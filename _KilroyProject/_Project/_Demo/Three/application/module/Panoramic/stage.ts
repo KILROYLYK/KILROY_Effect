@@ -14,12 +14,9 @@ import Look from '../../controller/look';
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: [ // 地址
-            {
-                name: 'map',
-                path: 'https://image.gaeamobile.net/image/20200515/140131/map.jpg'
-            }
-        ] as object[],
+        path: {
+            map: 'https://image.gaeamobile.net/image/20200522/174553/map.jpg'
+        } as object,
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器

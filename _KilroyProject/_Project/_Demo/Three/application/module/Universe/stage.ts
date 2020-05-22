@@ -13,12 +13,7 @@ import Loader from '../../controller/loader';
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: [ // 地址
-            {
-                name: '',
-                path: ''
-            },
-        ] as object[],
+        path: {} as object,
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器

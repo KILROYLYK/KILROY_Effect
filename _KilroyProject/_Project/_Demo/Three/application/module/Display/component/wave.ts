@@ -7,6 +7,8 @@ import * as THREE from 'three';
  * 波浪
  */
 export default class Wave implements Component {
+    private readonly name: string = 'Wave-波浪';
+    
     private scene: THREE.Scene = null; // 场景
     
     private separation: number = 200; // 分离
@@ -75,6 +77,7 @@ export default class Wave implements Component {
         });
         
         _this.instance = new THREE.Points(geometry, material);
+        _this.instance.name = _this.name;
     }
     
     /**
@@ -84,7 +87,7 @@ export default class Wave implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.position.set(0, -100, 0);
+        _this.instance.position.set(0, -120, 0);
         _this.scene.add(_this.instance);
     }
     

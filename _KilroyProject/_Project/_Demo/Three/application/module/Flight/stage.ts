@@ -19,24 +19,12 @@ import './static/css/flight.less';
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: [ // 地址
-            {
-                name: 'star',
-                path: 'https://image.gaeamobile.net/image/20200515/164632/star.png'
-            },
-            {
-                name: 'mountain',
-                path: 'https://image.gaeamobile.net/image/20200515/164632/mountain.jpg'
-            },
-            {
-                name: 'engine',
-                path: 'https://image.gaeamobile.net/image/20200515/164632/engine.jpg'
-            },
-            {
-                name: 'spaceship',
-                path: 'https://image.gaeamobile.net/image/20200515/164632/ship_03.obj'
-            }
-        ] as object[],
+        path: {
+            star: 'https://image.gaeamobile.net/image/20200515/164632/star.png',
+            mountain: 'https://image.gaeamobile.net/image/20200515/164632/mountain.png',
+            engine: 'https://image.gaeamobile.net/image/20200515/164632/engine.png',
+            spaceship: 'https://image.gaeamobile.net/image/20200515/164632/ship_03.png',
+        } as object,
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器
