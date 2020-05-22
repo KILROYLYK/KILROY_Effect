@@ -4,9 +4,10 @@ import _Stage from '../../interface/stage';
 import Renderer from './layout/renderer';
 import Scene from './layout/scene';
 import Camera from './layout/camera';
-import Wave from './component/wave';
 import LightNatural from './component/lightNatural';
 import LightAngle from './component/lightAngle';
+import Wave from './component/wave';
+import Grid from './component/grid';
 import Loader from '../../controller/loader';
 
 /**
@@ -20,7 +21,8 @@ export default class Stage implements _Stage {
     private component: object = { // 组件
         lightNatural: null as LightNatural, // 灯光-自然光
         lightAngle: null as LightAngle, // 灯光-角度光
-        wave: null as Wave // 地面
+        wave: null as Wave, // 波浪
+        grid: null as Grid // 网格
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -32,7 +34,7 @@ export default class Stage implements _Stage {
      */
     constructor() {
         const _this = this;
-    
+        
         _this.create();
         _this.init();
     }
@@ -48,9 +50,10 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.component.wave = new Wave(_this.scene);
         _this.component.lightNatural = new LightNatural(_this.scene);
         _this.component.lightAngle = new LightAngle(_this.scene);
+        _this.component.wave = new Wave(_this.scene);
+        _this.component.grid = new Grid(_this.scene);
     }
     
     /**
@@ -101,7 +104,7 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-    
+        
         _this.component.wave.update();
         
         _this.camera.update(isResize);

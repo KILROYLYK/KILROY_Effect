@@ -48,7 +48,7 @@ export default class Camera implements Layout {
     private init(): void {
         const _this = this;
         
-        _this.instance.position.set(0, 200, 1500);
+        _this.instance.position.set(0, 1500, 1500);
     }
     
     /**

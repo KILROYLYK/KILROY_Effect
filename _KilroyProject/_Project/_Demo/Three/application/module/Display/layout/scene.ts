@@ -39,7 +39,7 @@ export default class Scene implements Layout {
             color = '#1b1e21';
         
         _this.instance.background = new THREE.Color(color);
-        _this.instance.fog = new THREE.FogExp2(color, 0.0002);
+        _this.instance.fog = new THREE.FogExp2(color, 0.0003);
     }
     
     /**

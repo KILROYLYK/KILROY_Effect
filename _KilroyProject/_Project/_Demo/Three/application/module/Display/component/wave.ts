@@ -4,12 +4,12 @@ import Component from '../../../interface/component';
 import * as THREE from 'three';
 
 /**
- * 地面
+ * 波浪
  */
 export default class Wave implements Component {
     private scene: THREE.Scene = null; // 场景
     
-    private separation: number = 100; // 分离
+    private separation: number = 200; // 分离
     private mount: number = 50; // 山
     private cycle: number = 0; // 周期
     
@@ -84,7 +84,7 @@ export default class Wave implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.position.set(0, -500, 0);
+        _this.instance.position.set(0, -100, 0);
         _this.scene.add(_this.instance);
     }
     
