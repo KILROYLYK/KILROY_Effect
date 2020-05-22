@@ -26,7 +26,7 @@ export default class Scene implements Layout {
      */
     private create(): void {
         const _this = this;
-        
+    
         _this.instance = new THREE.Scene();
     }
     

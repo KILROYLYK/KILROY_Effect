@@ -20,10 +20,10 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            star: 'https://image.gaeamobile.net/image/20200515/164632/star.png',
-            mountain: 'https://image.gaeamobile.net/image/20200515/164632/mountain.png',
-            engine: 'https://image.gaeamobile.net/image/20200515/164632/engine.png',
-            spaceship: 'https://image.gaeamobile.net/image/20200515/164632/ship_03.png',
+            star: 'https://image.gaeamobile.net/image/20200522/190159/star.png',
+            mountain: 'https://image.gaeamobile.net/image/20200522/190159/mountain.jpg',
+            engine: 'https://image.gaeamobile.net/image/20200522/190159/engine.jpg',
+            spaceship: 'https://image.gaeamobile.net/image/20200522/190159/ship_03.obj'
         } as object,
         data: null as object // 数据
     };

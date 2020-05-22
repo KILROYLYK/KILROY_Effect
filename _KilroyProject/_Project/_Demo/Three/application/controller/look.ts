@@ -50,9 +50,7 @@ export default class Look implements Controller {
         const _this = this;
         
         _this.camera = camera.instance;
-        
-        _this.targetP = new THREE.Vector3();
-        _this.focusLL.far = _this.camera.far * 2;
+    
         _this.flag.turn = !!config.turn;
         _this.flag.focus = !!config.focus;
         
@@ -66,6 +64,9 @@ export default class Look implements Controller {
      */
     private create(): void {
         const _this = this;
+    
+        _this.targetP = new THREE.Vector3();
+        _this.focusLL.far = _this.camera.far * 2;
     }
     
     /**

@@ -7,6 +7,8 @@ import * as THREE from 'three';
  * 全景
  */
 export default class Panoramic implements Component {
+    private readonly name: string = 'Panoramic-全景';
+    
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     

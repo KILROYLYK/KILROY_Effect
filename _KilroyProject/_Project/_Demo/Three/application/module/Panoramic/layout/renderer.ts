@@ -30,6 +30,10 @@ export default class Renderer implements Layout {
         _this.instance = new THREE.WebGLRenderer({
             logarithmicDepthBuffer: true
         });
+        _this.instance.setSize(Global.Width, Global.Height);
+        _this.instance.setPixelRatio(Global.W.devicePixelRatio);
+        _this.instance.sortObjects = false;
+        _this.instance.autoClear = false;
     }
     
     /**
@@ -38,11 +42,6 @@ export default class Renderer implements Layout {
      */
     private init(): void {
         const _this = this;
-        
-        _this.instance.setSize(Global.Width, Global.Height);
-        _this.instance.setPixelRatio(Global.W.devicePixelRatio);
-        _this.instance.sortObjects = false;
-        _this.instance.autoClear = false;
     }
     
     /**

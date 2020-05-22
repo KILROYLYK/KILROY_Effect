@@ -12,7 +12,8 @@ export default class Earth implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private light: THREE.PointLight = null; // 光源
+    private lightAmbientLight: THREE.AmbientLight = null; // 环境光源
+    private lightDirectional: THREE.DirectionalLight = null; // 定向光源
     private sphere: THREE.Mesh = null; // 光源
     
     public instance: THREE.Object3D = null; // 实例
@@ -58,7 +59,8 @@ export default class Earth implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.add(_this.light);
+        _this.instance.add(_this.lightAmbientLight);
+        _this.instance.add(_this.lightDirectional);
         _this.instance.add(_this.sphere);
         _this.scene.add(_this.instance);
     }
@@ -90,11 +92,13 @@ export default class Earth implements Component {
      * @return {void}
      */
     private createLight(): void {
-        const _this = this;
+        const _this = this,
+            color = '#ffffff';
         
-        _this.light = new THREE.PointLight('#ffffff', 3, 800);
-        _this.light.castShadow = true;
-        _this.light.position.set(0, 600, 600);
+        _this.lightAmbientLight = new THREE.AmbientLight(color, 0.08);
+        
+        _this.lightDirectional = new THREE.DirectionalLight(color, 1);
+        _this.lightDirectional.position.set(0, 0, 500);
     }
     
     /**
@@ -107,8 +111,7 @@ export default class Earth implements Component {
         const ballMat = new THREE.MeshStandardMaterial({
             color: 0xffffff,
             roughness: 0.5,
-            metalness: 1.0,
-            metalnessMap: _this.texture,
+            map: _this.texture,
             needsUpdate: true
         });
         

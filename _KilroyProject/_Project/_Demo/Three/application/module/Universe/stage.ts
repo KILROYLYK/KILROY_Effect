@@ -4,7 +4,6 @@ import _Stage from '../../interface/stage';
 import Renderer from './layout/renderer';
 import Scene from './layout/scene';
 import Camera from './layout/camera';
-import Sun from './component/sun';
 import Loader from '../../controller/loader';
 
 /**
@@ -20,7 +19,6 @@ export default class Stage implements _Stage {
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
     private component: object = { // 组件
-        sun: null as Sun // 太阳
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -57,8 +55,6 @@ export default class Stage implements _Stage {
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
-        
-        _this.component.sun = new Sun(_this.scene);
     }
     
     /**
