@@ -42,7 +42,7 @@ export default class Stage implements _Stage {
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
-    private object: object = { // 对象
+    private component: object = { // 组件
         mountain: null as Mountain, // 山脉
         ground: null as Ground, // 地形
         star: null as Star, // 星星
@@ -85,11 +85,11 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.object.mountain = new Mountain(_this.scene, resource.mountain);
-        _this.object.ground = new Ground(_this.scene);
-        _this.object.star = new Star(_this.scene, resource.star);
-        _this.object.meteor = new Meteor(_this.scene);
-        _this.object.spaceship = new Spaceship(_this.scene, resource.spaceship, resource.engine);
+        _this.component.mountain = new Mountain(_this.scene, resource.mountain);
+        _this.component.ground = new Ground(_this.scene);
+        _this.component.star = new Star(_this.scene, resource.star);
+        _this.component.meteor = new Meteor(_this.scene);
+        _this.component.spaceship = new Spaceship(_this.scene, resource.spaceship, resource.engine);
     }
     
     /**
@@ -123,11 +123,11 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         _this.isInit = false;
         
-        _this.object.mountain.destroy();
-        _this.object.ground.destroy();
-        _this.object.star.destroy();
-        _this.object.meteor.destroy();
-        _this.object.spaceship.destroy();
+        _this.component.mountain.destroy();
+        _this.component.ground.destroy();
+        _this.component.star.destroy();
+        _this.component.meteor.destroy();
+        _this.component.spaceship.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();
@@ -144,11 +144,11 @@ export default class Stage implements _Stage {
         
         if (!_this.isInit) return;
         
-        _this.object.mountain.update();
-        _this.object.ground.update();
-        _this.object.star.update();
-        _this.object.meteor.update();
-        _this.object.spaceship.update();
+        _this.component.mountain.update();
+        _this.component.ground.update();
+        _this.component.star.update();
+        _this.component.meteor.update();
+        _this.component.spaceship.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

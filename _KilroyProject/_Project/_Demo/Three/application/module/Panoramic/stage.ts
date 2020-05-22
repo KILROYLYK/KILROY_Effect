@@ -25,7 +25,7 @@ export default class Stage implements _Stage {
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
-    private object: object = { // 对象
+    private component: object = { // 组件
         sphere: null as Sphere // 球体
     };
     private controller: object = { // 控制器
@@ -68,7 +68,7 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.object.sphere = new Sphere(_this.scene, resource.map);
+        _this.component.sphere = new Sphere(_this.scene, resource.map);
         
         _this.controller.look = new Look(_this.camera, {
             turn: true,

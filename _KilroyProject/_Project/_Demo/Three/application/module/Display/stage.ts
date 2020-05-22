@@ -4,7 +4,7 @@ import _Stage from '../../interface/stage';
 import Renderer from './layout/renderer';
 import Scene from './layout/scene';
 import Camera from './layout/camera';
-import Wave from './component/ground';
+import Wave from './component/wave';
 import LightNatural from './component/lightNatural';
 import LightAngle from './component/lightAngle';
 import Loader from '../../controller/loader';
@@ -14,22 +14,13 @@ import Loader from '../../controller/loader';
  */
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
-    private readonly resource: object = { // 资源
-        path: [ // 地址
-            {
-                name: 'grassland',
-                path: 'https://image.gaeamobile.net/image/20190718/130858/grassland.jpg'
-            }
-        ] as object[],
-        data: null as object // 数据
-    };
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
-    private object: object = { // 对象
+    private component: object = { // 组件
         lightNatural: null as LightNatural, // 灯光-自然光
         lightAngle: null as LightAngle, // 灯光-角度光
-        ground: null as Wave // 地面
+        wave: null as Wave // 地面
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -41,18 +32,9 @@ export default class Stage implements _Stage {
      */
     constructor() {
         const _this = this;
-        
-        _this.controller.loader = new Loader(_this.resource.path, {
-            loadedCallback(index, total, progress) {
-                // console.log(`加载进度：${ index } ${ total } ${ progress }`);
-            },
-            finishCallback(data) {
-                _this.resource.data = data;
-                
-                _this.create();
-                _this.init();
-            }
-        });
+    
+        _this.create();
+        _this.init();
     }
     
     /**
@@ -66,9 +48,9 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.object.ground = new Wave(_this.scene, _this.resource.data.grassland);
-        _this.object.lightNatural = new LightNatural(_this.scene);
-        _this.object.lightAngle = new LightAngle(_this.scene);
+        _this.component.wave = new Wave(_this.scene);
+        _this.component.lightNatural = new LightNatural(_this.scene);
+        _this.component.lightAngle = new LightAngle(_this.scene);
     }
     
     /**
@@ -102,8 +84,8 @@ export default class Stage implements _Stage {
         
         _this.controller.loader.destroy();
         
-        _this.object.light.destroy();
-        _this.object.ground.destroy();
+        _this.component.light.destroy();
+        _this.component.wave.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();
@@ -119,6 +101,8 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+    
+        _this.component.wave.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
