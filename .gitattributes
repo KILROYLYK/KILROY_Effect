@@ -8,7 +8,7 @@
 *.css linguist-language=js
 *.less linguist-language=js
 *.sass linguist-language=js
-*.sess linguist-language=js
+*.scss linguist-language=js
 
 *.html linguist-language=js
 
