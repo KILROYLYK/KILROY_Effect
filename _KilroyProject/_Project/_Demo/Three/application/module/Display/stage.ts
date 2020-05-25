@@ -7,6 +7,8 @@ import Camera from './layout/camera';
 import Wave from './component/wave';
 import Grid from './component/grid';
 import Earth from './component/earth';
+import Moon from './component/moon';
+import Light from './component/light';
 import Loader from '../../controller/loader';
 
 /**
@@ -16,7 +18,8 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            earth: 'https://image.gaeamobile.net/image/20200522/175356/earth.jpg'
+            earth: 'https://image.gaeamobile.net/image/20200525/191513/earth.jpg',
+            moon: 'https://image.gaeamobile.net/image/20200525/191513/moon.jpg'
         } as object,
         data: null as object // 数据
     };
@@ -26,7 +29,9 @@ export default class Stage implements _Stage {
     private component: object = { // 组件
         wave: null as Wave, // 波浪
         grid: null as Grid, // 网格
-        earth: null as Earth // 地球
+        earth: null as Earth, // 地球
+        moon: null as Moon, // 月球
+        light: null as Light, // 光源
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -70,6 +75,8 @@ export default class Stage implements _Stage {
         _this.component.wave = new Wave(_this.scene);
         _this.component.grid = new Grid(_this.scene);
         _this.component.earth = new Earth(_this.scene, resource.earth);
+        _this.component.moon = new Moon(_this.scene, resource.moon);
+        _this.component.light = new Light(_this.scene);
     }
     
     /**

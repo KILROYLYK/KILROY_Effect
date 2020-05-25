@@ -4,10 +4,10 @@ import Component from '../../../interface/component';
 import * as THREE from 'three';
 
 /**
- * 地球
+ * 月球
  */
-export default class Earth implements Component {
-    private readonly name: string = 'Earth-地球';
+export default class Moon implements Component {
+    private readonly name: string = 'Moon-月球';
     
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
@@ -18,7 +18,7 @@ export default class Earth implements Component {
     
     /**
      * 构造函数
-     * @constructor Earth
+     * @constructor Moon
      * @param {object} scene 场景
      * @param {THREE.Texture} texture 纹理
      */
@@ -97,10 +97,11 @@ export default class Earth implements Component {
         });
         
         const ballGeometry = new THREE.SphereBufferGeometry(
-            400, 64, 64
+            100, 32, 32
         );
         
         _this.sphere = new THREE.Mesh(ballGeometry, ballMat);
-        _this.sphere.position.set(0, 0, 0);
+        _this.sphere.position.set(0, 0, 1000);
     }
 }
+// 355336
