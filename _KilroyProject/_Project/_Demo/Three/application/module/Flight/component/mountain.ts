@@ -54,17 +54,13 @@ export default class Mountain implements Component {
     private create(): void {
         const _this = this;
         
-        _this.texture.wrapT
-            = _this.texture.wrapS
-            = THREE.RepeatWrapping;
-        
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
-        
-        _this.createTerrain();
+    
         _this.createLight();
+        _this.createTerrain();
     }
     
     /**
@@ -142,6 +138,10 @@ export default class Mountain implements Component {
      */
     private createTerrain(): void {
         const _this = this;
+    
+        _this.texture.wrapT
+            = _this.texture.wrapS
+            = THREE.RepeatWrapping;
         
         const material = new THREE.MeshPhongMaterial({ // 材料
             color: '#ffffff',

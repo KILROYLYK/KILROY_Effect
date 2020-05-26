@@ -54,10 +54,6 @@ export default class Spaceship implements Component {
     private create(): void {
         const _this = this;
         
-        _this.texture.wrapT
-            = _this.texture.wrapS
-            = THREE.RepeatWrapping;
-        
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
@@ -125,7 +121,7 @@ export default class Spaceship implements Component {
         if (!_this.instance) return;
         
         _this.texture.offset.y -= 0.06;
-        _this.texture.needsUpdate = true;
+        // _this.texture.needsUpdate = true;
         
         _this.moveP.x = (Global.mouseP.x - centerP.x) * moveS.x;
         _this.moveP.y = -((Global.mouseP.y - centerP.y) * moveS.y) - 4;
@@ -184,6 +180,10 @@ export default class Spaceship implements Component {
      */
     private createEngine(): void {
         const _this = this;
+    
+        _this.texture.wrapT
+            = _this.texture.wrapS
+            = THREE.RepeatWrapping;
         
         const material = new THREE.MeshBasicMaterial({
             color: '#0099ff',

@@ -119,10 +119,7 @@ export default class Moon implements Component {
         texture.encoding = THREE.sRGBEncoding;
         
         const mat = new THREE.MeshStandardMaterial({
-            color: 0xffffff,
-            roughness: 0.5,
-            map: _this.texture,
-            needsUpdate: true
+            map: _this.texture
         });
         
         const geometry = new THREE.SphereBufferGeometry(
