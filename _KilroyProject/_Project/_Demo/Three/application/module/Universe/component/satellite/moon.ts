@@ -118,15 +118,17 @@ export default class Moon implements Component {
         texture.anisotropy = 4;
         texture.encoding = THREE.sRGBEncoding;
         
-        const mat = new THREE.MeshStandardMaterial({
-            map: _this.texture
-        });
-        
         const geometry = new THREE.SphereBufferGeometry(
             50, 32, 32
         );
+    
+        const material = new THREE.MeshStandardMaterial({
+            map: _this.texture
+        });
         
-        _this.sphere = new THREE.Mesh(geometry, mat);
+        _this.sphere = new THREE.Mesh(geometry, material);
         _this.sphere.position.set(0, 0, _this.trackR);
+        _this.sphere.castShadow = true;
+        _this.sphere.receiveShadow = false;
     }
 }

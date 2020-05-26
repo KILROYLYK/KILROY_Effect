@@ -33,6 +33,7 @@ export default class Renderer implements Layout {
         _this.instance.setSize(Global.Width, Global.Height);
         _this.instance.outputEncoding = THREE.sRGBEncoding;
         _this.instance.shadowMap.enabled = true;
+        _this.instance.shadowMap.type = THREE.PCFSoftShadowMap;
     }
     
     /**

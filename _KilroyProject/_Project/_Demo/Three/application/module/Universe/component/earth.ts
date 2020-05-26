@@ -123,15 +123,17 @@ export default class Earth implements Component {
         _this.texture.anisotropy = 4;
         _this.texture.encoding = THREE.sRGBEncoding;
         
-        const mat = new THREE.MeshStandardMaterial({
-            map: _this.texture
-        });
-        
         const geometry = new THREE.SphereBufferGeometry(
             200, 64, 64
         );
+    
+        const material = new THREE.MeshStandardMaterial({
+            map: _this.texture
+        });
         
-        _this.sphere = new THREE.Mesh(geometry, mat);
+        _this.sphere = new THREE.Mesh(geometry, material);
         _this.sphere.position.set(0, 0, 0);
+        _this.sphere.castShadow = true;
+        _this.sphere.receiveShadow = false;
     }
 }

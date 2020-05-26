@@ -13,7 +13,6 @@ export default class Sun implements Component {
     private texture: THREE.Texture = null; // 纹理
     
     private light: THREE.PointLight = null; // 点光源
-    private halo: THREE.Mesh = null; // 光晕
     private sphere: THREE.Mesh = null; // 球体
     
     public instance: THREE.Object3D = null; // 实例
@@ -46,7 +45,6 @@ export default class Sun implements Component {
         _this.instance.position.set(0, 0, 0);
         
         _this.createLight();
-        _this.createHalo();
         _this.createSphere();
     }
     
@@ -58,7 +56,6 @@ export default class Sun implements Component {
         const _this = this;
         
         _this.instance.add(_this.light);
-        _this.instance.add(_this.halo);
         _this.instance.add(_this.sphere);
         _this.scene.add(_this.instance);
     }
@@ -97,40 +94,8 @@ export default class Sun implements Component {
         
         _this.light = new THREE.PointLight('#ffffff', 10);
         _this.light.position.set(0, 0, 0);
-    }
-    
-    /**
-     * 创建光晕
-     * @return {void}
-     */
-    private createHalo(): void {
-        const _this = this;
         
-        const geometry = new THREE.SphereGeometry(
-            900, 64, 64
-        );
-        
-        const material = new THREE.ShaderMaterial(
-            {
-                uniforms: {},
-                vertexShader:
-                    'varying vec3 vNormal;' +
-                    'void main() {' +
-                    'vNormal = normalize( normalMatrix * normal );' +
-                    'gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );' +
-                    '}',
-                fragmentShader: 'varying vec3 vNormal;' +
-                    'void main() {' +
-                    'float intensity = pow( 0.7 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) ), 4.0 );' +
-                    'gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 ) * intensity;' +
-                    '}',
-                side: THREE.BackSide,
-                blending: THREE.AdditiveBlending,
-                transparent: true
-            });
-        
-        _this.halo = new THREE.Mesh(geometry, material);
-        _this.halo.position.set(0, 0, 0);
+        _this.light.castShadow = true;
     }
     
     /**
@@ -143,15 +108,19 @@ export default class Sun implements Component {
         _this.texture.anisotropy = 4;
         _this.texture.encoding = THREE.sRGBEncoding;
         
-        const mat = new THREE.MeshStandardMaterial({
-            map: _this.texture
-        });
-        
         const geometry = new THREE.SphereBufferGeometry(
             800, 64, 64
         );
         
-        _this.sphere = new THREE.Mesh(geometry, mat);
+        const material = new THREE.MeshStandardMaterial({
+            emissive: '#ffffff',
+            emissiveMap: _this.texture,
+            emissiveIntensity: 5
+        });
+        
+        _this.sphere = new THREE.Mesh(geometry, material);
         _this.sphere.position.set(0, 0, 0);
+        _this.sphere.castShadow = true;
+        _this.sphere.receiveShadow = false;
     }
 }
