@@ -28,7 +28,7 @@ export default class Renderer implements Layout {
         const _this = this;
         
         _this.instance = new THREE.WebGLRenderer({
-            antialias: true
+            antialias: true // 抗锯齿
         });
         _this.instance.setSize(Global.Width, Global.Height);
         _this.instance.outputEncoding = THREE.sRGBEncoding;

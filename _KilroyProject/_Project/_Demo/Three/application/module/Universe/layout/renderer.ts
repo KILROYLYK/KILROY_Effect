@@ -28,14 +28,11 @@ export default class Renderer implements Layout {
         const _this = this;
         
         _this.instance = new THREE.WebGLRenderer({
-            alpha: true,
-            antialias: true,
-            precision: 'mediump'
+            antialias: true // 抗锯齿
         });
         _this.instance.setSize(Global.Width, Global.Height);
-        _this.instance.setPixelRatio(Global.W.devicePixelRatio);
-        _this.instance.setClearColor('#000000', 0);
-        _this.instance.sortObjects = true;
+        _this.instance.outputEncoding = THREE.sRGBEncoding;
+        _this.instance.shadowMap.enabled = true;
     }
     
     /**

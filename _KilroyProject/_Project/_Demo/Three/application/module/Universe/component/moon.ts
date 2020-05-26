@@ -12,7 +12,8 @@ export default class Moon implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private sphere: THREE.Mesh = null; // 光源
+    private ring: object = null; // 圆环
+    private sphere: THREE.Mesh = null; // 球体
     
     public instance: THREE.Object3D = null; // 实例
     
@@ -44,7 +45,7 @@ export default class Moon implements Component {
         
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, 450, 0);
+        _this.instance.position.set(0, 0, 0);
         
         _this.createSphere();
     }
@@ -77,9 +78,21 @@ export default class Moon implements Component {
      * @return {void}
      */
     public update(): void {
-        const _this = this;
+        const _this = this,
+            cycleS = 0.0008; // 周期速度
         
         if (!_this.instance) return;
+        
+        _this.sphere.rotateY(cycleS);
+        _this.instance.rotateY(-cycleS);
+    }
+    
+    /**
+     * 创建圆环
+     * @return {void}
+     */
+    private createRing(): void {
+        const _this = this;
     }
     
     /**
@@ -104,4 +117,3 @@ export default class Moon implements Component {
         _this.sphere.position.set(0, 0, 1000);
     }
 }
-// 355336

@@ -84,7 +84,10 @@ export default class Camera implements Layout {
     private createController(): void {
         const _this = this;
         
+        const vector = new THREE.Vector3(0, 500, 0);
+        
         _this.controller = new OrbitControls(_this.instance, Global.Dom);
+        _this.controller.target = vector;
         _this.controller.enableDamping = true;
         _this.controller.maxPolarAngle = Math.PI * 0.5;
         _this.controller.minDistance = 1000;

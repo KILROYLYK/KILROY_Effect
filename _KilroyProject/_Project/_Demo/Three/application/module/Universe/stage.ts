@@ -4,6 +4,9 @@ import _Stage from '../../interface/stage';
 import Renderer from './layout/renderer';
 import Scene from './layout/scene';
 import Camera from './layout/camera';
+import Light from './component/light';
+import Earth from './component/earth';
+import Moon from './component/moon';
 import Loader from '../../controller/loader';
 
 /**
@@ -12,13 +15,19 @@ import Loader from '../../controller/loader';
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: {} as object,
+        path: {
+            earth: 'https://image.gaeamobile.net/image/20200525/191513/earth.jpg',
+            moon: 'https://image.gaeamobile.net/image/20200525/191513/moon.jpg'
+        } as object,
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
     private component: object = { // 组件
+        earth: null as Earth, // 地球
+        moon: null as Moon, // 月球
+        light: null as Light, // 光源
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -31,17 +40,20 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        _this.controller.loader = new Loader(_this.resource.path, {
-            loadedCallback(index, total, progress) {
-                // console.log(`加载进度：${ index } ${ total } ${ progress }`);
-            },
-            finishCallback(data) {
-                _this.resource.data = data;
-                
-                _this.create();
-                _this.init();
+        _this.controller.loader = new Loader(
+            _this.resource.path,
+            {
+                loadedCallback(index, total, progress) {
+                    // console.log(`加载进度：${ index } ${ total } ${ progress }`);
+                },
+                finishCallback(data) {
+                    _this.resource.data = data;
+                    
+                    _this.create();
+                    _this.init();
+                }
             }
-        });
+        );
     }
     
     /**
@@ -55,6 +67,10 @@ export default class Stage implements _Stage {
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
+    
+        _this.component.light = new Light(_this.scene);
+        _this.component.earth = new Earth(_this.scene, resource.earth);
+        _this.component.moon = new Moon(_this.scene, resource.moon);
     }
     
     /**
@@ -86,6 +102,13 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         _this.isInit = false;
         
+        _this.controller.loader.destroy();
+    
+        _this.component.light.destroy();
+        _this.component.grid.destroy();
+        _this.component.earth.destroy();
+        _this.component.moon.destroy();
+        
         _this.camera.destroy();
         _this.scene.destroy();
         _this.renderer.destroy();
@@ -100,6 +123,9 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+        
+        _this.component.earth.update();
+        _this.component.moon.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

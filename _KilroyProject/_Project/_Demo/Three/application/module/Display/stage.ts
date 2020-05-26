@@ -4,11 +4,9 @@ import _Stage from '../../interface/stage';
 import Renderer from './layout/renderer';
 import Scene from './layout/scene';
 import Camera from './layout/camera';
+import Light from './component/light';
 import Wave from './component/wave';
 import Grid from './component/grid';
-import Earth from './component/earth';
-import Moon from './component/moon';
-import Light from './component/light';
 import Loader from '../../controller/loader';
 
 /**
@@ -27,11 +25,9 @@ export default class Stage implements _Stage {
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
     private component: object = { // 组件
+        light: null as Light, // 光源
         wave: null as Wave, // 波浪
         grid: null as Grid, // 网格
-        earth: null as Earth, // 地球
-        moon: null as Moon, // 月球
-        light: null as Light, // 光源
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -71,12 +67,10 @@ export default class Stage implements _Stage {
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
-        
+    
+        _this.component.light = new Light(_this.scene);
         _this.component.wave = new Wave(_this.scene);
         _this.component.grid = new Grid(_this.scene);
-        _this.component.earth = new Earth(_this.scene, resource.earth);
-        _this.component.moon = new Moon(_this.scene, resource.moon);
-        _this.component.light = new Light(_this.scene);
     }
     
     /**
@@ -109,8 +103,10 @@ export default class Stage implements _Stage {
         _this.isInit = false;
         
         _this.controller.loader.destroy();
-        
+    
+        _this.component.light.destroy();
         _this.component.wave.destroy();
+        _this.component.grid.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();

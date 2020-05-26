@@ -4,29 +4,27 @@ import Component from '../../../interface/component';
 import * as THREE from 'three';
 
 /**
- * 地球
+ * 光源
  */
-export default class Earth implements Component {
-    private readonly name: string = 'Earth-地球';
+export default class Light implements Component {
+    private readonly name: string = 'Light-光源';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: THREE.Texture = null; // 纹理
     
-    private sphere: THREE.Mesh = null; // 光源
+    private lightAmbient: THREE.AmbientLight = null; // 环境光源
+    private lightDirectional: THREE.DirectionalLight = null; // 定向光源
     
     public instance: THREE.Object3D = null; // 实例
     
     /**
      * 构造函数
-     * @constructor Earth
+     * @constructor Light
      * @param {object} scene 场景
-     * @param {THREE.Texture} texture 纹理
      */
-    constructor(scene: object, texture: THREE.Texture) {
+    constructor(scene: object) {
         const _this = this;
         
         _this.scene = scene.instance;
-        _this.texture = texture;
         
         _this.create();
         _this.init();
@@ -39,14 +37,11 @@ export default class Earth implements Component {
     private create(): void {
         const _this = this;
         
-        _this.texture.anisotropy = 4;
-        _this.texture.encoding = THREE.sRGBEncoding;
-        
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, 450, 0);
+        _this.instance.position.set(0, 0, 0);
         
-        _this.createSphere();
+        _this.createLight();
     }
     
     /**
@@ -56,7 +51,8 @@ export default class Earth implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.add(_this.sphere);
+        _this.instance.add(_this.lightAmbient);
+        // _this.instance.add(_this.lightDirectional);
         _this.scene.add(_this.instance);
     }
     
@@ -83,24 +79,16 @@ export default class Earth implements Component {
     }
     
     /**
-     * 创建球体
+     * 创建光源
      * @return {void}
      */
-    private createSphere(): void {
-        const _this = this;
+    private createLight(): void {
+        const _this = this,
+            color = '#ffffff';
         
-        const ballMat = new THREE.MeshStandardMaterial({
-            color: 0xffffff,
-            roughness: 0.5,
-            map: _this.texture,
-            needsUpdate: true
-        });
+        _this.lightAmbient = new THREE.AmbientLight(color, 1);
         
-        const ballGeometry = new THREE.SphereBufferGeometry(
-            400, 64, 64
-        );
-        
-        _this.sphere = new THREE.Mesh(ballGeometry, ballMat);
-        _this.sphere.position.set(0, 0, 0);
+        _this.lightDirectional = new THREE.DirectionalLight(color, 1);
+        _this.lightDirectional.position.set(0, 0, 0);
     }
 }
