@@ -4,7 +4,7 @@ import _Stage from '../../interface/stage';
 import Renderer from './layout/renderer';
 import Scene from './layout/scene';
 import Camera from './layout/camera';
-import Sphere from './component/sphere';
+import Panoramic from './component/panoramic';
 import Loader from '../../controller/loader';
 import Look from '../../controller/look';
 
@@ -15,7 +15,7 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            map: 'https://image.gaeamobile.net/image/20200522/174553/map.jpg'
+            universe: 'https://image.gaeamobile.net/image/20200526/164149/universe.jpg'
         } as object,
         data: null as object // 数据
     };
@@ -23,7 +23,7 @@ export default class Stage implements _Stage {
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
     private component: object = { // 组件
-        sphere: null as Sphere // 球体
+        panoramic: null as Panoramic // 全景
     };
     private controller: object = { // 控制器
         loader: null as Loader, // 加载
@@ -65,7 +65,7 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.component.sphere = new Sphere(_this.scene, resource.map);
+        _this.component.panoramic = new Panoramic(_this.scene, resource.universe);
         
         _this.controller.look = new Look(_this.camera, {
             turn: true,

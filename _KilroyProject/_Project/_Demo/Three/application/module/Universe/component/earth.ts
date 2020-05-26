@@ -3,8 +3,6 @@ import Component from '../../../interface/component';
 
 import * as THREE from 'three';
 
-import Moon from './satellite/moon';
-
 /**
  * 地球
  */
@@ -12,12 +10,9 @@ export default class Earth implements Component {
     private readonly name: string = 'Earth-地球';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: object = null; // 纹理
+    private texture: THREE.Texture = null; // 纹理
     
     private readonly trackR: number = 2000; // 轨迹半径
-    private readonly satellite: object = { // 卫星
-        moon: null as Moon
-    };
     private ring: THREE.Mesh = null; // 圆环
     private sphere: THREE.Mesh = null; // 球体
     
@@ -28,9 +23,9 @@ export default class Earth implements Component {
      * 构造函数
      * @constructor Earth
      * @param {object} scene 场景
-     * @param {object} texture 纹理
+     * @param {THREE.Texture} texture 纹理
      */
-    constructor(scene: object, texture: object) {
+    constructor(scene: object, texture: THREE.Texture) {
         const _this = this;
         
         _this.scene = scene.instance;
@@ -56,8 +51,6 @@ export default class Earth implements Component {
         
         _this.createRing();
         _this.createSphere();
-        
-        _this.satellite.moon = new Moon(_this.group, _this.texture.moon);
     }
     
     /**
@@ -83,7 +76,6 @@ export default class Earth implements Component {
         
         if (!_this.instance) return;
         
-        _this.satellite.moon.destroy();
         _this.instance = null;
     }
     
@@ -96,8 +88,6 @@ export default class Earth implements Component {
             cycleS = 0.01; // 周期速度
         
         if (!_this.instance) return;
-        
-        _this.satellite.moon.update();
         
         _this.sphere.rotateY(cycleS);
         _this.instance.rotateY(-cycleS / 10);
@@ -128,16 +118,15 @@ export default class Earth implements Component {
      * @return {void}
      */
     private createSphere(): void {
-        const _this = this,
-            texture = _this.texture.earth;
-        
-        texture.anisotropy = 4;
-        texture.encoding = THREE.sRGBEncoding;
+        const _this = this;
+    
+        _this.texture.anisotropy = 4;
+        _this.texture.encoding = THREE.sRGBEncoding;
         
         const mat = new THREE.MeshStandardMaterial({
             color: 0xffffff,
             roughness: 0.5,
-            map: texture,
+            map: _this.texture,
             needsUpdate: true
         });
         
