@@ -1,5 +1,5 @@
-import Global from '../../../constant/global';
-import Component from '../../../interface/component';
+import Global from '../../../../constant/global';
+import Component from '../../../../interface/component';
 
 import * as THREE from 'three';
 
@@ -9,10 +9,11 @@ import * as THREE from 'three';
 export default class Moon implements Component {
     private readonly name: string = 'Moon-月球';
     
-    private scene: THREE.Scene = null; // 场景
+    private group: THREE.Object3D = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private ring: object = null; // 圆环
+    private readonly trackR: number = 200; // 轨迹半径
+    private ring: THREE.Mesh = null; // 圆环
     private sphere: THREE.Mesh = null; // 球体
     
     public instance: THREE.Object3D = null; // 实例
@@ -20,13 +21,13 @@ export default class Moon implements Component {
     /**
      * 构造函数
      * @constructor Moon
-     * @param {object} scene 场景
+     * @param {THREE.Object3D} group 场景
      * @param {THREE.Texture} texture 纹理
      */
-    constructor(scene: object, texture: THREE.Texture) {
+    constructor(group: THREE.Object3D, texture: THREE.Texture) {
         const _this = this;
         
-        _this.scene = scene.instance;
+        _this.group = group;
         _this.texture = texture;
         
         _this.create();
@@ -40,13 +41,11 @@ export default class Moon implements Component {
     private create(): void {
         const _this = this;
         
-        _this.texture.anisotropy = 4;
-        _this.texture.encoding = THREE.sRGBEncoding;
-        
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         
+        _this.createRing();
         _this.createSphere();
     }
     
@@ -57,8 +56,9 @@ export default class Moon implements Component {
     private init(): void {
         const _this = this;
         
+        _this.instance.add(_this.ring);
         _this.instance.add(_this.sphere);
-        _this.scene.add(_this.instance);
+        _this.group.add(_this.instance);
     }
     
     /**
@@ -79,7 +79,7 @@ export default class Moon implements Component {
      */
     public update(): void {
         const _this = this,
-            cycleS = 0.0008; // 周期速度
+            cycleS = 0.01; // 周期速度
         
         if (!_this.instance) return;
         
@@ -93,6 +93,18 @@ export default class Moon implements Component {
      */
     private createRing(): void {
         const _this = this;
+        
+        const geometry = new THREE.RingGeometry(
+            _this.trackR - 1, _this.trackR, 64
+        );
+        
+        const material = new THREE.MeshBasicMaterial({
+            color: '#ffffff',
+            side: THREE.DoubleSide
+        });
+        
+        _this.ring = new THREE.Mesh(geometry, material);
+        _this.ring.rotation.set(Math.PI / 2, 0, 0);
     }
     
     /**
@@ -100,20 +112,24 @@ export default class Moon implements Component {
      * @return {void}
      */
     private createSphere(): void {
-        const _this = this;
+        const _this = this,
+            texture = _this.texture;
+    
+        texture.anisotropy = 4;
+        texture.encoding = THREE.sRGBEncoding;
         
-        const ballMat = new THREE.MeshStandardMaterial({
+        const mat = new THREE.MeshStandardMaterial({
             color: 0xffffff,
             roughness: 0.5,
             map: _this.texture,
             needsUpdate: true
         });
         
-        const ballGeometry = new THREE.SphereBufferGeometry(
-            100, 32, 32
+        const geometry = new THREE.SphereBufferGeometry(
+            12.5, 32, 32
         );
         
-        _this.sphere = new THREE.Mesh(ballGeometry, ballMat);
-        _this.sphere.position.set(0, 0, 1000);
+        _this.sphere = new THREE.Mesh(geometry, mat);
+        _this.sphere.position.set(0, 0, _this.trackR);
     }
 }

@@ -6,7 +6,6 @@ import Scene from './layout/scene';
 import Camera from './layout/camera';
 import Light from './component/light';
 import Earth from './component/earth';
-import Moon from './component/moon';
 import Loader from '../../controller/loader';
 
 /**
@@ -26,7 +25,6 @@ export default class Stage implements _Stage {
     private camera: Camera = null; // 相机
     private component: object = { // 组件
         earth: null as Earth, // 地球
-        moon: null as Moon, // 月球
         light: null as Light, // 光源
     };
     private controller: object = { // 控制器
@@ -69,8 +67,7 @@ export default class Stage implements _Stage {
         _this.camera = new Camera();
     
         _this.component.light = new Light(_this.scene);
-        _this.component.earth = new Earth(_this.scene, resource.earth);
-        _this.component.moon = new Moon(_this.scene, resource.moon);
+        _this.component.earth = new Earth(_this.scene, resource);
     }
     
     /**
@@ -105,9 +102,7 @@ export default class Stage implements _Stage {
         _this.controller.loader.destroy();
     
         _this.component.light.destroy();
-        _this.component.grid.destroy();
         _this.component.earth.destroy();
-        _this.component.moon.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();
@@ -125,7 +120,6 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         
         _this.component.earth.update();
-        _this.component.moon.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
