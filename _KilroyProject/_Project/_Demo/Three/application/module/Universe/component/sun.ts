@@ -100,7 +100,7 @@ export default class Sun implements Component {
         });
         
         const geometry = new THREE.SphereBufferGeometry(
-            500, 64, 64
+            800, 64, 64
         );
         
         _this.sphere = new THREE.Mesh(geometry, mat);

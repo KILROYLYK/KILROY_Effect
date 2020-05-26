@@ -12,7 +12,7 @@ export default class Earth implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private readonly trackR: number = 2000; // 轨迹半径
+    private readonly trackR: number = 5000; // 轨迹半径
     private ring: THREE.Mesh = null; // 圆环
     private sphere: THREE.Mesh = null; // 球体
     
@@ -101,7 +101,7 @@ export default class Earth implements Component {
         const _this = this;
         
         const geometry = new THREE.RingGeometry(
-            _this.trackR - 1, _this.trackR, 128
+            _this.trackR - 2, _this.trackR, 128
         );
         
         const material = new THREE.MeshBasicMaterial({
@@ -131,7 +131,7 @@ export default class Earth implements Component {
         });
         
         const geometry = new THREE.SphereBufferGeometry(
-            50, 64, 64
+            200, 64, 64
         );
         
         _this.sphere = new THREE.Mesh(geometry, mat);

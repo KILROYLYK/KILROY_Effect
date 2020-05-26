@@ -90,7 +90,7 @@ export default class Camera implements Layout {
         _this.controller.target = vector;
         _this.controller.enableDamping = true;
         _this.controller.maxPolarAngle = Math.PI * 0.5;
-        _this.controller.minDistance = 100;
-        _this.controller.maxDistance = 30000;
+        _this.controller.minDistance = 500;
+        _this.controller.maxDistance = 20000;
     }
 }

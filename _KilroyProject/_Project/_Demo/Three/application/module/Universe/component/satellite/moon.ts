@@ -12,7 +12,7 @@ export default class Moon implements Component {
     private group: THREE.Object3D = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private readonly trackR: number = 200; // 轨迹半径
+    private readonly trackR: number = 1000; // 轨迹半径
     private ring: THREE.Mesh = null; // 圆环
     private sphere: THREE.Mesh = null; // 球体
     
@@ -95,7 +95,7 @@ export default class Moon implements Component {
         const _this = this;
         
         const geometry = new THREE.RingGeometry(
-            _this.trackR - 1, _this.trackR, 64
+            _this.trackR - 2, _this.trackR, 64
         );
         
         const material = new THREE.MeshBasicMaterial({
@@ -126,7 +126,7 @@ export default class Moon implements Component {
         });
         
         const geometry = new THREE.SphereBufferGeometry(
-            12.5, 32, 32
+            50, 32, 32
         );
         
         _this.sphere = new THREE.Mesh(geometry, mat);
