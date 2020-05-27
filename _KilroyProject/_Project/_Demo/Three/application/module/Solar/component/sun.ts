@@ -76,6 +76,9 @@ export default class Sun implements Component {
         
         if (!_this.instance) return;
         
+        _this.light = null;
+        _this.sphere = null;
+        
         _this.instance = null;
     }
     
@@ -89,7 +92,7 @@ export default class Sun implements Component {
         
         if (!_this.instance) return;
         
-        _this.uniform.time.value += cycleS * 5;
+        _this.uniform.time.value += cycleS * 10;
         
         _this.sphere.rotateY(cycleS);
     }
@@ -125,7 +128,7 @@ export default class Sun implements Component {
         
         _this.uniform = {
             fogDensity: {
-                value: 100
+                value: 0.45
             },
             fogColor: {
                 value: new THREE.Vector3(0, 0, 0)

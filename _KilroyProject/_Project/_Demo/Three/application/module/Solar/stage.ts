@@ -30,7 +30,7 @@ export default class Stage implements _Stage {
             mars: 'https://image.gaeamobile.net/image/20200527/173108/mars.jpg',
             jupiter: 'https://image.gaeamobile.net/image/20200527/173108/jupiter.jpg',
             saturn: 'https://image.gaeamobile.net/image/20200527/173108/saturn.jpg',
-            saturn_ring: 'https://image.gaeamobile.net/image/20200527/173108/saturn_ring.jpg',
+            saturn_ring: 'https://image.gaeamobile.net/image/20200527/173108/saturn_ring.png',
             uranus: 'https://image.gaeamobile.net/image/20200527/173108/uranus.jpg',
             neptune: 'https://image.gaeamobile.net/image/20200527/173108/neptune.jpg',
         } as object,
@@ -90,10 +90,13 @@ export default class Stage implements _Stage {
         _this.component.panoramic = new Panoramic(_this.scene, resource.universe);
         _this.component.sun = new Sun(_this.scene, {
             sunGround: resource.sunGround,
-            sunCloud: resource.sunCloud,
+            sunCloud: resource.sunCloud
         });
         
-        _this.component.earth = new Earth(_this.scene, resource.earth);
+        _this.component.earth = new Earth(_this.scene,{
+            earth: resource.earth,
+            earthCloud: resource.earthCloud
+        });
         _this.component.moon = new Moon(_this.component.earth.group, resource.moon);
     }
     

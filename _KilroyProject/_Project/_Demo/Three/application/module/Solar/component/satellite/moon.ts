@@ -69,6 +69,9 @@ export default class Moon implements Component {
         const _this = this;
         
         if (!_this.instance) return;
+    
+        _this.ring = null;
+        _this.sphere = null;
         
         _this.instance = null;
     }
@@ -84,6 +87,7 @@ export default class Moon implements Component {
         if (!_this.instance) return;
         
         _this.sphere.rotateY(cycleS);
+        
         _this.instance.rotateY(-cycleS);
     }
     
@@ -114,14 +118,14 @@ export default class Moon implements Component {
     private createSphere(): void {
         const _this = this,
             texture = _this.texture;
-    
+        
         texture.anisotropy = 4;
         texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
             50, 32, 32
         );
-    
+        
         const material = new THREE.MeshStandardMaterial({
             map: _this.texture,
             roughness: 1
