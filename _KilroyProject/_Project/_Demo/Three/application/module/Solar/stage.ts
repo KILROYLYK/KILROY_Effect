@@ -18,11 +18,21 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            universe: 'https://image.gaeamobile.net/image/20200527/154236/universe.jpg',
-            sunGround: 'https://image.gaeamobile.net/image/20200527/154236/sun_ground.jpg',
-            sunCloud: 'https://image.gaeamobile.net/image/20200527/154236/sun_cloud.png',
-            earth: 'https://image.gaeamobile.net/image/20200527/154236/earth.jpg',
-            moon: 'https://image.gaeamobile.net/image/20200527/154236/moon.jpg'
+            universe: 'https://image.gaeamobile.net/image/20200527/173108/universe.jpg',
+            // sun: 'https://image.gaeamobile.net/image/20200527/173108/sun.jpg',
+            sunGround: 'https://image.gaeamobile.net/image/20200527/173108/sun_ground.jpg',
+            sunCloud: 'https://image.gaeamobile.net/image/20200527/173108/sun_cloud.png',
+            mercury: 'https://image.gaeamobile.net/image/20200527/173108/mercury.jpg',
+            venus: 'https://image.gaeamobile.net/image/20200527/173108/venus.jpg',
+            earth: 'https://image.gaeamobile.net/image/20200527/173108/earth.jpg',
+            earthCloud: 'https://image.gaeamobile.net/image/20200527/173108/earth_cloud.jpg',
+            moon: 'https://image.gaeamobile.net/image/20200527/173108/moon.jpg',
+            mars: 'https://image.gaeamobile.net/image/20200527/173108/mars.jpg',
+            jupiter: 'https://image.gaeamobile.net/image/20200527/173108/jupiter.jpg',
+            saturn: 'https://image.gaeamobile.net/image/20200527/173108/saturn.jpg',
+            saturn_ring: 'https://image.gaeamobile.net/image/20200527/173108/saturn_ring.jpg',
+            uranus: 'https://image.gaeamobile.net/image/20200527/173108/uranus.jpg',
+            neptune: 'https://image.gaeamobile.net/image/20200527/173108/neptune.jpg',
         } as object,
         data: null as object // 数据
     };
@@ -147,7 +157,7 @@ export default class Stage implements _Stage {
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
-    
+        
         _this.renderer.instance.clear();
         _this.renderer.instance.render(
             _this.scene.instance,
