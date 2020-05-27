@@ -90,12 +90,13 @@ export default class Sun implements Component {
      * @return {void}
      */
     private createLight(): void {
-        const _this = this;
+        const _this = this,
+            d = 300;
         
-        _this.light = new THREE.PointLight('#ffffff', 10);
+        _this.light = new THREE.PointLight('#ffffff', 5);
         _this.light.position.set(0, 0, 0);
-        
         _this.light.castShadow = true;
+        _this.light.shadow.camera.far = 10000;
     }
     
     /**
@@ -115,12 +116,11 @@ export default class Sun implements Component {
         const material = new THREE.MeshStandardMaterial({
             emissive: '#ffffff',
             emissiveMap: _this.texture,
-            emissiveIntensity: 5
+            emissiveIntensity: 2,
+            roughness: 1
         });
         
         _this.sphere = new THREE.Mesh(geometry, material);
         _this.sphere.position.set(0, 0, 0);
-        _this.sphere.castShadow = true;
-        _this.sphere.receiveShadow = false;
     }
 }

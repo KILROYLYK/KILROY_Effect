@@ -50,6 +50,8 @@ export default class Panoramic implements Component {
         });
         
         _this.instance = new THREE.Mesh(geometry, material);
+        _this.instance.castShadow = false;
+        _this.instance.receiveShadow = false;
     }
     
     /**

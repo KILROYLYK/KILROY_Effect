@@ -123,12 +123,13 @@ export default class Moon implements Component {
         );
     
         const material = new THREE.MeshStandardMaterial({
-            map: _this.texture
+            map: _this.texture,
+            roughness: 1
         });
         
         _this.sphere = new THREE.Mesh(geometry, material);
         _this.sphere.position.set(0, 0, _this.trackR);
         _this.sphere.castShadow = true;
-        _this.sphere.receiveShadow = false;
+        _this.sphere.receiveShadow = true;
     }
 }
