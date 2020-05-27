@@ -52,6 +52,7 @@ export default class Earth implements Component {
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
+        _this.instance.rotation.set(0, 2 * Math.PI / 8 * 2, 0);
         
         _this.createRing();
         _this.createSphere();
