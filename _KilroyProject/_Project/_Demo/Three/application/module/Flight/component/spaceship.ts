@@ -121,7 +121,6 @@ export default class Spaceship implements Component {
         if (!_this.instance) return;
         
         _this.texture.offset.y -= 0.06;
-        // _this.texture.needsUpdate = true;
         
         _this.moveP.x = (Global.mouseP.x - centerP.x) * moveS.x;
         _this.moveP.y = -((Global.mouseP.y - centerP.y) * moveS.y) - 4;

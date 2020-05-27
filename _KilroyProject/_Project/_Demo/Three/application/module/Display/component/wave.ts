@@ -3,6 +3,9 @@ import Component from '../../../interface/component';
 
 import * as THREE from 'three';
 
+import WaveVertex from '../static/other/waveVertex.c';
+import WaveFragment from '../static/other/waveFragment.c';
+
 /**
  * 波浪
  */
@@ -55,25 +58,20 @@ export default class Wave implements Component {
             }
         }
         
+        const color = new THREE.Color('#ffffff');
+        
         const geometry = new THREE.BufferGeometry();
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         geometry.setAttribute('scale', new THREE.BufferAttribute(scales, 1));
         
         const material = new THREE.ShaderMaterial({
             uniforms: {
-                color: { value: new THREE.Color('#ffffff') },
+                color: {
+                    value: color
+                },
             },
-            vertexShader: 'attribute float scale;' +
-                'void main() {' +
-                'vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );' +
-                'gl_PointSize = scale * ( 300.0 / - mvPosition.z );' +
-                'gl_Position = projectionMatrix * mvPosition;' +
-                '}',
-            fragmentShader: 'uniform vec3 color;' +
-                'void main() {' +
-                'if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.475 ) discard;' +
-                'gl_FragColor = vec4( color, 1.0 );' +
-                '}'
+            vertexShader: WaveVertex,
+            fragmentShader: WaveFragment
         });
         
         _this.instance = new THREE.Points(geometry, material);
@@ -88,7 +86,6 @@ export default class Wave implements Component {
     private init(): void {
         const _this = this;
         
-
         _this.scene.add(_this.instance);
     }
     
@@ -126,6 +123,9 @@ export default class Wave implements Component {
                 j++;
             }
         }
+    
+        (_this.instance.geometry as any).attributes.position.needsUpdate = true;
+        (_this.instance.geometry as any).attributes.scale.needsUpdate = true;
         
         _this.cycle += 0.1;
     }

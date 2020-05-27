@@ -90,13 +90,12 @@ export default class Sun implements Component {
      * @return {void}
      */
     private createLight(): void {
-        const _this = this,
-            d = 300;
+        const _this = this;
         
         _this.light = new THREE.PointLight('#ffffff', 5);
         _this.light.position.set(0, 0, 0);
         _this.light.castShadow = true;
-        _this.light.shadow.camera.far = 10000;
+        _this.light.shadow.camera.far = 12000;
     }
     
     /**
