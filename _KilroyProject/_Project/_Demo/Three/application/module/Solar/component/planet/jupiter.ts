@@ -4,15 +4,15 @@ import Component from '../../../../interface/component';
 import * as THREE from 'three';
 
 /**
- * 月球
+ * 木星
  */
-export default class Moon implements Component {
-    private readonly name: string = 'Moon-月球';
+export default class Jupiter implements Component {
+    private readonly name: string = 'Jupiter-木星';
     
-    private group: THREE.Object3D = null; // 场景
+    private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private readonly trackR: number = 450; // 轨迹半径
+    private readonly trackR: number = 5500; // 轨迹半径
     private ring: THREE.Mesh = null; // 圆环
     private sphere: THREE.Mesh = null; // 球体
     
@@ -20,14 +20,14 @@ export default class Moon implements Component {
     
     /**
      * 构造函数
-     * @constructor Moon
-     * @param {THREE.Object3D} group 场景
+     * @constructor Jupiter
+     * @param {object} scene 场景
      * @param {THREE.Texture} texture 纹理
      */
-    constructor(group: THREE.Object3D, texture: THREE.Texture) {
+    constructor(scene: object, texture: THREE.Texture) {
         const _this = this;
         
-        _this.group = group;
+        _this.scene = scene.instance;
         _this.texture = texture;
         
         _this.create();
@@ -58,7 +58,7 @@ export default class Moon implements Component {
         
         _this.instance.add(_this.ring);
         _this.instance.add(_this.sphere);
-        _this.group.add(_this.instance);
+        _this.scene.add(_this.instance);
     }
     
     /**
@@ -82,13 +82,13 @@ export default class Moon implements Component {
      */
     public update(): void {
         const _this = this,
-            cycleS = 0.01; // 周期速度
+            cycleS = 0.004; // 周期速度
         
         if (!_this.instance) return;
         
         _this.sphere.rotateY(cycleS);
         
-        _this.instance.rotateY(-cycleS);
+        _this.instance.rotateY(-cycleS / 10);
     }
     
     /**
@@ -99,7 +99,7 @@ export default class Moon implements Component {
         const _this = this;
         
         const geometry = new THREE.RingGeometry(
-            _this.trackR - 2, _this.trackR, 64
+            _this.trackR - 2, _this.trackR, 128
         );
         
         const material = new THREE.MeshBasicMaterial({
@@ -116,14 +116,13 @@ export default class Moon implements Component {
      * @return {void}
      */
     private createSphere(): void {
-        const _this = this,
-            texture = _this.texture;
+        const _this = this;
         
-        texture.anisotropy = 4;
-        texture.encoding = THREE.sRGBEncoding;
+        _this.texture.anisotropy = 4;
+        _this.texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            40, 32, 32
+            350, 64, 64
         );
         
         const material = new THREE.MeshStandardMaterial({

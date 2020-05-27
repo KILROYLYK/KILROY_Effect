@@ -1,35 +1,30 @@
-import Global from '../../../constant/global';
-import Component from '../../../interface/component';
+import Global from '../../../../constant/global';
+import Component from '../../../../interface/component';
 
 import * as THREE from 'three';
 
 /**
- * 地球
+ * 土星
  */
-export default class Earth implements Component {
-    private readonly name: string = 'Earth-地球';
+export default class Saturn implements Component {
+    private readonly name: string = 'Saturn-土星';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: object = {  // 纹理
-        earth: null as THREE.Texture,
-        earthCloud: null as THREE.Texture
-    };
+    private texture: THREE.Texture = null; // 纹理
     
-    private readonly trackR: number = 5000; // 轨迹半径
+    private readonly trackR: number = 7000; // 轨迹半径
     private ring: THREE.Mesh = null; // 圆环
     private sphere: THREE.Mesh = null; // 球体
-    private cloud: THREE.Mesh = null; // 云
     
-    public group: THREE.Object3D = null; // 组
     public instance: THREE.Object3D = null; // 实例
     
     /**
      * 构造函数
-     * @constructor Earth
+     * @constructor Saturn
      * @param {object} scene 场景
-     * @param {object} texture 纹理
+     * @param {THREE.Texture} texture 纹理
      */
-    constructor(scene: object, texture: object) {
+    constructor(scene: object, texture: THREE.Texture) {
         const _this = this;
         
         _this.scene = scene.instance;
@@ -46,16 +41,12 @@ export default class Earth implements Component {
     private create(): void {
         const _this = this;
         
-        _this.group = new THREE.Object3D();
-        _this.group.position.set(0, 0, _this.trackR);
-        
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         
         _this.createRing();
         _this.createSphere();
-        _this.createCloud();
     }
     
     /**
@@ -65,11 +56,8 @@ export default class Earth implements Component {
     private init(): void {
         const _this = this;
         
-        _this.group.add(_this.sphere);
-        _this.group.add(_this.cloud);
-        
         _this.instance.add(_this.ring);
-        _this.instance.add(_this.group);
+        _this.instance.add(_this.sphere);
         _this.scene.add(_this.instance);
     }
     
@@ -84,9 +72,7 @@ export default class Earth implements Component {
         
         _this.ring = null;
         _this.sphere = null;
-        _this.cloud = null;
         
-        _this.group = null;
         _this.instance = null;
     }
     
@@ -96,13 +82,11 @@ export default class Earth implements Component {
      */
     public update(): void {
         const _this = this,
-            cycleS = 0.01; // 周期速度
+            cycleS = 0.003; // 周期速度
         
         if (!_this.instance) return;
         
         _this.sphere.rotateY(cycleS);
-        _this.cloud.rotateX(cycleS);
-        _this.cloud.rotateY(cycleS);
         
         _this.instance.rotateY(-cycleS / 10);
     }
@@ -132,49 +116,23 @@ export default class Earth implements Component {
      * @return {void}
      */
     private createSphere(): void {
-        const _this = this,
-            texture = _this.texture.earth;
+        const _this = this;
         
-        texture.anisotropy = 4;
-        texture.encoding = THREE.sRGBEncoding;
+        _this.texture.anisotropy = 4;
+        _this.texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            200, 64, 64
+            300, 64, 64
         );
         
         const material = new THREE.MeshStandardMaterial({
-            map: texture,
+            map: _this.texture,
             roughness: 1
         });
         
         _this.sphere = new THREE.Mesh(geometry, material);
-        _this.sphere.position.set(0, 0, 0);
+        _this.sphere.position.set(0, 0, _this.trackR);
         _this.sphere.castShadow = true;
         _this.sphere.receiveShadow = true;
-    }
-    
-    /**
-     * 创建云
-     * @return {void}
-     */
-    private createCloud(): void {
-        const _this = this,
-            texture = _this.texture.earthCloud;
-        
-        texture.anisotropy = 4;
-        texture.encoding = THREE.sRGBEncoding;
-        
-        const geometry = new THREE.SphereBufferGeometry(
-            210, 64, 64
-        );
-        
-        const material = new THREE.MeshStandardMaterial({
-            alphaMap: texture,
-            transparent: true,
-            opacity: 0.5
-        });
-        
-        _this.cloud = new THREE.Mesh(geometry, material);
-        _this.cloud.position.set(0, 0, 0);
     }
 }
