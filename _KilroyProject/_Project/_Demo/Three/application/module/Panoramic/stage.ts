@@ -103,6 +103,7 @@ export default class Stage implements _Stage {
         _this.isInit = false;
         
         _this.controller.loader.destroy();
+        _this.controller.look.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();
