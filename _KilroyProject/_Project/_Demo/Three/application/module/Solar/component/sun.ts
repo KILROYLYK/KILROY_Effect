@@ -14,16 +14,13 @@ export default class Sun implements Component {
     
     private scene: THREE.Scene = null; // 场景
     private texture: object = {  // 纹理
-        sun: null as THREE.Texture,
         sunGround: null as THREE.Texture,
         sunCloud: null as THREE.Texture
     };
     
-    private clock: THREE.Clock = null; // 时钟
     private uniform: object = null; // 匀实
     private light: THREE.PointLight = null; // 点光源
     private sphere: THREE.Mesh = null; // 球体
-    private fire: THREE.Mesh = null; // 火焰
     
     public instance: THREE.Object3D = null; // 实例
     
@@ -56,7 +53,6 @@ export default class Sun implements Component {
         
         _this.createLight();
         _this.createSphere();
-        _this.createFire();
     }
     
     /**
@@ -66,9 +62,8 @@ export default class Sun implements Component {
     private init(): void {
         const _this = this;
         
-        // _this.instance.add(_this.light);
-        // _this.instance.add(_this.sphere);
-        _this.instance.add(_this.fire);
+        _this.instance.add(_this.light);
+        _this.instance.add(_this.sphere);
         _this.scene.add(_this.instance);
     }
     
@@ -94,9 +89,9 @@ export default class Sun implements Component {
         
         if (!_this.instance) return;
         
-        _this.uniform.time.value += 20;
+        _this.uniform.time.value += cycleS * 5;
         
-        // _this.sphere.rotateY(cycleS);
+        _this.sphere.rotateY(cycleS);
     }
     
     /**
@@ -118,32 +113,6 @@ export default class Sun implements Component {
      */
     private createSphere(): void {
         const _this = this,
-            texture = _this.texture.sun;
-        
-        texture.anisotropy = 4;
-        texture.encoding = THREE.sRGBEncoding;
-        
-        const geometry = new THREE.SphereBufferGeometry(
-            800, 64, 64
-        );
-        
-        const material = new THREE.MeshStandardMaterial({
-            emissive: '#ffffff',
-            emissiveMap: texture,
-            emissiveIntensity: 2,
-            roughness: 1
-        });
-        
-        _this.sphere = new THREE.Mesh(geometry, material);
-        _this.sphere.position.set(0, 0, 0);
-    }
-    
-    /**
-     * 创建火焰
-     * @return {void}
-     */
-    private createFire(): void {
-        const _this = this,
             texture1 = _this.texture.sunCloud,
             texture2 = _this.texture.sunGround;
         
@@ -154,20 +123,18 @@ export default class Sun implements Component {
             = texture2.wrapT
             = THREE.RepeatWrapping;
         
-        _this.clock = new THREE.Clock();
-        
         _this.uniform = {
             fogDensity: {
-                value: 0.45
+                value: 100
             },
             fogColor: {
                 value: new THREE.Vector3(0, 0, 0)
             },
             time: {
-                value: 1.0
+                value: 1
             },
             uvScale: {
-                value: new THREE.Vector2(3.0, 1.0)
+                value: new THREE.Vector2(3, 1)
             },
             texture1: {
                 value: texture1
@@ -178,7 +145,7 @@ export default class Sun implements Component {
         }
         
         const geometry = new THREE.SphereGeometry(
-            500, 64, 64
+            820, 64, 64
         );
         
         const material = new THREE.ShaderMaterial({
@@ -187,6 +154,7 @@ export default class Sun implements Component {
             fragmentShader: SunFragment
         });
         
-        _this.fire = new THREE.Mesh(geometry, material);
+        _this.sphere = new THREE.Mesh(geometry, material);
+        _this.sphere.position.set(0, 0, 0);
     }
 }
