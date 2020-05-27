@@ -107,6 +107,7 @@ export default class Sun implements Component {
         _this.light = new THREE.PointLight('#ffffff', 5);
         _this.light.position.set(0, 0, 0);
         _this.light.castShadow = true;
+        _this.light.shadow.camera.near = 100;
         _this.light.shadow.camera.far = 12000;
     }
     
