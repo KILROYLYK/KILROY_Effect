@@ -94,9 +94,9 @@ export default class Sun implements Component {
         
         if (!_this.instance) return;
         
-        _this.uniform.time.value += _this.clock.getDelta();
+        _this.uniform.time.value += 20;
         
-        _this.sphere.rotateY(cycleS);
+        // _this.sphere.rotateY(cycleS);
     }
     
     /**
@@ -154,28 +154,28 @@ export default class Sun implements Component {
             = texture2.wrapT
             = THREE.RepeatWrapping;
         
-        const vector2 = new THREE.Vector2(3.0, 1.0);
-        
-        const vector3 = new THREE.Vector3(0, 0, 0);
+        _this.clock = new THREE.Clock();
         
         _this.uniform = {
             fogDensity: {
                 value: 0.45
             },
             fogColor: {
-                value: vector3
+                value: new THREE.Vector3(0, 0, 0)
             },
             time: {
                 value: 1.0
             },
             uvScale: {
-                value: vector2
+                value: new THREE.Vector2(3.0, 1.0)
             },
-            texture1,
-            texture2
+            texture1: {
+                value: texture1
+            },
+            texture2: {
+                value: texture2
+            }
         }
-        
-        _this.clock = new THREE.Clock();
         
         const geometry = new THREE.SphereGeometry(
             500, 64, 64

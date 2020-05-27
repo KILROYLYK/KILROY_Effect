@@ -80,9 +80,9 @@ export default class Stage implements _Stage {
         _this.component.light = new Light(_this.scene);
         _this.component.panoramic = new Panoramic(_this.scene, resource.universe);
         _this.component.sun = new Sun(_this.scene, {
-            sun:resource.sun,
-            sunGround:resource.sunGround,
-            sunCloud:resource.sunCloud,
+            sun: resource.sun,
+            sunGround: resource.sunGround,
+            sunCloud: resource.sunCloud,
         });
         
         _this.component.earth = new Earth(_this.scene, resource.earth);
@@ -141,8 +141,6 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-    
-        _this.renderer.instance.clear();
         
         _this.component.sun.update();
         
@@ -151,7 +149,8 @@ export default class Stage implements _Stage {
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
-        
+    
+        _this.renderer.instance.clear();
         _this.renderer.instance.render(
             _this.scene.instance,
             _this.camera.instance

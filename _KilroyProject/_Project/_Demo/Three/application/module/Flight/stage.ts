@@ -131,8 +131,6 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-    
-        _this.renderer.instance.clear();
         
         _this.component.mountain.update();
         _this.component.ground.update();
@@ -142,7 +140,8 @@ export default class Stage implements _Stage {
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
-        
+    
+        _this.renderer.instance.clear();
         _this.renderer.instance.render(
             _this.scene.instance,
             _this.camera.instance
