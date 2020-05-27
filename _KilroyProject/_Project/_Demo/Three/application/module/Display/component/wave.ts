@@ -127,9 +127,6 @@ export default class Wave implements Component {
             }
         }
         
-        // (_this.instance.geometry as any).attributes.position.needsUpdate = true;
-        // (_this.instance.geometry as any).attributes.scale.needsUpdate = true;
-        
         _this.cycle += 0.1;
     }
 }
