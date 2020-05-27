@@ -119,6 +119,8 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+    
+        _this.renderer.instance.clear();
         
         _this.controller.look.update();
         

@@ -18,10 +18,12 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            universe: 'https://image.gaeamobile.net/image/20200526/165257/universe.jpg',
-            sun: 'https://image.gaeamobile.net/image/20200526/165257/sun.jpg',
-            earth: 'https://image.gaeamobile.net/image/20200526/165257/earth.jpg',
-            moon: 'https://image.gaeamobile.net/image/20200526/165257/moon.jpg'
+            universe: 'https://image.gaeamobile.net/image/20200527/154236/universe.jpg',
+            sun: 'https://image.gaeamobile.net/image/20200527/154236/sun.jpg',
+            sunGround: 'https://image.gaeamobile.net/image/20200527/154236/sun_ground.jpg',
+            sunCloud: 'https://image.gaeamobile.net/image/20200527/154236/sun_cloud.png',
+            earth: 'https://image.gaeamobile.net/image/20200527/154236/earth.jpg',
+            moon: 'https://image.gaeamobile.net/image/20200527/154236/moon.jpg'
         } as object,
         data: null as object // 数据
     };
@@ -77,7 +79,11 @@ export default class Stage implements _Stage {
         
         _this.component.light = new Light(_this.scene);
         _this.component.panoramic = new Panoramic(_this.scene, resource.universe);
-        _this.component.sun = new Sun(_this.scene, resource.sun);
+        _this.component.sun = new Sun(_this.scene, {
+            sun:resource.sun,
+            sunGround:resource.sunGround,
+            sunCloud:resource.sunCloud,
+        });
         
         _this.component.earth = new Earth(_this.scene, resource.earth);
         _this.component.moon = new Moon(_this.component.earth.group, resource.moon);
@@ -135,6 +141,8 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+    
+        _this.renderer.instance.clear();
         
         _this.component.sun.update();
         
