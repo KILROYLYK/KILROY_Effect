@@ -5,6 +5,7 @@ import Renderer from './layout/renderer';
 import Scene from './layout/scene';
 import Camera from './layout/camera';
 import Panoramic from './component/panoramic';
+import Drip from './component/drip';
 import Loader from '../../controller/loader';
 import Look from '../../controller/look';
 
@@ -15,7 +16,8 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            universe: 'https://image.gaeamobile.net/image/20200526/164149/universe.jpg'
+            // universe: 'https://image.gaeamobile.net/image/20200526/164149/universe.jpg'
+            universe: 'https://image.gaeamobile.net/image/20200522/174553/map.jpg'
         } as object,
         data: null as object // 数据
     };
@@ -23,7 +25,8 @@ export default class Stage implements _Stage {
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
     private component: object = { // 组件
-        panoramic: null as Panoramic // 全景
+        panoramic: null as Panoramic, // 全景
+        drip: null as Drip // 水滴
     };
     private controller: object = { // 控制器
         loader: null as Loader, // 加载
@@ -66,6 +69,7 @@ export default class Stage implements _Stage {
         _this.camera = new Camera();
         
         _this.component.panoramic = new Panoramic(_this.scene, resource.universe);
+        _this.component.drip = new Drip(_this.scene, resource.universe);
         
         _this.controller.look = new Look(_this.camera, {
             turn: true,
@@ -105,6 +109,9 @@ export default class Stage implements _Stage {
         _this.controller.loader.destroy();
         _this.controller.look.destroy();
         
+        _this.component.panoramic.destroy();
+        _this.component.drip.destroy();
+        
         _this.camera.destroy();
         _this.scene.destroy();
         _this.renderer.destroy();
@@ -121,6 +128,8 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         
         _this.controller.look.update();
+        
+        _this.component.drip.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

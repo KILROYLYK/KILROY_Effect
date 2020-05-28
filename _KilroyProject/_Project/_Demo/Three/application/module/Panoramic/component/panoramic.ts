@@ -39,7 +39,7 @@ export default class Panoramic implements Component {
         
         // 球型几何体
         const geometry = new THREE.SphereGeometry(
-            100, 64, 64
+            2000, 64, 64
         );
         geometry.scale(-1, 1, 1);
         geometry.rotateY(-Math.PI / 2); // 视角平行
@@ -50,6 +50,7 @@ export default class Panoramic implements Component {
         });
         
         _this.instance = new THREE.Mesh(geometry, material);
+        _this.instance.name = _this.name;
     }
     
     /**
