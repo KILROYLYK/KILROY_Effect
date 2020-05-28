@@ -10,6 +10,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 export default class Camera implements Layout {
     private controller: OrbitControls = null; // 控制器
     
+    private setTime: number = 0; // 定时器
+    
     public instance: THREE.PerspectiveCamera = null; // 实例
     
     /**
@@ -44,6 +46,18 @@ export default class Camera implements Layout {
      */
     private init(): void {
         const _this = this;
+        
+        _this.openRotate();
+        
+        Global.W.addEventListener('mousedown', () => {
+            _this.setTime && clearTimeout(_this.setTime);
+            _this.closeRotate();
+        }, false);
+        Global.W.addEventListener('mouseup', () => {
+            _this.setTime = setTimeout(() => {
+                _this.openRotate();
+            }, 3000);
+        }, false);
     }
     
     /**
@@ -54,6 +68,8 @@ export default class Camera implements Layout {
         const _this = this;
         
         if (!_this.instance) return;
+        
+        _this.closeRotate();
         
         _this.controller = null;
         _this.instance = null;
@@ -93,5 +109,30 @@ export default class Camera implements Layout {
         _this.controller.maxPolarAngle = Math.PI * 0.7;
         _this.controller.minDistance = 1000;
         _this.controller.maxDistance = 12000;
+        _this.controller.autoRotateSpeed = 0.01;
+    }
+    
+    /**
+     * 开启自动旋转
+     * @return {void}
+     */
+    private openRotate(): void {
+        const _this = this;
+        
+        if (!_this.controller || _this.controller.autoRotate) return;
+        
+        _this.controller.autoRotate = true;
+    }
+    
+    /**
+     * 关闭自动旋转
+     * @return {void}
+     */
+    private closeRotate(): void {
+        const _this = this;
+        
+        if (!_this.controller || !_this.controller.autoRotate) return;
+        
+        _this.controller.autoRotate = false;
     }
 }
