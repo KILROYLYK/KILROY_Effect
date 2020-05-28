@@ -109,7 +109,7 @@ export default class Camera implements Layout {
         _this.controller.maxPolarAngle = Math.PI * 0.7;
         _this.controller.minDistance = 1000;
         _this.controller.maxDistance = 12000;
-        _this.controller.autoRotateSpeed = 0.01;
+        _this.controller.autoRotateSpeed = 1;
     }
     
     /**
