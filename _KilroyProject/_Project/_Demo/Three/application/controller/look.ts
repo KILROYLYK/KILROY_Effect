@@ -71,7 +71,7 @@ export default class Look implements Controller {
     
     /**
      * 初始化
-     * @return {object} 场景对象
+     * @return {void}
      */
     private init(): void {
         const _this = this;

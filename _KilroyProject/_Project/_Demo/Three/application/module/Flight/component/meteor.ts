@@ -105,7 +105,7 @@ export default class Meteor implements Component {
     
     /**
      * 创建星星
-     * @return {THREE.Mesh} 星星对象
+     * @return {void}
      */
     private createStar(): void {
         const _this = this,

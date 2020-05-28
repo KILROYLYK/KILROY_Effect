@@ -18,7 +18,7 @@ export default class Global {
     public readonly static W: Window = W;
     public readonly static Document: Document = D;
     
-    public readonly static Base: object = Base;
+    public readonly static Base: any = Base;
     
     public readonly static Dom: HTMLElement = GlobalFunction.getDom();
     public static Width: number = Global.Dom.clientWidth;
@@ -28,7 +28,7 @@ export default class Global {
         y: Global.Height / 2
     };
     
-    public readonly static Config: object = GlobalConfig; // 配置
-    public readonly static Function: object = GlobalFunction; // 函数
+    public readonly static Config: any = GlobalConfig; // 配置
+    public readonly static Function: any = GlobalFunction; // 函数
     public readonly static Stage: Function = GlobalStage; // 场景
 }
