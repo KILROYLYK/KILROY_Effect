@@ -43,7 +43,7 @@ export default class Text implements Component {
     private create(): void {
         const _this = this;
         
-        const geometry = new THREE.TextGeometry('THREE.JS', {
+        const geometry = new THREE.TextGeometry('KILROY', {
             font: _this.font,
             size: 40,
             height: 5,
@@ -71,7 +71,7 @@ export default class Text implements Component {
                 d = 10 * (0.5 - Math.random());
             
             color.setHSL(
-                0.2 * Math.random(),
+                0.8 * Math.random(),
                 0.5 + 0.5 * Math.random(),
                 0.5 + 0.5 * Math.random()
             );
@@ -101,7 +101,7 @@ export default class Text implements Component {
             fragmentShader: TextFragment
         });
         
-        _this.instance = new THREE.Mesh(geometry, shaderMaterial);
+        _this.instance = new THREE.Mesh(bufferGeometry, shaderMaterial);
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
     }
@@ -134,7 +134,7 @@ export default class Text implements Component {
      */
     public update(): void {
         const _this = this,
-            time = Date.now() * 0.001;
+            time = Date.now() * 0.002;
         
         if (!_this.instance) return;
         

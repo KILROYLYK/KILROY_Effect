@@ -2,7 +2,7 @@ varying vec3 vNormal;
 varying vec3 vColor;
 
 void main() {
-	const float ambient = 0.4;
+	const float ambient = 0.5;
 
 	vec3 light = vec3( 1.0 );
 	light = normalize( light );
