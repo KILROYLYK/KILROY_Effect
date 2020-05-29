@@ -43,7 +43,7 @@ export default class Text implements Component {
     private create(): void {
         const _this = this;
         
-        const geometry = new THREE.TextGeometry('KILROY', {
+        const geometry = new THREE.TextGeometry('THREE.JS', {
             font: _this.font,
             size: 40,
             height: 5,
@@ -52,6 +52,7 @@ export default class Text implements Component {
             bevelSize: 1,
             bevelEnabled: true
         });
+        geometry.center();
         
         const tessellateModifier = new TessellateModifier(8);
         for (let i = 0; i < 6; i++) {
