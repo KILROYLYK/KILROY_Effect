@@ -18,6 +18,7 @@ interface LoadConfig { // 控制器配置
 export default class Loader implements Controller {
     private readonly loader: object = { // 加载器对象
         image: null as THREE.TextureLoader,
+        font: null as THREE.FontLoader,
         json: null as THREE.ObjectLoader,
         audio: null as THREE.AudioLoader,
         svg: null as SVGLoader,
@@ -98,39 +99,42 @@ export default class Loader implements Controller {
         let loader = null,
             type = '';
         
-        if (path.indexOf('.jpg') > -1 ||
-            path.indexOf('.jpeg') > -1 ||
-            path.indexOf('.png') > -1) {
+        if (name.indexOf('image_') > -1) { // 图片
             type = 'Image';
             !_this.loader.image &&
             (_this.loader.image = new THREE.TextureLoader());
             loader = _this.loader.image;
-        } else if (path.indexOf('.json') > -1) {
+        } else if (name.indexOf('font_') > -1) { // 字体
+            type = 'Font';
+            !_this.loader.font &&
+            (_this.loader.font = new THREE.FontLoader());
+            loader = _this.loader.font;
+        } else if (name.indexOf('json_') > -1) { // 模型
             type = 'Json';
             !_this.loader.json &&
             (_this.loader.json = new THREE.ObjectLoader());
             loader = _this.loader.json;
-        } else if (path.indexOf('.mp3') > -1) {
+        } else if (name.indexOf('audio_') > -1) {
             type = 'Audio';
             !_this.loader.audio &&
             (_this.loader.audio = new THREE.AudioLoader());
             loader = _this.loader.audio;
-        } else if (path.indexOf('.svg') > -1) {
+        } else if (name.indexOf('svg_') > -1) {
             type = 'SVG';
             !_this.loader.svg &&
             (_this.loader.svg = new SVGLoader());
             loader = _this.loader.svg;
-        } else if (path.indexOf('.obj') > -1) {
+        } else if (name.indexOf('obj_') > -1) {
             type = 'OBJ';
             !_this.loader.obj &&
             (_this.loader.obj = new OBJLoader());
             loader = _this.loader.obj;
-        } else if (path.indexOf('.mtl') > -1) {
+        } else if (name.indexOf('mtl_') > -1) {
             type = 'MTL';
             !_this.loader.mtl &&
             (_this.loader.mtl = new MTLLoader());
             loader = _this.loader.mtl;
-        } else if (path.indexOf('.fbx') > -1) {
+        } else if (name.indexOf('fbx_') > -1) {
             type = 'FBX';
             !_this.loader.fbx &&
             (_this.loader.fbx = new FBXLoader());

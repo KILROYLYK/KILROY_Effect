@@ -25,21 +25,21 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            universe: 'https://image.gaeamobile.net/image/20200527/173108/universe.jpg',
-            // sun: 'https://image.gaeamobile.net/image/20200527/173108/sun.jpg',
-            sunGround: 'https://image.gaeamobile.net/image/20200527/173108/sun_ground.jpg',
-            sunCloud: 'https://image.gaeamobile.net/image/20200527/173108/sun_cloud.png',
-            mercury: 'https://image.gaeamobile.net/image/20200527/173108/mercury.jpg',
-            venus: 'https://image.gaeamobile.net/image/20200527/173108/venus.jpg',
-            earth: 'https://image.gaeamobile.net/image/20200527/173108/earth.jpg',
-            earthCloud: 'https://image.gaeamobile.net/image/20200527/173108/earth_cloud.jpg',
-            moon: 'https://image.gaeamobile.net/image/20200527/173108/moon.jpg',
-            mars: 'https://image.gaeamobile.net/image/20200527/173108/mars.jpg',
-            jupiter: 'https://image.gaeamobile.net/image/20200527/173108/jupiter.jpg',
-            saturn: 'https://image.gaeamobile.net/image/20200527/173108/saturn.jpg',
-            saturn_ring: 'https://image.gaeamobile.net/image/20200527/173108/saturn_ring.png',
-            uranus: 'https://image.gaeamobile.net/image/20200527/173108/uranus.jpg',
-            neptune: 'https://image.gaeamobile.net/image/20200527/173108/neptune.jpg',
+            image_universe: 'https://image.gaeamobile.net/image/20200527/173108/universe.jpg',
+            // image_sun: 'https://image.gaeamobile.net/image/20200527/173108/sun.jpg',
+            image_sunGround: 'https://image.gaeamobile.net/image/20200527/173108/sun_ground.jpg',
+            image_sunCloud: 'https://image.gaeamobile.net/image/20200527/173108/sun_cloud.png',
+            image_mercury: 'https://image.gaeamobile.net/image/20200527/173108/mercury.jpg',
+            image_venus: 'https://image.gaeamobile.net/image/20200527/173108/venus.jpg',
+            image_earth: 'https://image.gaeamobile.net/image/20200527/173108/earth.jpg',
+            image_earthCloud: 'https://image.gaeamobile.net/image/20200527/173108/earth_cloud.jpg',
+            image_moon: 'https://image.gaeamobile.net/image/20200527/173108/moon.jpg',
+            image_mars: 'https://image.gaeamobile.net/image/20200527/173108/mars.jpg',
+            image_jupiter: 'https://image.gaeamobile.net/image/20200527/173108/jupiter.jpg',
+            image_saturn: 'https://image.gaeamobile.net/image/20200527/173108/saturn.jpg',
+            image_saturn_ring: 'https://image.gaeamobile.net/image/20200527/173108/saturn_ring.png',
+            image_uranus: 'https://image.gaeamobile.net/image/20200527/173108/uranus.jpg',
+            image_neptune: 'https://image.gaeamobile.net/image/20200527/173108/neptune.jpg',
         } as object,
         data: null as object // 数据
     };
@@ -100,24 +100,24 @@ export default class Stage implements _Stage {
         _this.camera = new Camera();
         
         _this.component.light = new Light(_this.scene);
-        _this.component.panoramic = new Panoramic(_this.scene, resource.universe);
+        _this.component.panoramic = new Panoramic(_this.scene, resource.image_universe);
         
         _this.component.sun = new Sun(_this.scene, {
-            sunGround: resource.sunGround,
-            sunCloud: resource.sunCloud
+            sunGround: resource.image_sunGround,
+            sunCloud: resource.image_sunCloud
         });
-        _this.component.mercury = new Mercury(_this.scene, resource.mercury);
-        _this.component.venus = new Venus(_this.scene, resource.venus);
+        _this.component.mercury = new Mercury(_this.scene, resource.image_mercury);
+        _this.component.venus = new Venus(_this.scene, resource.image_venus);
         _this.component.earth = new Earth(_this.scene, {
-            earth: resource.earth,
-            earthCloud: resource.earthCloud
+            earth: resource.image_earth,
+            earthCloud: resource.image_earthCloud
         });
-        _this.component.moon = new Moon(_this.component.earth.group, resource.moon);
-        _this.component.mars = new Mars(_this.scene, resource.mars);
-        _this.component.jupiter = new Jupiter(_this.scene, resource.jupiter);
-        _this.component.saturn = new Saturn(_this.scene, resource.saturn);
-        _this.component.uranus = new Uranus(_this.scene, resource.uranus);
-        _this.component.neptune = new Neptune(_this.scene, resource.neptune);
+        _this.component.moon = new Moon(_this.component.earth.group, resource.image_moon);
+        _this.component.mars = new Mars(_this.scene, resource.image_mars);
+        _this.component.jupiter = new Jupiter(_this.scene, resource.image_jupiter);
+        _this.component.saturn = new Saturn(_this.scene, resource.image_saturn);
+        _this.component.uranus = new Uranus(_this.scene, resource.image_uranus);
+        _this.component.neptune = new Neptune(_this.scene, resource.image_neptune);
     }
     
     /**

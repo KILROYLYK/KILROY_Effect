@@ -10,10 +10,13 @@ export default class Spaceship implements Component {
     private readonly name: string = 'Spaceship-飞船';
     
     private scene: THREE.Scene = null; // 场景
-    private model: THREE.Object3D = null; // 模型
-    private texture: THREE.Texture = null; // 纹理
+    private texture: object = { // 纹理
+        engine: null as THREE.Texture, // 引擎
+        spaceship: null as THREE.Object3D // 飞船
+    };
     
     private light: THREE.PointLight = null; // 灯光
+    private spaceship: THREE.Object3D = null; // 飞船
     private fire: THREE.Mesh = null; // 火焰
     private bullet: THREE.Mesh[] = []; // 子弹列表
     private readonly moveP: object = { // 移动位置
@@ -33,15 +36,14 @@ export default class Spaceship implements Component {
      * 构造函数
      * @constructor Spaceship
      * @param {object} scene 场景
-     * @param {THREE.Object3D} model 模型
-     * @param {THREE.Texture} texture 纹理
+     * @param {object} texture 纹理
      */
-    constructor(scene: object, model: THREE.Object3D, texture: THREE.Texture) {
+    constructor(scene: object, texture: object) {
         const _this = this;
         
         _this.scene = scene.instance;
-        _this.model = model;
         _this.texture = texture;
+        _this.spaceship = texture.spaceship;
         
         _this.create();
         _this.init();
@@ -72,7 +74,7 @@ export default class Spaceship implements Component {
         const _this = this;
         
         _this.instance.add(_this.light);
-        _this.instance.add(_this.model);
+        _this.instance.add(_this.spaceship);
         _this.instance.add(_this.fire);
         _this.scene.add(_this.instance);
         
@@ -99,7 +101,7 @@ export default class Spaceship implements Component {
         if (!_this.instance) return;
         
         _this.light = null;
-        _this.model = null;
+        _this.texture = null;
         _this.bullet = [];
         _this.instance = null;
     }
@@ -120,7 +122,7 @@ export default class Spaceship implements Component {
         
         if (!_this.instance) return;
         
-        _this.texture.offset.y -= 0.06;
+        _this.texture.engine.offset.y -= 0.06;
         
         _this.moveP.x = (Global.mouseP.x - centerP.x) * moveS.x;
         _this.moveP.y = -((Global.mouseP.y - centerP.y) * moveS.y) - 4;
@@ -155,9 +157,9 @@ export default class Spaceship implements Component {
             depthTest: true
         });
         
-        _this.model.position.set(0, 0, 250);
-        _this.model.rotation.set(0, Math.PI, 0);
-        _this.model.traverse((child) => {
+        _this.spaceship.position.set(0, 0, 250);
+        _this.spaceship.rotation.set(0, Math.PI, 0);
+        _this.spaceship.traverse((child) => {
             child instanceof THREE.Mesh && (child.material = material);
         });
     }
@@ -179,7 +181,7 @@ export default class Spaceship implements Component {
      */
     private createEngine(): void {
         const _this = this;
-    
+        
         _this.texture.wrapT
             = _this.texture.wrapS
             = THREE.RepeatWrapping;
@@ -187,7 +189,7 @@ export default class Spaceship implements Component {
         const material = new THREE.MeshBasicMaterial({
             color: '#0099ff',
             opacity: 1,
-            alphaMap: _this.texture,
+            alphaMap: _this.texture.engine,
             blending: THREE.AdditiveBlending,
             side: THREE.FrontSide,
             transparent: true,
