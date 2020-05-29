@@ -16,9 +16,9 @@ export default class Earth implements Component {
     };
     
     private readonly trackR: number = 3000; // 轨迹半径
-    private ring: THREE.Mesh = null; // 圆环
-    private sphere: THREE.Mesh = null; // 球体
-    private cloud: THREE.Mesh = null; // 云
+    private track: THREE.Mesh = null; // 轨道
+    private planet: THREE.Mesh = null; // 星球
+    private sky: THREE.Mesh = null; // 天空
     
     public group: THREE.Object3D = null; // 组
     public instance: THREE.Object3D = null; // 实例
@@ -53,10 +53,10 @@ export default class Earth implements Component {
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         _this.instance.rotation.set(0, 2 * Math.PI / 8 * 2, 0);
-        
-        _this.createRing();
-        _this.createSphere();
-        _this.createCloud();
+    
+        _this.createTrack();
+        _this.createPlanet();
+        _this.createSky();
     }
     
     /**
@@ -66,10 +66,10 @@ export default class Earth implements Component {
     private init(): void {
         const _this = this;
         
-        _this.group.add(_this.sphere);
-        _this.group.add(_this.cloud);
+        _this.group.add(_this.planet);
+        _this.group.add(_this.sky);
         
-        _this.instance.add(_this.ring);
+        _this.instance.add(_this.track);
         _this.instance.add(_this.group);
         _this.scene.add(_this.instance);
     }
@@ -82,10 +82,10 @@ export default class Earth implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.ring = null;
-        _this.sphere = null;
-        _this.cloud = null;
+    
+        _this.track = null;
+        _this.planet = null;
+        _this.sky = null;
         
         _this.group = null;
         _this.instance = null;
@@ -101,18 +101,18 @@ export default class Earth implements Component {
         
         if (!_this.instance) return;
         
-        _this.sphere.rotateY(cycleS);
-        _this.cloud.rotateX(cycleS);
-        _this.cloud.rotateY(cycleS);
+        _this.planet.rotateY(cycleS);
+        _this.sky.rotateX(cycleS);
+        _this.sky.rotateY(cycleS);
         
         _this.instance.rotateY(-cycleS / 10);
     }
     
     /**
-     * 创建圆环
+     * 创建轨道
      * @return {void}
      */
-    private createRing(): void {
+    private createTrack(): void {
         const _this = this;
         
         const geometry = new THREE.RingGeometry(
@@ -124,15 +124,15 @@ export default class Earth implements Component {
             side: THREE.DoubleSide
         });
         
-        _this.ring = new THREE.Mesh(geometry, material);
-        _this.ring.rotation.set(Math.PI / 2, 0, 0);
+        _this.track = new THREE.Mesh(geometry, material);
+        _this.track.rotation.set(Math.PI / 2, 0, 0);
     }
     
     /**
-     * 创建球体
+     * 创建星球
      * @return {void}
      */
-    private createSphere(): void {
+    private createPlanet(): void {
         const _this = this,
             texture = _this.texture.earth;
         
@@ -148,17 +148,17 @@ export default class Earth implements Component {
             roughness: 1
         });
         
-        _this.sphere = new THREE.Mesh(geometry, material);
-        _this.sphere.position.set(0, 0, 0);
-        _this.sphere.castShadow = true;
-        _this.sphere.receiveShadow = true;
+        _this.planet = new THREE.Mesh(geometry, material);
+        _this.planet.position.set(0, 0, 0);
+        _this.planet.castShadow = true;
+        _this.planet.receiveShadow = true;
     }
     
     /**
-     * 创建云
+     * 创建天空
      * @return {void}
      */
-    private createCloud(): void {
+    private createSky(): void {
         const _this = this,
             texture = _this.texture.earthCloud;
         
@@ -174,7 +174,7 @@ export default class Earth implements Component {
             transparent: true
         });
         
-        _this.cloud = new THREE.Mesh(geometry, material);
-        _this.cloud.position.set(0, 0, 0);
+        _this.sky = new THREE.Mesh(geometry, material);
+        _this.sky.position.set(0, 0, 0);
     }
 }

@@ -47,17 +47,17 @@ export default class Camera implements Layout {
     private init(): void {
         const _this = this;
         
-        _this.openRotate();
+        // _this.openRotate();
         
-        Global.W.addEventListener('mousedown', () => {
-            _this.setTime && clearTimeout(_this.setTime);
-            _this.closeRotate();
-        }, false);
-        Global.W.addEventListener('mouseup', () => {
-            _this.setTime = setTimeout(() => {
-                _this.openRotate();
-            }, 3000);
-        }, false);
+        // Global.W.addEventListener('mousedown', () => {
+        //     _this.setTime && clearTimeout(_this.setTime);
+        //     _this.closeRotate();
+        // }, false);
+        // Global.W.addEventListener('mouseup', () => {
+        //     _this.setTime = setTimeout(() => {
+        //         _this.openRotate();
+        //     }, 10000);
+        // }, false);
     }
     
     /**
