@@ -10,7 +10,6 @@ export default class Drip implements Component {
     private readonly name: string = 'Drip-水滴';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: THREE.Texture = null; // 纹理
     
     private list: THREE.Mesh[] = []; // 水滴列表
     
@@ -20,13 +19,11 @@ export default class Drip implements Component {
      * 原型对象
      * @constructor Drip
      * @param {object} scene 场景
-     * @param {THREE.Texture} texture 纹理
      */
-    constructor(scene: object, texture: THREE.Texture) {
+    constructor(scene: object) {
         const _this = this;
         
         _this.scene = scene.instance;
-        _this.texture = texture;
         
         _this.create();
         _this.init();
@@ -79,8 +76,8 @@ export default class Drip implements Component {
         
         for (let i = 0, il = _this.list.length; i < il; i++) {
             const mesh = _this.list[i];
-            mesh.position.x = 1000 * Math.cos(timer + i);
-            mesh.position.y = 1000 * Math.sin(timer + i * 1.1);
+            mesh.position.x = 500 * Math.cos(timer + i);
+            mesh.position.y = 500 * Math.sin(timer + i * 1.1);
         }
     }
     
@@ -91,26 +88,34 @@ export default class Drip implements Component {
     private createDrip(): void {
         const _this = this;
         
+        const texture = new THREE.CubeTextureLoader()
+            .setPath('https://threejs.org/examples/textures/cube/Park3Med/')
+            .load([
+                'px.jpg', 'nx.jpg',
+                'py.jpg', 'ny.jpg',
+                'pz.jpg', 'nz.jpg'
+            ]);
+        texture.mapping = THREE.CubeRefractionMapping;
+        
         const geometry = new THREE.SphereBufferGeometry(
-            10, 32, 32
+            20, 32, 32
         );
         
         const material = new THREE.MeshBasicMaterial({
             color: 0xffffff,
-            envMap: _this.texture,
+            envMap: texture,
             refractionRatio: 0.95
         });
-        material.envMap.mapping = THREE.CubeRefractionMapping;
         
-        for (let i = 0; i < 500; i++) {
+        for (let i = 0; i < 100; i++) {
             const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.x = Global.Base.getRandomInt(-1500, 1500);
-            mesh.position.y = Global.Base.getRandomInt(-1500, 1500);
-            mesh.position.z = Global.Base.getRandomInt(-1500, 1500);
+            mesh.position.x = Global.Base.getRandomInt(-1200, 1200);
+            mesh.position.y = Global.Base.getRandomInt(-1200, 1200);
+            mesh.position.z = Global.Base.getRandomInt(-1200, 1200);
             mesh.scale.x
                 = mesh.scale.y
                 = mesh.scale.z
-                = Global.Base.getRandomInt(1, 3);
+                = Global.Base.getRandomInt(1, 5);
             
             _this.list.push(mesh);
             _this.instance.add(mesh);

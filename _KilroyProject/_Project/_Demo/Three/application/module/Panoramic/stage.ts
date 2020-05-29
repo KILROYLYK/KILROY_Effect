@@ -16,8 +16,7 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            // universe: 'https://image.gaeamobile.net/image/20200526/164149/universe.jpg'
-            universe: 'https://image.gaeamobile.net/image/20200522/174553/map.jpg'
+            universe: 'https://image.gaeamobile.net/image/20200526/164149/universe.jpg'
         } as object,
         data: null as object // 数据
     };
@@ -69,7 +68,7 @@ export default class Stage implements _Stage {
         _this.camera = new Camera();
         
         _this.component.panoramic = new Panoramic(_this.scene, resource.universe);
-        _this.component.drip = new Drip(_this.scene, resource.universe);
+        _this.component.drip = new Drip(_this.scene);
         
         _this.controller.look = new Look(_this.camera, {
             turn: true,
@@ -133,7 +132,7 @@ export default class Stage implements _Stage {
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
-    
+        
         _this.renderer.instance.clear();
         _this.renderer.instance.render(
             _this.scene.instance,
