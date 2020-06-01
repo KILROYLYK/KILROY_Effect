@@ -6,7 +6,6 @@ import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModif
 
 import TextVertex from './_OpenGL/textVertex.c';
 import TextFragment from './_OpenGL/textFragment.c';
-import { IUniform } from "three/src/renderers/shaders/UniformsLib";
 
 /**
  * 文案
@@ -18,7 +17,9 @@ export default class Text implements Component {
     private font: THREE.Font = null; // 字体
     
     private uniform: { // 匀实
-        [uniform: string]: IUniform
+        [uniform: string]: {
+            value: any
+        }
     } = null;
     
     public instance: THREE.Mesh = null; // 实例
