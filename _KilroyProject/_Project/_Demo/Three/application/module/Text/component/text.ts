@@ -6,6 +6,7 @@ import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModif
 
 import TextVertex from './_OpenGL/textVertex.c';
 import TextFragment from './_OpenGL/textFragment.c';
+import { IUniform } from "three/src/renderers/shaders/UniformsLib";
 
 /**
  * 文案
@@ -16,7 +17,9 @@ export default class Text implements Component {
     private scene: THREE.Scene = null; // 场景
     private font: THREE.Font = null; // 字体
     
-    private uniforms: any = null; // 均匀
+    private uniform: { // 匀实
+        [uniform: string]: IUniform
+    } = null;
     
     public instance: THREE.Mesh = null; // 实例
     
@@ -89,14 +92,14 @@ export default class Text implements Component {
         bufferGeometry.setAttribute('customColor', new THREE.BufferAttribute(colors, 3));
         bufferGeometry.setAttribute('displacement', new THREE.BufferAttribute(displacement, 3));
         
-        _this.uniforms = {
+        _this.uniform = {
             amplitude: {
                 value: 0.0
             }
         };
         
         const shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: _this.uniforms,
+            uniforms: _this.uniform,
             vertexShader: TextVertex,
             fragmentShader: TextFragment
         });
@@ -138,6 +141,6 @@ export default class Text implements Component {
         
         if (!_this.instance) return;
         
-        _this.uniforms.amplitude.value = 1.0 + Math.sin(time * 0.5);
+        _this.uniform.amplitude.value = 1.0 + Math.sin(time * 0.5);
     }
 }

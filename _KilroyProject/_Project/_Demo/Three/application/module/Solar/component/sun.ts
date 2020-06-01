@@ -5,6 +5,7 @@ import * as THREE from 'three';
 
 import SunVertex from './_OpenGL/sunVertex.c';
 import SunFragment from './_OpenGL/sunFragment.c';
+import { IUniform } from "three/src/renderers/shaders/UniformsLib";
 
 /**
  * 太阳
@@ -18,7 +19,9 @@ export default class Sun implements Component {
         sunCloud: null as THREE.Texture
     };
     
-    private uniform: object = null; // 匀实
+    private uniform: { // 匀实
+        [uniform: string]: IUniform
+    } = null;
     private light: THREE.PointLight = null; // 点光源
     private sphere: THREE.Mesh = null; // 球体
     
