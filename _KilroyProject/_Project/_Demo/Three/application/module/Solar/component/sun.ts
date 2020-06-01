@@ -155,7 +155,7 @@ export default class Sun implements Component {
         };
         
         const geometry = new THREE.SphereGeometry(
-            820, 64, 64
+            800, 32, 32
         );
         
         // const material = new THREE.ShaderMaterial({

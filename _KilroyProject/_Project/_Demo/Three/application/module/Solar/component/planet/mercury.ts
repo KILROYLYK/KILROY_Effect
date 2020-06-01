@@ -99,7 +99,7 @@ export default class Mercury implements Component {
         const _this = this;
         
         const geometry = new THREE.RingGeometry(
-            _this.trackR - 2, _this.trackR, 128
+            _this.trackR - 2, _this.trackR, 64
         );
         
         const material = new THREE.MeshBasicMaterial({
