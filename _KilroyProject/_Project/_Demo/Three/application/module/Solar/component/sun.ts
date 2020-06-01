@@ -19,7 +19,7 @@ export default class Sun implements Component {
         cloud: null as THREE.Texture
     };
     
-    private readonly radius: number = 500; // 半径
+    private readonly radius: number = 400; // 半径
     private uniform: { // 匀实
         [uniform: string]: {
             value: any
@@ -110,7 +110,7 @@ export default class Sun implements Component {
     private createLight(): void {
         const _this = this;
         
-        _this.light = new THREE.PointLight('#ffffff', 5);
+        _this.light = new THREE.PointLight('#ffffff', 3);
         _this.light.position.set(0, 0, 0);
         _this.light.castShadow = true;
         _this.light.shadow.camera.near = 100;
