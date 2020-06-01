@@ -3,8 +3,8 @@ import Component from '../../../interface/component';
 
 import * as THREE from 'three';
 
-import SunVertex from '../static/other/sunVertex.c';
-import SunFragment from '../static/other/sunFragment.c';
+import SunVertex from './_OpenGL/sunVertex.c';
+import SunFragment from './_OpenGL/sunFragment.c';
 
 /**
  * 太阳

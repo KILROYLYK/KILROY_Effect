@@ -4,8 +4,8 @@ import Component from '../../../interface/component';
 import * as THREE from 'three';
 import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier';
 
-import TextVertex from '../static/other/textVertex.c';
-import TextFragment from '../static/other/textFragment.c';
+import TextVertex from './_OpenGL/textVertex.c';
+import TextFragment from './_OpenGL/textFragment.c';
 
 /**
  * 文案
