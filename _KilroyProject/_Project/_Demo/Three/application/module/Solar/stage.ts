@@ -21,10 +21,10 @@ import Loader from '../../controller/loader';
 /**
  * 场景
  * 1. 距离太阳由近及远分别是【水星，金星，地球，火星，木星，土星，天王星，海王星】
- * 2. 他们分别到太阳的距离为5791, 10820, 14960, 22794, 77833, 142940, 287099, 450400（单位万千米）
- * 3. 他们的半径分别为2440, 6052, 6371, 3397, 71492, 60268, 25559, 24766（千米）
- * 4. 他们的公转周期分别为88, 225, 365, 687, 4329, 10767, 30769, 60152（天）
- * 5. 他们的自转周期分别为58，243，1， 1， 0.41, 0.42， 0.64, 0.65
+ * 2. 他们分别到太阳的距离为【5791，10820，14960，22794，77833，142940，287099，450400】（万千米）
+ * 3. 他们的半径分别为【69.6300，0.2440，0.6052，0.6371，0.3397，7.1492，6.0268，2.5559，2.4766】（万千米）
+ * 4. 他们的公转周期分别为【88，225，365，687，4329，10767，30769，60152】（天）
+ * 5. 他们的自转周期分别为【58，243，1， 1， 0.41，0.42， 0.64，0.65】
  */
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
@@ -121,7 +121,7 @@ export default class Stage implements _Stage {
         _this.component.mars = new Mars(_this.scene, resource.image_mars);
         _this.component.jupiter = new Jupiter(_this.scene, resource.image_jupiter);
         _this.component.saturn = new Saturn(_this.scene, {
-            saturn:  resource.image_saturn,
+            saturn: resource.image_saturn,
             ring: resource.image_saturnRing
         });
         _this.component.uranus = new Uranus(_this.scene, resource.image_uranus);
