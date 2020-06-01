@@ -15,7 +15,7 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            image_universe: 'https://image.gaeamobile.net/image/20200526/164149/universe.jpg'
+            image_universe: '/image/Panoramic/universe.jpg'
         } as object,
         data: null as object // 数据
     };

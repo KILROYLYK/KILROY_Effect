@@ -3,8 +3,8 @@ import Component from '../../../interface/component';
 
 import * as THREE from 'three';
 
-import WaveVertex from '../static/other/waveVertex.c';
-import WaveFragment from '../static/other/waveFragment.c';
+import WaveVertex from './openGL/waveVertex.c';
+import WaveFragment from './openGL/waveFragment.c';
 
 /**
  * 波浪

@@ -12,7 +12,7 @@ export default class Earth implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: object = {  // 纹理
         earth: null as THREE.Texture,
-        earthCloud: null as THREE.Texture
+        sky: null as THREE.Texture
     };
     
     private readonly trackR: number = 3000; // 轨迹半径
@@ -160,7 +160,7 @@ export default class Earth implements Component {
      */
     private createSky(): void {
         const _this = this,
-            texture = _this.texture.earthCloud;
+            texture = _this.texture.sky;
         
         texture.anisotropy = 4;
         texture.encoding = THREE.sRGBEncoding;

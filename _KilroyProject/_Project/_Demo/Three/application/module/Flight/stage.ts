@@ -11,7 +11,7 @@ import Meteor from './component/meteor';
 import Spaceship from './component/spaceship';
 import Loader from '../../controller/loader';
 
-import './static/css/flight.less';
+import '../../../static/css/Flight/index.less';
 
 /**
  * 场景
@@ -20,10 +20,10 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            image_star: 'https://image.gaeamobile.net/image/20200522/190159/star.png',
-            image_mountain: 'https://image.gaeamobile.net/image/20200522/190159/mountain.jpg',
-            image_engine: 'https://image.gaeamobile.net/image/20200522/190159/engine.jpg',
-            obj_spaceship: 'https://image.gaeamobile.net/image/20200522/190159/ship_03.obj'
+            image_star: '/image/Flight/star.png',
+            image_mountain: '/image/Flight/mountain.jpg',
+            image_engine: '/image/Flight/engine.jpg',
+            obj_spaceship: '/image/Flight/ship_03.obj'
         } as object,
         data: null as object // 数据
     };
