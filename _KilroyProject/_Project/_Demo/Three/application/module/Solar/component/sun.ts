@@ -146,7 +146,7 @@ export default class Sun implements Component {
             texture2: {
                 value: texture2
             }
-        }
+        };
         
         const geometry = new THREE.SphereGeometry(
             820, 64, 64

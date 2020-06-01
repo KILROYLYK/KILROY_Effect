@@ -30,21 +30,21 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            image_universe: '/image/Solar/universe.jpg',
-            // image_sun: '/image/Solar/sun.jpg',
-            image_sunGround: '/image/Solar/sun_ground.jpg',
-            image_sunCloud: '/image/Solar/sun_cloud.png',
-            image_mercury: '/image/Solar/mercury.jpg',
-            image_venus: '/image/Solar/venus.jpg',
-            image_earth: '/image/Solar/earth.jpg',
-            image_earthSky: '/image/Solar/earth_sky.jpg',
-            image_moon: '/image/Solar/moon.jpg',
-            image_mars: '/image/Solar/mars.jpg',
-            image_jupiter: '/image/Solar/jupiter.jpg',
-            image_saturn: '/image/Solar/saturn.jpg',
-            image_saturnRing: '/image/Solar/saturn_ring.png',
-            image_uranus: '/image/Solar/uranus.jpg',
-            image_neptune: '/image/Solar/neptune.jpg',
+            image_universe: 'image/Solar/universe.jpg',
+            // image_sun: 'image/Solar/sun.jpg',
+            image_sunGround: 'image/Solar/sun_ground.jpg',
+            image_sunCloud: 'image/Solar/sun_cloud.png',
+            image_mercury: 'image/Solar/mercury.jpg',
+            image_venus: 'image/Solar/venus.jpg',
+            image_earth: 'image/Solar/earth.jpg',
+            image_earthSky: 'image/Solar/earth_sky.jpg',
+            image_moon: 'image/Solar/moon.jpg',
+            image_mars: 'image/Solar/mars.jpg',
+            image_jupiter: 'image/Solar/jupiter.jpg',
+            image_saturn: 'image/Solar/saturn.jpg',
+            image_saturnRing: 'image/Solar/saturn_ring.png',
+            image_uranus: 'image/Solar/uranus.jpg',
+            image_neptune: 'image/Solar/neptune.jpg'
         } as object,
         data: null as object // 数据
     };

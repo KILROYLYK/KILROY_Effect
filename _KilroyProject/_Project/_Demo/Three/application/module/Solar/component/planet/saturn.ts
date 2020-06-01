@@ -48,7 +48,7 @@ export default class Saturn implements Component {
         
         _this.group = new THREE.Object3D();
         _this.group.position.set(0, 0, _this.trackR);
-        _this.group.rotation.set(-Math.PI / 3, 0, 0);
+        _this.group.rotation.set(-Math.PI / 4, 0, 0);
         
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
