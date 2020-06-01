@@ -111,21 +111,21 @@ export default class Stage implements _Stage {
             sunGround: resource.image_sunGround,
             sunCloud: resource.image_sunCloud
         });
-        // _this.component.mercury = new Mercury(_this.scene, resource.image_mercury);
-        // _this.component.venus = new Venus(_this.scene, resource.image_venus);
-        // _this.component.earth = new Earth(_this.scene, {
-        //     earth: resource.image_earth,
-        //     sky: resource.image_earthSky
-        // });
-        // _this.component.moon = new Moon(_this.component.earth.group, resource.image_moon);
-        // _this.component.mars = new Mars(_this.scene, resource.image_mars);
-        // _this.component.jupiter = new Jupiter(_this.scene, resource.image_jupiter);
+        _this.component.mercury = new Mercury(_this.scene, resource.image_mercury);
+        _this.component.venus = new Venus(_this.scene, resource.image_venus);
+        _this.component.earth = new Earth(_this.scene, {
+            earth: resource.image_earth,
+            sky: resource.image_earthSky
+        });
+        _this.component.moon = new Moon(_this.component.earth.group, resource.image_moon);
+        _this.component.mars = new Mars(_this.scene, resource.image_mars);
+        _this.component.jupiter = new Jupiter(_this.scene, resource.image_jupiter);
         _this.component.saturn = new Saturn(_this.scene, {
             saturn:  resource.image_saturn,
             ring: resource.image_saturnRing
         });
-        // _this.component.uranus = new Uranus(_this.scene, resource.image_uranus);
-        // _this.component.neptune = new Neptune(_this.scene, resource.image_neptune);
+        _this.component.uranus = new Uranus(_this.scene, resource.image_uranus);
+        _this.component.neptune = new Neptune(_this.scene, resource.image_neptune);
     }
     
     /**
@@ -163,15 +163,15 @@ export default class Stage implements _Stage {
         _this.component.panoramic.destroy();
         
         _this.component.sun.destroy();
-        // _this.component.mercury.destroy();
-        // _this.component.venus.destroy();
-        // _this.component.earth.destroy();
-        // _this.component.moon.destroy();
-        // _this.component.mars.destroy();
-        // _this.component.jupiter.destroy();
+        _this.component.mercury.destroy();
+        _this.component.venus.destroy();
+        _this.component.earth.destroy();
+        _this.component.moon.destroy();
+        _this.component.mars.destroy();
+        _this.component.jupiter.destroy();
         _this.component.saturn.destroy();
-        // _this.component.uranus.destroy();
-        // _this.component.neptune.destroy();
+        _this.component.uranus.destroy();
+        _this.component.neptune.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();
@@ -189,15 +189,15 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         
         _this.component.sun.update();
-        // _this.component.mercury.update();
-        // _this.component.venus.update();
-        // _this.component.earth.update();
-        // _this.component.moon.update();
-        // _this.component.mars.update();
-        // _this.component.jupiter.update();
+        _this.component.mercury.update();
+        _this.component.venus.update();
+        _this.component.earth.update();
+        _this.component.moon.update();
+        _this.component.mars.update();
+        _this.component.jupiter.update();
         _this.component.saturn.update();
-        // _this.component.uranus.update();
-        // _this.component.neptune.update();
+        _this.component.uranus.update();
+        _this.component.neptune.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
