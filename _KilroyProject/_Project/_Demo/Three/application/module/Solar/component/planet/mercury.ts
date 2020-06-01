@@ -12,7 +12,8 @@ export default class Mercury implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private readonly trackR: number = 1500; // 轨迹半径
+    private readonly radius: number = 10; // 半径
+    private readonly trackR: number = 500 + 200; // 轨迹半径
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球
     
@@ -29,7 +30,7 @@ export default class Mercury implements Component {
         
         _this.scene = scene.instance;
         _this.texture = texture;
-    
+        
         _this.create();
         _this.init();
     }
@@ -44,7 +45,7 @@ export default class Mercury implements Component {
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
-    
+        
         _this.createTrack();
         _this.createPlanet();
     }
@@ -55,7 +56,7 @@ export default class Mercury implements Component {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.instance.add(_this.track);
         _this.instance.add(_this.planet);
         _this.scene.add(_this.instance);
@@ -69,7 +70,7 @@ export default class Mercury implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-    
+        
         _this.track = null;
         _this.planet = null;
         
@@ -85,7 +86,7 @@ export default class Mercury implements Component {
             cycleS = 0.008; // 周期速度
         
         if (!_this.instance) return;
-    
+        
         _this.planet.rotateY(cycleS);
         
         _this.instance.rotateY(-cycleS / 10);
@@ -106,7 +107,7 @@ export default class Mercury implements Component {
             color: '#ffffff',
             side: THREE.DoubleSide
         });
-    
+        
         _this.track = new THREE.Mesh(geometry, material);
         _this.track.rotation.set(Math.PI / 2, 0, 0);
     }
@@ -122,14 +123,14 @@ export default class Mercury implements Component {
         _this.texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            50, 32, 32
+            _this.radius, 32, 32
         );
         
         const material = new THREE.MeshStandardMaterial({
             map: _this.texture,
             roughness: 1
         });
-    
+        
         _this.planet = new THREE.Mesh(geometry, material);
         _this.planet.position.set(0, 0, _this.trackR);
         _this.planet.castShadow = true;

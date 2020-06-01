@@ -12,7 +12,8 @@ export default class Moon implements Component {
     private group: THREE.Object3D = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private readonly trackR: number = 400; // 轨迹半径
+    private readonly radius: number = 7; // 半径
+    private readonly trackR: number = 26.1 + 70; // 轨迹半径
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球
     
@@ -44,8 +45,8 @@ export default class Moon implements Component {
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
-        _this.instance.rotation.set(-Math.PI / 4, 0, 0);
-    
+        _this.instance.rotation.set(-Math.PI / 5, 0, 0);
+        
         _this.createTrack();
         _this.createPlanet();
     }
@@ -56,7 +57,7 @@ export default class Moon implements Component {
      */
     private init(): void {
         const _this = this;
-    
+        
         _this.instance.add(_this.track);
         _this.instance.add(_this.planet);
         _this.group.add(_this.instance);
@@ -70,7 +71,7 @@ export default class Moon implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-    
+        
         _this.track = null;
         _this.planet = null;
         
@@ -86,7 +87,7 @@ export default class Moon implements Component {
             cycleS = 0.01; // 周期速度
         
         if (!_this.instance) return;
-    
+        
         _this.planet.rotateY(cycleS);
         
         _this.instance.rotateY(-cycleS);
@@ -107,7 +108,7 @@ export default class Moon implements Component {
             color: '#ffffff',
             side: THREE.DoubleSide
         });
-    
+        
         _this.track = new THREE.Mesh(geometry, material);
         _this.track.rotation.set(Math.PI / 2, 0, 0);
     }
@@ -124,14 +125,14 @@ export default class Moon implements Component {
         texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            30, 32, 32
+            _this.radius, 32, 32
         );
         
         const material = new THREE.MeshStandardMaterial({
             map: _this.texture,
             roughness: 1
         });
-    
+        
         _this.planet = new THREE.Mesh(geometry, material);
         _this.planet.position.set(0, 0, _this.trackR);
         _this.planet.castShadow = true;

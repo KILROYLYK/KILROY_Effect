@@ -19,6 +19,7 @@ export default class Sun implements Component {
         cloud: null as THREE.Texture
     };
     
+    private readonly radius: number = 500; // 半径
     private uniform: { // 匀实
         [uniform: string]: {
             value: any
@@ -113,7 +114,7 @@ export default class Sun implements Component {
         _this.light.position.set(0, 0, 0);
         _this.light.castShadow = true;
         _this.light.shadow.camera.near = 100;
-        _this.light.shadow.camera.far = 12000;
+        _this.light.shadow.camera.far = 20000;
     }
     
     /**
@@ -125,7 +126,7 @@ export default class Sun implements Component {
             texture = _this.texture.sun,
             textureFire = _this.texture.fire,
             textureGround = _this.texture.ground;
-    
+        
         textureFire.wrapS
             = textureFire.wrapT
             = THREE.RepeatWrapping;
@@ -155,7 +156,7 @@ export default class Sun implements Component {
         };
         
         const geometry = new THREE.SphereGeometry(
-            800, 32, 32
+            _this.radius, 64, 64
         );
         
         // const material = new THREE.ShaderMaterial({

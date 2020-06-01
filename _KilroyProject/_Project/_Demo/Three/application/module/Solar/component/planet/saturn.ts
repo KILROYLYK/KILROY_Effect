@@ -15,7 +15,8 @@ export default class Saturn implements Component {
         ring: null as THREE.Texture
     };
     
-    private readonly trackR: number = 7000; // 轨迹半径
+    private readonly radius: number = 247; // 半径
+    private readonly trackR: number = 500 + 200 * 24.68; // 轨迹半径
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球
     private ring: THREE.Mesh = null; // 星环
@@ -48,7 +49,7 @@ export default class Saturn implements Component {
         
         _this.group = new THREE.Object3D();
         _this.group.position.set(0, 0, _this.trackR);
-        _this.group.rotation.set(-Math.PI / 4, 0, 0);
+        _this.group.rotation.set(-Math.PI / 5, 0, 0);
         
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
@@ -140,7 +141,7 @@ export default class Saturn implements Component {
         texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            300, 64, 64
+            _this.radius, 64, 64
         );
         
         const material = new THREE.MeshStandardMaterial({
@@ -162,8 +163,8 @@ export default class Saturn implements Component {
     private createRing(): void {
         const _this = this,
             texture = _this.texture.ring,
-            innerRadius = 350,
-            outerRadius = 650,
+            innerRadius = _this.radius + 50,
+            outerRadius = _this.radius + 350,
             thetaSegments = 64,
             angle = Math.PI * 2;
         

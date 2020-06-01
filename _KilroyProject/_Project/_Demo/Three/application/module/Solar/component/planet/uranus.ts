@@ -12,7 +12,8 @@ export default class Uranus implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private readonly trackR: number = 8000; // 轨迹半径
+    private readonly radius: number = 104.7; // 半径
+    private readonly trackR: number = 500 + 200 * 49.57; // 轨迹半径
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球
     
@@ -123,7 +124,7 @@ export default class Uranus implements Component {
         _this.texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            100, 64, 64
+            _this.radius, 64, 64
         );
         
         const material = new THREE.MeshStandardMaterial({

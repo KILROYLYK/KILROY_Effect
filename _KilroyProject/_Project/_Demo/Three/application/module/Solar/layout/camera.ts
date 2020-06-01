@@ -33,9 +33,9 @@ export default class Camera implements Layout {
         const _this = this;
         
         _this.instance = new THREE.PerspectiveCamera(
-            60, Global.Function.getDomAspect(), 1, 30000
+            60, Global.Function.getDomAspect(), 1, 40000
         );
-        _this.instance.position.set(0, 1500, 10000);
+        _this.instance.position.set(0, 1000, 18000);
         
         _this.createController();
     }
@@ -107,8 +107,8 @@ export default class Camera implements Layout {
         _this.controller.enableDamping = true;
         _this.controller.minPolarAngle = Math.PI * 0.3;
         _this.controller.maxPolarAngle = Math.PI * 0.7;
-        _this.controller.minDistance = 1000;
-        _this.controller.maxDistance = 12000;
+        _this.controller.minDistance = 500;
+        _this.controller.maxDistance = 20000;
         _this.controller.autoRotateSpeed = 1;
     }
     

@@ -15,7 +15,8 @@ export default class Earth implements Component {
         sky: null as THREE.Texture
     };
     
-    private readonly trackR: number = 3000; // 轨迹半径
+    private readonly radius: number = 26.1; // 半径
+    private readonly trackR: number = 500 + 200 * 2.58; // 轨迹半径
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球
     private sky: THREE.Mesh = null; // 天空
@@ -53,7 +54,7 @@ export default class Earth implements Component {
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         _this.instance.rotation.set(0, 2 * Math.PI / 8 * 2, 0);
-    
+        
         _this.createTrack();
         _this.createPlanet();
         _this.createSky();
@@ -82,7 +83,7 @@ export default class Earth implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-    
+        
         _this.track = null;
         _this.planet = null;
         _this.sky = null;
@@ -116,7 +117,7 @@ export default class Earth implements Component {
         const _this = this;
         
         const geometry = new THREE.RingGeometry(
-            _this.trackR - 2, _this.trackR, 128
+            _this.trackR - 2, _this.trackR, 64
         );
         
         const material = new THREE.MeshBasicMaterial({
@@ -140,7 +141,7 @@ export default class Earth implements Component {
         texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            150, 64, 64
+            _this.radius, 32, 32
         );
         
         const material = new THREE.MeshStandardMaterial({
@@ -166,7 +167,7 @@ export default class Earth implements Component {
         texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            160, 64, 64
+            _this.radius + 5, 32, 32
         );
         
         const material = new THREE.MeshStandardMaterial({
