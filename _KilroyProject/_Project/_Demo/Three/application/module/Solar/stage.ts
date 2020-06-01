@@ -22,6 +22,7 @@ import Loader from '../../controller/loader';
  * 场景
  * 知识点
  * 太阳半径为【69.63】（万千米）
+ * 月球半径为【0.1738】（万千米）
  * 距离太阳由近及远分别是【水星，金星，地球，火星，木星，土星，天王星，海王星】
  * 他们分别到太阳的距离为【5791，10820，14960，22794，77833，142940，287099，450400】（万千米）
  * 他们的半径分别为【0.2440，0.6052，0.6371，0.3397，7.1492，6.0268，2.5559，2.4766】（万千米）
@@ -33,9 +34,9 @@ export default class Stage implements _Stage {
     private readonly resource: object = { // 资源
         path: {
             image_universe: 'image/Solar/universe.jpg',
-            // image_sun: 'image/Solar/sun.jpg',
+            image_sun: 'image/Solar/sun.jpg',
             image_sunGround: 'image/Solar/sun_ground.jpg',
-            image_sunCloud: 'image/Solar/sun_cloud.png',
+            image_sunFire: 'image/Solar/sun_fire.png',
             image_mercury: 'image/Solar/mercury.jpg',
             image_venus: 'image/Solar/venus.jpg',
             image_earth: 'image/Solar/earth.jpg',
@@ -110,8 +111,9 @@ export default class Stage implements _Stage {
         _this.component.panoramic = new Panoramic(_this.scene, resource.image_universe);
         
         _this.component.sun = new Sun(_this.scene, {
-            sunGround: resource.image_sunGround,
-            sunCloud: resource.image_sunCloud
+            sun: resource.image_sun,
+            ground: resource.image_sunGround,
+            fire: resource.image_sunFire
         });
         _this.component.mercury = new Mercury(_this.scene, resource.image_mercury);
         _this.component.venus = new Venus(_this.scene, resource.image_venus);

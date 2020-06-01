@@ -14,8 +14,9 @@ export default class Sun implements Component {
     
     private scene: THREE.Scene = null; // 场景
     private texture: object = {  // 纹理
-        sunGround: null as THREE.Texture,
-        sunCloud: null as THREE.Texture
+        sun: null as THREE.Texture,
+        ground: null as THREE.Texture,
+        cloud: null as THREE.Texture
     };
     
     private uniform: { // 匀实
@@ -121,14 +122,15 @@ export default class Sun implements Component {
      */
     private createSphere(): void {
         const _this = this,
-            texture1 = _this.texture.sunCloud,
-            texture2 = _this.texture.sunGround;
-        
-        texture1.wrapS
-            = texture1.wrapT
+            texture = _this.texture.sun,
+            textureFire = _this.texture.fire,
+            textureGround = _this.texture.ground;
+    
+        textureFire.wrapS
+            = textureFire.wrapT
             = THREE.RepeatWrapping;
-        texture2.wrapS
-            = texture2.wrapT
+        textureGround.wrapS
+            = textureGround.wrapT
             = THREE.RepeatWrapping;
         
         _this.uniform = {
@@ -145,10 +147,10 @@ export default class Sun implements Component {
                 value: new THREE.Vector2(3, 1)
             },
             texture1: {
-                value: texture1
+                value: textureFire
             },
             texture2: {
-                value: texture2
+                value: textureGround
             }
         };
         
@@ -156,10 +158,17 @@ export default class Sun implements Component {
             820, 64, 64
         );
         
-        const material = new THREE.ShaderMaterial({
-            uniforms: _this.uniform,
-            vertexShader: SunVertex,
-            fragmentShader: SunFragment
+        // const material = new THREE.ShaderMaterial({
+        //     uniforms: _this.uniform,
+        //     vertexShader: SunVertex,
+        //     fragmentShader: SunFragment
+        // });
+        
+        const material = new THREE.MeshStandardMaterial({
+            map: texture,
+            lightMap: texture,
+            lightMapIntensity: 1.5,
+            roughness: 1
         });
         
         _this.sphere = new THREE.Mesh(geometry, material);
