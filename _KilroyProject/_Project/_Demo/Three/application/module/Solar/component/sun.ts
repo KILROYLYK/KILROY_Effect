@@ -159,18 +159,18 @@ export default class Sun implements Component {
             _this.radius, 64, 64
         );
         
-        // const material = new THREE.ShaderMaterial({
-        //     uniforms: _this.uniform,
-        //     vertexShader: SunVertex,
-        //     fragmentShader: SunFragment
-        // });
-        
-        const material = new THREE.MeshStandardMaterial({
-            map: texture,
-            lightMap: texture,
-            lightMapIntensity: 1.5,
-            roughness: 1
+        const material = new THREE.ShaderMaterial({
+            uniforms: _this.uniform,
+            vertexShader: SunVertex,
+            fragmentShader: SunFragment
         });
+        
+        // const material = new THREE.MeshStandardMaterial({
+        //     map: texture,
+        //     lightMap: texture,
+        //     lightMapIntensity: 1.5,
+        //     roughness: 1
+        // });
         
         _this.sphere = new THREE.Mesh(geometry, material);
         _this.sphere.position.set(0, 0, 0);

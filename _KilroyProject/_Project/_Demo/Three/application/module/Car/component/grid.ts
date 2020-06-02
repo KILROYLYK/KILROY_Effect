@@ -12,7 +12,7 @@ export default class Grid implements Component {
     private scene: THREE.Scene = null; // 场景
     
     private size: number = 10000; // 尺寸
-    private division: number = 400; // 格子尺寸
+    private interval: number = 400; // 间隔
     
     public instance: THREE.Object3D = null; // 实例
     
@@ -84,12 +84,12 @@ export default class Grid implements Component {
             linewidth: 200
         })
         
-        for (let i = 0, len = _this.size / _this.division; i <= len; i++) {
+        for (let i = 0, len = _this.size / _this.interval; i <= len; i++) {
             const lineX = new THREE.Line(geometry, material);
-            lineX.position.y = i * _this.division - radius;
+            lineX.position.y = i * _this.interval - radius;
             
             const lineY = new THREE.Line(geometry, material);
-            lineY.position.x = i * _this.division - radius;
+            lineY.position.x = i * _this.interval - radius;
             lineY.rotation.z = Math.PI / 2;
             
             _this.instance.add(lineX);
