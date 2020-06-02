@@ -110,7 +110,7 @@ export default class Camera implements Layout {
             .to({
                 x: 0,
                 y: 500,
-                z: 1500
+                z: 3000
             }, 3000)
             .delay(2000)
             .onComplete(() => {

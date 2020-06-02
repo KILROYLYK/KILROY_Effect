@@ -50,7 +50,6 @@ export default class Saturn implements Component {
         
         _this.group = new THREE.Object3D();
         _this.group.position.set(0, 0, _this.trackR);
-        _this.group.rotation.set(-Math.PI / 5, 0, 0);
         
         _this.instance = new THREE.Object3D();
         _this.instance.name = _this.name;
@@ -103,14 +102,14 @@ export default class Saturn implements Component {
             cycleS = 0.003; // 周期速度
         
         if (!_this.instance) return;
-    
+        
         _this.cycle += cycleS / 10;
         
         _this.planet.rotateY(cycleS);
         
         _this.group.position.x = Math.cos(_this.cycle) * _this.trackR;
         _this.group.position.z = Math.sin(_this.cycle) * _this.trackR;
-        _this.group.rotateY(cycleS / 10);
+        _this.group.rotateY(-cycleS);
     }
     
     /**
@@ -225,7 +224,7 @@ export default class Saturn implements Component {
         
         _this.ring = new THREE.Mesh(geometry, material);
         _this.ring.position.set(0, 0, 0);
-        _this.ring.rotation.set(-Math.PI / 2, 0, 0);
+        _this.ring.rotation.set(-Math.PI / 2 - Math.PI / 5, 0, 0);
         _this.ring.castShadow = true;
         _this.ring.receiveShadow = true;
     }

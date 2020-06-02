@@ -112,7 +112,7 @@ export default class Earth implements Component {
     
         _this.group.position.x = Math.cos(_this.cycle) * _this.trackR;
         _this.group.position.z = Math.sin(_this.cycle) * _this.trackR;
-        _this.group.rotateY(cycleS / 10);
+        _this.group.rotateY(-cycleS);
     }
     
     /**
