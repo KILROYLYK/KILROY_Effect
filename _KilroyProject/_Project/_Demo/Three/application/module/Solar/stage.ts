@@ -192,6 +192,8 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+    
+        Global.Tween.update();
         
         _this.component.sun.update();
         _this.component.mercury.update();

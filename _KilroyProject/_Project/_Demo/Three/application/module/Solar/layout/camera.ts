@@ -75,8 +75,6 @@ export default class Camera implements Layout {
         
         if (!_this.instance) return;
         
-        Global.Tween.update();
-        
         _this.controller.update();
         
         if (isResize) { // 屏幕变化
@@ -117,19 +115,19 @@ export default class Camera implements Layout {
             .delay(2000)
             .onComplete(() => {
                 tween.stop();
-                _this.openRotate();
+                // _this.openRotate();
                 _this.openController();
             })
             .onStop(() => {
-                Global.W.addEventListener('mousedown', () => {
-                    _this.setTime && clearTimeout(_this.setTime);
-                    _this.closeRotate();
-                }, false);
-                Global.W.addEventListener('mouseup', () => {
-                    _this.setTime = setTimeout(() => {
-                        _this.openRotate();
-                    }, 10000);
-                }, false);
+                // Global.W.addEventListener('mousedown', () => {
+                //     _this.setTime && clearTimeout(_this.setTime);
+                //     _this.closeRotate();
+                // }, false);
+                // Global.W.addEventListener('mouseup', () => {
+                //     _this.setTime = setTimeout(() => {
+                //         _this.openRotate();
+                //     }, 10000);
+                // }, false);
             })
             .start();
     }

@@ -17,6 +17,7 @@ export default class Saturn implements Component {
     
     private readonly radius: number = 247; // 半径
     private readonly trackR: number = 500 + 200 * 24.68; // 轨迹半径
+    private cycle: number = 0; // 周期
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球
     private ring: THREE.Mesh = null; // 星环
@@ -102,11 +103,14 @@ export default class Saturn implements Component {
             cycleS = 0.003; // 周期速度
         
         if (!_this.instance) return;
+    
+        _this.cycle += cycleS / 10;
         
         _this.planet.rotateY(cycleS);
-        _this.ring.rotateZ(-cycleS);
-
-        _this.instance.rotateY(-cycleS / 10);
+        
+        _this.group.position.x = Math.cos(_this.cycle) * _this.trackR;
+        _this.group.position.z = Math.sin(_this.cycle) * _this.trackR;
+        _this.group.rotateY(cycleS / 10);
     }
     
     /**
@@ -117,7 +121,7 @@ export default class Saturn implements Component {
         const _this = this;
         
         const geometry = new THREE.RingGeometry(
-            _this.trackR - 2, _this.trackR, 128
+            _this.trackR - 1, _this.trackR, 128
         );
         
         const material = new THREE.MeshBasicMaterial({

@@ -14,6 +14,7 @@ export default class Neptune implements Component {
     
     private readonly radius: number = 101.5; // 半径
     private readonly trackR: number = 500 + 200 * 77.77; // 轨迹半径
+    private cycle: number = 0; // 周期
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球
     
@@ -87,10 +88,12 @@ export default class Neptune implements Component {
             cycleS = 0.001; // 周期速度
         
         if (!_this.instance) return;
-        
+    
+        _this.cycle += cycleS / 10;
+    
+        _this.planet.position.x = Math.cos(_this.cycle) * _this.trackR;
+        _this.planet.position.z = Math.sin(_this.cycle) * _this.trackR;
         _this.planet.rotateY(cycleS);
-        
-        _this.instance.rotateY(-cycleS / 10);
     }
     
     /**
@@ -101,7 +104,7 @@ export default class Neptune implements Component {
         const _this = this;
         
         const geometry = new THREE.RingGeometry(
-            _this.trackR - 2, _this.trackR, 128
+            _this.trackR - 1, _this.trackR, 128
         );
         
         const material = new THREE.MeshBasicMaterial({

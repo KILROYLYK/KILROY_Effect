@@ -17,6 +17,7 @@ export default class Earth implements Component {
     
     private readonly radius: number = 26.1; // 半径
     private readonly trackR: number = 500 + 200 * 2.58; // 轨迹半径
+    private cycle: number = 0; // 周期
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球
     private sky: THREE.Mesh = null; // 天空
@@ -101,12 +102,17 @@ export default class Earth implements Component {
             cycleS = 0.006; // 周期速度
         
         if (!_this.instance) return;
+    
+        _this.cycle += cycleS / 10;
         
         _this.planet.rotateY(cycleS);
+        
         _this.sky.rotateX(cycleS);
         _this.sky.rotateY(cycleS);
-        
-        _this.instance.rotateY(-cycleS / 10);
+    
+        _this.group.position.x = Math.cos(_this.cycle) * _this.trackR;
+        _this.group.position.z = Math.sin(_this.cycle) * _this.trackR;
+        _this.group.rotateY(cycleS / 10);
     }
     
     /**
@@ -117,7 +123,7 @@ export default class Earth implements Component {
         const _this = this;
         
         const geometry = new THREE.RingGeometry(
-            _this.trackR - 2, _this.trackR, 64
+            _this.trackR - 1, _this.trackR, 128
         );
         
         const material = new THREE.MeshBasicMaterial({
@@ -167,7 +173,7 @@ export default class Earth implements Component {
         texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            _this.radius + 1, 32, 32
+            _this.radius + 0.5, 32, 32
         );
         
         const material = new THREE.MeshStandardMaterial({
