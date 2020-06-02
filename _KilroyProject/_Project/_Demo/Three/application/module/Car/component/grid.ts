@@ -72,26 +72,24 @@ export default class Grid implements Component {
      * @return {void}
      */
     private createGrid(): void {
-        const _this = this;
+        const _this = this,
+            radius = _this.size / 2;
         
         const geometry = new THREE.Geometry();
-        geometry.vertices.push(new THREE.Vector3(-_this.size / 2, 0, 0));
-        geometry.vertices.push(new THREE.Vector3(_this.size / 2, 0, 0));
+        geometry.vertices.push(new THREE.Vector3(-radius, 0, 0));
+        geometry.vertices.push(new THREE.Vector3(radius, 0, 0));
+        
+        const material = new THREE.LineBasicMaterial({
+            color: '#cccccc',
+            linewidth: 200
+        })
         
         for (let i = 0, len = _this.size / _this.division; i <= len; i++) {
-            const lineX = new THREE.Line(geometry,
-                new THREE.LineBasicMaterial({
-                    color: '#cccccc'
-                })
-            );
-            lineX.position.y = i * _this.division - _this.size / 2;
+            const lineX = new THREE.Line(geometry, material);
+            lineX.position.y = i * _this.division - radius;
             
-            const lineY = new THREE.Line(geometry,
-                new THREE.LineBasicMaterial({
-                    color: '#cccccc'
-                })
-            );
-            lineY.position.x = i * _this.division - _this.size / 2;
+            const lineY = new THREE.Line(geometry, material);
+            lineY.position.x = i * _this.division - radius;
             lineY.rotation.z = Math.PI / 2;
             
             _this.instance.add(lineX);
