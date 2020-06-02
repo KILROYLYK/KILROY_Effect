@@ -167,7 +167,7 @@ export default class Earth implements Component {
         texture.encoding = THREE.sRGBEncoding;
         
         const geometry = new THREE.SphereBufferGeometry(
-            _this.radius + 5, 32, 32
+            _this.radius + 1, 32, 32
         );
         
         const material = new THREE.MeshStandardMaterial({

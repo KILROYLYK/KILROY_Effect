@@ -33,9 +33,9 @@ export default class Camera implements Layout {
         const _this = this;
         
         _this.instance = new THREE.PerspectiveCamera(
-            60, Global.Function.getDomAspect(), 1, 40000
+            60, Global.Function.getDomAspect(), 1, 60000
         );
-        _this.instance.position.set(0, 500, 1500);
+        _this.instance.position.set(0, 30000, 0);
         
         _this.createController();
     }
@@ -48,18 +48,6 @@ export default class Camera implements Layout {
         const _this = this;
         
         _this.switchPosition();
-        
-        // _this.openRotate();
-        
-        // Global.W.addEventListener('mousedown', () => {
-        //     _this.setTime && clearTimeout(_this.setTime);
-        //     _this.closeRotate();
-        // }, false);
-        // Global.W.addEventListener('mouseup', () => {
-        //     _this.setTime = setTimeout(() => {
-        //         _this.openRotate();
-        //     }, 10000);
-        // }, false);
     }
     
     /**
@@ -87,6 +75,8 @@ export default class Camera implements Layout {
         
         if (!_this.instance) return;
         
+        Global.Tween.update();
+        
         _this.controller.update();
         
         if (isResize) { // 屏幕变化
@@ -107,12 +97,6 @@ export default class Camera implements Layout {
         _this.controller = new OrbitControls(_this.instance, Global.Dom);
         _this.controller.target = target;
         _this.controller.enabled = false;
-        _this.controller.enableDamping = true;
-        _this.controller.minPolarAngle = Math.PI * 0.3;
-        _this.controller.maxPolarAngle = Math.PI * 0.7;
-        _this.controller.minDistance = 500;
-        _this.controller.maxDistance = 20000;
-        _this.controller.autoRotateSpeed = 1;
     }
     
     /**
@@ -121,6 +105,49 @@ export default class Camera implements Layout {
      */
     private switchPosition(): void {
         const _this = this;
+        
+        const tween = new Global.Tween.Tween(_this.instance.position)
+            .easing(Global.Tween.Easing.Cubic.InOut)
+            .delay(5000)
+            .to({
+                x: 0,
+                y: 500,
+                z: 1500
+            }, 3000)
+            .onComplete(() => {
+                tween.stop();
+                _this.openController();
+            })
+            .onStop(() => {
+                _this.openRotate();
+                
+                Global.W.addEventListener('mousedown', () => {
+                    _this.setTime && clearTimeout(_this.setTime);
+                    _this.closeRotate();
+                }, false);
+                Global.W.addEventListener('mouseup', () => {
+                    _this.setTime = setTimeout(() => {
+                        _this.openRotate();
+                    }, 10000);
+                }, false);
+            })
+            .start();
+    }
+    
+    /**
+     * 开启控制器
+     * @return {void}
+     */
+    private openController(): void {
+        const _this = this;
+        
+        _this.controller.enabled = true;
+        _this.controller.enableDamping = true;
+        _this.controller.minPolarAngle = Math.PI * 0.3;
+        _this.controller.maxPolarAngle = Math.PI * 0.7;
+        _this.controller.minDistance = 500;
+        _this.controller.maxDistance = 20000;
+        _this.controller.autoRotateSpeed = 1;
     }
     
     /**
