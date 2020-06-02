@@ -114,13 +114,13 @@ export default class Camera implements Layout {
                 y: 500,
                 z: 1500
             }, 3000)
+            .delay(2000)
             .onComplete(() => {
                 tween.stop();
+                _this.openRotate();
                 _this.openController();
             })
             .onStop(() => {
-                _this.openRotate();
-                
                 Global.W.addEventListener('mousedown', () => {
                     _this.setTime && clearTimeout(_this.setTime);
                     _this.closeRotate();
