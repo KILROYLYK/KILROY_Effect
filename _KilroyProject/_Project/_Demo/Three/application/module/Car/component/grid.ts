@@ -11,7 +11,7 @@ export default class Grid implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
-    private row: number = 40; // 行列数
+    private row: number = 30; // 行列数
     
     public instance: THREE.Object3D = null; // 实例
     

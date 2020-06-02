@@ -23,7 +23,7 @@ export default class Stage implements _Stage {
             image_star: 'image/Flight/star.png',
             image_mountain: 'image/Flight/mountain.jpg',
             image_engine: 'image/Flight/engine.jpg',
-            obj_spaceship: 'image/Flight/ship_03.obj'
+            obj_spaceship: 'model/Flight/ship_03.obj'
         } as object,
         data: null as object // 数据
     };
