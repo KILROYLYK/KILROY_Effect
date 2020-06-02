@@ -11,8 +11,7 @@ export default class Grid implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
-    private size: number = 10000; // 尺寸
-    private interval: number = 400; // 间隔
+    private row: number = 40; // 行列数
     
     public instance: THREE.Object3D = null; // 实例
     
@@ -73,7 +72,8 @@ export default class Grid implements Component {
      */
     private createGrid(): void {
         const _this = this,
-            radius = _this.size / 2;
+            interval = 500, // 间隔
+            radius = _this.row * interval / 2;
         
         const geometry = new THREE.Geometry();
         geometry.vertices.push(new THREE.Vector3(-radius, 0, 0));
@@ -84,12 +84,12 @@ export default class Grid implements Component {
             linewidth: 200
         })
         
-        for (let i = 0, len = _this.size / _this.interval; i <= len; i++) {
+        for (let i = 0; i <= _this.row; i++) {
             const lineX = new THREE.Line(geometry, material);
-            lineX.position.y = i * _this.interval - radius;
+            lineX.position.y = i * interval - radius;
             
             const lineY = new THREE.Line(geometry, material);
-            lineY.position.x = i * _this.interval - radius;
+            lineY.position.x = i * interval - radius;
             lineY.rotation.z = Math.PI / 2;
             
             _this.instance.add(lineX);

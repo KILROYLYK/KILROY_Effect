@@ -88,7 +88,10 @@ export default class Camera implements Layout {
         
         _this.controller = new OrbitControls(_this.instance, Global.Dom);
         _this.controller.target = vector;
+        _this.controller.enabled = true;
         _this.controller.enableDamping = true;
+        _this.controller.enablePan = false;
+        _this.controller.enableKeys = false;
         _this.controller.minPolarAngle = Math.PI * 0.3;
         _this.controller.maxPolarAngle = Math.PI / 2;
         _this.controller.minDistance = 500;

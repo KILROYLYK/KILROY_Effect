@@ -106,7 +106,7 @@ export default class Wave implements Component {
     public update(): void {
         const _this = this,
             slope = 50, // 坡度
-            scale = 10,
+            scale = 10, // 缩放
             positions = (_this.instance.geometry as any).attributes.position.array,
             scales = (_this.instance.geometry as any).attributes.scale.array;
         
