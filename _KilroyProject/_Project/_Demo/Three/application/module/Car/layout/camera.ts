@@ -31,9 +31,9 @@ export default class Camera implements Layout {
         const _this = this;
         
         _this.instance = new THREE.PerspectiveCamera(
-            60, Global.Function.getDomAspect(), 1, 50000
+            60, Global.Function.getDomAspect(), 1, 2000
         );
-        _this.instance.position.set(0, 500, 2000);
+        _this.instance.position.set(0, 10, 150);
         
         _this.createController();
     }
@@ -84,7 +84,7 @@ export default class Camera implements Layout {
     private createController(): void {
         const _this = this;
         
-        const vector = new THREE.Vector3(0, 500, 0);
+        const vector = new THREE.Vector3(0, 10, 0);
         
         _this.controller = new OrbitControls(_this.instance, Global.Dom);
         _this.controller.target = vector;
@@ -94,7 +94,7 @@ export default class Camera implements Layout {
         _this.controller.enableKeys = false;
         _this.controller.minPolarAngle = Math.PI * 0.3;
         _this.controller.maxPolarAngle = Math.PI * 0.7;
-        _this.controller.minDistance = 500;
-        _this.controller.maxDistance = 10000;
+        _this.controller.minDistance = 10;
+        _this.controller.maxDistance = 300;
     }
 }

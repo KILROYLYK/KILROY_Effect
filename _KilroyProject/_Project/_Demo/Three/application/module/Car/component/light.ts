@@ -12,6 +12,7 @@ export default class Light implements Component {
     private scene: THREE.Scene = null; // 场景
     
     private lightAmbient: THREE.AmbientLight = null; // 环境光源
+    private lightDirectional: THREE.DirectionalLight = null; // 定向光源
     
     public instance: THREE.Group = null; // 实例
     
@@ -51,6 +52,7 @@ export default class Light implements Component {
         const _this = this;
         
         _this.instance.add(_this.lightAmbient);
+        _this.instance.add(_this.lightDirectional);
         _this.scene.add(_this.instance);
     }
     
@@ -82,8 +84,20 @@ export default class Light implements Component {
      */
     private createLight(): void {
         const _this = this,
-            color = '#ffffff';
+            color = '#ffffff',
+            distance = 500;
         
         _this.lightAmbient = new THREE.AmbientLight(color, 1);
+        
+        _this.lightDirectional = new THREE.DirectionalLight(color, 1);
+        _this.lightDirectional.position.set(1, 2, 1);
+        _this.lightDirectional.position.multiplyScalar(30);
+        _this.lightDirectional.castShadow = true;
+        _this.lightDirectional.shadow.camera.top = distance;
+        _this.lightDirectional.shadow.camera.left = -distance;
+        _this.lightDirectional.shadow.camera.right = distance;
+        _this.lightDirectional.shadow.camera.bottom = -distance;
+        _this.lightDirectional.shadow.camera.far = 2000;
+        _this.lightDirectional.shadow.bias = -0.0001;
     }
 }

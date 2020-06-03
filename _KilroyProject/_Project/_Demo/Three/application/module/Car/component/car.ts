@@ -6,7 +6,10 @@ import * as THREE from 'three';
 interface Texture { // 纹理
     bg: THREE.CubeTexture // 背景
     car: THREE.Group // 车
-    wheel: THREE.Group // 车轮
+    wheel_l1: THREE.Group // 车轮
+    wheel_l2: THREE.Group // 车轮
+    wheel_r1: THREE.Group // 车轮
+    wheel_r2: THREE.Group // 车轮
 }
 
 /**
@@ -19,12 +22,7 @@ export default class Car implements Component {
     private texture: Texture = null; // 纹理
     
     private car: THREE.Group = null; // 车
-    private wheel: object = { // 车轮
-        l_1: null as THREE.Group,
-        l_2: null as THREE.Group,
-        r_1: null as THREE.Group,
-        r_2: null as THREE.Group
-    };
+    private wheel: THREE.Group = null; // 车轮
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 0,
@@ -77,11 +75,8 @@ export default class Car implements Component {
     private init(): void {
         const _this = this;
         
-        // _this.instance.add(_this.car);
-        _this.instance.add(_this.wheel.l_1);
-        // _this.instance.add(_this.wheel.l_2);
-        // _this.instance.add(_this.wheel.r_1);
-        // _this.instance.add(_this.wheel.r_2);
+        _this.instance.add(_this.car);
+        _this.instance.add(_this.wheel);
         _this.scene.add(_this.instance);
     }
     
@@ -120,7 +115,7 @@ export default class Car implements Component {
         _this.car = _this.texture.car;
         _this.car.position.set(0, 0, 0);
         _this.car.rotation.set(0, -Math.PI / 2, 0);
-        _this.car.scale.setScalar(0.1);
+        _this.car.scale.setScalar(0.01);
         _this.car.castShadow = true;
         _this.car.receiveShadow = true;
         
@@ -217,24 +212,29 @@ export default class Car implements Component {
      */
     private createWheel(): void {
         const _this = this,
-            group1 = _this.texture.wheel.children[0] as THREE.Group,
-            group2 = _this.texture.wheel.children[1] as THREE.Group;
+            wheel = [];
         
-        _this.wheel.l_1 = new THREE.Group();
-        _this.wheel.l_1.add(group1, group2);
-        // _this.wheel.l_1.position.set(0, 0, 0);
-        // _this.wheel.l_1.rotation.set(0, -Math.PI / 2, 0);
-        // _this.wheel.l_1.scale.setScalar(1);
-        // _this.wheel.l_1.castShadow = true;
-        // _this.wheel.l_1.receiveShadow = true;
+        _this.wheel = new THREE.Group();
         
-        _this.wheel.l_2 = new THREE.Group();
-        _this.wheel.l_2.add(group1, group2);
+        console.log(_this.texture.wheel_l1.children[0]);
         
-        _this.wheel.r_1 = new THREE.Group();
-        _this.wheel.r_1.add(group1, group2);
-        
-        _this.wheel.r_2 = new THREE.Group();
-        _this.wheel.r_2.add(group1, group2);
+        for (const w in _this.texture) {
+            if (w.indexOf('wheel_') > -1) {
+                const group = new THREE.Group();
+                group.add(
+                    _this.texture[w].children[0],
+                    _this.texture[w].children[1]
+                );
+                group.position.set(0, 50, 0);
+                group.rotation.set(-Math.PI / 2, 0, 0);
+                group.scale.setScalar(0.01);
+                group.castShadow = true;
+                group.receiveShadow = true;
+                wheel.push(group);
+                _this.wheel.add(group);
+            }
+        }
+    
+        // wheel[0]
     }
 }

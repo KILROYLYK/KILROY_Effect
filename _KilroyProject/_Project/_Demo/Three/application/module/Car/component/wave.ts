@@ -14,7 +14,7 @@ export default class Wave implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
-    private row: number = 100; // 列行数
+    private row: number = 30; // 列行数
     private cycle: number = 0; // 周期
     
     public instance: THREE.Points = null; // 实例
@@ -39,7 +39,7 @@ export default class Wave implements Component {
      */
     private create(): void {
         const _this = this,
-            interval = 200, // 间隔
+            interval = 20, // 间隔
             particle = Math.pow(_this.row, 2),
             positions = new Float32Array(particle * 3),
             scales = new Float32Array(particle);
@@ -65,7 +65,7 @@ export default class Wave implements Component {
         const material = new THREE.ShaderMaterial({
             uniforms: {
                 color: {
-                    value: new THREE.Color('#b0b0b0')
+                    value: new THREE.Color('#545454')
                 },
             },
             vertexShader: WaveVertex,
@@ -74,7 +74,7 @@ export default class Wave implements Component {
         
         _this.instance = new THREE.Points(geometry, material);
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, -120, 0);
+        _this.instance.position.set(0, 5, 0);
     }
     
     /**
@@ -105,8 +105,8 @@ export default class Wave implements Component {
      */
     public update(): void {
         const _this = this,
-            slope = 50, // 坡度
-            scale = 10, // 缩放
+            slope = 2, // 坡度
+            scale = 1, // 缩放
             positions = (_this.instance.geometry as any).attributes.position.array,
             scales = (_this.instance.geometry as any).attributes.scale.array;
         

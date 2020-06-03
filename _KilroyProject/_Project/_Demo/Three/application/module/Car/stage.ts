@@ -6,7 +6,7 @@ import Scene from './layout/scene';
 import Camera from './layout/camera';
 import Light from './component/light';
 import Wave from './component/wave';
-import Grid from './component/grid';
+import Ground from './component/ground';
 import Car from './component/car';
 import Loader from '../../controller/loader';
 
@@ -26,7 +26,10 @@ export default class Stage implements _Stage {
                 'image/Car/nz.jpg'
             ],
             json_car: 'json/Car/car.json',
-            json_wheel: 'json/Car/wheel.json'
+            json_wheel_l1: 'json/Car/wheel.json',
+            json_wheel_l2: 'json/Car/wheel.json',
+            json_wheel_r1: 'json/Car/wheel.json',
+            json_wheel_r2: 'json/Car/wheel.json'
         } as object,
         data: null as object // 数据
     };
@@ -36,7 +39,7 @@ export default class Stage implements _Stage {
     private component: object = { // 组件
         light: null as Light, // 光源
         wave: null as Wave, // 波浪
-        grid: null as Grid, // 网格
+        ground: null as Ground, // 地面
         car: null as Car // 车
     };
     private controller: object = { // 控制器
@@ -82,11 +85,14 @@ export default class Stage implements _Stage {
         
         _this.component.light = new Light(_this.scene);
         _this.component.wave = new Wave(_this.scene);
-        _this.component.grid = new Grid(_this.scene);
+        _this.component.ground = new Ground(_this.scene);
         _this.component.car = new Car(_this.scene, {
             bg: resource.cube_bg,
             car: resource.json_car,
-            wheel: resource.json_wheel
+            wheel_l1: resource.json_wheel_l1,
+            wheel_l2: resource.json_wheel_l2,
+            wheel_r1: resource.json_wheel_r1,
+            wheel_r2: resource.json_wheel_r2
         });
     }
     
@@ -123,7 +129,7 @@ export default class Stage implements _Stage {
         
         _this.component.light.destroy();
         _this.component.wave.destroy();
-        _this.component.grid.destroy();
+        _this.component.ground.destroy();
         
         _this.camera.destroy();
         _this.scene.destroy();
