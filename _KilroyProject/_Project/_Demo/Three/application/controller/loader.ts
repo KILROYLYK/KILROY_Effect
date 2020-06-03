@@ -18,6 +18,7 @@ interface LoadConfig { // 控制器配置
 export default class Loader implements Controller {
     private readonly loader: object = { // 加载器对象
         image: null as THREE.TextureLoader,
+        cube: null as THREE.CubeTextureLoader,
         font: null as THREE.FontLoader,
         json: null as THREE.ObjectLoader,
         audio: null as THREE.AudioLoader,
@@ -104,6 +105,11 @@ export default class Loader implements Controller {
             !_this.loader.image &&
             (_this.loader.image = new THREE.TextureLoader());
             loader = _this.loader.image;
+        } else if (name.indexOf('cube_') > -1) { // 图片
+            type = 'Cube';
+            !_this.loader.cube &&
+            (_this.loader.cube = new THREE.CubeTextureLoader());
+            loader = _this.loader.cube;
         } else if (name.indexOf('font_') > -1) { // 字体
             type = 'Font';
             !_this.loader.font &&

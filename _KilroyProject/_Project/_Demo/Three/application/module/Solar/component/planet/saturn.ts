@@ -3,6 +3,11 @@ import Component from '../../../../interface/component';
 
 import * as THREE from 'three';
 
+interface Texture { // 纹理
+    saturn: THREE.Texture,
+    ring: THREE.Texture
+}
+
 /**
  * 土星
  */
@@ -10,7 +15,7 @@ export default class Saturn implements Component {
     private readonly name: string = 'Saturn-土星';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: object = {  // 纹理
+    private texture: Texture = {  // 纹理
         saturn: null as THREE.Texture,
         ring: null as THREE.Texture
     };
@@ -29,9 +34,9 @@ export default class Saturn implements Component {
      * 构造函数
      * @constructor Saturn
      * @param {object} scene 场景
-     * @param {object} texture 纹理
+     * @param {Texture} texture 纹理
      */
-    constructor(scene: object, texture: object) {
+    constructor(scene: object, texture: Texture) {
         const _this = this;
         
         _this.scene = scene.instance;

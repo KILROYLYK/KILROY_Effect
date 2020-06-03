@@ -3,6 +3,11 @@ import Component from '../../../../interface/component';
 
 import * as THREE from 'three';
 
+interface Texture { // 纹理
+    earth: THREE.Texture
+    sky: THREE.Texture
+}
+
 /**
  * 地球
  */
@@ -10,7 +15,7 @@ export default class Earth implements Component {
     private readonly name: string = 'Earth-地球';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: object = {  // 纹理
+    private texture: Texture = {  // 纹理
         earth: null as THREE.Texture,
         sky: null as THREE.Texture
     };
@@ -29,9 +34,9 @@ export default class Earth implements Component {
      * 构造函数
      * @constructor Earth
      * @param {object} scene 场景
-     * @param {object} texture 纹理
+     * @param {Texture} texture 纹理
      */
-    constructor(scene: object, texture: object) {
+    constructor(scene: object, texture: Texture) {
         const _this = this;
         
         _this.scene = scene.instance;
@@ -102,14 +107,14 @@ export default class Earth implements Component {
             cycleS = 0.006; // 周期速度
         
         if (!_this.instance) return;
-    
+        
         _this.cycle += cycleS / 10;
         
         _this.planet.rotateY(cycleS);
         
         _this.sky.rotateX(cycleS);
         _this.sky.rotateY(cycleS);
-    
+        
         _this.group.position.x = Math.cos(_this.cycle) * _this.trackR;
         _this.group.position.z = Math.sin(_this.cycle) * _this.trackR;
         _this.group.rotateY(-cycleS);

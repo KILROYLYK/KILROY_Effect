@@ -3,6 +3,11 @@ import Component from '../../../interface/component';
 
 import * as THREE from 'three';
 
+interface Texture { // 纹理
+    spaceship: THREE.Object3D
+    engine: THREE.Texture
+}
+
 /**
  * 飞船
  */
@@ -10,9 +15,9 @@ export default class Spaceship implements Component {
     private readonly name: string = 'Spaceship-飞船';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: object = { // 纹理
-        engine: null as THREE.Texture, // 引擎
-        spaceship: null as THREE.Object3D // 飞船
+    private texture: Texture = { // 纹理
+        spaceship: null as THREE.Object3D, // 飞船
+        engine: null as THREE.Texture // 引擎
     };
     
     private light: THREE.PointLight = null; // 灯光
@@ -36,9 +41,9 @@ export default class Spaceship implements Component {
      * 构造函数
      * @constructor Spaceship
      * @param {object} scene 场景
-     * @param {object} texture 纹理
+     * @param {Texture} texture 纹理
      */
-    constructor(scene: object, texture: object) {
+    constructor(scene: object, texture: Texture) {
         const _this = this;
         
         _this.scene = scene.instance;
@@ -99,7 +104,7 @@ export default class Spaceship implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-    
+        
         _this.texture = null;
         _this.light = null;
         _this.spaceship = null;

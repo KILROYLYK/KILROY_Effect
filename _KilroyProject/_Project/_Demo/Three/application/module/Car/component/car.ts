@@ -3,6 +3,10 @@ import Component from '../../../interface/component';
 
 import * as THREE from 'three';
 
+interface Texture { // 纹理
+    car: THREE.Group
+}
+
 /**
  * 车
  */
@@ -10,7 +14,7 @@ export default class Car implements Component {
     private readonly name: string = 'Spaceship-飞船';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: object = { // 纹理
+    private texture: Texture = { // 纹理
         car: null as THREE.Group // 车
     };
     
@@ -32,9 +36,9 @@ export default class Car implements Component {
      * 构造函数
      * @constructor Car
      * @param {object} scene 场景
-     * @param {object} texture 纹理
+     * @param {Texture} texture 纹理
      */
-    constructor(scene: object, texture: object) {
+    constructor(scene: object, texture: Texture) {
         const _this = this;
         
         _this.scene = scene.instance;

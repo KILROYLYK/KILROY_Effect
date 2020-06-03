@@ -6,6 +6,12 @@ import * as THREE from 'three';
 import SunVertex from './_OpenGL/sunVertex.c';
 import SunFragment from './_OpenGL/sunFragment.c';
 
+interface Texture { // 纹理
+    sun: THREE.Texture
+    ground: THREE.Texture
+    cloud: THREE.Texture
+}
+
 /**
  * 太阳
  */
@@ -13,7 +19,7 @@ export default class Sun implements Component {
     private readonly name: string = 'Sun-太阳';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: object = {  // 纹理
+    private texture: Texture = {  // 纹理
         sun: null as THREE.Texture,
         ground: null as THREE.Texture,
         cloud: null as THREE.Texture
@@ -34,9 +40,9 @@ export default class Sun implements Component {
      * 构造函数
      * @constructor Sun
      * @param {object} scene 场景
-     * @param {object} texture 纹理
+     * @param {Texture} texture 纹理
      */
-    constructor(scene: object, texture: object) {
+    constructor(scene: object, texture: Texture) {
         const _this = this;
         
         _this.scene = scene.instance;
