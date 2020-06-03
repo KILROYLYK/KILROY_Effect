@@ -46,7 +46,7 @@ export default class Panoramic implements Component {
         
         // 材料
         const material = new THREE.MeshBasicMaterial({
-            map: _this.texture
+            map:  _this.texture
         });
         
         _this.instance = new THREE.Mesh(geometry, material);
