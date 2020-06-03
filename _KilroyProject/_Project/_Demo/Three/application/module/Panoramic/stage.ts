@@ -15,7 +15,15 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            image_universe: 'image/Panoramic/universe.jpg'
+            image_universe: 'image/Panoramic/universe.jpg',
+            cube_universe: [
+                'image/Panoramic/px.jpg',
+                'image/Panoramic/nx.jpg',
+                'image/Panoramic/py.jpg',
+                'image/Panoramic/ny.jpg',
+                'image/Panoramic/pz.jpg',
+                'image/Panoramic/nz.jpg'
+            ]
         } as object,
         data: null as object // 数据
     };
@@ -65,7 +73,10 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.component.panoramic = new Panoramic(_this.scene, resource.image_universe);
+        _this.component.panoramic = new Panoramic(_this.scene, {
+            image: resource.image_universe,
+            cube: resource.cube_universe
+        });
         
         _this.controller.look = new Look(_this.camera, {
             turn: true,

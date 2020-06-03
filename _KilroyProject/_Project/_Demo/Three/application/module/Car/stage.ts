@@ -17,8 +17,11 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
+            cube_: [
+                'image/Car/'
+            ],
             json_car: 'json/Car/car.json',
-            json_tire: 'json/Car/tire.json',
+            json_tire: 'json/Car/tire.json'
         } as object,
         data: null as object // 数据
     };

@@ -112,9 +112,7 @@ export default class Car implements Component {
             color: '#000000',
             metalness: 0,
             roughness: 0,
-            reflectivity: 1,
-            clearcoat: 1,
-            clearcoatRoughness: 1,
+            reflectivity: 1, // 反射率
             wireframe: true
         });
         // mash[1].material = new THREE.MeshPhysicalMaterial({
