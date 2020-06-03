@@ -23,7 +23,7 @@ export default class Star implements Component {
         z: 0
     };
     
-    public instance: THREE.Object3D = null; // 实例
+    public instance: THREE.Points = null; // 实例
     
     /**
      * 构造函数

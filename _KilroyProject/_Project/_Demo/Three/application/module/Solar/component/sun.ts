@@ -28,7 +28,7 @@ export default class Sun implements Component {
     private light: THREE.PointLight = null; // 点光源
     private sphere: THREE.Mesh = null; // 球体
     
-    public instance: THREE.Object3D = null; // 实例
+    public instance: THREE.Group = null; // 实例
     
     /**
      * 构造函数
@@ -53,7 +53,7 @@ export default class Sun implements Component {
     private create(): void {
         const _this = this;
         
-        _this.instance = new THREE.Object3D();
+        _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         

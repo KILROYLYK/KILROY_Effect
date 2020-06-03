@@ -30,7 +30,7 @@ export default class Spaceship implements Component {
         z: 0
     };
     
-    public instance: THREE.Object3D = null; // 实例
+    public instance: THREE.Group = null; // 实例
     
     /**
      * 构造函数
@@ -56,7 +56,7 @@ export default class Spaceship implements Component {
     private create(): void {
         const _this = this;
         
-        _this.instance = new THREE.Object3D();
+        _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
@@ -99,9 +99,11 @@ export default class Spaceship implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.light = null;
+    
         _this.texture = null;
+        _this.light = null;
+        _this.spaceship = null;
+        _this.fire = null;
         _this.bullet = [];
         _this.instance = null;
     }
@@ -143,6 +145,17 @@ export default class Spaceship implements Component {
     }
     
     /**
+     * 创建光源
+     * @return {void}
+     */
+    private createLight(): void {
+        const _this = this;
+        
+        _this.light = new THREE.PointLight('#ffffff', 15, 300);
+        _this.light.position.set(0, 100, 0);
+    }
+    
+    /**
      * 创建飞船
      * @return {void}
      */
@@ -162,17 +175,6 @@ export default class Spaceship implements Component {
         _this.spaceship.traverse((child) => {
             child instanceof THREE.Mesh && (child.material = material);
         });
-    }
-    
-    /**
-     * 创建光源
-     * @return {void}
-     */
-    private createLight(): void {
-        const _this = this;
-        
-        _this.light = new THREE.PointLight('#ffffff', 15, 300);
-        _this.light.position.set(0, 100, 0);
     }
     
     /**

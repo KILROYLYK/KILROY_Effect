@@ -22,8 +22,8 @@ export default class Saturn implements Component {
     private planet: THREE.Mesh = null; // 星球
     private ring: THREE.Mesh = null; // 星环
     
-    public group: THREE.Object3D = null; // 组
-    public instance: THREE.Object3D = null; // 实例
+    public group: THREE.Group = null; // 组
+    public instance: THREE.Group = null; // 实例
     
     /**
      * 构造函数
@@ -48,10 +48,10 @@ export default class Saturn implements Component {
     private create(): void {
         const _this = this;
         
-        _this.group = new THREE.Object3D();
+        _this.group = new THREE.Group();
         _this.group.position.set(0, 0, _this.trackR);
         
-        _this.instance = new THREE.Object3D();
+        _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         _this.instance.rotation.set(0, 2 * Math.PI / 8 * 5, 0);

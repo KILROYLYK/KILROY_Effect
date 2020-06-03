@@ -13,7 +13,7 @@ export default class Grid implements Component {
     
     private row: number = 30; // 行列数
     
-    public instance: THREE.Object3D = null; // 实例
+    public instance: THREE.Group = null; // 实例
     
     /**
      * 构造函数
@@ -36,7 +36,7 @@ export default class Grid implements Component {
     private create(): void {
         const _this = this;
         
-        _this.instance = new THREE.Object3D();
+        _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         _this.instance.rotation.set(Math.PI / 2, 0, 0);

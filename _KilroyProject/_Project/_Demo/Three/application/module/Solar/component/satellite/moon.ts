@@ -9,7 +9,7 @@ import * as THREE from 'three';
 export default class Moon implements Component {
     private readonly name: string = 'Moon-月球';
     
-    private group: THREE.Object3D = null; // 场景
+    private group: THREE.Group = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
     private readonly radius: number = 7; // 半径
@@ -18,15 +18,15 @@ export default class Moon implements Component {
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球
     
-    public instance: THREE.Object3D = null; // 实例
+    public instance: THREE.Group = null; // 实例
     
     /**
      * 构造函数
      * @constructor Moon
-     * @param {THREE.Object3D} group 场景
+     * @param {THREE.Group} group 场景
      * @param {THREE.Texture} texture 纹理
      */
-    constructor(group: THREE.Object3D, texture: THREE.Texture) {
+    constructor(group: THREE.Group, texture: THREE.Texture) {
         const _this = this;
         
         _this.group = group;
@@ -43,7 +43,7 @@ export default class Moon implements Component {
     private create(): void {
         const _this = this;
         
-        _this.instance = new THREE.Object3D();
+        _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         _this.instance.rotation.set(-Math.PI / 5, 0, 0);

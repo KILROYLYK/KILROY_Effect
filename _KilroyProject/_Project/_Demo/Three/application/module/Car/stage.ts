@@ -7,6 +7,7 @@ import Camera from './layout/camera';
 import Light from './component/light';
 import Wave from './component/wave';
 import Grid from './component/grid';
+import Car from './component/car';
 import Loader from '../../controller/loader';
 
 /**
@@ -16,6 +17,8 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
+            json_car: 'json/Car/car.json',
+            json_tire: 'json/Car/tire.json',
         } as object,
         data: null as object // 数据
     };
@@ -26,6 +29,7 @@ export default class Stage implements _Stage {
         light: null as Light, // 光源
         wave: null as Wave, // 波浪
         grid: null as Grid, // 网格
+        car: null as Car // 车
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -65,10 +69,14 @@ export default class Stage implements _Stage {
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
-    
+        
         _this.component.light = new Light(_this.scene);
         _this.component.wave = new Wave(_this.scene);
         _this.component.grid = new Grid(_this.scene);
+        _this.component.car = new Car(_this.scene, {
+            car: resource.json_car,
+            tire: resource.json_tire,
+        });
     }
     
     /**
@@ -101,7 +109,7 @@ export default class Stage implements _Stage {
         _this.isInit = false;
         
         _this.controller.loader.destroy();
-    
+        
         _this.component.light.destroy();
         _this.component.wave.destroy();
         _this.component.grid.destroy();
@@ -125,7 +133,7 @@ export default class Stage implements _Stage {
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
-    
+        
         _this.renderer.instance.clear();
         _this.renderer.instance.render(
             _this.scene.instance,
