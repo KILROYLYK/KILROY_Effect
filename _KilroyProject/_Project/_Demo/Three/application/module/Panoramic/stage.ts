@@ -73,10 +73,7 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.component.panoramic = new Panoramic(_this.scene, {
-            image: resource.image_universe,
-            cube: resource.cube_universe
-        });
+        _this.component.panoramic = new Panoramic(_this.scene, resource.image_universe);
         
         _this.controller.look = new Look(_this.camera, {
             turn: true,

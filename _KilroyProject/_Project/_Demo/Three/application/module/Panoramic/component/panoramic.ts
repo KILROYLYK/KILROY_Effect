@@ -3,11 +3,6 @@ import Component from '../../../interface/component';
 
 import * as THREE from 'three';
 
-interface Texture { // 纹理
-    image: THREE.Texture
-    cube: THREE.CubeTexture
-}
-
 /**
  * 全景
  */
@@ -15,10 +10,7 @@ export default class Panoramic implements Component {
     private readonly name: string = 'Panoramic-全景';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: Texture = { // 纹理
-        image: null as THREE.Texture,
-        cube: null as THREE.CubeTexture
-    };
+    private texture: THREE.Texture = null; // 纹理
     
     public instance: THREE.Mesh = null; // 实例
     
@@ -26,9 +18,9 @@ export default class Panoramic implements Component {
      * 原型对象
      * @constructor Panoramic
      * @param {object} scene 场景
-     * @param {Texture} texture 纹理
+     * @param {THREE.Texture} texture 纹理
      */
-    constructor(scene: object, texture: Texture) {
+    constructor(scene: object, texture: THREE.Texture) {
         const _this = this;
         
         _this.scene = scene.instance;
@@ -43,9 +35,7 @@ export default class Panoramic implements Component {
      * @return {void}
      */
     private create(): void {
-        const _this = this,
-            image = _this.texture.image,
-            cube = _this.texture.cube;
+        const _this = this;
         
         // 球型几何体
         const geometry = new THREE.SphereGeometry(
@@ -56,9 +46,7 @@ export default class Panoramic implements Component {
         
         // 材料
         const material = new THREE.MeshBasicMaterial({
-            // color: '#000000',
-            map: image,
-            evnMap: cube
+            map: _this.texture
         });
         
         _this.instance = new THREE.Mesh(geometry, material);
