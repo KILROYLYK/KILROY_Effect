@@ -18,7 +18,13 @@ export default class Car implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: Texture = null; // 纹理
     
-    private car: THREE.Group = null; // 飞船
+    private car: THREE.Group = null; // 车
+    private wheel: object = { // 车轮
+        l_1: null as THREE.Group,
+        l_2: null as THREE.Group,
+        r_1: null as THREE.Group,
+        r_2: null as THREE.Group
+    };
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 0,
@@ -43,7 +49,6 @@ export default class Car implements Component {
         
         _this.scene = scene.instance;
         _this.texture = texture;
-        _this.car = texture.car;
         
         _this.create();
         _this.init();
@@ -62,6 +67,7 @@ export default class Car implements Component {
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
         
         _this.createCar();
+        _this.createWheel();
     }
     
     /**
@@ -71,7 +77,11 @@ export default class Car implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.add(_this.car);
+        // _this.instance.add(_this.car);
+        _this.instance.add(_this.wheel.l_1);
+        // _this.instance.add(_this.wheel.l_2);
+        // _this.instance.add(_this.wheel.r_1);
+        // _this.instance.add(_this.wheel.r_2);
         _this.scene.add(_this.instance);
     }
     
@@ -86,6 +96,7 @@ export default class Car implements Component {
         
         _this.texture = null;
         _this.car = null;
+        _this.wheel = null;
         _this.instance = null;
     }
     
@@ -104,10 +115,17 @@ export default class Car implements Component {
      * @return {void}
      */
     private createCar(): void {
-        const _this = this,
-            mash = _this.car.children as THREE.Mesh;
+        const _this = this;
         
-        console.log(_this.car);
+        _this.car = _this.texture.car;
+        _this.car.position.set(0, 0, 0);
+        _this.car.rotation.set(0, -Math.PI / 2, 0);
+        _this.car.scale.setScalar(0.1);
+        _this.car.castShadow = true;
+        _this.car.receiveShadow = true;
+        
+        // 上色
+        const mash = _this.car.children as THREE.Mesh;
         
         // 引擎盖 | 框架
         mash[0].material = new THREE.MeshPhysicalMaterial({
@@ -130,7 +148,7 @@ export default class Car implements Component {
         // 车尾底灯
         mash[2].material = new THREE.MeshPhysicalMaterial({
             color: '#ff0000',
-            metalness: 0,
+            metalness: 0.3,
             roughness: 0,
             reflectivity: 1
         });
@@ -138,7 +156,7 @@ export default class Car implements Component {
         // 车尾细灯
         mash[3].material = new THREE.MeshPhysicalMaterial({
             color: '#ff0000',
-            metalness: 0,
+            metalness: 0.3,
             roughness: 0,
             reflectivity: 1
         });
@@ -163,7 +181,7 @@ export default class Car implements Component {
         // 车头灯 | 车尾灯
         mash[6].material = new THREE.MeshPhysicalMaterial({
             color: '#ff0000',
-            metalness: 0.8,
+            metalness: 0.9,
             roughness: 1,
             reflectivity: 1
         });
@@ -171,7 +189,7 @@ export default class Car implements Component {
         // 车标 | 车头底灯
         mash[7].material = new THREE.MeshPhysicalMaterial({
             color: '#ff0000',
-            metalness: 0,
+            metalness: 0.3,
             roughness: 0,
             reflectivity: 1
         });
@@ -187,16 +205,10 @@ export default class Car implements Component {
         // 车尾侧灯
         mash[9].material = new THREE.MeshPhysicalMaterial({
             color: '#ff0000',
-            metalness: 0.8,
+            metalness: 0.9,
             roughness: 1,
             reflectivity: 1
         });
-        
-        _this.car.position.set(0, 0, 0);
-        _this.car.rotation.set(0, -Math.PI / 2, 0);
-        _this.car.scale.setScalar(0.1);
-        _this.car.castShadow = true;
-        _this.car.receiveShadow = true;
     }
     
     /**
@@ -204,6 +216,25 @@ export default class Car implements Component {
      * @return {void}
      */
     private createWheel(): void {
-    
+        const _this = this,
+            group1 = _this.texture.wheel.children[0] as THREE.Group,
+            group2 = _this.texture.wheel.children[1] as THREE.Group;
+        
+        _this.wheel.l_1 = new THREE.Group();
+        _this.wheel.l_1.add(group1, group2);
+        // _this.wheel.l_1.position.set(0, 0, 0);
+        // _this.wheel.l_1.rotation.set(0, -Math.PI / 2, 0);
+        // _this.wheel.l_1.scale.setScalar(1);
+        // _this.wheel.l_1.castShadow = true;
+        // _this.wheel.l_1.receiveShadow = true;
+        
+        _this.wheel.l_2 = new THREE.Group();
+        _this.wheel.l_2.add(group1, group2);
+        
+        _this.wheel.r_1 = new THREE.Group();
+        _this.wheel.r_1.add(group1, group2);
+        
+        _this.wheel.r_2 = new THREE.Group();
+        _this.wheel.r_2.add(group1, group2);
     }
 }
