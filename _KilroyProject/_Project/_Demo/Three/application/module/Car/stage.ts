@@ -26,7 +26,7 @@ export default class Stage implements _Stage {
                 'image/Car/nz.jpg'
             ],
             json_car: 'json/Car/car.json',
-            json_tire: 'json/Car/tire.json'
+            json_wheel: 'json/Car/wheel.json'
         } as object,
         data: null as object // 数据
     };
@@ -86,7 +86,7 @@ export default class Stage implements _Stage {
         _this.component.car = new Car(_this.scene, {
             bg: resource.cube_bg,
             car: resource.json_car,
-            tire: resource.json_tire
+            wheel: resource.json_wheel
         });
     }
     
