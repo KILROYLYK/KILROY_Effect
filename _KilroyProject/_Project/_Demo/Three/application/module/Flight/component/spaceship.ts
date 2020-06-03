@@ -4,8 +4,8 @@ import Component from '../../../interface/component';
 import * as THREE from 'three';
 
 interface Texture { // 纹理
-    spaceship: THREE.Object3D
-    engine: THREE.Texture
+    spaceship: THREE.Object3D // 飞船
+    engine: THREE.Texture // 引擎
 }
 
 /**
@@ -15,10 +15,7 @@ export default class Spaceship implements Component {
     private readonly name: string = 'Spaceship-飞船';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: Texture = { // 纹理
-        spaceship: null as THREE.Object3D, // 飞船
-        engine: null as THREE.Texture // 引擎
-    };
+    private texture: Texture = null; // 纹理
     
     private light: THREE.PointLight = null; // 灯光
     private spaceship: THREE.Object3D = null; // 飞船

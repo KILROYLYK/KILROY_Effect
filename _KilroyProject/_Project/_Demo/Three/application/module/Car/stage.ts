@@ -17,8 +17,13 @@ export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
-            cube_: [
-                'image/Car/'
+            cube_bg: [
+                'image/Car/px.jpg',
+                'image/Car/nx.jpg',
+                'image/Car/py.jpg',
+                'image/Car/ny.jpg',
+                'image/Car/pz.jpg',
+                'image/Car/nz.jpg'
             ],
             json_car: 'json/Car/car.json',
             json_tire: 'json/Car/tire.json'
@@ -73,12 +78,15 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
+        _this.scene.instance.background = resource.cube_bg
+        
         _this.component.light = new Light(_this.scene);
         _this.component.wave = new Wave(_this.scene);
         _this.component.grid = new Grid(_this.scene);
         _this.component.car = new Car(_this.scene, {
+            bg: resource.cube_bg,
             car: resource.json_car,
-            tire: resource.json_tire,
+            tire: resource.json_tire
         });
     }
     

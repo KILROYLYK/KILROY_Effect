@@ -4,8 +4,8 @@ import Component from '../../../interface/component';
 import * as THREE from 'three';
 
 interface Texture { // 纹理
-    image: THREE.Texture
-    cube: THREE.CubeTexture
+    image: THREE.Texture // 图片
+    cube: THREE.CubeTexture // 图组
 }
 
 /**
@@ -15,10 +15,7 @@ export default class Panoramic implements Component {
     private readonly name: string = 'Panoramic-全景';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: Texture = { // 纹理
-        image: null as THREE.Texture,
-        cube: null as THREE.CubeTexture
-    };
+    private texture: Texture = null; // 纹理
     
     public instance: THREE.Mesh = null; // 实例
     

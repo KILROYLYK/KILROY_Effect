@@ -65,7 +65,7 @@ export default class Wave implements Component {
         const material = new THREE.ShaderMaterial({
             uniforms: {
                 color: {
-                    value: new THREE.Color('#ffffff')
+                    value: new THREE.Color('#b0b0b0')
                 },
             },
             vertexShader: WaveVertex,

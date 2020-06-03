@@ -4,7 +4,9 @@ import Component from '../../../interface/component';
 import * as THREE from 'three';
 
 interface Texture { // 纹理
-    car: THREE.Group
+    bg: THREE.CubeTexture // 背景
+    car: THREE.Group // 车
+    tire: THREE.Group // 车轮
 }
 
 /**
@@ -14,9 +16,7 @@ export default class Car implements Component {
     private readonly name: string = 'Spaceship-飞船';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: Texture = { // 纹理
-        car: null as THREE.Group // 车
-    };
+    private texture: Texture = null; // 纹理
     
     private car: THREE.Group = null; // 飞船
     private readonly moveP: object = { // 移动位置
@@ -108,33 +108,48 @@ export default class Car implements Component {
             mash = _this.car.children as THREE.Mesh;
         
         console.log(_this.car);
+        
+        // 引擎盖 | 框架
         mash[0].material = new THREE.MeshPhysicalMaterial({
             color: '#000000',
+            envMap: _this.texture.bg,
+            metalness: 0, // 金属性
+            roughness: 0, // 粗糙度
+            reflectivity: 1 // 反射率
+        });
+        
+        // 车头 | 车尾 | 车门
+        mash[1].material = new THREE.MeshPhysicalMaterial({
+            color: '#2d2d2d',
+            envMap: _this.texture.bg,
+            metalness: 0.5,
+            roughness: 0.2,
+            reflectivity: 1
+        });
+        
+        // 车尾底灯
+        mash[2].material = new THREE.MeshPhysicalMaterial({
+            color: '#ff0000',
             metalness: 0,
             roughness: 0,
-            reflectivity: 1, // 反射率
-            wireframe: true
+            reflectivity: 1
         });
-        // mash[1].material = new THREE.MeshPhysicalMaterial({
-        //     color: '#ff0000',
-        //     metalness: 0.2,
-        //     roughness: 0.5
-        // });
-        // mash[2].material = new THREE.MeshPhysicalMaterial({
-        //     color: '#cccccc',
-        //     metalness: 0.2,
-        //     roughness: 0.5
-        // });
-        // mash[3].material = new THREE.MeshPhysicalMaterial({
-        //     color: '#222222',
-        //     metalness: 0.2,
-        //     roughness: 0.5
-        // });
-        // mash[4].material = new THREE.MeshPhysicalMaterial({
-        //     color: '#cccccc',
-        //     metalness: 0.2,
-        //     roughness: 0.5
-        // });
+        
+        // 车尾灯
+        mash[3].material = new THREE.MeshPhysicalMaterial({
+            color: '#ff0000',
+            metalness: 0,
+            roughness: 0,
+            reflectivity: 1
+        });
+        
+        //
+        mash[4].material = new THREE.MeshPhysicalMaterial({
+            color: '#ff0000',
+            metalness: 0.2,
+            roughness: 0.5
+        });
+        
         // mash[5].material = new THREE.MeshPhysicalMaterial({
         //     color: '#666666',
         //     metalness: 0.2,
@@ -162,7 +177,9 @@ export default class Car implements Component {
         // });
         
         _this.car.position.set(0, 0, 0);
+        _this.car.rotation.set(0, Math.PI / 2, 0);
         _this.car.scale.setScalar(0.1);
-        
+        _this.car.castShadow = true;
+        _this.car.receiveShadow = true;
     }
 }

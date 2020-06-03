@@ -11,7 +11,7 @@ export default class Grid implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
-    private row: number = 30; // 行列数
+    private row: number = 40; // 行列数
     
     public instance: THREE.Group = null; // 实例
     
@@ -80,7 +80,7 @@ export default class Grid implements Component {
         geometry.vertices.push(new THREE.Vector3(radius, 0, 0));
         
         const material = new THREE.LineBasicMaterial({
-            color: '#cccccc',
+            color: '#b0b0b0',
             linewidth: 200
         })
         

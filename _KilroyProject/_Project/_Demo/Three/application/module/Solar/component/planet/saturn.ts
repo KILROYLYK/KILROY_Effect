@@ -4,8 +4,8 @@ import Component from '../../../../interface/component';
 import * as THREE from 'three';
 
 interface Texture { // 纹理
-    saturn: THREE.Texture,
-    ring: THREE.Texture
+    saturn: THREE.Texture // 土星
+    ring: THREE.Texture // 星环
 }
 
 /**
@@ -15,10 +15,7 @@ export default class Saturn implements Component {
     private readonly name: string = 'Saturn-土星';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: Texture = {  // 纹理
-        saturn: null as THREE.Texture,
-        ring: null as THREE.Texture
-    };
+    private texture: Texture = null; // 纹理
     
     private readonly radius: number = 247; // 半径
     private readonly trackR: number = 500 + 200 * 24.68; // 轨迹半径

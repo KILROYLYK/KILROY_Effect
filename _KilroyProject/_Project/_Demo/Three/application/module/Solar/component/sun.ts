@@ -7,9 +7,9 @@ import SunVertex from './_OpenGL/sunVertex.c';
 import SunFragment from './_OpenGL/sunFragment.c';
 
 interface Texture { // 纹理
-    sun: THREE.Texture
-    ground: THREE.Texture
-    cloud: THREE.Texture
+    sun: THREE.Texture // 太阳
+    ground: THREE.Texture // 地面
+    cloud: THREE.Texture // 云层
 }
 
 /**
@@ -19,11 +19,7 @@ export default class Sun implements Component {
     private readonly name: string = 'Sun-太阳';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: Texture = {  // 纹理
-        sun: null as THREE.Texture,
-        ground: null as THREE.Texture,
-        cloud: null as THREE.Texture
-    };
+    private texture: Texture = null; // 纹理
     
     private readonly radius: number = 400; // 半径
     private uniform: { // 匀实

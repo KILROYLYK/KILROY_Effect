@@ -4,8 +4,8 @@ import Component from '../../../../interface/component';
 import * as THREE from 'three';
 
 interface Texture { // 纹理
-    earth: THREE.Texture
-    sky: THREE.Texture
+    earth: THREE.Texture // 地球
+    sky: THREE.Texture // 天空
 }
 
 /**
@@ -15,10 +15,7 @@ export default class Earth implements Component {
     private readonly name: string = 'Earth-地球';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: Texture = {  // 纹理
-        earth: null as THREE.Texture,
-        sky: null as THREE.Texture
-    };
+    private texture: Texture = null; // 纹理
     
     private readonly radius: number = 26.1; // 半径
     private readonly trackR: number = 500 + 200 * 2.58; // 轨迹半径
