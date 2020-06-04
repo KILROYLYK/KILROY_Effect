@@ -14,7 +14,6 @@ export default class Ground implements Component {
     
     private light: THREE.PointLight = null; // 灯光
     private simplex: SimplexNoise = null; // 单纯形
-    private geometry: THREE.PlaneGeometry = null; // 几何体
     private plane: THREE.Mesh = null; // 平原
     private cycle: number = 0; // 周期
     private readonly moveP: object = { // 移动位置
@@ -98,12 +97,14 @@ export default class Ground implements Component {
         
         if (!_this.instance) return;
         
-        for (const vertex of _this.geometry.vertices) {
+        const geometry = _this.plane.geometry as any;
+        
+        for (const vertex of geometry.vertices) {
             const x = (vertex.x / factor),
                 y = (vertex.y / factor) + _this.cycle;
             vertex.z = _this.simplex.noise(x, y) * scale;
         }
-        _this.geometry.verticesNeedUpdate = true;
+        geometry.verticesNeedUpdate = true;
         _this.cycle -= cycleS;
         
         _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * mouseS);
@@ -135,9 +136,14 @@ export default class Ground implements Component {
     private createPlane(): void {
         const _this = this;
         
+        _this.simplex = new SimplexNoise();
+        
+        const geometry = new THREE.PlaneGeometry(
+            4000, 2000, 128, 64
+        );
+        
         const material = new THREE.MeshLambertMaterial({
             color: '#ffffff',
-            opacity: 1,
             blending: THREE.NoBlending,
             side: THREE.FrontSide,
             transparent: false,
@@ -145,13 +151,7 @@ export default class Ground implements Component {
             wireframe: true
         });
         
-        _this.simplex = new SimplexNoise();
-        
-        _this.geometry = new THREE.PlaneGeometry(
-            4000, 2000, 128, 64
-        );
-        
-        _this.plane = new THREE.Mesh(_this.geometry, material);
+        _this.plane = new THREE.Mesh(geometry, material);
         _this.plane.position.set(0, 0, 0);
         _this.plane.rotation.set(0, 0, 0);
     }

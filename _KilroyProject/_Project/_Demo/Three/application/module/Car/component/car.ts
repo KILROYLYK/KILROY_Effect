@@ -25,17 +25,7 @@ export default class Car implements Component {
     private car: THREE.Group = null; // 车
     private wheel: THREE.Group = null; // 车轮
     private speed: number = 10; // 速度
-    private turn: number = 0.1; // 转弯
-    private readonly moveP: object = { // 移动位置
-        x: 0,
-        y: 0,
-        z: 0
-    };
-    private readonly lookP: object = { // 视觉位置
-        x: 0,
-        y: 0,
-        z: 0
-    };
+    private turn: number = 0; // 转弯
     
     public instance: THREE.Group = null; // 实例
     
@@ -64,9 +54,6 @@ export default class Car implements Component {
         
         _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
-        _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
-        _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
-        // _this.instance.rotation.set(_this.lookP.x, Math.PI / 2, _this.lookP.z);
         
         _this.createCar();
         _this.createWheel();
@@ -104,15 +91,23 @@ export default class Car implements Component {
      * @return {void}
      */
     public update(): void {
-        const _this = this;
+        const _this = this,
+            ease = 12, // 缓冲系数
+            turn = Math.PI * _this.turn, // 转向角度
+            lookP = {
+                x: _this.instance.rotation.x,
+                y: _this.instance.rotation.y + turn,
+                z: _this.instance.rotation.z
+            };
         
         if (!_this.instance) return;
         
         _this.wheel.children.forEach((v, i, a) => {
             v.children[1].rotateY(-_this.speed);
-            (i === 0 || i === 1)
-            && (v.rotation.set(-Math.PI / 2, 0, Math.PI / 2 + Math.PI * _this.turn));
+            (i === 0 || i === 1) && (v.rotation.set(-Math.PI / 2, 0, Math.PI / 2 + turn));
         });
+        
+        Global.Function.setEase(_this.instance.rotation, lookP, ease);
     }
     
     /**
@@ -316,11 +311,11 @@ export default class Car implements Component {
         // 左前轮
         wheel[1].scale.set(wheelS, -wheelS, wheelS);
         wheel[1].position.set(wheelX, wheelY, wheelZ.p);
-
+        
         // 右后轮
         wheel[2].scale.setScalar(wheelS);
         wheel[2].position.set(-wheelX, wheelY, wheelZ.n);
-
+        
         // 左后轮
         wheel[3].scale.set(wheelS, -wheelS, wheelS);
         wheel[3].position.set(wheelX, wheelY, wheelZ.n);
