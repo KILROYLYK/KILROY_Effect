@@ -34,7 +34,9 @@ export default class Ground implements Component {
     private create(): void {
         const _this = this;
         
-        const geometry = new THREE.RingGeometry(0, 1000, 32);
+        const geometry = new THREE.RingGeometry(
+            0, 1000, 32
+        );
         
         const material = new THREE.MeshLambertMaterial({
             color: '#d7cbb1'

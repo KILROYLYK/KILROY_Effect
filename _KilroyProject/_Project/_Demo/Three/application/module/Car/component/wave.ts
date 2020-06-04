@@ -65,7 +65,7 @@ export default class Wave implements Component {
         const material = new THREE.ShaderMaterial({
             uniforms: {
                 color: {
-                    value: new THREE.Color('#545454')
+                    value: new THREE.Color('#a0a0a0')
                 },
             },
             vertexShader: WaveVertex,
@@ -130,6 +130,6 @@ export default class Wave implements Component {
         geometry.attributes.position.needsUpdate = true;
         geometry.attributes.scale.needsUpdate = true;
         
-        _this.cycle += 0.1;
+        _this.cycle -= 0.1;
     }
 }

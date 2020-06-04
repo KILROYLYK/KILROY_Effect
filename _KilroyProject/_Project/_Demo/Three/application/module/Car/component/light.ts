@@ -87,10 +87,10 @@ export default class Light implements Component {
             color = '#ffffff',
             distance = 500;
         
-        _this.lightAmbient = new THREE.AmbientLight(color, 1);
+        _this.lightAmbient = new THREE.AmbientLight(color, 0.5);
         
         _this.lightDirectional = new THREE.DirectionalLight(color, 1);
-        _this.lightDirectional.position.set(1, 2, 1);
+        _this.lightDirectional.position.set(0, 2, 1);
         _this.lightDirectional.position.multiplyScalar(30);
         _this.lightDirectional.castShadow = true;
         _this.lightDirectional.shadow.camera.top = distance;
