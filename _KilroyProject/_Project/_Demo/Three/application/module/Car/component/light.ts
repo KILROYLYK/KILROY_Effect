@@ -109,11 +109,11 @@ export default class Light implements Component {
         _this.lightDirectional.shadow.bias = -0.0001;
         
         _this.lightArea1 = new THREE.Group();
-        _this.lightArea1.position.set(50, 40, 0);
+        _this.lightArea1.position.set(70, 40, 0);
         _this.lightArea1.rotation.set(0, Math.PI / 2, 0);
         
         _this.lightArea2 = new THREE.Group();
-        _this.lightArea2.position.set(-50, 40, 0);
+        _this.lightArea2.position.set(-70, 40, 0);
         _this.lightArea2.rotation.set(0, -Math.PI / 2, 0);
     }
     
@@ -127,7 +127,7 @@ export default class Light implements Component {
         const light1 = new THREE.RectAreaLight(
             0xffffff, 10, 50, 50
         );
-        
+
         const mesh1 = new THREE.Mesh(
             new THREE.PlaneBufferGeometry(),
             new THREE.MeshBasicMaterial({
@@ -136,7 +136,7 @@ export default class Light implements Component {
         );
         mesh1.scale.x = light1.width;
         mesh1.scale.y = light1.height;
-        
+
         light1.add(mesh1);
         _this.lightArea1.add(light1);
     
@@ -153,7 +153,7 @@ export default class Light implements Component {
         mesh2.scale.x = light2.width;
         mesh2.scale.y = light2.height;
     
-        mesh2.add(mesh2);
-        _this.lightArea2.add(mesh2);
+        light2.add(mesh2);
+        _this.lightArea2.add(light2);
     }
 }

@@ -24,7 +24,7 @@ export default class Car implements Component {
     
     private car: THREE.Group = null; // 车
     private wheel: THREE.Group = null; // 车轮
-    private speed: number = 10; // 速度
+    private speed: number = 15; // 速度
     private turn: number = 0; // 转弯
     
     public instance: THREE.Group = null; // 实例
