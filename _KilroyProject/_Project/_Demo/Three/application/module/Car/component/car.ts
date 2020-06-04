@@ -216,25 +216,85 @@ export default class Car implements Component {
         
         _this.wheel = new THREE.Group();
         
-        console.log(_this.texture.wheel_l1.children[0]);
-        
         for (const w in _this.texture) {
             if (w.indexOf('wheel_') > -1) {
-                const group = new THREE.Group();
-                group.add(
-                    _this.texture[w].children[0],
-                    _this.texture[w].children[1]
-                );
-                group.position.set(0, 50, 0);
-                group.rotation.set(-Math.PI / 2, 0, 0);
-                group.scale.setScalar(0.01);
+                const group = new THREE.Group(),
+                    c0 = _this.texture[w].children[0],
+                    c1 = _this.texture[w].children[1];
+                
+                // 内轮
+                c0.children[0].material = new THREE.MeshPhysicalMaterial({
+                    color: '#cccccc',
+                    metalness: 0.4,
+                    roughness: 1,
+                    reflectivity: 1
+                });
+                
+                // 刹车
+                c0.children[1].material = new THREE.MeshPhysicalMaterial({
+                    color: '#ff0000',
+                    metalness: 0.9,
+                    roughness: 1,
+                    reflectivity: 1
+                });
+                
+                // 轮骨
+                c1.children[0].material = new THREE.MeshPhysicalMaterial({
+                    color: '#000000',
+                    metalness: 0,
+                    roughness: 1,
+                    reflectivity: 1
+                });
+                
+                // 外轮
+                c1.children[1].material = new THREE.MeshPhysicalMaterial({
+                    color: '#cccccc',
+                    metalness: 0,
+                    roughness: 1,
+                    reflectivity: 1
+                });
+                
+                // 轮胎
+                c1.children[2].material = new THREE.MeshPhysicalMaterial({
+                    color: '#1f1f1f',
+                    metalness: 0.5,
+                    roughness: 1,
+                    reflectivity: 0
+                });
+                
+                group.add(c0, c1);
+                group.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
                 group.castShadow = true;
                 group.receiveShadow = true;
                 wheel.push(group);
                 _this.wheel.add(group);
             }
         }
-    
-        // wheel[0]
+        
+        const wheelX = 15, // 与中轴距离
+            wheelP = { // 前轮
+                scale: 0.016,
+                z: 41
+            },
+            wheelN = { // 后轮
+                scale: 0.017,
+                z: -22.5
+            };
+        
+        // 右前轮
+        wheel[0].scale.setScalar(wheelP.scale);
+        wheel[0].position.set(-wheelX, 0, wheelP.z);
+        
+        // 左前轮
+        wheel[1].scale.set(wheelP.scale, -wheelP.scale, wheelP.scale);
+        wheel[1].position.set(wheelX, 0, wheelP.z);
+        
+        // 右后轮
+        wheel[2].scale.setScalar(wheelN.scale);
+        wheel[2].position.set(-wheelX, 0, wheelN.z);
+        
+        // 左后轮
+        wheel[3].scale.set(wheelN.scale, -wheelN.scale, wheelN.scale);
+        wheel[3].position.set(wheelX, 0, wheelN.z);
     }
 }
