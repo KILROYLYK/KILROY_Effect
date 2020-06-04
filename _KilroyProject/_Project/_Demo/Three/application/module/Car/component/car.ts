@@ -2,6 +2,7 @@ import Global from '../../../constant/global';
 import Component from '../../../interface/component';
 
 import * as THREE from 'three';
+import { speed } from "animejs";
 
 interface Texture { // 纹理
     bg: THREE.CubeTexture // 背景
@@ -23,6 +24,8 @@ export default class Car implements Component {
     
     private car: THREE.Group = null; // 车
     private wheel: THREE.Group = null; // 车轮
+    private speed: number = 20; // 速度
+    private turn: number = 0; // 转弯
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 0,
@@ -219,62 +222,75 @@ export default class Car implements Component {
         for (const w in _this.texture) {
             if (w.indexOf('wheel_') > -1) {
                 const group = new THREE.Group(),
-                    c0 = _this.texture[w].children[0],
-                    c1 = _this.texture[w].children[1];
+                    g1 = _this.texture[w].children[0], // 组1
+                    g2 = _this.texture[w].children[1]; // 组2
                 
                 // 内轮
-                c0.children[0].material = new THREE.MeshPhysicalMaterial({
-                    color: '#cccccc',
-                    metalness: 0.4,
+                const m1 = g1.children[0];
+                m1.material = new THREE.MeshPhysicalMaterial({
+                    color: '#4f4f4f',
+                    metalness: 0.8,
                     roughness: 1,
-                    reflectivity: 1
+                    reflectivity: 0
                 });
+                m1.castShadow = true;
+                m1.receiveShadow = true;
                 
                 // 刹车
-                c0.children[1].material = new THREE.MeshPhysicalMaterial({
+                const m2 = g1.children[1];
+                m2.material = new THREE.MeshPhysicalMaterial({
                     color: '#ff0000',
                     metalness: 0.9,
                     roughness: 1,
-                    reflectivity: 1
+                    reflectivity: 0
                 });
+                m2.castShadow = true;
+                m2.receiveShadow = true;
                 
                 // 轮骨
-                c1.children[0].material = new THREE.MeshPhysicalMaterial({
+                const m3 = g2.children[0];
+                m3.material = new THREE.MeshPhysicalMaterial({
                     color: '#000000',
                     metalness: 0,
                     roughness: 1,
                     reflectivity: 1
                 });
+                m3.castShadow = true;
+                m3.receiveShadow = true;
                 
                 // 外轮
-                c1.children[1].material = new THREE.MeshPhysicalMaterial({
+                const m4 = g2.children[1];
+                m4.material = new THREE.MeshPhysicalMaterial({
                     color: '#cccccc',
                     metalness: 0,
                     roughness: 1,
                     reflectivity: 1
                 });
+                m4.castShadow = true;
+                m4.receiveShadow = true;
                 
                 // 轮胎
-                c1.children[2].material = new THREE.MeshPhysicalMaterial({
+                const m5 = g2.children[2];
+                m5.material = new THREE.MeshPhysicalMaterial({
                     color: '#1f1f1f',
-                    metalness: 0.5,
+                    metalness: 0.8,
                     roughness: 1,
                     reflectivity: 0
                 });
+                m5.castShadow = true;
+                m5.receiveShadow = true;
                 
-                group.add(c0, c1);
+                group.add(g1, g2);
                 group.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
-                group.castShadow = true;
-                group.receiveShadow = true;
                 wheel.push(group);
                 _this.wheel.add(group);
             }
         }
         
-        const wheelX = 15, // 与中轴距离
+        const wheelX = 13, // 与中轴距离
             wheelP = { // 前轮
                 scale: 0.016,
-                z: 41
+                z: 40.7
             },
             wheelN = { // 后轮
                 scale: 0.017,
@@ -296,5 +312,19 @@ export default class Car implements Component {
         // 左后轮
         wheel[3].scale.set(wheelN.scale, -wheelN.scale, wheelN.scale);
         wheel[3].position.set(wheelX, 0, wheelN.z);
+    }
+    
+    /**
+     * 改变速度
+     * @param {boolean} add 增加
+     * @return {void}
+     */
+    public changeSpeed(add: boolean = true): void {
+        const _this = this;
+        
+        add ? _this.speed++ : _this.speed--;
+        
+        _this.speed >= 100 && (_this.speed = 100);
+        _this.speed <= 0 && (_this.speed = 0);
     }
 }
