@@ -107,8 +107,9 @@ export default class Wave implements Component {
         const _this = this,
             slope = 2, // 坡度
             scale = 1, // 缩放
-            positions = (_this.instance.geometry as any).attributes.position.array,
-            scales = (_this.instance.geometry as any).attributes.scale.array;
+            geometry =_this.instance.geometry as any,
+            positions = geometry.attributes.position.array,
+            scales = geometry.attributes.scale.array;
         
         let i = 0,
             j = 0;
@@ -125,9 +126,9 @@ export default class Wave implements Component {
                 j++;
             }
         }
-        
-        (_this.instance.geometry as any).attributes.position.needsUpdate = true;
-        (_this.instance.geometry as any).attributes.scale.needsUpdate = true;
+    
+        geometry.attributes.position.needsUpdate = true;
+        geometry.attributes.scale.needsUpdate = true;
         
         _this.cycle += 0.1;
     }

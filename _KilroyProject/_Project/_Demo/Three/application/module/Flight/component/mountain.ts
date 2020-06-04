@@ -15,7 +15,6 @@ export default class Mountain implements Component {
     
     private light: THREE.PointLight = null; // 灯光
     private simplex: SimplexNoise = null; // 单纯形
-    private geometry: THREE.PlaneGeometry = null; // 几何体
     private terrain: THREE.Mesh = null; // 地形
     private cycle: number = 0; // 周期
     private readonly moveP: object = { // 移动位置
@@ -58,7 +57,7 @@ export default class Mountain implements Component {
         _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
-    
+        
         _this.createLight();
         _this.createTerrain();
     }
@@ -99,15 +98,17 @@ export default class Mountain implements Component {
             factor = 1300, // 顶点系数（越大越平缓）
             scale = 300; // 陡峭倍数
         
-        
         if (!_this.instance) return;
         
-        for (const vertex of _this.geometry.vertices) {
+        const geometry = _this.terrain.geometry as any;
+        
+        for (const vertex of geometry.vertices) {
             const x = (vertex.x / factor),
                 y = (vertex.y / factor) + _this.cycle;
             vertex.z = _this.simplex.noise(x, y) * scale;
         }
-        _this.geometry.verticesNeedUpdate = true;
+        geometry.verticesNeedUpdate = true;
+        
         _this.cycle -= cycleS;
         
         _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * moveS);
@@ -138,10 +139,16 @@ export default class Mountain implements Component {
      */
     private createTerrain(): void {
         const _this = this;
-    
+        
         _this.texture.wrapT
             = _this.texture.wrapS
             = THREE.RepeatWrapping;
+        
+        _this.simplex = new SimplexNoise();
+        
+        const geometry = new THREE.PlaneGeometry(
+            12000, 1400, 128, 32
+        );
         
         const material = new THREE.MeshPhongMaterial({ // 材料
             color: '#ffffff',
@@ -153,13 +160,7 @@ export default class Mountain implements Component {
             depthTest: true
         });
         
-        _this.simplex = new SimplexNoise();
-        
-        _this.geometry = new THREE.PlaneGeometry(
-            12000, 1400, 128, 32
-        );
-        
-        _this.terrain = new THREE.Mesh(_this.geometry, material);
+        _this.terrain = new THREE.Mesh(geometry, material);
         _this.terrain.position.set(0, 0, 0);
         _this.terrain.rotation.set((Math.PI / 2) + 0.8, 0, 0);
     }
