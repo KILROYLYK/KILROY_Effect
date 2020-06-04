@@ -147,6 +147,7 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         
         _this.component.wave.update();
+        _this.component.car.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

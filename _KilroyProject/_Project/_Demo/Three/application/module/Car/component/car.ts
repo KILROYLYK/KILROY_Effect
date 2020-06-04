@@ -24,8 +24,8 @@ export default class Car implements Component {
     
     private car: THREE.Group = null; // 车
     private wheel: THREE.Group = null; // 车轮
-    private speed: number = 20; // 速度
-    private turn: number = 0; // 转弯
+    private speed: number = 10; // 速度
+    private turn: number = 0.1; // 转弯
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 0,
@@ -66,6 +66,7 @@ export default class Car implements Component {
         _this.instance.name = _this.name;
         _this.instance.position.set(_this.moveP.x, _this.moveP.y, _this.moveP.z);
         _this.instance.rotation.set(_this.lookP.x, _this.lookP.y, _this.lookP.z);
+        // _this.instance.rotation.set(_this.lookP.x, Math.PI / 2, _this.lookP.z);
         
         _this.createCar();
         _this.createWheel();
@@ -106,6 +107,12 @@ export default class Car implements Component {
         const _this = this;
         
         if (!_this.instance) return;
+        
+        _this.wheel.children.forEach((v, i, a) => {
+            v.children[1].rotateY(-_this.speed);
+            (i === 0 || i === 1)
+            && (v.rotation.set(-Math.PI / 2, 0, Math.PI / 2 + Math.PI * _this.turn));
+        });
     }
     
     /**
@@ -117,7 +124,7 @@ export default class Car implements Component {
         
         _this.car = _this.texture.car;
         _this.car.position.set(0, 0, 0);
-        _this.car.rotation.set(0, -Math.PI / 2, 0);
+        _this.car.rotation.set(0, Math.PI / 2, 0);
         _this.car.scale.setScalar(0.01);
         _this.car.castShadow = true;
         _this.car.receiveShadow = true;
@@ -227,6 +234,7 @@ export default class Car implements Component {
                 
                 // 内轮
                 const m1 = g1.children[0];
+                m1.geometry.center();
                 m1.material = new THREE.MeshPhysicalMaterial({
                     color: '#4f4f4f',
                     metalness: 0.8,
@@ -238,6 +246,9 @@ export default class Car implements Component {
                 
                 // 刹车
                 const m2 = g1.children[1];
+                m2.geometry.center();
+                m2.position.set(200, 0, 100);
+                m2.rotation.set(0, -Math.PI / 7, 0);
                 m2.material = new THREE.MeshPhysicalMaterial({
                     color: '#ff0000',
                     metalness: 0.9,
@@ -249,6 +260,7 @@ export default class Car implements Component {
                 
                 // 轮骨
                 const m3 = g2.children[0];
+                m3.geometry.center();
                 m3.material = new THREE.MeshPhysicalMaterial({
                     color: '#000000',
                     metalness: 0,
@@ -260,6 +272,7 @@ export default class Car implements Component {
                 
                 // 外轮
                 const m4 = g2.children[1];
+                m4.geometry.center();
                 m4.material = new THREE.MeshPhysicalMaterial({
                     color: '#cccccc',
                     metalness: 0,
@@ -271,6 +284,7 @@ export default class Car implements Component {
                 
                 // 轮胎
                 const m5 = g2.children[2];
+                m5.geometry.center();
                 m5.material = new THREE.MeshPhysicalMaterial({
                     color: '#1f1f1f',
                     metalness: 0.8,
@@ -281,37 +295,35 @@ export default class Car implements Component {
                 m5.receiveShadow = true;
                 
                 group.add(g1, g2);
-                group.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
+                group.rotation.set(0, 0, Math.PI / 2);
                 wheel.push(group);
                 _this.wheel.add(group);
             }
         }
         
-        const wheelX = 13, // 与中轴距离
-            wheelP = { // 前轮
-                scale: 0.016,
-                z: 40.7
-            },
-            wheelN = { // 后轮
-                scale: 0.017,
-                z: -22.5
+        const wheelS = 0.017, // 缩放
+            wheelX = 17,
+            wheelY = 8.5,
+            wheelZ = {
+                p: -33, // 前轮
+                n: 31 // 后轮
             };
         
         // 右前轮
-        wheel[0].scale.setScalar(wheelP.scale);
-        wheel[0].position.set(-wheelX, 0, wheelP.z);
+        wheel[0].scale.setScalar(wheelS);
+        wheel[0].position.set(-wheelX, wheelY, wheelZ.p);
         
         // 左前轮
-        wheel[1].scale.set(wheelP.scale, -wheelP.scale, wheelP.scale);
-        wheel[1].position.set(wheelX, 0, wheelP.z);
-        
+        wheel[1].scale.set(wheelS, -wheelS, wheelS);
+        wheel[1].position.set(wheelX, wheelY, wheelZ.p);
+
         // 右后轮
-        wheel[2].scale.setScalar(wheelN.scale);
-        wheel[2].position.set(-wheelX, 0, wheelN.z);
-        
+        wheel[2].scale.setScalar(wheelS);
+        wheel[2].position.set(-wheelX, wheelY, wheelZ.n);
+
         // 左后轮
-        wheel[3].scale.set(wheelN.scale, -wheelN.scale, wheelN.scale);
-        wheel[3].position.set(wheelX, 0, wheelN.z);
+        wheel[3].scale.set(wheelS, -wheelS, wheelS);
+        wheel[3].position.set(wheelX, wheelY, wheelZ.n);
     }
     
     /**
