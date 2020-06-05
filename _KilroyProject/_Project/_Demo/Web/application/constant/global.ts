@@ -15,14 +15,14 @@ interface Position { // 位置
  * 全局
  */
 export default class Global {
-    public readonly static W: Window = W;
-    public readonly static D: Document = D;
+    public static readonly W: Window = W;
+    public static readonly D: Document = D;
     
-    public readonly static Base: any = Base;
+    public static readonly Base: any = Base;
     
-    public readonly static Tween: any = Tween;
+    public static readonly Tween: any = Tween;
     
-    public readonly static Dom: HTMLElement = GlobalFunction.getDom();
+    public static readonly Dom: HTMLElement = GlobalFunction.getDom();
     public static Width: number = Global.Dom.clientWidth;
     public static Height: number = Global.Dom.clientHeight;
     public static mouseP: Position = { // 鼠标位置
@@ -30,7 +30,7 @@ export default class Global {
         y: Global.Height / 2
     };
     
-    public readonly static Config: any = GlobalConfig; // 配置
-    public readonly static Function: any = GlobalFunction; // 函数
-    public readonly static Stage: Function = GlobalStage; // 场景
+    public static readonly Config: any = GlobalConfig; // 配置
+    public static readonly Function: any = GlobalFunction; // 函数
+    public static readonly Stage: Function = GlobalStage; // 场景
 }
