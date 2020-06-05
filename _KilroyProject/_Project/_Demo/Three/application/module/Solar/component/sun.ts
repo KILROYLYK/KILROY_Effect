@@ -9,7 +9,7 @@ import SunFragment from './_OpenGL/sunFragment.c';
 interface Texture { // 纹理
     sun: THREE.Texture // 太阳
     ground: THREE.Texture // 地面
-    cloud: THREE.Texture // 云层
+    fire: THREE.Texture // 火焰
 }
 
 /**
@@ -126,8 +126,8 @@ export default class Sun implements Component {
     private createSphere(): void {
         const _this = this,
             texture = _this.texture.sun,
-            textureFire = _this.texture.fire,
-            textureGround = _this.texture.ground;
+            textureGround = _this.texture.ground,
+            textureFire = _this.texture.fire;
         
         textureFire.wrapS
             = textureFire.wrapT
