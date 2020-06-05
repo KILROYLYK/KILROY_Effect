@@ -21,7 +21,7 @@ export default class Sun implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: Texture = null; // 纹理
     
-    private readonly radius: number = 400; // 半径
+    private readonly radius: number = 500; // 半径
     private uniform: { // 匀实
         [uniform: string]: {
             value: any

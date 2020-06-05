@@ -106,28 +106,27 @@ export default class Camera implements Layout {
         
         const tween = new Global.Tween.Tween(_this.instance.position)
             .easing(Global.Tween.Easing.Cubic.InOut)
-            .delay(5000)
             .to({
                 x: 0,
                 y: 500,
                 z: 3000
             }, 3000)
-            .delay(2000)
+            .delay(5000)
             .onComplete(() => {
                 tween.stop();
-                _this.openRotate();
+                // _this.openRotate();
                 _this.openController();
             })
             .onStop(() => {
-                Global.W.addEventListener('mousedown', () => {
-                    _this.setTime && clearTimeout(_this.setTime);
-                    _this.closeRotate();
-                }, false);
-                Global.W.addEventListener('mouseup', () => {
-                    _this.setTime = setTimeout(() => {
-                        _this.openRotate();
-                    }, 10000);
-                }, false);
+                // Global.W.addEventListener('mousedown', () => {
+                //     _this.setTime && clearTimeout(_this.setTime);
+                //     _this.closeRotate();
+                // }, false);
+                // Global.W.addEventListener('mouseup', () => {
+                //     _this.setTime = setTimeout(() => {
+                //         _this.openRotate();
+                //     }, 10000);
+                // }, false);
             })
             .start();
     }

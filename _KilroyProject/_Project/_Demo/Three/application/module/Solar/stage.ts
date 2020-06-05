@@ -6,6 +6,7 @@ import Scene from './layout/scene';
 import Camera from './layout/camera';
 import Light from './component/light';
 import Panoramic from './component/panoramic';
+import Asteroid from './component/asteroid';
 import Sun from './component/sun';
 import Mercury from './component/planet/mercury';
 import Venus from './component/planet/venus';
@@ -58,6 +59,7 @@ export default class Stage implements _Stage {
     private component: object = { // 组件
         light: null as Light, // 光源
         panoramic: null as Panoramic, // 全景
+        asteroid: null as Asteroid, // 小行星
         sun: null as Sun, // 太阳
         mercury: null as Mercury, // 水星
         venus: null as Venus, // 金星
@@ -110,6 +112,7 @@ export default class Stage implements _Stage {
         
         _this.component.light = new Light(_this.scene);
         _this.component.panoramic = new Panoramic(_this.scene, resource.image_universe);
+        _this.component.asteroid = new Asteroid(_this.scene);
         
         _this.component.sun = new Sun(_this.scene, {
             sun: resource.image_sun,
@@ -166,6 +169,7 @@ export default class Stage implements _Stage {
         
         _this.component.light.destroy();
         _this.component.panoramic.destroy();
+        _this.component.asteroid.destroy();
         
         _this.component.sun.destroy();
         _this.component.mercury.destroy();
@@ -194,6 +198,8 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
     
         Global.Tween.update();
+        
+        _this.component.asteroid.update();
         
         _this.component.sun.update();
         _this.component.mercury.update();
