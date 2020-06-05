@@ -32,5 +32,5 @@ export default class Global {
     
     public static readonly Config: any = GlobalConfig; // 配置
     public static readonly Function: any = GlobalFunction; // 函数
-    public static readonly Stage: Function = GlobalStage; // 场景
+    public static readonly Stage: any = GlobalStage; // 场景
 }
