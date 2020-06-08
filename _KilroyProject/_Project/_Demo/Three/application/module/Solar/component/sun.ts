@@ -29,6 +29,7 @@ export default class Sun implements Component {
     } = null;
     private light: THREE.PointLight = null; // 点光源
     private sphere: THREE.Mesh = null; // 球体
+    private halo: THREE.Mesh = null; // 球体
     
     public instance: THREE.Group = null; // 实例
     
@@ -61,6 +62,7 @@ export default class Sun implements Component {
         
         _this.createLight();
         _this.createSphere();
+        _this.createHalo();
     }
     
     /**
@@ -72,6 +74,7 @@ export default class Sun implements Component {
         
         _this.instance.add(_this.light);
         _this.instance.add(_this.sphere);
+        _this.instance.add(_this.halo);
         _this.scene.add(_this.instance);
     }
     
@@ -86,6 +89,7 @@ export default class Sun implements Component {
         
         _this.light = null;
         _this.sphere = null;
+        _this.halo = null;
         
         _this.instance = null;
     }
@@ -125,7 +129,6 @@ export default class Sun implements Component {
      */
     private createSphere(): void {
         const _this = this,
-            texture = _this.texture.sun,
             textureGround = _this.texture.ground,
             textureFire = _this.texture.fire;
         
@@ -167,14 +170,32 @@ export default class Sun implements Component {
             fragmentShader: SunFragment
         });
         
-        // const material = new THREE.MeshStandardMaterial({
-        //     map: texture,
-        //     lightMap: texture,
-        //     lightMapIntensity: 1.5,
-        //     roughness: 1
-        // });
-        
         _this.sphere = new THREE.Mesh(geometry, material);
         _this.sphere.position.set(0, 0, 0);
+    }
+    
+    /**
+     * 创建光晕
+     * @return {void}
+     */
+    private createHalo(): void {
+        const _this = this,
+            texture = _this.texture.sun;
+        
+        const geometry = new THREE.SphereGeometry(
+            _this.radius + 50, 64, 64
+        );
+        
+        const material = new THREE.MeshStandardMaterial({
+            map: texture,
+            lightMap: texture,
+            lightMapIntensity: 10,
+            roughness: 1,
+            opacity: 0.2,
+            transparent: true
+        });
+        
+        _this.halo = new THREE.Mesh(geometry, material);
+        _this.halo.position.set(0, 0, 0);
     }
 }
