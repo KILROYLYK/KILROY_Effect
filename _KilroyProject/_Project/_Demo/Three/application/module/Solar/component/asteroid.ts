@@ -1,5 +1,6 @@
 import Global from '../../../constant/global';
 import Component from '../../../interface/component';
+import Stage from '../stage';
 
 import * as THREE from 'three';
 
@@ -12,8 +13,8 @@ export default class Asteroid implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private readonly radius: number = 1200; // 半径
-    private readonly trackR: number = 500 + 200 * 5; // 轨迹半径
+    private readonly radius: number = Stage.trackM * 6; // 半径
+    private readonly trackR: number = Stage.trackIR + Stage.trackM * 5; // 轨迹半径
     private pointB: THREE.Points = null; // 宽星带
     private pointS: THREE.Points = null; // 窄星带
     
@@ -95,7 +96,7 @@ export default class Asteroid implements Component {
      */
     private createPoint(): void {
         const _this = this,
-            d = 300;
+            d = Stage.trackM;
         
         const pointB = _this.getPoint(_this.trackR, _this.trackR + _this.radius),
             pointS = _this.getPoint(_this.trackR + d, _this.trackR + _this.radius - d);

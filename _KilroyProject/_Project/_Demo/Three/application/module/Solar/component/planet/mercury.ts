@@ -1,5 +1,6 @@
 import Global from '../../../../constant/global';
 import Component from '../../../../interface/component';
+import Stage from '../../stage'
 
 import * as THREE from 'three';
 
@@ -12,8 +13,8 @@ export default class Mercury implements Component {
     private scene: THREE.Scene = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private readonly radius: number = 10; // 半径
-    private readonly trackR: number = 500 + 200; // 轨迹半径
+    private readonly radius: number = Stage.radiusM * 10; // 半径
+    private readonly trackR: number = Stage.trackIR + Stage.trackM; // 轨迹半径
     private cycle: number = 0; // 周期
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球

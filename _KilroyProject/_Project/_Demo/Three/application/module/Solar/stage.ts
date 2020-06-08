@@ -32,6 +32,10 @@ import Loader from '../../controller/loader';
  * 月球【0.1738】【36.3】（万千米）【0.7】【0.006】
  */
 export default class Stage implements _Stage {
+    public static readonly radiusM: number = 1; // 星球半径倍数
+    public static readonly trackM: number = 100; // 轨迹半径倍数
+    public static readonly trackIR: number = 10 * Stage.trackM; // 轨迹内圈半径
+    
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: {
