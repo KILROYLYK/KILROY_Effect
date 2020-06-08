@@ -232,9 +232,9 @@ export default class Car implements Component {
                 m1.geometry.center();
                 m1.material = new THREE.MeshPhysicalMaterial({
                     color: '#4f4f4f',
-                    metalness: 0.8,
-                    roughness: 1,
-                    reflectivity: 0
+                    metalness: 0,
+                    roughness: 0.5,
+                    reflectivity: 1
                 });
                 m1.castShadow = true;
                 m1.receiveShadow = true;
@@ -259,7 +259,7 @@ export default class Car implements Component {
                 m3.material = new THREE.MeshPhysicalMaterial({
                     color: '#000000',
                     metalness: 0,
-                    roughness: 1,
+                    roughness: 0.5,
                     reflectivity: 1
                 });
                 m3.castShadow = true;
@@ -271,7 +271,7 @@ export default class Car implements Component {
                 m4.material = new THREE.MeshPhysicalMaterial({
                     color: '#cccccc',
                     metalness: 0,
-                    roughness: 1,
+                    roughness: 0.5,
                     reflectivity: 1
                 });
                 m4.castShadow = true;
@@ -283,8 +283,8 @@ export default class Car implements Component {
                 m5.material = new THREE.MeshPhysicalMaterial({
                     color: '#1f1f1f',
                     metalness: 0.8,
-                    roughness: 1,
-                    reflectivity: 0
+                    roughness: 0.5,
+                    reflectivity: 1
                 });
                 m5.castShadow = true;
                 m5.receiveShadow = true;
@@ -304,19 +304,19 @@ export default class Car implements Component {
                 n: 31 // 后轮
             };
         
-        // 右前轮
+        // 左前轮
         wheel[0].scale.setScalar(wheelS);
         wheel[0].position.set(-wheelX, wheelY, wheelZ.p);
         
-        // 左前轮
+        // 右前轮
         wheel[1].scale.set(wheelS, -wheelS, wheelS);
         wheel[1].position.set(wheelX, wheelY, wheelZ.p);
         
-        // 右后轮
+        // 左后轮
         wheel[2].scale.setScalar(wheelS);
         wheel[2].position.set(-wheelX, wheelY, wheelZ.n);
         
-        // 左后轮
+        // 右后轮
         wheel[3].scale.set(wheelS, -wheelS, wheelS);
         wheel[3].position.set(wheelX, wheelY, wheelZ.n);
     }
