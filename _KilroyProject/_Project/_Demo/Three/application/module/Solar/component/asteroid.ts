@@ -10,6 +10,7 @@ export default class Asteroid implements Component {
     private readonly name: string = 'Asteroid-小行星';
     
     private scene: THREE.Scene = null; // 场景
+    private texture: THREE.Texture = null; // 纹理
     
     private readonly radius: number = 1200; // 半径
     private readonly trackR: number = 500 + 200 * 5; // 轨迹半径
@@ -22,11 +23,13 @@ export default class Asteroid implements Component {
      * 构造函数
      * @constructor Asteroid
      * @param {object} scene 场景
+     * @param {THREE.Texture} texture 纹理
      */
-    constructor(scene: object) {
+    constructor(scene: object, texture: THREE.Texture) {
         const _this = this;
         
         _this.scene = scene.instance;
+        _this.texture = texture;
         
         _this.create();
         _this.init();
@@ -43,8 +46,7 @@ export default class Asteroid implements Component {
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         
-        _this.createPointB();
-        _this.createPointS();
+        _this.createPoint();
     }
     
     /**
@@ -88,66 +90,22 @@ export default class Asteroid implements Component {
     }
     
     /**
-     * 创建宽星星带
+     * 创建点
      * @return {void}
      */
-    private createPointB(): void {
+    private createPoint(): void {
         const _this = this,
-            total = 10000,
-            min = _this.trackR,
-            max = _this.trackR + _this.radius,
-            point = [],
-            color = [];
+            d = 300;
         
-        for (let i = 0; i < total; i++) {
-            const position = _this.getPosition(min, max);
-            point.push(position.x, 0, position.z);
-            color.push(255, 255, 255);
-        }
+        const pointB = _this.getPoint(_this.trackR, _this.trackR + _this.radius),
+            pointS = _this.getPoint(_this.trackR + d, _this.trackR + _this.radius - d);
         
-        const geometry = new THREE.BufferGeometry();
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(point, 3));
-        geometry.setAttribute('color', new THREE.Float32BufferAttribute(color, 3));
-        
-        const material = new THREE.PointsMaterial({
-            size: 1
-        });
-        
-        _this.pointB = new THREE.Points(geometry, material);
+        _this.pointB = new THREE.Points(pointB.geometry, pointB.material);
+        _this.pointS = new THREE.Points(pointS.geometry, pointS.material);
     }
     
     /**
-     * 创建宽星星带
-     * @return {void}
-     */
-    private createPointS(): void {
-        const _this = this,
-            total = 10000,
-            min = _this.trackR + 200,
-            max = _this.trackR + _this.radius - 200,
-            point = [],
-            color = [];
-        
-        for (let i = 0; i < total; i++) {
-            const position = _this.getPosition(min, max);
-            point.push(position.x, 0, position.z);
-            color.push(255, 255, 255);
-        }
-        
-        const geometry = new THREE.BufferGeometry();
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(point, 3));
-        geometry.setAttribute('color', new THREE.Float32BufferAttribute(color, 3));
-        
-        const material = new THREE.PointsMaterial({
-            size: 1,
-            sizeAttenuation: true
-        });
-        
-        _this.pointS = new THREE.Points(geometry, material);
-    }
-    
-    /**
-     * 获取环形坐标
+     * 获取位置
      * @param {number} min 最小半径
      * @param {number} max 最大半径
      * @return {object} 坐标
@@ -166,5 +124,40 @@ export default class Asteroid implements Component {
         if (d > max || d < min) return _this.getPosition(min, max);
         
         return position;
+    }
+    
+    /**
+     * 生成点
+     * @param {number} min 最小半径
+     * @param {number} max 最大半径
+     * @return {object} 点阵
+     */
+    private getPoint(min: number, max: number): object {
+        const _this = this,
+            total = 1000,
+            point = [],
+            size = [];
+        
+        for (let i = 0; i < total; i++) {
+            const position = _this.getPosition(min, max);
+            point.push(position.x, 0, position.z);
+            size.push(Global.Base.getRandomInt(5, 100));
+        }
+        
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(point, 3));
+        geometry.setAttribute('size', new THREE.Float32BufferAttribute(size, 1));
+        
+        const material = new THREE.PointsMaterial({
+            map: _this.texture,
+            size: 10,
+            sizeAttenuation: true,
+            transparent: true
+        });
+        
+        return {
+            geometry,
+            material
+        };
     }
 }

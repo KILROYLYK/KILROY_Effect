@@ -36,6 +36,7 @@ export default class Stage implements _Stage {
     private readonly resource: object = { // 资源
         path: {
             image_universe: 'image/Solar/universe.jpg',
+            image_asteroid: 'image/Solar/asteroid.png',
             image_sun: 'image/Solar/sun.jpg',
             image_sunGround: 'image/Solar/sun_ground.jpg',
             image_sunFire: 'image/Solar/sun_fire.png',
@@ -112,7 +113,7 @@ export default class Stage implements _Stage {
         
         _this.component.light = new Light(_this.scene);
         _this.component.panoramic = new Panoramic(_this.scene, resource.image_universe);
-        _this.component.asteroid = new Asteroid(_this.scene);
+        _this.component.asteroid = new Asteroid(_this.scene, resource.image_asteroid);
         
         _this.component.sun = new Sun(_this.scene, {
             sun: resource.image_sun,
@@ -196,7 +197,7 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-    
+        
         Global.Tween.update();
         
         _this.component.asteroid.update();
