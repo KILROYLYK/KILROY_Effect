@@ -12,8 +12,8 @@ export default class Moon implements Component {
     private group: THREE.Group = null; // 场景
     private texture: THREE.Texture = null; // 纹理
     
-    private readonly radius: number = 0.7; // 半径
-    private readonly trackR: number = 2.61 + 7; // 轨迹半径
+    private readonly radius: number = 7; // 半径
+    private readonly trackR: number = 26.1 + 70; // 轨迹半径
     private cycle: number = 0; // 周期
     private track: THREE.Mesh = null; // 轨道
     private planet: THREE.Mesh = null; // 星球

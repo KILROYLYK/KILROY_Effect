@@ -135,23 +135,20 @@ export default class Asteroid implements Component {
      */
     private getPoint(min: number, max: number): object {
         const _this = this,
-            total = 1000,
-            point = [],
-            size = [];
+            total = 5000,
+            point = [];
         
         for (let i = 0; i < total; i++) {
             const position = _this.getPosition(min, max);
             point.push(position.x, 0, position.z);
-            size.push(Global.Base.getRandomInt(5, 100));
         }
         
         const geometry = new THREE.BufferGeometry();
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(point, 3));
-        geometry.setAttribute('size', new THREE.Float32BufferAttribute(size, 1));
         
         const material = new THREE.PointsMaterial({
             map: _this.texture,
-            size: 10,
+            size: 5,
             sizeAttenuation: true,
             transparent: true
         });

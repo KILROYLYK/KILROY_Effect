@@ -33,8 +33,8 @@ import Loader from '../../controller/loader';
  */
 export default class Stage implements _Stage {
     public static readonly radiusM: number = 1; // 星球半径倍数
-    public static readonly trackM: number = 100; // 轨迹半径倍数
-    public static readonly trackIR: number = 10 * Stage.trackM; // 轨迹内圈半径
+    public static readonly trackM: number = 200; // 轨迹半径倍数
+    public static readonly trackIR: number = 5 * Stage.trackM; // 轨迹内圈半径
     
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
