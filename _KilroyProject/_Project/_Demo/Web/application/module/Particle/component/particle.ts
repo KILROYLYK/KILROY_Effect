@@ -159,7 +159,7 @@ export default class Particle implements Component {
         
         _this.clearCanvas();
         
-        _this.context.fillStyle = '#ffffff';
+        _this.context.fillStyle = '#222222';
         _this.context.font = `${ _this.size }px Times`;
         _this.context.fillText(
             text,

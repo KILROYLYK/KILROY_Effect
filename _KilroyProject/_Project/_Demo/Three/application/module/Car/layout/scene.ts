@@ -26,7 +26,7 @@ export default class Scene implements Layout {
      */
     private create(): void {
         const _this = this,
-            color = '#1b1e21';
+            color = '#222222';
         
         _this.instance = new THREE.Scene();
         _this.instance.background = new THREE.Color(color);
