@@ -27,8 +27,8 @@ export default class Stage implements _Stage {
     };
     private centerP: object = Global.Function.getDomCenter(); // 中心位置
     private readonly speed: number = 0.05; // 速度
-    private readonly width: number = 1200; // 宽度
-    private readonly height: number = 800; // 高度
+    private readonly width: number = 1500; // 宽度
+    private readonly height: number = 900; // 高度
     private app: PIXI.Application = null; // 应用
     private container: PIXI.Container = null; // 容器
     private filter: PIXI.filters.DisplacementFilter = null; // 过滤器
@@ -142,6 +142,9 @@ export default class Stage implements _Stage {
             Sine = Global.GSAP.Sine,
             x = (Global.mouseP.x - _this.centerP.x) * _this.speed,
             y = (Global.mouseP.y - _this.centerP.y) * _this.speed;
+        
+        if (Global.mouseP.x === e.clientX &&
+            Global.mouseP.y === e.clientY) return;
         
         TweenMax
             .to(Global.mouseP, 2, {
