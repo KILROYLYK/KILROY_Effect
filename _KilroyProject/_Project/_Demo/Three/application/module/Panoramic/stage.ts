@@ -14,17 +14,23 @@ import Look from '../../controller/look';
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: {
-            image_universe: 'image/Panoramic/universe.jpg',
-            cube_universe: [
-                'image/Panoramic/px.jpg',
-                'image/Panoramic/nx.jpg',
-                'image/Panoramic/py.jpg',
-                'image/Panoramic/ny.jpg',
-                'image/Panoramic/pz.jpg',
-                'image/Panoramic/nz.jpg'
-            ]
-        } as object,
+        path: [
+            {
+                name: 'image_universe',
+                url: 'image/Panoramic/universe.jpg'
+            },
+            {
+                name: 'cube_universe',
+                url: [
+                    'image/Panoramic/px.jpg',
+                    'image/Panoramic/nx.jpg',
+                    'image/Panoramic/py.jpg',
+                    'image/Panoramic/ny.jpg',
+                    'image/Panoramic/pz.jpg',
+                    'image/Panoramic/nz.jpg'
+                ]
+            },
+        ],
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器

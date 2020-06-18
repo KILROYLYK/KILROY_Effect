@@ -13,10 +13,16 @@ import Loader from '../../controller/loader';
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: {
-            font_text: '/font/Text/bold.json'
-            // font_text: '/font/Text/regular.json'
-        } as object,
+        path: [
+            {
+                name: 'font_text',
+                url: 'font/Text/bold.json'
+            }
+            // {
+            //     name: 'font_text',
+            //     url: 'font/Text/regular.json'
+            // }
+        ],
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器
@@ -114,7 +120,7 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-    
+        
         _this.component.text.update();
         
         _this.camera.update(isResize);

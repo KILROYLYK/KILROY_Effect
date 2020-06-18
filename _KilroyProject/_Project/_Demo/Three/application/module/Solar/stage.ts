@@ -38,24 +38,72 @@ export default class Stage implements _Stage {
     
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: {
-            image_universe: 'image/Solar/universe.jpg',
-            image_asteroid: 'image/Solar/asteroid.png',
-            image_sun: 'image/Solar/sun.jpg',
-            image_sunGround: 'image/Solar/sun_ground.jpg',
-            image_sunFire: 'image/Solar/sun_fire.png',
-            image_mercury: 'image/Solar/mercury.jpg',
-            image_venus: 'image/Solar/venus.jpg',
-            image_earth: 'image/Solar/earth.jpg',
-            image_earthSky: 'image/Solar/earth_sky.jpg',
-            image_moon: 'image/Solar/moon.jpg',
-            image_mars: 'image/Solar/mars.jpg',
-            image_jupiter: 'image/Solar/jupiter.jpg',
-            image_saturn: 'image/Solar/saturn.jpg',
-            image_saturnRing: 'image/Solar/saturn_ring.png',
-            image_uranus: 'image/Solar/uranus.jpg',
-            image_neptune: 'image/Solar/neptune.jpg'
-        } as object,
+        path: [
+            {
+                name: 'image_universe',
+                url: 'image/Solar/universe.jpg'
+            },
+            {
+                name: 'image_asteroid',
+                url: 'image/Solar/asteroid.png'
+            },
+            {
+                name: 'image_sun',
+                url: 'image/Solar/sun.jpg'
+            },
+            {
+                name: 'image_sunGround',
+                url: 'image/Solar/sun_ground.jpg'
+            },
+            {
+                name: 'image_sunFire',
+                url: 'image/Solar/sun_fire.png'
+            },
+            {
+                name: 'image_mercury',
+                url: 'image/Solar/mercury.jpg'
+            },
+            {
+                name: 'image_venus',
+                url: 'image/Solar/venus.jpg'
+            },
+            {
+                name: 'image_earth',
+                url: 'image/Solar/earth.jpg'
+            },
+            {
+                name: 'image_earthSky',
+                url: 'image/Solar/earth_sky.jpg'
+            },
+            {
+                name: 'image_moon',
+                url: 'image/Solar/moon.jpg'
+            },
+            {
+                name: 'image_mars',
+                url: 'image/Solar/mars.jpg'
+            },
+            {
+                name: 'image_jupiter',
+                url: 'image/Solar/jupiter.jpg'
+            },
+            {
+                name: 'image_saturn',
+                url: 'image/Solar/saturn.jpg'
+            },
+            {
+                name: 'image_saturnRing',
+                url: 'image/Solar/saturn_ring.png'
+            },
+            {
+                name: 'image_uranus',
+                url: 'image/Solar/uranus.jpg'
+            },
+            {
+                name: 'image_neptune',
+                url: 'image/Solar/neptune.jpg'
+            }
+        ],
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器
