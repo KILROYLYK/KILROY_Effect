@@ -82,7 +82,7 @@ export default class Loader implements Controller {
      */
     private load(): void {
         const _this = this,
-            length = Object.keys(_this.path);
+            length = _this.path.length;
         
         _this.loader
             .add(_this.path)

@@ -1,6 +1,6 @@
 import './style';
 
-import { W, D, Base, Tween } from '../../../../_Base/typescript/window';
+import { W, D, Base, GSAP, Tween } from '../../../../_Base/typescript/window';
 
 import GlobalConfig from './config'; // 配置
 import GlobalFunction from './function'; // 函数
@@ -20,6 +20,7 @@ export default class Global {
     
     public static readonly Base: any = Base;
     
+    public static readonly GSAP: any = GSAP;
     public static readonly Tween: any = Tween;
     
     public static readonly Dom: HTMLElement = GlobalFunction.getDom();
