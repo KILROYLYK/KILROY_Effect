@@ -16,21 +16,39 @@ import Loader from '../../controller/loader';
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: {
-            cube_bg: [
-                'image/Car/px.jpg',
-                'image/Car/nx.jpg',
-                'image/Car/py.jpg',
-                'image/Car/ny.jpg',
-                'image/Car/pz.jpg',
-                'image/Car/nz.jpg'
-            ],
-            json_car: 'json/Car/car.json',
-            json_wheel_l1: 'json/Car/wheel.json',
-            json_wheel_l2: 'json/Car/wheel.json',
-            json_wheel_r1: 'json/Car/wheel.json',
-            json_wheel_r2: 'json/Car/wheel.json'
-        } as object,
+        path: [
+            {
+                name: 'cube_bg',
+                url: [
+                    'image/Car/px.jpg',
+                    'image/Car/nx.jpg',
+                    'image/Car/py.jpg',
+                    'image/Car/ny.jpg',
+                    'image/Car/pz.jpg',
+                    'image/Car/nz.jpg'
+                ]
+            },
+            {
+                name: 'json_car',
+                url: 'json/Car/car.json'
+            },
+            {
+                name: 'json_wheel_l1',
+                url: 'json/Car/wheel.json'
+            },
+            {
+                name: 'json_wheel_l2',
+                url: 'json/Car/wheel.json'
+            },
+            {
+                name: 'json_wheel_r1',
+                url: 'json/Car/wheel.json'
+            },
+            {
+                name: 'json_wheel_r2',
+                url: 'json/Car/wheel.json'
+            }
+        ],
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器

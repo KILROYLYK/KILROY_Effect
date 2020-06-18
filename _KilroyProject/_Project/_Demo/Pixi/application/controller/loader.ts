@@ -4,10 +4,16 @@ import Controller from '../interface/controller';
 import * as PIXI from 'pixi.js';
 import 'pixi-sound';
 
-interface LoadConfig {
-    list: string[],
-    loadingCallback?: Function,
-    finishCallback?: Function
+interface LoadConfig { // 加载配置
+    loadedCallback?: Function // 加载完成（单个资源）
+    finishCallback?: Function // 加载完成（全部资源）
+}
+
+interface PathConfig { // 地址配置
+    name: string
+    url: string
+    onComplete?: Function
+    crossOrigin?: boolean
 }
 
 /**
@@ -15,7 +21,7 @@ interface LoadConfig {
  */
 export default class Loader implements Controller {
     private loader: object = null; // 加载器对象
-    private list: string[] = []; // 资源列表
+    private path: PathConfig[] = []; // 资源地址
     private data: object = {}; // 资源对象
     private finish: number = 0; // 完成总数
     private loadedCallback: Function = null; // 加载完成（单个资源）
@@ -24,13 +30,14 @@ export default class Loader implements Controller {
     /**
      * 原型对象
      * @constructor Loader
+     * @param {PathConfig[]} path 资源列表
      * @param {object} config 配置
      */
-    constructor(config: LoadConfig = { list: [] }) {
+    constructor(path: PathConfig[] = [], config: LoadConfig = {}) {
         const _this = this;
         
-        _this.list = config.list || [];
-        _this.loadingCallback = config.loadingCallback || null;
+        _this.path = path;
+        _this.loadedCallback = config.loadedCallback || null;
         _this.finishCallback = config.finishCallback || null;
         
         _this.create();
@@ -65,7 +72,7 @@ export default class Loader implements Controller {
         const _this = this;
         
         _this.loader = null;
-        _this.list = [];
+        _this.path = [];
         _this.data = {};
     }
     
@@ -74,16 +81,16 @@ export default class Loader implements Controller {
      * @return {void}
      */
     private load(): void {
-        const _this = this;
+        const _this = this,
+            length = Object.keys(_this.path);
         
         _this.loader
-            .add(_this.list)
+            .add(_this.path)
             .on('progress', () => {
                 _this.finish++;
                 _this.loadedCallback && _this.loadedCallback(
-                    _this.finish,
-                    _this.list.length,
-                    parseInt(String(_this.finish / _this.list.length * 100), 10)
+                    _this.finish, length,
+                    parseInt(String(_this.finish / length * 100), 10)
                 );
             })
             .load((load, res) => {

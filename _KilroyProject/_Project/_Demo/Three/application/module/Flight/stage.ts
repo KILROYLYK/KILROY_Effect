@@ -19,12 +19,24 @@ import '../../../static/css/Flight/index.less';
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: {
-            image_star: 'image/Flight/star.png',
-            image_mountain: 'image/Flight/mountain.jpg',
-            image_engine: 'image/Flight/engine.jpg',
-            obj_spaceship: 'model/Flight/ship_03.obj'
-        } as object,
+        path: [
+            {
+                name: 'image_star',
+                url: 'image/Flight/star.png'
+            },
+            {
+                name: 'image_mountain',
+                url: 'image/Flight/mountain.jpg'
+            },
+            {
+                name: 'image_engine',
+                url: 'image/Flight/engine.jpg'
+            },
+            {
+                name: 'obj_spaceship',
+                url: 'model/Flight/ship_03.obj'
+            }
+        ],
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器

@@ -2,7 +2,6 @@ import Global from '../../../constant/global';
 import Component from '../../../interface/component';
 
 import * as THREE from 'three';
-import { speed } from "animejs";
 
 interface Texture { // 纹理
     bg: THREE.CubeTexture // 背景

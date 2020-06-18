@@ -106,12 +106,12 @@ export default class Camera implements Layout {
         
         const tween = new Global.Tween.Tween(_this.instance.position)
             .easing(Global.Tween.Easing.Cubic.InOut)
+            .delay(5000)
             .to({
                 x: 0,
                 y: 500,
                 z: 5000
             }, 3000)
-            .delay(5000)
             .onComplete(() => {
                 tween.stop();
                 _this.openRotate();

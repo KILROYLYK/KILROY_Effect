@@ -7,9 +7,15 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
-interface LoadConfig { // 控制器配置
+interface LoadConfig { // 加载配置
     loadedCallback?: Function // 加载完成（单个资源）
     finishCallback?: Function // 加载完成（全部资源）
+}
+
+interface PathConfig { // 地址配置
+    name: string
+    url: string | string[]
+    onComplete?: Function
 }
 
 /**
@@ -27,8 +33,9 @@ export default class Loader implements Controller {
         mtl: null as MTLLoader,
         fbx: null as FBXLoader
     };
-    private path: object = {}; // 资源列表
+    private path: PathConfig[] = []; // 资源地址
     private data: object = {}; // 资源对象
+    private total: number = 0; // 资源总数
     private finish: number = 0; // 完成总数
     private loadedCallback: Function = null; // 加载完成（单个资源）
     private finishCallback: Function = null; // 加载完成（全部资源）
@@ -36,13 +43,14 @@ export default class Loader implements Controller {
     /**
      * 构造函数
      * @constructor Loader
-     * @param {object} path 资源列表
+     * @param {PathConfig[]} path 资源列表
      * @param {object} config 配置
      */
-    constructor(path: object = {}, config: LoadConfig = {}) {
+    constructor(path: PathConfig[], config: LoadConfig = {}) {
         const _this = this;
         
         _this.path = path;
+        _this.total = _this.path.length;
         _this.loadedCallback = config.loadedCallback || null;
         _this.finishCallback = config.finishCallback || null;
         
@@ -66,10 +74,13 @@ export default class Loader implements Controller {
         const _this = this,
             promiseList = [];
         
-        for (const key in _this.path) {
-            if (_this.path[key] === '') return Promise.resolve();
-            await _this.load(key, _this.path[key]);
-        }
+        _this.path.forEach((v, i, a) => {
+            promiseList.push(
+                v.url
+                    ? _this.load(v)
+                    : Promise.resolve()
+            );
+        });
         
         await Promise.all(promiseList);
         
@@ -89,13 +100,14 @@ export default class Loader implements Controller {
     
     /**
      * 加载
-     * @param {string} name 名称
-     * @param {string} path 地址
+     * @param {PathConfig} path 地址
      * @return {void}
      */
-    private async load(name: string, path: string): Promise<any> {
+    private async load(path: PathConfig): Promise<any> {
         const _this = this,
-            length = Object.keys(_this.path);
+            name = path.name,
+            url = path.url,
+            onComplete = path.onComplete;
         
         let loader = null,
             type = '';
@@ -150,13 +162,14 @@ export default class Loader implements Controller {
         if (type === '') return Promise.resolve();
         
         return new Promise((resolve, reject) => {
-            loader.load(path,
+            loader.load(url,
                 (object: any) => { // 加载完成
-                    _this.finish++;
                     _this.data[name] = object;
+                    _this.finish++;
+                    onComplete && onComplete();
                     _this.loadedCallback && _this.loadedCallback(
-                        _this.finish, length,
-                        parseInt(String(_this.finish / length * 100), 10)
+                        _this.finish, _this.total,
+                        parseInt(String(_this.finish / _this.total * 100), 10)
                     );
                     resolve();
                 },
