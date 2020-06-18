@@ -1,9 +1,7 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 
-import Renderer from './layout/renderer';
-import Scene from './layout/scene';
-import Camera from './layout/camera';
+import * as PIXI from 'pixi.js';
 
 import Loader from '../../controller/loader';
 
@@ -16,9 +14,8 @@ export default class Stage implements _Stage {
         path: [],
         data: null as object // 数据
     };
-    private renderer: Renderer = null; // 渲染器
-    private scene: Scene = null; // 场景
-    private camera: Camera = null; // 相机
+    private app: PIXI.Application = null; // 应用
+    private container: PIXI.Container = null; // 容器
     private component: object = { // 组件
     };
     private controller: object = { // 控制器
@@ -55,10 +52,12 @@ export default class Stage implements _Stage {
     private create(): void {
         const _this = this,
             resource = _this.resource.data;
-       
-        _this.renderer = new Renderer();
-        _this.scene = new Scene();
-        _this.camera = new Camera();
+        
+        _this.app = new PIXI.Application({
+            transparent: true
+        });
+        
+        _this.container = new PIXI.Container();
     }
     
     /**
@@ -70,14 +69,10 @@ export default class Stage implements _Stage {
         
         _this.isInit = true;
         
-        Global.Dom.appendChild(_this.renderer.instance.domElement);
-        Global.Function.updateFrame(() => {
-            _this.update();
-        });
-        Global.Function.updateResize(() => {
-            Global.Function.resizeDom();
-            _this.update(true);
-        });
+        _this.app.stage.addChild(_this.container);
+        
+        
+        Global.Dom.appendChild(_this.app.view);
     }
     
     /**
@@ -90,11 +85,6 @@ export default class Stage implements _Stage {
         if (!_this.isInit) return;
         _this.isInit = false;
         
-        _this.controller.loader.destroy();
-        
-        _this.camera.destroy();
-        _this.scene.destroy();
-        _this.renderer.destroy();
     }
     
     /**
@@ -106,14 +96,5 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-        
-        _this.camera.update(isResize);
-        _this.renderer.update(isResize);
-        
-        _this.renderer.instance.clear();
-        _this.renderer.instance.render(
-            _this.scene.instance,
-            _this.camera.instance
-        );
     }
 }
