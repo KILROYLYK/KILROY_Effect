@@ -15,7 +15,10 @@ export default class Spaceship implements Component {
     private readonly name: string = 'Spaceship-飞船';
     
     private scene: THREE.Scene = null; // 场景
-    private texture: Texture = null; // 纹理
+    private texture: Texture = { // 纹理
+        spaceship: null, // 飞船
+        engine: null // 引擎
+    };
     
     private light: THREE.PointLight = null; // 灯光
     private spaceship: THREE.Object3D = null; // 飞船
@@ -45,7 +48,6 @@ export default class Spaceship implements Component {
         
         _this.scene = scene.instance;
         _this.texture = texture;
-        _this.spaceship = texture.spaceship;
         
         _this.create();
         _this.init();
@@ -79,7 +81,6 @@ export default class Spaceship implements Component {
         _this.instance.add(_this.spaceship);
         _this.instance.add(_this.fire);
         _this.scene.add(_this.instance);
-        
         
         Global.W.addEventListener('wheel', (e: WheelEvent) => {
             const z = _this.moveP.z;
@@ -163,20 +164,10 @@ export default class Spaceship implements Component {
      */
     private createSpaceship(): void {
         const _this = this;
-        
-        const material = new THREE.MeshPhongMaterial({
-            color: '#ffffff',
-            blending: THREE.NoBlending,
-            side: THREE.FrontSide,
-            transparent: true,
-            depthTest: true
-        });
-        
+    
+        _this.spaceship = _this.texture.spaceship;
         _this.spaceship.position.set(0, 0, 250);
         _this.spaceship.rotation.set(0, Math.PI, 0);
-        _this.spaceship.traverse((child) => {
-            child instanceof THREE.Mesh && (child.material = material);
-        });
     }
     
     /**
@@ -184,16 +175,17 @@ export default class Spaceship implements Component {
      * @return {void}
      */
     private createEngine(): void {
-        const _this = this;
-        
-        _this.texture.wrapT
-            = _this.texture.wrapS
+        const _this = this,
+            engine = _this.texture.engine;
+    
+        engine.wrapT
+            = engine.wrapS
             = THREE.RepeatWrapping;
         
         const material = new THREE.MeshBasicMaterial({
             color: '#0099ff',
             opacity: 1,
-            alphaMap: _this.texture.engine,
+            alphaMap: engine,
             blending: THREE.AdditiveBlending,
             side: THREE.FrontSide,
             transparent: true,
