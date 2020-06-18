@@ -55,7 +55,7 @@ export default class Stage implements _Stage {
     private create(): void {
         const _this = this,
             resource = _this.resource.data;
-        
+       
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
