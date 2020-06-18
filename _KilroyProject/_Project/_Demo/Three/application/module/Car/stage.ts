@@ -164,6 +164,7 @@ export default class Stage implements _Stage {
         
         if (!_this.isInit) return;
         
+        _this.component.light.update();
         _this.component.wave.update();
         _this.component.car.update();
         

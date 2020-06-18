@@ -39,7 +39,9 @@ export default class Ground implements Component {
         );
         
         const material = new THREE.MeshLambertMaterial({
-            color: '#d7cbb1'
+            color: '#111111',
+            transparent: true,
+            opacity: 0.3
         });
         
         _this.instance = new THREE.Mesh(geometry, material);
