@@ -84,6 +84,12 @@ export default class Loader implements Controller {
         const _this = this,
             length = _this.path.length;
         
+        if (length === 0) {
+            _this.loadedCallback && _this.loadedCallback(0, 0, 100);
+            _this.finishCallback && _this.finishCallback(_this.data);
+            return;
+        }
+        
         _this.loader
             .add(_this.path)
             .on('progress', () => {
