@@ -51,6 +51,7 @@ export default class Ground implements Component {
         _this.instance = new THREE.Mesh(geometry, material);
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
+        _this.instance.castShadow = false;
         _this.instance.receiveShadow = false;
     }
     

@@ -26,13 +26,12 @@ export default class Scene implements Layout {
      */
     private create(): void {
         const _this = this,
-            // color = '#f7d9aa';
-            color = '#ffffff';
+            color = '#f7d9aa';
         
         _this.instance = new THREE.Scene();
         _this.instance.background = new THREE.Color(color);
-        // _this.instance.fog = new THREE.FogExp2(color, 0.0003);
-        _this.instance.fog = new THREE.FogExp2(color, 0.0000001);
+        _this.instance.fog = new THREE.FogExp2(color, 0.001);
+        // _this.instance.fog = new THREE.FogExp2(color, 0.0000001);
     }
     
     /**
@@ -52,4 +51,8 @@ export default class Scene implements Layout {
         
         if (!_this.instance) return;
     }
+    
+    /**
+     * 切换
+     */
 }

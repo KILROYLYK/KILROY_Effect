@@ -42,7 +42,7 @@ export default class Sun implements Component {
         
         _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, 200, -500);
+        _this.instance.position.set(0, 0, -1000);
         
         _this.createSun();
         _this.createMoon();
@@ -78,8 +78,6 @@ export default class Sun implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.instance.rotateZ(0.001);
     }
     
     /**
@@ -90,26 +88,17 @@ export default class Sun implements Component {
         const _this = this;
         
         const geometry = new THREE.SphereGeometry(
-            50, 20, 10
+            500, 20, 10
         );
         
         const material = new THREE.MeshPhongMaterial({
             color: '#edeb27',
-            shading: THREE.FlatShading,
+            shading: THREE.FlatShading
         });
-        
-        const light = new THREE.PointLight('#ffffff', 1);
-        light.position.set(0, -10, 60);
-        light.castShadow = true;
-        light.shadow.camera.near = 1;
-        light.shadow.camera.far = 1000;
-        light.shadow.mapSize.width = _this.shadowS;
-        light.shadow.mapSize.height = _this.shadowS;
         
         _this.sun = new THREE.Mesh(geometry, material);
         _this.sun.name = _this.name;
-        _this.sun.position.set(0, _this.trackR, 0);
-        _this.sun.add(light);
+        _this.sun.position.set(0, -100, 0);
     }
     
     /**
@@ -120,16 +109,16 @@ export default class Sun implements Component {
         const _this = this;
         
         const geometry = new THREE.SphereGeometry(
-            40, 20, 10
+            400, 20, 10
         );
         
         const material = new THREE.MeshPhongMaterial({
             color: '#ffffff',
-            shading: THREE.FlatShading,
+            shading: THREE.FlatShading
         });
         
         _this.moon = new THREE.Mesh(geometry, material);
         _this.moon.name = _this.name;
-        _this.moon.position.set(0, -_this.trackR, 0);
+        _this.moon.position.set(0, -100, 0);
     }
 }

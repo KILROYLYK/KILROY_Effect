@@ -52,7 +52,7 @@ export default class Light implements Component {
         const _this = this;
         
         _this.instance.add(_this.lightAmbient);
-        // _this.instance.add(_this.lightDirectional);
+        _this.instance.add(_this.lightDirectional);
         _this.scene.add(_this.instance);
     }
     
@@ -89,7 +89,7 @@ export default class Light implements Component {
         _this.lightAmbient.position.set(0, 0, 0);
         
         _this.lightDirectional = new THREE.DirectionalLight('#ffffff', 1);
-        _this.lightDirectional.position.set(0, 1, -1);
+        _this.lightDirectional.position.set(0, 1, 1);
         _this.lightDirectional.castShadow = true;
         _this.lightDirectional.shadow.camera.top = distance;
         _this.lightDirectional.shadow.camera.left = -distance;
