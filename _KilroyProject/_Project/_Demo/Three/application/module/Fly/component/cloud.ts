@@ -12,7 +12,11 @@ export default class Cloud implements Component {
     private scene: THREE.Scene = null; // 场景
     
     private readonly radius: number = 1000; // 半径
-    private cloud: THREE.Mesh[] = []; // 云
+    private cloud: {
+        cycle: number,
+        trackR: number,
+        mesh: THREE.Mesh
+    }[] = []; // 云
     private geometry: THREE.DodecahedronGeometry = null; // 几何
     private material: THREE.MeshPhongMaterial = null; // 纹理
     
@@ -74,29 +78,48 @@ export default class Cloud implements Component {
      * @return {void}
      */
     public update(): void {
-        const _this = this;
+        const _this = this,
+            cycleS = 0.002; // 周期速度
         
-        if (Math.random() > 0.9) {
-            if (_this.cloud.length > 10) return;
-            _this.createCloud();
-        }
+        if (Math.random() > 0.98) _this.createCloud();
+        
+        _this.cloud = _this.cloud.filter((v, i, a) => {
+            v.cycle += cycleS;
+            v.mesh.position.x = Math.cos(v.cycle) * v.trackR;
+            v.mesh.position.y = Math.sin(v.cycle) * v.trackR;
+            v.mesh.rotateZ(-cycleS);
+            if (v.cycle > Math.PI) {
+                _this.instance.remove(v.mesh);
+                return false;
+            }
+            return true;
+        });
     }
     
     /**
      * 创建云朵
-     * @return {THREE.Mesh} 云朵
+     * @return {void}
      */
-    private createCloud(): THREE.Mesh {
+    private createCloud(): void {
         const _this = this,
-            y = Global.Base.getRandomInt(550, 600);
+            n = Global.Base.getRandomInt(1, 4),
+            y = Global.Base.getRandomInt(600, 700),
+            z = Global.Base.getRandomInt(-350, 350);
         
-        const cloud = new THREE.Mesh(_this.geometry, _this.material);
-        cloud.name = y;
-        cloud.position.set(0, y, Global.Base.getRandomInt(-400, 400));
-        cloud.scale.setScalar(Global.Base.getRandomInt(2, 9) / 10);
-        _this.cloud.push(cloud);
-        _this.instance.add(cloud);
-        
-        return cloud;
+        for (let i = 0; i < n; i++) {
+            const cloud = new THREE.Mesh(_this.geometry, _this.material);
+            cloud.position.set(0, y, z);
+            cloud.rotation.x = Math.random() * Math.PI * 2;
+            cloud.rotation.y = Math.random() * Math.PI * 2;
+            cloud.rotation.z = Math.random() * Math.PI * 2;
+            cloud.scale.setScalar(Global.Base.getRandomInt(1, 9) / 10);
+            cloud.castShadow = true;
+            _this.cloud.push({
+                cycle: i * 0.03,
+                trackR: y,
+                mesh: cloud
+            });
+            _this.instance.add(cloud);
+        }
     }
 }
