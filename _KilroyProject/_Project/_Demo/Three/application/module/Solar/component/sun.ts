@@ -74,7 +74,7 @@ export default class Sun implements Component {
         
         _this.instance.add(_this.light);
         _this.instance.add(_this.sphere);
-        _this.instance.add(_this.halo);
+        // _this.instance.add(_this.halo);
         _this.scene.add(_this.instance);
     }
     
@@ -108,13 +108,16 @@ export default class Sun implements Component {
      * @return {void}
      */
     private createLight(): void {
-        const _this = this;
+        const _this = this,
+            size = 2048;
         
         _this.light = new THREE.PointLight('#ffffff', 1.5);
         _this.light.position.set(0, 0, 0);
         _this.light.castShadow = true;
         _this.light.shadow.camera.near = 1;
         _this.light.shadow.camera.far = 17000;
+        _this.light.shadow.mapSize.width = size;
+        _this.light.shadow.mapSize.height = size;
     }
     
     /**

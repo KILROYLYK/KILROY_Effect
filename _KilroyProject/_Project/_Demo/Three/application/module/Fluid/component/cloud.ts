@@ -11,7 +11,7 @@ export default class Cloud implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
-    private readonly radio: number = 1000; // 运动半径
+    private readonly radius: number = 1000; // 半径
     private cloud: THREE.Mesh[] = []; // 云
     private geometry: THREE.DodecahedronGeometry = null; // 几何
     private material: THREE.MeshPhongMaterial = null; // 纹理

@@ -11,6 +11,8 @@ export default class Ground implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
+    private readonly radius: number = 500; // 半径
+    
     public instance: THREE.Mesh = null; // 实例
     
     /**
@@ -36,7 +38,7 @@ export default class Ground implements Component {
             matrix = new THREE.Matrix4();
         
         const geometry = new THREE.CylinderGeometry(
-            600, 600, 1000,
+            _this.radius, _this.radius, 1000,
             40, 10
         );
         geometry.applyMatrix4(matrix.makeRotationX(-Math.PI / 2));
@@ -78,7 +80,7 @@ export default class Ground implements Component {
      */
     public update(): void {
         const _this = this;
-    
+        
         if (!_this.instance) return;
         
         _this.instance.rotateZ(0.005);

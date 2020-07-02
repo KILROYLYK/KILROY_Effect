@@ -2,6 +2,7 @@ import Global from '../../../constant/global';
 import Component from '../../../interface/component';
 
 import * as THREE from 'three';
+import Stage from "../../Solar/stage";
 
 /**
  * 太阳
@@ -11,7 +12,11 @@ export default class Sun implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
-    public instance: THREE.Mesh = null; // 实例
+    private readonly trackR: number = 800; // 轨迹半径
+    private sun: THREE.Mesh = null; // 太阳
+    private moon: THREE.Mesh = null; // 月亮
+    
+    public instance: THREE.Group = null; // 实例
     
     /**
      * 构造函数
@@ -34,20 +39,12 @@ export default class Sun implements Component {
     private create(): void {
         const _this = this;
         
-        const geometry = new THREE.SphereGeometry(
-            400, 20, 10
-        );
-        
-        const material = new THREE.MeshPhongMaterial({
-            color: '#edeb27',
-            shading: THREE.FlatShading,
-        });
-        
-        _this.instance = new THREE.Mesh(geometry, material);
+        _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, 0, -1000);
-        _this.instance.castShadow = false;
-        _this.instance.receiveShadow = false;
+        _this.instance.position.set(0, 200, -500);
+        
+        _this.createSun();
+        _this.createMoon();
     }
     
     /**
@@ -56,7 +53,9 @@ export default class Sun implements Component {
      */
     private init(): void {
         const _this = this;
-
+        
+        _this.instance.add(_this.sun);
+        _this.instance.add(_this.moon);
         _this.scene.add(_this.instance);
     }
     
@@ -76,5 +75,51 @@ export default class Sun implements Component {
      */
     public update(): void {
         const _this = this;
+        
+        if (!_this.instance) return;
+        
+        _this.instance.rotateZ(0.001);
+    }
+    
+    /**
+     * 创建太阳
+     * @return {void}
+     */
+    private createSun(): void {
+        const _this = this;
+        
+        const geometry = new THREE.SphereGeometry(
+            50, 20, 10
+        );
+        
+        const material = new THREE.MeshPhongMaterial({
+            color: '#edeb27',
+            shading: THREE.FlatShading,
+        });
+        
+        _this.sun = new THREE.Mesh(geometry, material);
+        _this.sun.name = _this.name;
+        _this.sun.position.set(0, _this.trackR, 0);
+    }
+    
+    /**
+     * 创建月亮
+     * @return {void}
+     */
+    private createMoon(): void {
+        const _this = this;
+        
+        const geometry = new THREE.SphereGeometry(
+            40, 20, 10
+        );
+        
+        const material = new THREE.MeshPhongMaterial({
+            color: '#ffffff',
+            shading: THREE.FlatShading,
+        });
+        
+        _this.moon = new THREE.Mesh(geometry, material);
+        _this.moon.name = _this.name;
+        _this.moon.position.set(0, -_this.trackR, 0);
     }
 }

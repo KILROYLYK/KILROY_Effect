@@ -98,6 +98,7 @@ export default class Light implements Component {
         const _this = this,
             color = '#ffffff',
             distance = 500,
+            size = 2048,
             lightH = 40,
             lightD = 120;
         
@@ -112,6 +113,8 @@ export default class Light implements Component {
         _this.lightDirectional.shadow.camera.right = distance;
         _this.lightDirectional.shadow.camera.bottom = -distance;
         _this.lightDirectional.shadow.camera.far = 2000;
+        _this.lightDirectional.shadow.mapSize.width = size;
+        _this.lightDirectional.shadow.mapSize.height = size;
         
         _this.lightArea1 = new THREE.Group();
         _this.lightArea1.position.set(lightD, lightH, 0);

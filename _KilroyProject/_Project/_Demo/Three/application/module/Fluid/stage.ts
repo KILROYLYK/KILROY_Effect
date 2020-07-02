@@ -100,6 +100,7 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+        _this.isInit = false;
     }
     
     /**
@@ -111,7 +112,7 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-    
+        
         _this.component.weather.update();
         _this.component.ground.update();
         // _this.component.cloud.update();

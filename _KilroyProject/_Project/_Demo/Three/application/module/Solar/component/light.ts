@@ -79,9 +79,9 @@ export default class Light implements Component {
      * @return {void}
      */
     private createLight(): void {
-        const _this = this,
-            color = '#ffffff';
+        const _this = this;
         
-        _this.lightAmbient = new THREE.AmbientLight(color, 0.1);
+        _this.lightAmbient = new THREE.AmbientLight('#ffffff', 0.1);
+        _this.lightAmbient.position.set(0, 0, 0);
     }
 }
