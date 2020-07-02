@@ -52,7 +52,7 @@ export default class Light implements Component {
         const _this = this;
         
         _this.instance.add(_this.lightAmbient);
-        _this.instance.add(_this.lightDirectional);
+        // _this.instance.add(_this.lightDirectional);
         _this.scene.add(_this.instance);
     }
     
@@ -85,7 +85,7 @@ export default class Light implements Component {
             distance = 650,
             size = 1024;
     
-        _this.lightAmbient = new THREE.AmbientLight('#ffffff', 0.1);
+        _this.lightAmbient = new THREE.AmbientLight('#ffffff', 0.2);
         _this.lightAmbient.position.set(0, 0, 0);
         
         _this.lightDirectional = new THREE.DirectionalLight('#ffffff', 1);

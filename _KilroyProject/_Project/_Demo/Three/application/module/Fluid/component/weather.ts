@@ -13,6 +13,7 @@ export default class Sun implements Component {
     private scene: THREE.Scene = null; // 场景
     
     private readonly trackR: number = 800; // 轨迹半径
+    private readonly shadowS: number = 2048; // 阴影大小
     private sun: THREE.Mesh = null; // 太阳
     private moon: THREE.Mesh = null; // 月亮
     
@@ -97,9 +98,18 @@ export default class Sun implements Component {
             shading: THREE.FlatShading,
         });
         
+        const light = new THREE.PointLight('#ffffff', 1);
+        light.position.set(0, -10, 60);
+        light.castShadow = true;
+        light.shadow.camera.near = 1;
+        light.shadow.camera.far = 1000;
+        light.shadow.mapSize.width = _this.shadowS;
+        light.shadow.mapSize.height = _this.shadowS;
+        
         _this.sun = new THREE.Mesh(geometry, material);
         _this.sun.name = _this.name;
         _this.sun.position.set(0, _this.trackR, 0);
+        _this.sun.add(light);
     }
     
     /**

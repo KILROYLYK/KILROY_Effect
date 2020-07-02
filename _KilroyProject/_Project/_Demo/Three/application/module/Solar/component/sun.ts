@@ -164,7 +164,8 @@ export default class Sun implements Component {
         const material = new THREE.ShaderMaterial({
             uniforms: _this.uniform,
             vertexShader: SunVertex,
-            fragmentShader: SunFragment
+            fragmentShader: SunFragment,
+            roughness: 1
         });
         
         _this.sphere = new THREE.Mesh(geometry, material);
