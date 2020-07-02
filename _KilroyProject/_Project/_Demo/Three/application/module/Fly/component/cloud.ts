@@ -87,7 +87,7 @@ export default class Cloud implements Component {
             v.cycle += cycleS;
             v.mesh.position.x = Math.cos(v.cycle) * v.trackR;
             v.mesh.position.y = Math.sin(v.cycle) * v.trackR;
-            v.mesh.rotateZ(-cycleS);
+            v.mesh.rotateZ(cycleS);
             if (v.cycle > Math.PI) {
                 _this.instance.remove(v.mesh);
                 return false;
