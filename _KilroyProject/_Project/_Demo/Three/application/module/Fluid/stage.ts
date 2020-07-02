@@ -4,14 +4,11 @@ import _Stage from '../../interface/stage';
 import Renderer from './layout/renderer';
 import Scene from './layout/scene';
 import Camera from './layout/camera';
-import Mountain from './component/mountain';
+import Light from './component/light';
+import Weather from './component/weather';
 import Ground from './component/ground';
-import Star from './component/star';
-import Meteor from './component/meteor';
-import Spaceship from './component/spaceship';
+// import Cloud from './component/cloud';
 import Loader from '../../controller/loader';
-
-import '../../../static/css/Flight/index.less';
 
 /**
  * 场景
@@ -19,35 +16,17 @@ import '../../../static/css/Flight/index.less';
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
-        path: [
-            {
-                name: 'image_star',
-                url: 'image/Flight/star.png'
-            },
-            {
-                name: 'image_mountain',
-                url: 'image/Flight/mountain.jpg'
-            },
-            {
-                name: 'image_engine',
-                url: 'image/Flight/engine.jpg'
-            },
-            {
-                name: 'obj_spaceship',
-                url: 'model/Flight/ship_03.obj'
-            }
-        ],
+        path: [],
         data: null as object // 数据
     };
     private renderer: Renderer = null; // 渲染器
     private scene: Scene = null; // 场景
     private camera: Camera = null; // 相机
     private component: object = { // 组件
-        mountain: null as Mountain, // 山脉
-        ground: null as Ground, // 地形
-        star: null as Star, // 星星
-        meteor: null as Meteor, // 流星
-        spaceship: null as Spaceship // 飞船
+        light: null as Light, // 灯光
+        weather: null as Weather, // 太阳
+        // cloud: null as Cloud // 云
+        ground: null as Ground, // 地面
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -60,17 +39,20 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        _this.controller.loader = new Loader(_this.resource.path, {
-            loadedCallback(index, total, progress) {
-                // console.log(`加载进度：${ index } ${ total } ${ progress }`);
-            },
-            finishCallback(data) {
-                _this.resource.data = data;
-
-                _this.create();
-                _this.init();
+        _this.controller.loader = new Loader(
+            _this.resource.path,
+            {
+                loadedCallback(index, total, progress) {
+                    // console.log(`加载进度：${ index } ${ total } ${ progress }`);
+                },
+                finishCallback(data) {
+                    _this.resource.data = data;
+                    
+                    _this.create();
+                    _this.init();
+                }
             }
-        });
+        );
     }
     
     /**
@@ -85,14 +67,10 @@ export default class Stage implements _Stage {
         _this.scene = new Scene();
         _this.camera = new Camera();
         
-        _this.component.mountain = new Mountain(_this.scene, resource.image_mountain);
+        _this.component.light = new Light(_this.scene);
+        _this.component.weather = new Weather(_this.scene);
         _this.component.ground = new Ground(_this.scene);
-        _this.component.star = new Star(_this.scene, resource.image_star);
-        _this.component.meteor = new Meteor(_this.scene);
-        _this.component.spaceship = new Spaceship(_this.scene, {
-            engine: resource.image_engine,
-            spaceship: resource.obj_spaceship
-        });
+        // _this.component.cloud = new Cloud(_this.scene);
     }
     
     /**
@@ -105,8 +83,6 @@ export default class Stage implements _Stage {
         _this.isInit = true;
         
         Global.Dom.appendChild(_this.renderer.instance.domElement);
-        Global.Function.showCursor(false);
-        Global.Function.updateMouse();
         Global.Function.updateFrame(() => {
             _this.update();
         });
@@ -124,7 +100,6 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-        _this.isInit = false;
     }
     
     /**
@@ -136,12 +111,10 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
-        
-        _this.component.mountain.update();
+    
+        _this.component.weather.update();
         _this.component.ground.update();
-        _this.component.star.update();
-        _this.component.meteor.update();
-        _this.component.spaceship.update();
+        // _this.component.cloud.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);

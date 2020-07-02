@@ -87,13 +87,6 @@ export default class Saturn implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.track = null;
-        _this.planet = null;
-        _this.ring = null;
-        
-        _this.group = null;
-        _this.instance = null;
     }
     
     /**

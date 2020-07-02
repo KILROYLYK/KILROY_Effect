@@ -4,10 +4,10 @@ import Component from '../../../interface/component';
 import * as THREE from 'three';
 
 /**
- * 地面
+ * 太阳
  */
-export default class Ground implements Component {
-    private readonly name: string = 'Ground-地面';
+export default class Sun implements Component {
+    private readonly name: string = 'Sun-太阳';
     
     private scene: THREE.Scene = null; // 场景
     
@@ -15,7 +15,7 @@ export default class Ground implements Component {
     
     /**
      * 构造函数
-     * @constructor Ground
+     * @constructor Sun
      * @param {object} scene 场景
      */
     constructor(scene: object) {
@@ -34,23 +34,20 @@ export default class Ground implements Component {
     private create(): void {
         const _this = this;
         
-        const geometry = new THREE.RingGeometry(
-            0, 1000, 32
+        const geometry = new THREE.SphereGeometry(
+            400, 20, 10
         );
         
-        const material = new THREE.MeshLambertMaterial({
-            color: '#111111',
-            transparent: true,
-            opacity: 0.5
-            
+        const material = new THREE.MeshPhongMaterial({
+            color: '#edeb27',
+            shading: THREE.FlatShading,
         });
         
         _this.instance = new THREE.Mesh(geometry, material);
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, 0, 0);
-        _this.instance.rotation.set(-Math.PI / 2, 0, 0);
-        _this.instance.castShadow = true;
-        _this.instance.receiveShadow = true;
+        _this.instance.position.set(0, 0, -1000);
+        _this.instance.castShadow = false;
+        _this.instance.receiveShadow = false;
     }
     
     /**
@@ -59,7 +56,7 @@ export default class Ground implements Component {
      */
     private init(): void {
         const _this = this;
-        
+
         _this.scene.add(_this.instance);
     }
     
@@ -71,5 +68,13 @@ export default class Ground implements Component {
         const _this = this;
         
         if (!_this.instance) return;
+    }
+    
+    /**
+     * 更新
+     * @return {void}
+     */
+    public update(): void {
+        const _this = this;
     }
 }

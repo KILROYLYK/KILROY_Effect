@@ -76,8 +76,6 @@ export default class Light implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.instance = null;
     }
     
     /**
@@ -114,7 +112,6 @@ export default class Light implements Component {
         _this.lightDirectional.shadow.camera.right = distance;
         _this.lightDirectional.shadow.camera.bottom = -distance;
         _this.lightDirectional.shadow.camera.far = 2000;
-        _this.lightDirectional.shadow.bias = -0.0001;
         
         _this.lightArea1 = new THREE.Group();
         _this.lightArea1.position.set(lightD, lightH, 0);

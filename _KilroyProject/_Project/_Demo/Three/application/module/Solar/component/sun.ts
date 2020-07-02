@@ -86,12 +86,6 @@ export default class Sun implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.light = null;
-        _this.sphere = null;
-        _this.halo = null;
-        
-        _this.instance = null;
     }
     
     /**

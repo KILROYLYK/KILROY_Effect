@@ -78,11 +78,6 @@ export default class Car implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.texture = null;
-        _this.car = null;
-        _this.wheel = null;
-        _this.instance = null;
     }
     
     /**

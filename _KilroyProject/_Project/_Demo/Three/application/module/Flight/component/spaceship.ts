@@ -102,13 +102,6 @@ export default class Spaceship implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.texture = null;
-        _this.light = null;
-        _this.spaceship = null;
-        _this.fire = null;
-        _this.bullet = [];
-        _this.instance = null;
     }
     
     /**

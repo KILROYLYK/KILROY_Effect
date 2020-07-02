@@ -82,8 +82,6 @@ export default class Mountain implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.instance = null;
     }
     
     /**

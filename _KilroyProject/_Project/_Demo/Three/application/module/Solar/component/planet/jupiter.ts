@@ -73,11 +73,6 @@ export default class Jupiter implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.track = null;
-        _this.planet = null;
-        
-        _this.instance = null;
     }
     
     /**

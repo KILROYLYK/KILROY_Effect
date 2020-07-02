@@ -71,9 +71,6 @@ export default class Meteor implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.star = [];
-        _this.instance = null;
     }
     
     /**

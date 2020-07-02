@@ -58,11 +58,6 @@ export default class Camera implements Layout {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.closeRotate();
-        
-        _this.controller = null;
-        _this.instance = null;
     }
     
     /**
@@ -146,7 +141,7 @@ export default class Camera implements Layout {
         _this.controller.maxPolarAngle = Math.PI * 0.7;
         _this.controller.minDistance = 500;
         _this.controller.maxDistance = 20000;
-        _this.controller.autoRotateSpeed = 1;
+        _this.controller.autoRotateSpeed = 0.2;
     }
     
     /**

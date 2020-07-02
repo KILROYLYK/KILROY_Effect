@@ -82,10 +82,6 @@ export default class Background implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.spriteB = null;
-        _this.spriteBS = null;
-        _this.instance = null;
     }
     
     /**

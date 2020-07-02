@@ -70,10 +70,6 @@ export default class Asteroid implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.pointB = null;
-        _this.pointS = null;
-        _this.instance = null;
     }
     
     /**

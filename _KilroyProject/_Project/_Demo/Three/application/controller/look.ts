@@ -110,8 +110,6 @@ export default class Look implements Controller {
         const _this = this;
         
         if (!_this.camera) return;
-        
-        _this.camera = null;
     }
     
     /**

@@ -217,27 +217,6 @@ export default class Stage implements _Stage {
         
         if (!_this.isInit) return;
         _this.isInit = false;
-        
-        _this.controller.loader.destroy();
-        
-        _this.component.light.destroy();
-        _this.component.panoramic.destroy();
-        _this.component.asteroid.destroy();
-        
-        _this.component.sun.destroy();
-        _this.component.mercury.destroy();
-        _this.component.venus.destroy();
-        _this.component.earth.destroy();
-        _this.component.moon.destroy();
-        _this.component.mars.destroy();
-        _this.component.jupiter.destroy();
-        _this.component.saturn.destroy();
-        _this.component.uranus.destroy();
-        _this.component.neptune.destroy();
-        
-        _this.camera.destroy();
-        _this.scene.destroy();
-        _this.renderer.destroy();
     }
     
     /**

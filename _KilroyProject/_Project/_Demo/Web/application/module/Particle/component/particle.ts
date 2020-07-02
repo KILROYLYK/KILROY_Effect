@@ -125,11 +125,6 @@ export default class Particle implements Component {
      */
     public destroy(): void {
         const _this = this;
-        
-        Global.Dom.removeChild(_this.canvas);
-        
-        _this.context = null;
-        _this.canvas = null;
     }
     
     /**

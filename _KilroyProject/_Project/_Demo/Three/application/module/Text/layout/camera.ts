@@ -54,9 +54,6 @@ export default class Camera implements Layout {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.controller = null;
-        _this.instance = null;
     }
     
     /**

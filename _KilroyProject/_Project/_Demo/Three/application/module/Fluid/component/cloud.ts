@@ -4,20 +4,23 @@ import Component from '../../../interface/component';
 import * as THREE from 'three';
 
 /**
- * 光源
+ * 云
  */
-export default class Light implements Component {
-    private readonly name: string = 'Light-光源';
+export default class Cloud implements Component {
+    private readonly name: string = 'Cloud-云';
     
     private scene: THREE.Scene = null; // 场景
     
-    private lightAmbient: THREE.AmbientLight = null; // 环境光源
+    private readonly radio: number = 1000; // 运动半径
+    private cloud: THREE.Mesh[] = []; // 云
+    private geometry: THREE.DodecahedronGeometry = null; // 几何
+    private material: THREE.MeshPhongMaterial = null; // 纹理
     
     public instance: THREE.Group = null; // 实例
     
     /**
      * 构造函数
-     * @constructor Light
+     * @constructor Cloud
      * @param {object} scene 场景
      */
     constructor(scene: object) {
@@ -40,7 +43,10 @@ export default class Light implements Component {
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         
-        _this.createLight();
+        _this.geometry = new THREE.DodecahedronGeometry(20, 0);
+        _this.material = new THREE.MeshPhongMaterial({
+            color: '#d8d0d1'
+        });
     }
     
     /**
@@ -50,7 +56,6 @@ export default class Light implements Component {
     private init(): void {
         const _this = this;
         
-        _this.instance.add(_this.lightAmbient);
         _this.scene.add(_this.instance);
     }
     
@@ -71,17 +76,26 @@ export default class Light implements Component {
     public update(): void {
         const _this = this;
         
-        if (!_this.instance) return;
+        if (Math.random() > 0.9) {
+            if (_this.cloud.length > 1) return;
+            const cloud = _this.createCloud();
+            cloud.position.set(0, 0, 0);
+            cloud.rotation.y = Math.random() * Math.PI * 2;
+            cloud.rotation.z = Math.random() * Math.PI * 2;
+            cloud.scale.setScalar(Global.Base.getRandomInt(1, 9) / 10);
+            _this.cloud.push(cloud);
+            _this.instance.add(cloud);
+        }
     }
     
     /**
-     * 创建光源
-     * @return {void}
+     * 创建云朵
+     * @return {THREE.Mesh} 云朵
      */
-    private createLight(): void {
+    private createCloud(): THREE.Mesh {
         const _this = this,
-            color = '#ffffff';
+            cloud = new THREE.Mesh(_this.geometry, _this.material);
         
-        _this.lightAmbient = new THREE.AmbientLight(color, 0.1);
+        return cloud;
     }
 }

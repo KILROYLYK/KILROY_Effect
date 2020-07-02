@@ -80,7 +80,5 @@ export default class Panoramic implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.instance = null;
     }
 }

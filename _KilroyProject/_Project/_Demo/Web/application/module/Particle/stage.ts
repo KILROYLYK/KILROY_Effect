@@ -46,9 +46,6 @@ export default class Stage implements _Stage {
      */
     public destroy(): void {
         const _this = this;
-        
-        _this.particle.destroy();
-        _this.particle = null;
     }
     
     /**

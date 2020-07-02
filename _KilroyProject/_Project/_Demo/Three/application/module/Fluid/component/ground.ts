@@ -32,25 +32,24 @@ export default class Ground implements Component {
      * @return {void}
      */
     private create(): void {
-        const _this = this;
+        const _this = this,
+            matrix = new THREE.Matrix4();
         
-        const geometry = new THREE.RingGeometry(
-            0, 1000, 32
+        const geometry = new THREE.CylinderGeometry(
+            600, 600, 1000,
+            40, 10
         );
+        geometry.applyMatrix4(matrix.makeRotationX(-Math.PI / 2));
         
-        const material = new THREE.MeshLambertMaterial({
-            color: '#111111',
-            transparent: true,
-            opacity: 0.5
-            
+        const material = new THREE.MeshPhongMaterial({
+            color: '#629265',
+            shading: THREE.FlatShading
         });
         
         _this.instance = new THREE.Mesh(geometry, material);
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
-        _this.instance.rotation.set(-Math.PI / 2, 0, 0);
-        _this.instance.castShadow = true;
-        _this.instance.receiveShadow = true;
+        _this.instance.receiveShadow = false;
     }
     
     /**
@@ -71,5 +70,17 @@ export default class Ground implements Component {
         const _this = this;
         
         if (!_this.instance) return;
+    }
+    
+    /**
+     * 更新
+     * @return {void}
+     */
+    public update(): void {
+        const _this = this;
+    
+        if (!_this.instance) return;
+        
+        _this.instance.rotateZ(0.005);
     }
 }

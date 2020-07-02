@@ -93,8 +93,6 @@ export default class Star implements Component {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.instance = null;
     }
     
     /**

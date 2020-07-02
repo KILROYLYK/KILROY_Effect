@@ -47,7 +47,5 @@ export default class Scene implements Layout {
         const _this = this;
         
         if (!_this.instance) return;
-        
-        _this.instance = null;
     }
 }

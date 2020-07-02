@@ -1,9 +1,9 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 
-// import * as PIXI from 'pixi.js';
-//
-// import Loader from '../../controller/loader';
+import * as PIXI from 'pixi.js';
+
+import Loader from '../../controller/loader';
 
 /**
  * 场景
@@ -14,13 +14,13 @@ export default class Stage implements _Stage {
         path: [],
         data: null as object // 数据
     };
-    // private app: PIXI.Application = null; // 应用
-    // private container: PIXI.Container = null; // 容器
-    // private component: object = { // 组件
-    // };
-    // private controller: object = { // 控制器
-    //     loader: null as Loader // 加载
-    // };
+    private app: PIXI.Application = null; // 应用
+    private container: PIXI.Container = null; // 容器
+    private component: object = { // 组件
+    };
+    private controller: object = { // 控制器
+        loader: null as Loader // 加载
+    };
     
     /**
      * 构造函数
@@ -29,20 +29,20 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        // _this.controller.loader = new Loader(
-        //     _this.resource.path,
-        //     {
-        //         loadedCallback(index, total, progress) {
-        //             // console.log(`加载进度：${ index } ${ total } ${ progress }`);
-        //         },
-        //         finishCallback(data) {
-        //             _this.resource.data = data;
-        //
-        //             _this.create();
-        //             _this.init();
-        //         }
-        //     }
-        // );
+        _this.controller.loader = new Loader(
+            _this.resource.path,
+            {
+                loadedCallback(index, total, progress) {
+                    // console.log(`加载进度：${ index } ${ total } ${ progress }`);
+                },
+                finishCallback(data) {
+                    _this.resource.data = data;
+
+                    _this.create();
+                    _this.init();
+                }
+            }
+        );
     }
     
     /**
@@ -53,11 +53,11 @@ export default class Stage implements _Stage {
         const _this = this,
             resource = _this.resource.data;
         
-        // _this.app = new PIXI.Application({
-        //     transparent: true
-        // });
-        //
-        // _this.container = new PIXI.Container();
+        _this.app = new PIXI.Application({
+            transparent: true
+        });
+
+        _this.container = new PIXI.Container();
     }
     
     /**
@@ -69,9 +69,9 @@ export default class Stage implements _Stage {
         
         _this.isInit = true;
         
-        // _this.app.stage.addChild(_this.container);
-        //
-        // Global.Dom.appendChild(_this.app.view);
+        _this.app.stage.addChild(_this.container);
+
+        Global.Dom.appendChild(_this.app.view);
     }
     
     /**

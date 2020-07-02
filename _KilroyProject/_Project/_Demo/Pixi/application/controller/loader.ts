@@ -70,10 +70,6 @@ export default class Loader implements Controller {
      */
     public destroy(): void {
         const _this = this;
-        
-        _this.loader = null;
-        _this.path = [];
-        _this.data = {};
     }
     
     /**

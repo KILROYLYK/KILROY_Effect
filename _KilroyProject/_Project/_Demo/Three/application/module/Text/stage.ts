@@ -101,14 +101,6 @@ export default class Stage implements _Stage {
         
         if (!_this.isInit) return;
         _this.isInit = false;
-        
-        _this.controller.loader.destroy();
-        
-        _this.component.text.destroy();
-        
-        _this.camera.destroy();
-        _this.scene.destroy();
-        _this.renderer.destroy();
     }
     
     /**
