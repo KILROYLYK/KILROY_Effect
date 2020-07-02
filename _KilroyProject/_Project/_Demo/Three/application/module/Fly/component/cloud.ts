@@ -77,14 +77,8 @@ export default class Cloud implements Component {
         const _this = this;
         
         if (Math.random() > 0.9) {
-            if (_this.cloud.length > 1) return;
-            const cloud = _this.createCloud();
-            cloud.position.set(0, 0, 0);
-            cloud.rotation.y = Math.random() * Math.PI * 2;
-            cloud.rotation.z = Math.random() * Math.PI * 2;
-            cloud.scale.setScalar(Global.Base.getRandomInt(1, 9) / 10);
-            _this.cloud.push(cloud);
-            _this.instance.add(cloud);
+            if (_this.cloud.length > 10) return;
+            _this.createCloud();
         }
     }
     
@@ -94,7 +88,14 @@ export default class Cloud implements Component {
      */
     private createCloud(): THREE.Mesh {
         const _this = this,
-            cloud = new THREE.Mesh(_this.geometry, _this.material);
+            y = Global.Base.getRandomInt(550, 600);
+        
+        const cloud = new THREE.Mesh(_this.geometry, _this.material);
+        cloud.name = y;
+        cloud.position.set(0, y, Global.Base.getRandomInt(-400, 400));
+        cloud.scale.setScalar(Global.Base.getRandomInt(2, 9) / 10);
+        _this.cloud.push(cloud);
+        _this.instance.add(cloud);
         
         return cloud;
     }

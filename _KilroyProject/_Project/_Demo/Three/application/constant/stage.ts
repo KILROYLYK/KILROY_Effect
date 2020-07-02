@@ -3,7 +3,7 @@
 // import GlobalStage from '../module/Flight/stage'; // 飞行
 // import GlobalStage from '../module/Panoramic/stage'; // 全景
 // import GlobalStage from '../module/Text/stage'; // 文案
-import GlobalStage from '../module/Fluid/stage'; // 流体
+import GlobalStage from '../module/Fly/stage'; // 流体
 
 /**
  * 场景

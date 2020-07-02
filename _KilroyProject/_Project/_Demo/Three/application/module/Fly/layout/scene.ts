@@ -30,7 +30,7 @@ export default class Scene implements Layout {
         
         _this.instance = new THREE.Scene();
         _this.instance.background = new THREE.Color(color);
-        _this.instance.fog = new THREE.FogExp2(color, 0.0015);
+        _this.instance.fog = new THREE.FogExp2(color, 0.000015);
     }
     
     /**

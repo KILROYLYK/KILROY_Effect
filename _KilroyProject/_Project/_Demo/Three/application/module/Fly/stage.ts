@@ -7,7 +7,7 @@ import Camera from './layout/camera';
 import Light from './component/light';
 import Weather from './component/weather';
 import Ground from './component/ground';
-// import Cloud from './component/cloud';
+import Cloud from './component/cloud';
 import Loader from '../../controller/loader';
 
 /**
@@ -25,8 +25,8 @@ export default class Stage implements _Stage {
     private component: object = { // 组件
         light: null as Light, // 灯光
         weather: null as Weather, // 太阳
-        // cloud: null as Cloud // 云
         ground: null as Ground, // 地面
+        cloud: null as Cloud // 云
     };
     private controller: object = { // 控制器
         loader: null as Loader // 加载
@@ -70,7 +70,7 @@ export default class Stage implements _Stage {
         _this.component.light = new Light(_this.scene);
         _this.component.weather = new Weather(_this.scene);
         _this.component.ground = new Ground(_this.scene);
-        // _this.component.cloud = new Cloud(_this.scene);
+        _this.component.cloud = new Cloud(_this.scene);
     }
     
     /**
@@ -117,7 +117,7 @@ export default class Stage implements _Stage {
         
         _this.component.weather.update();
         _this.component.ground.update();
-        // _this.component.cloud.update();
+        _this.component.cloud.update();
         
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
