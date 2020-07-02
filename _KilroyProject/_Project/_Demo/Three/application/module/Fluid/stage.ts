@@ -112,6 +112,8 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+    
+        Global.Tween.update();
         
         _this.component.weather.update();
         _this.component.ground.update();

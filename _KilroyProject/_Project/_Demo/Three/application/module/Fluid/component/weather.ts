@@ -5,15 +5,15 @@ import * as THREE from 'three';
 import Stage from "../../Solar/stage";
 
 /**
- * 太阳
+ * 天气
  */
-export default class Sun implements Component {
-    private readonly name: string = 'Sun-太阳';
+export default class Weather implements Component {
+    private readonly name: string = 'Weather-天气';
     
     private scene: THREE.Scene = null; // 场景
     
-    private readonly trackR: number = 800; // 轨迹半径
-    private readonly shadowS: number = 2048; // 阴影大小
+    private isSwitch: boolean = false; // 是否正在切换
+    private day: boolean = false; // 是否是白天
     private sun: THREE.Mesh = null; // 太阳
     private moon: THREE.Mesh = null; // 月亮
     
@@ -21,7 +21,7 @@ export default class Sun implements Component {
     
     /**
      * 构造函数
-     * @constructor Sun
+     * @constructor Weather
      * @param {object} scene 场景
      */
     constructor(scene: object) {
@@ -42,7 +42,7 @@ export default class Sun implements Component {
         
         _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, 0, -1000);
+        _this.instance.position.set(0, -100, -800);
         
         _this.createSun();
         _this.createMoon();
@@ -58,6 +58,10 @@ export default class Sun implements Component {
         _this.instance.add(_this.sun);
         _this.instance.add(_this.moon);
         _this.scene.add(_this.instance);
+        
+        _this.switchDay();
+        
+        Global.Dom.addEventListener('click', _this.switchDay.bind(_this), false);
     }
     
     /**
@@ -90,6 +94,7 @@ export default class Sun implements Component {
         const geometry = new THREE.SphereGeometry(
             500, 20, 10
         );
+        geometry.scale(1, 1, 0.2);
         
         const material = new THREE.MeshPhongMaterial({
             color: '#edeb27',
@@ -98,7 +103,7 @@ export default class Sun implements Component {
         
         _this.sun = new THREE.Mesh(geometry, material);
         _this.sun.name = _this.name;
-        _this.sun.position.set(0, -100, 0);
+        _this.sun.position.set(0, 0, 0);
     }
     
     /**
@@ -111,6 +116,7 @@ export default class Sun implements Component {
         const geometry = new THREE.SphereGeometry(
             400, 20, 10
         );
+        geometry.scale(1, 1, 0.2);
         
         const material = new THREE.MeshPhongMaterial({
             color: '#ffffff',
@@ -119,6 +125,81 @@ export default class Sun implements Component {
         
         _this.moon = new THREE.Mesh(geometry, material);
         _this.moon.name = _this.name;
-        _this.moon.position.set(0, -100, 0);
+        _this.moon.position.set(0, 0, 0);
+    }
+    
+    /**
+     * 切换昼夜
+     * @return {void}
+     */
+    private switchDay(): void {
+        const _this = this,
+            Tween = Global.Tween.Tween,
+            Ease = Global.Tween.Easing.Cubic.InOut,
+            timeA = 3000, // 动画时间
+            timeD = 2000, // 延迟时间
+            sun = _this.sun.position,
+            moon = _this.moon.position;
+        
+        if (_this.isSwitch) return;
+        _this.isSwitch = true;
+        
+        if (_this.day) { // 切换到黑夜
+            _this.day = false;
+            
+            const tweenSun = new Tween(sun)
+                .easing(Ease)
+                .to({
+                    y: 0
+                }, timeA)
+                .onComplete(() => {
+                    tweenSun.stop();
+                })
+                .onStop(() => {
+                })
+                .start();
+            
+            const tweenMoon = new Tween(moon)
+                .easing(Ease)
+                .delay(timeD)
+                .to({
+                    y: 600
+                }, timeA)
+                .onComplete(() => {
+                    tweenMoon.stop();
+                })
+                .onStop(() => {
+                    _this.isSwitch = false;
+                })
+                .start();
+        } else { // 切换到白昼
+            _this.day = true;
+            
+            const tweenSun = new Tween(sun)
+                .easing(Ease)
+                .delay(timeD)
+                .to({
+                    y: 600
+                }, timeA)
+                .onComplete(() => {
+                    tweenSun.stop();
+                })
+                .onStop(() => {
+                    _this.isSwitch = false;
+                })
+                .start();
+            
+            const tweenMoon = new Tween(moon)
+                .easing(Ease)
+                .to({
+                    y: 0
+                }, timeA)
+                .onComplete(() => {
+                    tweenMoon.stop();
+                })
+                .onStop(() => {
+                })
+                .start();
+        }
     }
 }
