@@ -42,7 +42,7 @@ export default class Weather implements Component {
         
         _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, -100, -800);
+        _this.instance.position.set(0, -100, -500);
         
         _this.createSun();
         _this.createMoon();
@@ -97,7 +97,7 @@ export default class Weather implements Component {
         geometry.scale(1, 1, 0.2);
         
         const material = new THREE.MeshPhongMaterial({
-            color: '#edeb27',
+            color: '#fffd00',
             shading: THREE.FlatShading
         });
         
@@ -138,6 +138,12 @@ export default class Weather implements Component {
             Ease = Global.Tween.Easing.Cubic.InOut,
             timeA = 3000, // 动画时间
             timeD = 2000, // 延迟时间
+            color = [
+                '#ffe1b9',
+                '#000783'
+            ],
+            bg = _this.scene.background,
+            fog = _this.scene.fog.color,
             sun = _this.sun.position,
             moon = _this.moon.position;
         
@@ -146,6 +152,36 @@ export default class Weather implements Component {
         
         if (_this.day) { // 切换到黑夜
             _this.day = false;
+            
+            const bgColor = new THREE.Color(color[1]),
+                tweenBG = new Tween(bg)
+                    .easing(Ease)
+                    .delay(timeD)
+                    .to({
+                        b: bgColor.b,
+                        g: bgColor.g,
+                        r: bgColor.r
+                    }, timeA)
+                    .onComplete(() => {
+                        tweenBG.stop();
+                    })
+                    .onStop(() => {
+                    })
+                    .start(),
+                tweenFog = new Tween(fog)
+                    .easing(Ease)
+                    .delay(timeD)
+                    .to({
+                        b: bgColor.b,
+                        g: bgColor.g,
+                        r: bgColor.r
+                    }, timeA)
+                    .onComplete(() => {
+                        tweenFog.stop();
+                    })
+                    .onStop(() => {
+                    })
+                    .start();
             
             const tweenSun = new Tween(sun)
                 .easing(Ease)
@@ -174,6 +210,36 @@ export default class Weather implements Component {
                 .start();
         } else { // 切换到白昼
             _this.day = true;
+            
+            const bgColor = new THREE.Color(color[0]),
+                tweenBG = new Tween(bg)
+                    .easing(Ease)
+                    .delay(timeD)
+                    .to({
+                        b: bgColor.b,
+                        g: bgColor.g,
+                        r: bgColor.r
+                    }, timeA)
+                    .onComplete(() => {
+                        tweenBG.stop();
+                    })
+                    .onStop(() => {
+                    })
+                    .start(),
+                tweenFog = new Tween(fog)
+                    .easing(Ease)
+                    .delay(timeD)
+                    .to({
+                        b: bgColor.b,
+                        g: bgColor.g,
+                        r: bgColor.r
+                    }, timeA)
+                    .onComplete(() => {
+                        tweenFog.stop();
+                    })
+                    .onStop(() => {
+                    })
+                    .start();
             
             const tweenSun = new Tween(sun)
                 .easing(Ease)
