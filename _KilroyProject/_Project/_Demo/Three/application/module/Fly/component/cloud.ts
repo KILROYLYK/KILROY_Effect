@@ -11,14 +11,14 @@ export default class Cloud implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
-    private readonly radius: number = 1000; // 半径
+    private readonly radius: number = 20; // 半径
+    private geometry: THREE.DodecahedronGeometry = null; // 几何
+    private material: THREE.MeshPhongMaterial = null; // 纹理
     private cloud: {
         cycle: number,
         trackR: number,
         mesh: THREE.Mesh
     }[] = []; // 云
-    private geometry: THREE.DodecahedronGeometry = null; // 几何
-    private material: THREE.MeshPhongMaterial = null; // 纹理
     
     public instance: THREE.Group = null; // 实例
     
@@ -47,7 +47,7 @@ export default class Cloud implements Component {
         _this.instance.name = _this.name;
         _this.instance.position.set(0, 0, 0);
         
-        _this.geometry = new THREE.DodecahedronGeometry(20, 0);
+        _this.geometry = new THREE.DodecahedronGeometry(_this.radius, 0);
         _this.material = new THREE.MeshPhongMaterial({
             color: '#d8d0d1'
         });
@@ -87,6 +87,8 @@ export default class Cloud implements Component {
             v.cycle += cycleS;
             v.mesh.position.x = Math.cos(v.cycle) * v.trackR;
             v.mesh.position.y = Math.sin(v.cycle) * v.trackR;
+            v.mesh.rotateX(cycleS);
+            v.mesh.rotateY(cycleS);
             v.mesh.rotateZ(cycleS);
             if (v.cycle > Math.PI) {
                 _this.instance.remove(v.mesh);
@@ -106,20 +108,29 @@ export default class Cloud implements Component {
             y = Global.Base.getRandomInt(600, 700),
             z = Global.Base.getRandomInt(-350, 350);
         
+        let cycle = 0; // 周期
+        
         for (let i = 0; i < n; i++) {
+            const scale = Global.Base.getRandomInt(2, 9) / 10,
+                radius = scale * _this.radius * 0.8 / y;
+            
+            if (i !== 0) cycle += radius;
+            
             const cloud = new THREE.Mesh(_this.geometry, _this.material);
             cloud.position.set(0, y, z);
             cloud.rotation.x = Math.random() * Math.PI * 2;
             cloud.rotation.y = Math.random() * Math.PI * 2;
             cloud.rotation.z = Math.random() * Math.PI * 2;
-            cloud.scale.setScalar(Global.Base.getRandomInt(1, 9) / 10);
+            cloud.scale.setScalar(scale);
             cloud.castShadow = true;
             _this.cloud.push({
-                cycle: i * 0.03,
+                cycle,
                 trackR: y,
                 mesh: cloud
             });
             _this.instance.add(cloud);
+            
+            cycle += radius;
         }
     }
 }

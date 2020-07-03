@@ -61,7 +61,9 @@ export default class Weather implements Component {
         
         _this.switchDay();
         
-        // Global.Dom.addEventListener('click', _this.switchDay.bind(_this), false);
+        Global.Dom.addEventListener('keyup', (e: KeyboardEvent) => {
+            if (e.code === 'Space') _this.switchDay();
+        }, false);
     }
     
     /**
