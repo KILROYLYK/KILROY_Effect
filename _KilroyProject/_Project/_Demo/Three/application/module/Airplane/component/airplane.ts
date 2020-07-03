@@ -44,7 +44,8 @@ export default class Airplane implements Component {
      * @return {void}
      */
     private create(): void {
-        const _this = this;
+        const _this = this,
+            trackR = 500; // 轨道半径
         
         _this.airplane = new THREE.Object3D();
         _this.airplane.position.set(0, 0, 0);
@@ -52,7 +53,7 @@ export default class Airplane implements Component {
         
         _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, 650, 200);
+        _this.instance.position.set(0, trackR + 130, 200);
         
         _this.createBody();
         _this.createHead();
@@ -107,7 +108,7 @@ export default class Airplane implements Component {
         if (_this.moveP.x > 250) _this.moveP.x = 250;
         if (_this.moveP.x < -250) _this.moveP.x = -250;
         if (_this.moveP.y > 120) _this.moveP.y = 120;
-        if (_this.moveP.y < -120) _this.moveP.y = -120;
+        if (_this.moveP.y < -100) _this.moveP.y = -100;
         
         Global.Function.setEase(_this.airplane.position, _this.moveP, ease);
         Global.Function.setEase(_this.airplane.rotation, {

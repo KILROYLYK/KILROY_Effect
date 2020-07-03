@@ -104,9 +104,11 @@ export default class Cloud implements Component {
      */
     private createCloud(): void {
         const _this = this,
+            trackR = 500, // 轨道半径
+            range  = 350, // 显示范围
             n = Global.Base.getRandomInt(1, 4),
-            y = Global.Base.getRandomInt(600, 700),
-            z = Global.Base.getRandomInt(-350, 350);
+            y = Global.Base.getRandomInt(trackR + 100, trackR + 200),
+            z = Global.Base.getRandomInt(-range, range);
         
         let cycle = 0; // 周期
         
