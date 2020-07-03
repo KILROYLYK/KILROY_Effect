@@ -45,7 +45,7 @@ export default class Ground implements Component {
         
         const material = new THREE.MeshPhongMaterial({
             color: '#629265',
-            shading: THREE.FlatShading
+            flatShading: true
         });
         
         _this.instance = new THREE.Mesh(geometry, material);

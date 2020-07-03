@@ -101,7 +101,7 @@ export default class Airplane implements Component {
             ),
             materialB = new THREE.MeshPhongMaterial({
                 color: '#f25346',
-                shading: THREE.FlatShading
+                flatShading: true
             }),
             body = new THREE.Mesh(geometryB, materialB);
         geometryB.vertices[4].y -= 10;
@@ -122,7 +122,7 @@ export default class Airplane implements Component {
             ),
             materialC = new THREE.MeshPhongMaterial({
                 color: '#911610',
-                shading: THREE.FlatShading
+                flatShading: true
             }),
             cockpit = new THREE.Mesh(geometryC, materialC);
         cockpit.position.set(20, 23, 0);
@@ -135,7 +135,7 @@ export default class Airplane implements Component {
             ),
             materialW = new THREE.MeshPhongMaterial({
                 color: '#d8d0d1',
-                shading: THREE.FlatShading,
+                flatShading: true,
                 opacity: .3,
                 transparent: true
             }),
@@ -162,7 +162,7 @@ export default class Airplane implements Component {
             ),
             materialE = new THREE.MeshPhongMaterial({
                 color: '#d8d0d1',
-                shading: THREE.FlatShading
+                flatShading: true
             }),
             engine = new THREE.Mesh(geometryE, materialE);
         engine.castShadow = true;
@@ -174,7 +174,7 @@ export default class Airplane implements Component {
             ),
             materialD = new THREE.MeshPhongMaterial({
                 color: '#59332e',
-                shading: THREE.FlatShading
+                flatShading: true
             }),
             drill = new THREE.Mesh(geometryD, materialD);
         geometryD.vertices[4].y -= 5;
@@ -209,7 +209,7 @@ export default class Airplane implements Component {
             ),
             material = new THREE.MeshPhongMaterial({
                 color: '#911610',
-                shading: THREE.FlatShading
+                flatShading: true
             }),
             topMesh = new THREE.Mesh(geometry, material),
             bottomMesh = new THREE.Mesh(geometry, material);
@@ -239,7 +239,7 @@ export default class Airplane implements Component {
             ),
             material = new THREE.MeshPhongMaterial({
                 color: '#911610',
-                shading: THREE.FlatShading
+                flatShading: true
             }),
             topMesh = new THREE.Mesh(geometry, material);
         topMesh.castShadow = true;
@@ -263,7 +263,7 @@ export default class Airplane implements Component {
             ),
             material = new THREE.MeshPhongMaterial({
                 color: '#23190f',
-                shading: THREE.FlatShading
+                flatShading: true
             }),
             blade1 = new THREE.Mesh(geometry, material),
             blade2 = new THREE.Mesh(geometry, material);

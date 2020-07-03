@@ -81,7 +81,7 @@ export default class Cloud implements Component {
         const _this = this,
             cycleS = 0.002; // 周期速度
         
-        if (Math.random() > 0.99) _this.createCloud();
+        if (Math.random() > 0.98) _this.createCloud();
         
         _this.cloud = _this.cloud.filter((v, i, a) => {
             v.cycle += cycleS;

@@ -100,7 +100,7 @@ export default class Weather implements Component {
         
         const material = new THREE.MeshPhongMaterial({
             color: '#fffd00',
-            shading: THREE.FlatShading
+            flatShading: true
         });
         
         _this.sun = new THREE.Mesh(geometry, material);
@@ -122,7 +122,7 @@ export default class Weather implements Component {
         
         const material = new THREE.MeshPhongMaterial({
             color: '#ffffff',
-            shading: THREE.FlatShading
+            flatShading: true
         });
         
         _this.moon = new THREE.Mesh(geometry, material);

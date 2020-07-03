@@ -113,7 +113,7 @@ var Land = function () {
     //create a material
     var mat = new THREE.MeshPhongMaterial({
         color: Colors.lightgreen,
-        shading: THREE.FlatShading,
+        flatShading: true
     });
     
     //create a mesh of the object
@@ -137,7 +137,7 @@ var Sun = function () {
     var sunGeom = new THREE.SphereGeometry(400, 20, 10);
     var sunMat = new THREE.MeshPhongMaterial({
         color: Colors.yellow,
-        shading: THREE.FlatShading,
+        flatShading: true
     });
     var sun = new THREE.Mesh(sunGeom, sunMat);
     //sun.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI/2));
