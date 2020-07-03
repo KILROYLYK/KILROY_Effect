@@ -81,7 +81,7 @@ export default class Camera implements Layout {
     private createController(): void {
         const _this = this;
         
-        const vector = new THREE.Vector3(0, 600, 0);
+        const vector = new THREE.Vector3(0, 600, 200);
         
         _this.controller = new OrbitControls(_this.instance, Global.Dom);
         _this.controller.target = vector;
