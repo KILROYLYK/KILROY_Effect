@@ -38,7 +38,7 @@ export default class Ground implements Component {
             matrix = new THREE.Matrix4();
         
         const geometry = new THREE.CylinderGeometry(
-            _this.radius, _this.radius, 1000,
+            _this.radius, _this.radius, 1400,
             40, 10
         );
         geometry.applyMatrix4(matrix.makeRotationX(-Math.PI / 2));

@@ -42,7 +42,7 @@ export default class Weather implements Component {
         
         _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, -100, -500);
+        _this.instance.position.set(0, -100, -850);
         
         _this.createSun();
         _this.createMoon();

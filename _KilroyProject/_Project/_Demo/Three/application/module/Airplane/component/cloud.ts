@@ -81,7 +81,7 @@ export default class Cloud implements Component {
         const _this = this,
             cycleS = 0.002; // 周期速度
         
-        if (Math.random() > 0.98) _this.createCloud();
+        if (Math.random() > 0.99) _this.createCloud();
         
         _this.cloud = _this.cloud.filter((v, i, a) => {
             v.cycle += cycleS;
@@ -111,7 +111,7 @@ export default class Cloud implements Component {
         let cycle = 0; // 周期
         
         for (let i = 0; i < n; i++) {
-            const scale = Global.Base.getRandomInt(2, 9) / 10,
+            const scale = Global.Base.getRandomInt(1, 9) / 10,
                 radius = scale * _this.radius * 0.8 / y;
             
             if (i !== 0) cycle += radius;
