@@ -11,7 +11,11 @@ export default class Plant implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
-    private plant: {}[] = []; // 植物
+    private plant: {
+        cycle: number,
+        track: number,
+        object: THREE.Object3D
+    }[] = []; // 植物
     
     public instance: THREE.Group = null; // 实例
     
@@ -80,17 +84,19 @@ export default class Plant implements Component {
      */
     private createTree(): void {
         const _this = this,
-            trackR = 500, // 轨道半径
+            track = 500, // 轨道
             range = 350, // 范围
             height = 20,
-            scale = Global.Base.getRandomInt(1, 3) / 10;
+            scale = Global.Base.getRandomInt(1, 3) / 10,
+            y = track + height * scale / 2;
         
         const trunkG = new THREE.BoxGeometry(10, height, 10),
             trunkM = new THREE.MeshBasicMaterial({
-                color: '#59332e'
+                color: '#59332e',
+                flatShading: true
             }),
             trunk = new THREE.Mesh(trunkG, trunkM);
-        trunk.position.set(0, trackR + scale * height / 2, Global.Base.getRandomInt(-range, range));
+        trunk.position.set(0, y, Global.Base.getRandomInt(-range, range));
         
         const leavesG1 = new THREE.CylinderGeometry(
             1, 12 * 3,
@@ -108,6 +114,12 @@ export default class Plant implements Component {
         
         const tree = new THREE.Object3D();
         tree.add(trunk);
+        _this.plant.push({
+            cycle: 0,
+            track: y,
+            object: tree
+        });
+        _this.instance.add(tree);
     }
     
     /**

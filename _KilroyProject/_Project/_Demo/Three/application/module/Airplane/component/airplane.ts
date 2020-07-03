@@ -45,7 +45,7 @@ export default class Airplane implements Component {
      */
     private create(): void {
         const _this = this,
-            trackR = 500; // 轨道半径
+            track = 500; // 轨道
         
         _this.airplane = new THREE.Object3D();
         _this.airplane.position.set(0, 0, 0);
@@ -53,7 +53,7 @@ export default class Airplane implements Component {
         
         _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, trackR + 130, 200);
+        _this.instance.position.set(0, track + 130, 200);
         
         _this.createBody();
         _this.createHead();

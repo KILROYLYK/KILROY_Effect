@@ -8,6 +8,7 @@ import Light from './component/light';
 import Weather from './component/weather';
 import Ground from './component/ground';
 import Cloud from './component/cloud';
+import Plant from './component/plant';
 import Airplane from './component/airplane';
 import Loader from '../../controller/loader';
 
@@ -28,6 +29,7 @@ export default class Stage implements _Stage {
         weather: null as Weather, // 太阳
         ground: null as Ground, // 地面
         cloud: null as Cloud, // 云
+        plant: null as Plant, // 植物
         airplane: null as Airplane // 飞机
     };
     private controller: object = { // 控制器
@@ -73,6 +75,7 @@ export default class Stage implements _Stage {
         _this.component.weather = new Weather(_this.scene);
         _this.component.ground = new Ground(_this.scene);
         _this.component.cloud = new Cloud(_this.scene);
+        _this.component.plant = new Plant(_this.scene);
         _this.component.airplane = new Airplane(_this.scene);
     }
     
@@ -123,6 +126,7 @@ export default class Stage implements _Stage {
         _this.component.weather.update();
         _this.component.ground.update();
         _this.component.cloud.update();
+        _this.component.plant.update();
         _this.component.airplane.update();
         
         _this.camera.update(isResize);

@@ -16,7 +16,7 @@ export default class Cloud implements Component {
     private material: THREE.MeshPhongMaterial = null; // 纹理
     private cloud: {
         cycle: number,
-        trackR: number,
+        track: number,
         mesh: THREE.Mesh
     }[] = []; // 云
     
@@ -85,8 +85,8 @@ export default class Cloud implements Component {
         
         _this.cloud = _this.cloud.filter((v, i, a) => {
             v.cycle += cycleS;
-            v.mesh.position.x = Math.cos(v.cycle) * v.trackR;
-            v.mesh.position.y = Math.sin(v.cycle) * v.trackR;
+            v.mesh.position.x = Math.cos(v.cycle) * v.track;
+            v.mesh.position.y = Math.sin(v.cycle) * v.track;
             v.mesh.rotateX(cycleS);
             v.mesh.rotateY(cycleS);
             v.mesh.rotateZ(cycleS);
@@ -104,10 +104,10 @@ export default class Cloud implements Component {
      */
     private createCloud(): void {
         const _this = this,
-            trackR = 500, // 轨道半径
-            range  = 350, // 显示范围
+            track = 500, // 轨道
+            range  = 350, // 范围
             n = Global.Base.getRandomInt(1, 4),
-            y = Global.Base.getRandomInt(trackR + 100, trackR + 200),
+            y = Global.Base.getRandomInt(track + 100, track + 200),
             z = Global.Base.getRandomInt(-range, range);
         
         let cycle = 0; // 周期
@@ -127,7 +127,7 @@ export default class Cloud implements Component {
             cloud.castShadow = true;
             _this.cloud.push({
                 cycle,
-                trackR: y,
+                track: y,
                 mesh: cloud
             });
             _this.instance.add(cloud);
