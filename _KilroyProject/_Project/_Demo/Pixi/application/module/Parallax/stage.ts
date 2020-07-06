@@ -67,9 +67,11 @@ export default class Stage implements _Stage {
             resource = _this.resource.data;
         
         _this.app = new PIXI.Application({
-            width: 1400,
-            height: 900,
-            transparent: true
+            width: Global.Width,
+            height: Global.Height,
+            backgroundColor: 0x222222,
+            transparent: false,
+            resizeTo: Global.Dom
         });
         
         _this.container = new PIXI.Container();
@@ -93,6 +95,7 @@ export default class Stage implements _Stage {
         _this.app.stage.addChild(_this.container);
         
         Global.Dom.appendChild(_this.app.view);
+        Global.Function.showCursor(false);
         Global.Function.updateFocusPosition();
     }
     
@@ -116,5 +119,7 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+        
+        _this.component.background.update(isResize);
     }
 }

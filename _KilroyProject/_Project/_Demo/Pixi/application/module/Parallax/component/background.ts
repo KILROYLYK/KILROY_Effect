@@ -17,9 +17,10 @@ export default class Background implements Component {
     private container: PIXI.Container = null; // 容器
     private texture: Texture = null; // 纹理
     
-    private readonly width: number = 1400; // 宽度
-    private readonly height: number = 900; // 高度
     private readonly speed: number = 0.05; // 速度
+    private readonly ratio: number = 1652 / 1074; // 宽高比值
+    private width: number = 0; // 宽
+    private height: number = 0; // 高
     private spriteB: PIXI.Sprite = null; // 背景
     private spriteBS: PIXI.Sprite = null; // 背景阴影
     private readonly moveP: object = { // 移动位置
@@ -55,13 +56,12 @@ export default class Background implements Component {
             bgShadow = _this.texture.bg_shadow;
         
         _this.spriteB = new PIXI.Sprite(bg.texture);
-        _this.spriteB.position.set(-(_this.spriteB.width - _this.width) / 2, -(_this.spriteB.height - _this.height) / 2);
-        
         _this.spriteBS = new PIXI.Sprite(bgShadow.texture);
-        _this.spriteBS.position.set(-(_this.spriteBS.width - _this.width) / 2, -(_this.spriteBS.height - _this.height) / 2);
         _this.spriteBS.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
         
         _this.instance = new PIXI.filters.DisplacementFilter(_this.spriteBS);
+        
+        _this.setSize();
     }
     
     /**
@@ -75,6 +75,8 @@ export default class Background implements Component {
         _this.container.addChild(_this.spriteBS);
         
         Global.Document.addEventListener('mousemove', _this.animation.bind(_this), false);
+        Global.Document.addEventListener('touchstart', _this.animation.bind(_this), false);
+        Global.Document.addEventListener('touchmove', _this.animation.bind(_this), false);
     }
     
     /**
@@ -89,12 +91,42 @@ export default class Background implements Component {
     
     /**
      * 更新
+     * @param {boolean} isResize 是否调整大小
      * @return {void}
      */
-    public update(): void {
+    public update(isResize: boolean = false): void {
         const _this = this;
         
         if (!_this.instance) return;
+        
+        if (isResize) {
+            _this.setSize();
+        }
+    }
+    
+    /**
+     * 设置尺寸
+     * @return {void}
+     */
+    private setSize(): void {
+        const _this = this,
+            centerP = Global.Function.getDomCenter();
+        
+        if (Global.Width >= Global.Height) {
+            _this.width = Global.Width * 1.2;
+            _this.height = _this.width / _this.ratio;
+        } else {
+            _this.height = Global.Height * 1.2;
+            _this.width = _this.height * _this.ratio;
+        }
+        
+        _this.spriteB.width = _this.width;
+        _this.spriteB.height = _this.height;
+        _this.spriteB.position.set(centerP.x - _this.width / 2, centerP.y - _this.height / 2);
+        
+        _this.spriteBS.width = _this.width;
+        _this.spriteBS.height = _this.height;
+        _this.spriteBS.position.set(centerP.x - _this.width / 2, centerP.y - _this.height / 2);
     }
     
     /**
@@ -119,8 +151,8 @@ export default class Background implements Component {
                 ease: Sine.easeOut,
                 onUpdate() {
                     _this.container.filters = [ _this.instance ];
-                    _this.spriteB.position.set(_this.moveP.x - (_this.spriteB.width - _this.width) / 2, _this.moveP.y - (_this.spriteB.height - _this.height) / 2);
-                    _this.spriteBS.position.set(_this.moveP.x - (_this.spriteB.width - _this.width) / 2, _this.moveP.y - (_this.spriteB.height - _this.height) / 2);
+                    _this.spriteB.position.set(centerP.x - _this.width / 2 + _this.moveP.x, centerP.y - _this.height / 2 + _this.moveP.y);
+                    _this.spriteBS.position.set(centerP.x - _this.width / 2 + _this.moveP.x, centerP.y - _this.height / 2 + _this.moveP.y);
                     _this.instance.scale.set(-_this.moveP.x, -_this.moveP.y);
                 }
             });
