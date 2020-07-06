@@ -11,7 +11,7 @@ export default class Ground implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
-    private readonly radius: number = 500; // 半径
+    private readonly radius: number = 1000; // 半径
     
     public instance: THREE.Mesh = null; // 实例
     
@@ -84,6 +84,6 @@ export default class Ground implements Component {
         
         if (!_this.instance) return;
         
-        _this.instance.rotateZ(0.005);
+        _this.instance.rotateZ(0.003);
     }
 }

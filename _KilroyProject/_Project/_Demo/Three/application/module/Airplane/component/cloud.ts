@@ -104,7 +104,7 @@ export default class Cloud implements Component {
      */
     private createCloud(): void {
         const _this = this,
-            track = 500, // 轨道
+            track = 1000, // 轨道
             range  = 350, // 范围
             n = Global.Base.getRandomInt(1, 4),
             y = Global.Base.getRandomInt(track + 100, track + 200),

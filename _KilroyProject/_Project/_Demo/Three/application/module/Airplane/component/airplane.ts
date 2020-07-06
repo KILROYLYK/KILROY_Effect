@@ -45,7 +45,7 @@ export default class Airplane implements Component {
      */
     private create(): void {
         const _this = this,
-            track = 500; // 轨道
+            track = 1000; // 轨道
         
         _this.airplane = new THREE.Object3D();
         _this.airplane.position.set(0, 0, 0);
@@ -102,8 +102,8 @@ export default class Airplane implements Component {
         
         _this.propeller.rotateX(0.3);
         
-        _this.moveP.x = (Global.mouseP.x - centerP.x) * moveS;
-        _this.moveP.y = -(Global.mouseP.y - centerP.y) * moveS;
+        _this.moveP.x = (Global.FocusP.x - centerP.x) * moveS;
+        _this.moveP.y = -(Global.FocusP.y - centerP.y) * moveS;
         
         if (_this.moveP.x > 250) _this.moveP.x = 250;
         if (_this.moveP.x < -250) _this.moveP.x = -250;

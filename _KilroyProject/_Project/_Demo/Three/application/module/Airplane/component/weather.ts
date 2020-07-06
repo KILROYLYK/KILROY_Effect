@@ -14,6 +14,10 @@ export default class Weather implements Component {
     
     private isSwitch: boolean = false; // 是否正在切换
     private day: boolean = false; // 是否是白天
+    private positionY: object = { // 高度
+        down: -1000,
+        up: 500
+    };
     private sun: THREE.Mesh = null; // 太阳
     private moon: THREE.Mesh = null; // 月亮
     
@@ -42,7 +46,7 @@ export default class Weather implements Component {
         
         _this.instance = new THREE.Group();
         _this.instance.name = _this.name;
-        _this.instance.position.set(0, -100, -850);
+        _this.instance.position.set(0, 0, -1000);
         
         _this.createSun();
         _this.createMoon();
@@ -94,9 +98,9 @@ export default class Weather implements Component {
         const _this = this;
         
         const geometry = new THREE.SphereGeometry(
-            500, 20, 10
+            1200, 20, 10
         );
-        geometry.scale(1, 1, 0.2);
+        geometry.scale(1, 1, 0.1);
         
         const material = new THREE.MeshPhongMaterial({
             color: '#fffd00',
@@ -105,7 +109,7 @@ export default class Weather implements Component {
         
         _this.sun = new THREE.Mesh(geometry, material);
         _this.sun.name = _this.name;
-        _this.sun.position.set(0, 0, 0);
+        _this.sun.position.set(0, _this.positionY.down, 0);
     }
     
     /**
@@ -116,7 +120,7 @@ export default class Weather implements Component {
         const _this = this;
         
         const geometry = new THREE.SphereGeometry(
-            400, 20, 10
+            1000, 20, 10
         );
         geometry.scale(1, 1, 0.2);
         
@@ -127,7 +131,7 @@ export default class Weather implements Component {
         
         _this.moon = new THREE.Mesh(geometry, material);
         _this.moon.name = _this.name;
-        _this.moon.position.set(0, 0, 0);
+        _this.moon.position.set(0, _this.positionY.down, 0);
     }
     
     /**
@@ -188,7 +192,7 @@ export default class Weather implements Component {
             const tweenSun = new Tween(sun)
                 .easing(Ease)
                 .to({
-                    y: 0
+                    y: _this.positionY.down
                 }, timeA)
                 .onComplete(() => {
                     tweenSun.stop();
@@ -201,7 +205,7 @@ export default class Weather implements Component {
                 .easing(Ease)
                 .delay(timeD)
                 .to({
-                    y: 600
+                    y: _this.positionY.up
                 }, timeA)
                 .onComplete(() => {
                     tweenMoon.stop();
@@ -247,7 +251,7 @@ export default class Weather implements Component {
                 .easing(Ease)
                 .delay(timeD)
                 .to({
-                    y: 600
+                    y: _this.positionY.up
                 }, timeA)
                 .onComplete(() => {
                     tweenSun.stop();
@@ -260,7 +264,7 @@ export default class Weather implements Component {
             const tweenMoon = new Tween(moon)
                 .easing(Ease)
                 .to({
-                    y: 0
+                    y: _this.positionY.down
                 }, timeA)
                 .onComplete(() => {
                     tweenMoon.stop();

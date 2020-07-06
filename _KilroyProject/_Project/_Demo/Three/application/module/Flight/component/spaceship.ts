@@ -122,9 +122,9 @@ export default class Spaceship implements Component {
         
         _this.texture.engine.offset.y -= 0.06;
         
-        _this.moveP.x = (Global.mouseP.x - centerP.x) * moveS.x;
-        _this.moveP.y = -((Global.mouseP.y - centerP.y) * moveS.y) - 4;
-        _this.lookP.z = (Global.mouseP.x - centerP.x) * lookS;
+        _this.moveP.x = (Global.FocusP.x - centerP.x) * moveS.x;
+        _this.moveP.y = -((Global.FocusP.y - centerP.y) * moveS.y) - 4;
+        _this.lookP.z = (Global.FocusP.x - centerP.x) * lookS;
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);
         Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);

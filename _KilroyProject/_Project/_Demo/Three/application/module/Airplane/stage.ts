@@ -90,7 +90,7 @@ export default class Stage implements _Stage {
         
         Global.Dom.appendChild(_this.renderer.instance.domElement);
         Global.Function.showCursor(false);
-        Global.Function.updateMouse();
+        Global.Function.updateFocusPosition();
         Global.Function.updateFrame(() => {
             _this.update();
         });

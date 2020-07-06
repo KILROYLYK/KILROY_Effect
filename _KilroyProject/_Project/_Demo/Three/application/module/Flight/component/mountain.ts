@@ -109,7 +109,7 @@ export default class Mountain implements Component {
         
         _this.cycle -= cycleS;
         
-        _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * moveS);
+        _this.moveP.x = -((Global.FocusP.x - Global.Function.getDomCenter().x) * moveS);
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);
         Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);

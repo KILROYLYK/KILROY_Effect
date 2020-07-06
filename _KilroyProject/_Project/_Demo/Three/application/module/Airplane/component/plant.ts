@@ -13,7 +13,8 @@ export default class Plant implements Component {
     
     private plant: {
         cycle: number,
-        track: number,
+        y: number,
+        z: number,
         object: THREE.Object3D
     }[] = []; // 植物
     
@@ -71,14 +72,14 @@ export default class Plant implements Component {
      */
     public update(): void {
         const _this = this,
-            cycleS = 0.002; // 周期速度
+            cycleS = 0.003; // 周期速度
         
-        if (Math.random() > 0.98) _this.createTree();
+        if (Math.random() > 0.97) _this.createTree();
         
         _this.plant = _this.plant.filter((v, i, a) => {
             v.cycle += cycleS;
-            v.object.position.x = Math.cos(v.cycle) * v.track;
-            v.object.position.y = Math.sin(v.cycle) * v.track;
+            v.object.position.x = Math.cos(v.cycle) * v.y;
+            v.object.position.y = Math.sin(v.cycle) * v.y;
             v.object.rotation.z = -Math.PI / 2 + v.cycle;
             if (v.cycle > Math.PI) {
                 _this.instance.remove(v.object);
@@ -89,15 +90,33 @@ export default class Plant implements Component {
     }
     
     /**
+     * 获取植物位置
+     * @return {number} z轴位置
+     */
+    private getPlantPosition(): number {
+        const _this = this,
+            position = Global.Base.getRandomInt(-350, 500),
+            plant = _this.plant.find((v, i, a) => {
+                return v.cycle <= 0.1 && Math.abs(position - v.object.position.z) <= 50;
+            });
+        if (plant) {
+            return _this.getPlantPosition();
+        } else {
+            return position;
+        }
+    }
+    
+    /**
      * 创建树木
      * @return {void}
      */
     private createTree(): void {
         const _this = this,
-            track = 500, // 轨道
-            height = 20,
+            track = 1000, // 轨道
+            height = 20, // 树干高
             scale = Global.Base.getRandomInt(2, 4) / 3,
-            y = track + height * scale / 2;
+            y = track + height * scale / 2,
+            z = _this.getPlantPosition();
         
         const trunkG = new THREE.BoxGeometry(10, height, 10),
             trunkM = new THREE.MeshBasicMaterial({
@@ -138,20 +157,23 @@ export default class Plant implements Component {
         leaves3.castShadow = true;
         leaves3.receiveShadow = true;
         
-        
-        const tree = new THREE.Object3D();
-        tree.position.set(0, y, Global.Base.getRandomInt(-350, 500));
-        tree.scale.setScalar(scale);
+        const tree = new THREE.Group(),
+            treeBox = new THREE.Object3D();
+        tree.position.set(0, 0, 0);
+        tree.rotation.set(0, Math.random() * Math.PI * 2, 0);
         tree.add(trunk);
         tree.add(leaves1);
         tree.add(leaves2);
         tree.add(leaves3);
+        treeBox.position.set(0, y, z);
+        treeBox.scale.setScalar(scale);
+        treeBox.add(tree);
         _this.plant.push({
             cycle: 0,
-            track: y,
-            object: tree
+            y, z,
+            object: treeBox
         });
-        _this.instance.add(tree);
+        _this.instance.add(treeBox);
     }
     
     /**

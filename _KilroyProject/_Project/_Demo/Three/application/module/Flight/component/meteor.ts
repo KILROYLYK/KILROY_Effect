@@ -94,7 +94,7 @@ export default class Meteor implements Component {
             v.position.z -= 20;
         });
         
-        _this.moveP.x = -((Global.mouseP.x - Global.Function.getDomCenter().x) * mouseS);
+        _this.moveP.x = -((Global.FocusP.x - Global.Function.getDomCenter().x) * mouseS);
         
         Global.Function.setEase(_this.instance.position, _this.moveP, ease);
         Global.Function.setEase(_this.instance.rotation, _this.lookP, ease);
