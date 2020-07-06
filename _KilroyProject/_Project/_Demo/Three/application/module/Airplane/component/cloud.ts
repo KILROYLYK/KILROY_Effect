@@ -12,11 +12,12 @@ export default class Cloud implements Component {
     private scene: THREE.Scene = null; // 场景
     
     private readonly radius: number = 20; // 半径
+    private readonly range: number = 0.2; // 范围
     private geometry: THREE.DodecahedronGeometry = null; // 几何
     private material: THREE.MeshPhongMaterial = null; // 纹理
     private cloud: {
         cycle: number,
-        track: number,
+        y: number,
         mesh: THREE.Mesh
     }[] = []; // 云
     
@@ -81,16 +82,16 @@ export default class Cloud implements Component {
         const _this = this,
             cycleS = 0.002; // 周期速度
         
-        if (Math.random() > 0.98) _this.createCloud();
+        if (Math.random() > 0.96) _this.createCloud();
         
         _this.cloud = _this.cloud.filter((v, i, a) => {
             v.cycle += cycleS;
-            v.mesh.position.x = Math.cos(v.cycle) * v.track;
-            v.mesh.position.y = Math.sin(v.cycle) * v.track;
+            v.mesh.position.x = Math.cos(v.cycle) * v.y;
+            v.mesh.position.y = Math.sin(v.cycle) * v.y;
             v.mesh.rotateX(cycleS);
             v.mesh.rotateY(cycleS);
             v.mesh.rotateZ(cycleS);
-            if (v.cycle > Math.PI) {
+            if (v.cycle >= Math.PI * (1- _this.range)) {
                 _this.instance.remove(v.mesh);
                 return false;
             }
@@ -105,12 +106,12 @@ export default class Cloud implements Component {
     private createCloud(): void {
         const _this = this,
             track = 1000, // 轨道
-            range  = 350, // 范围
+            range = 350, // 范围
             n = Global.Base.getRandomInt(1, 4),
             y = Global.Base.getRandomInt(track + 100, track + 200),
             z = Global.Base.getRandomInt(-range, range);
         
-        let cycle = 0; // 周期
+        let cycle = Math.PI * _this.range; // 周期
         
         for (let i = 0; i < n; i++) {
             const scale = Global.Base.getRandomInt(1, 9) / 10,
@@ -126,8 +127,7 @@ export default class Cloud implements Component {
             cloud.scale.setScalar(scale);
             cloud.castShadow = true;
             _this.cloud.push({
-                cycle,
-                track: y,
+                cycle, y,
                 mesh: cloud
             });
             _this.instance.add(cloud);

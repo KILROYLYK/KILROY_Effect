@@ -11,6 +11,7 @@ export default class Plant implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
+    private readonly range: number = 0.2; // 范围
     private plant: {
         cycle: number,
         y: number,
@@ -74,14 +75,14 @@ export default class Plant implements Component {
         const _this = this,
             cycleS = 0.003; // 周期速度
         
-        if (Math.random() > 0.97) _this.createTree();
+        if (Math.random() > 0.85) _this.createTree();
         
         _this.plant = _this.plant.filter((v, i, a) => {
             v.cycle += cycleS;
             v.object.position.x = Math.cos(v.cycle) * v.y;
             v.object.position.y = Math.sin(v.cycle) * v.y;
             v.object.rotation.z = -Math.PI / 2 + v.cycle;
-            if (v.cycle > Math.PI) {
+            if (v.cycle >= Math.PI * (1 - _this.range)) {
                 _this.instance.remove(v.object);
                 return false;
             }
@@ -97,7 +98,7 @@ export default class Plant implements Component {
         const _this = this,
             position = Global.Base.getRandomInt(-350, 500),
             plant = _this.plant.find((v, i, a) => {
-                return v.cycle <= 0.1 && Math.abs(position - v.object.position.z) <= 50;
+                return v.cycle < 0.7 && Math.abs(position - v.z) <= 50
             });
         if (plant) {
             return _this.getPlantPosition();
@@ -113,9 +114,9 @@ export default class Plant implements Component {
     private createTree(): void {
         const _this = this,
             track = 1000, // 轨道
-            height = 20, // 树干高
+            height = 10, // 树干高
             scale = Global.Base.getRandomInt(2, 4) / 3,
-            y = track + height * scale / 2,
+            y = track + height * scale / 2 - 2,
             z = _this.getPlantPosition();
         
         const trunkG = new THREE.BoxGeometry(10, height, 10),
@@ -169,7 +170,7 @@ export default class Plant implements Component {
         treeBox.scale.setScalar(scale);
         treeBox.add(tree);
         _this.plant.push({
-            cycle: 0,
+            cycle: Math.PI * _this.range,
             y, z,
             object: treeBox
         });
