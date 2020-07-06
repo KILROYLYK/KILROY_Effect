@@ -136,20 +136,16 @@ export default class GlobalFunction {
     
     /**
      * 更新焦点位置
+     * @param {boolean} isReset 是否重置
      * @return {void}
      */
-    public static updateFocusPosition(): void {
+    public static updateFocusPosition(isReset: boolean = true): void {
         const _this = this;
         
         // Mouse
         Global.W.addEventListener('mousemove', (e: MouseEvent) => {
             Global.FocusP.x = e.clientX;
             Global.FocusP.y = e.clientY;
-        }, false);
-        Global.W.addEventListener('mouseout', (e: MouseEvent) => {
-            const centerP = _this.getDomCenter();
-            Global.FocusP.x = centerP.x;
-            Global.FocusP.y = centerP.y;
         }, false);
         
         // Touch
@@ -161,5 +157,18 @@ export default class GlobalFunction {
             Global.FocusP.x = e.touches[0].clientX;
             Global.FocusP.y = e.touches[0].clientY;
         }, false);
+        
+        if (isReset) {
+            Global.W.addEventListener('mouseout', (e: MouseEvent) => {
+                const centerP = _this.getDomCenter();
+                Global.FocusP.x = centerP.x;
+                Global.FocusP.y = centerP.y;
+            }, false);
+            Global.W.addEventListener('touchend', (e: TouchEvent) => {
+                const centerP = _this.getDomCenter();
+                Global.FocusP.x = centerP.x;
+                Global.FocusP.y = centerP.y;
+            }, false);
+        }
     }
 }

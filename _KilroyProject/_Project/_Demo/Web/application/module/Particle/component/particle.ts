@@ -21,8 +21,9 @@ interface Point { // 点
  * 粒子
  */
 export default class Particle implements Component {
-    private canvas: HTMLCanvasElement = null; // Canvas
-    private context: CanvasRenderingContext2D = null; // Context
+    private context: CanvasRenderingContext2D = null; // 语境
+    
+    private text: string = ''; // 文案
     private readonly size: number = 150; // 字体大小
     private readonly density: number = 3; // 密度（越大越稀疏）
     private readonly color: string[] = [ // 颜色列表（RGB）
@@ -39,8 +40,6 @@ export default class Particle implements Component {
         speed: 0.5
     };
     private readonly mouse: object = { // 鼠标
-        x: -1000,
-        y: -1000,
         radius: 50, // 推离半径
         speed: 100 // 鼠标推动速度（越大速度越慢）
     };
@@ -51,9 +50,12 @@ export default class Particle implements Component {
     /**
      * 构造函数
      * @constructor Particle
+     * @param {CanvasRenderingContext2D} context 语境
      */
-    constructor() {
+    constructor(context: CanvasRenderingContext2D) {
         const _this = this;
+        
+        _this.context = context;
         
         _this.create();
         _this.init();
@@ -65,12 +67,6 @@ export default class Particle implements Component {
      */
     private create(): void {
         const _this = this;
-        
-        _this.canvas = Global.D.createElement('canvas');
-        _this.canvas.width = Global.Width;
-        _this.canvas.height = Global.Height;
-        
-        _this.context = _this.canvas.getContext('2d');
     }
     
     /**
@@ -79,16 +75,6 @@ export default class Particle implements Component {
      */
     private init(): void {
         const _this = this;
-        
-        Global.Dom.appendChild(_this.canvas);
-        Global.Function.updateMouse();
-        Global.Function.updateFrame(() => {
-            _this.update();
-        });
-        Global.Function.updateResize(() => {
-            Global.Function.resizeDom();
-            _this.update(true);
-        });
     }
     
     /**
@@ -114,8 +100,7 @@ export default class Particle implements Component {
         }
         
         if (isResize) {
-            _this.canvas.width = Global.Width;
-            _this.canvas.height = Global.Height;
+            _this.writeText(_this.text);
         }
     }
     
@@ -133,12 +118,12 @@ export default class Particle implements Component {
      */
     private clearCanvas(): void {
         const _this = this;
-        if (!_this.canvas || !_this.context) return;
+        
+        if (!_this.context) return;
         
         _this.context.clearRect(
             0, 0,
-            _this.canvas.width,
-            _this.canvas.height
+            Global.Width, Global.Height
         );
     }
     
@@ -149,36 +134,37 @@ export default class Particle implements Component {
      */
     public writeText(text: string): void {
         const _this = this,
+            centerP = Global.Function.getDomCenter(),
             cList = _this.list,
             list = [];
         
         _this.clearCanvas();
         
-        _this.context.fillStyle = '#222222';
+        _this.text = text;
+        _this.context.fillStyle = '#ffffff';
         _this.context.font = `${ _this.size }px Times`;
         _this.context.fillText(
             text,
-            _this.canvas.width / 2 - _this.context.measureText(text).width / 2,
-            _this.canvas.height / 2 + _this.size / 4,
+            centerP.x - _this.context.measureText(text).width / 2,
+            centerP.y + _this.size / 4,
         );
         
         // 获取画布数据
         const data = _this.context.getImageData(
             0, 0,
-            _this.canvas.width,
-            _this.canvas.height
+            Global.Width, Global.Height
         ).data;
         
         for (let i = 0; i < data.length; i += _this.density) {
             if (data[i] !== 0 && ~~(Math.random() * 5) === 1) {
                 if (data[i + 4] !== 255 ||
                     data[i - 4] !== 255 ||
-                    data[i + _this.canvas.width * 4] !== 255 ||
-                    data[i - _this.canvas.width * 4] !== 255) {
+                    data[i + Global.Width * 4] !== 255 ||
+                    data[i - Global.Width * 4] !== 255) {
                     
                     const target = {
-                        x: (i / 4) % _this.canvas.width,
-                        y: ~~((i / 4) / _this.canvas.width)
+                        x: (i / 4) % Global.Width,
+                        y: ~~((i / 4) / Global.Width)
                     };
                     
                     list.push(_this.createPoint(target));
@@ -212,12 +198,24 @@ export default class Particle implements Component {
                 } else {
                     v.show = false;
                     v.target = {
-                        x: Math.random() * _this.canvas.width,
-                        y: Math.random() * _this.canvas.height
+                        x: Math.random() * Global.Width,
+                        y: Math.random() * Global.Height
                     };
                 }
             });
         }
+    }
+    
+    /**
+     * 获取两点之间距离
+     * @param {Object} position 双坐标对象
+     * @return {number} 距离
+     */
+    private getDistance(position): number {
+        return Math.sqrt(
+            Math.pow((position.x2 - position.x1), 2) +
+            Math.pow((position.y2 - position.y1), 2)
+        );
     }
     
     /**
@@ -231,8 +229,8 @@ export default class Particle implements Component {
         return {
             show: true,
             position: {
-                x: Math.random() * _this.canvas.width,
-                y: Math.random() * _this.canvas.height
+                x: Math.random() * Global.Width,
+                y: Math.random() * Global.Height
             },
             target,
             speed: {
@@ -273,8 +271,8 @@ export default class Particle implements Component {
      */
     private updatePoint(point: Point): void {
         const _this = this,
-            mouseX = Global.mouseP.x,
-            mouseY = Global.mouseP.y,
+            mouseX = Global.FocusP.x,
+            mouseY = Global.FocusP.y,
             distance = _this.getDistance({
                 x1: point.position.x,
                 y1: point.position.y,
@@ -307,17 +305,5 @@ export default class Particle implements Component {
         // 更新位置
         point.position.x -= point.speed.x * _this.restoreS;
         point.position.y -= point.speed.y * _this.restoreS;
-    }
-    
-    /**
-     * 获取两点之间距离
-     * @param {Object} position 双坐标对象
-     * @return {number} 距离
-     */
-    private getDistance(position): number {
-        return Math.sqrt(
-            Math.pow((position.x2 - position.x1), 2) +
-            Math.pow((position.y2 - position.y1), 2)
-        );
     }
 }

@@ -7,7 +7,15 @@ import Particle from './component/particle';
  * 场景
  */
 export default class Stage implements _Stage {
-    private particle = null as Particle; // 粒子对象
+    private isInit: boolean = false; // 是否初始化
+    private canvas: HTMLCanvasElement = null; // 画布
+    private context: CanvasRenderingContext2D = null; // 语境
+    private component: object = { // 组件
+        particle: null as Particle // 粒子对象
+    };
+    private controller: object = { // 控制器
+    };
+    
     
     /**
      * 构造函数
@@ -27,7 +35,13 @@ export default class Stage implements _Stage {
     private create(): void {
         const _this = this;
         
-        _this.particle = new Particle();
+        _this.canvas = Global.D.createElement('canvas');
+        _this.canvas.width = Global.Width;
+        _this.canvas.height = Global.Height;
+        
+        _this.context = _this.canvas.getContext('2d');
+        
+        _this.component.particle = new Particle(_this.context);
     }
     
     /**
@@ -37,7 +51,20 @@ export default class Stage implements _Stage {
     private init(): void {
         const _this = this;
         
-        _this.particle.writeText('♥');
+        _this.isInit = true;
+        
+        Global.Dom.appendChild(_this.canvas);
+        Global.Function.updateFocusPosition(false);
+        Global.Function.updateFrame(() => {
+            _this.update();
+        });
+        Global.Function.updateResize(() => {
+            Global.Function.resizeDom();
+            _this.update(true);
+        });
+        
+        _this.component.particle.writeText('♥');
+        _this.component.particle.writeText('KILROY');
     }
     
     /**
@@ -55,11 +82,10 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
+    
+        _this.canvas.width = Global.Width;
+        _this.canvas.height = Global.Height;
         
-        _this.particle && _this.particle.update();
-        
-        if (isResize) {
-            _this.particle && _this.particle.update(true);
-        }
+        _this.component.particle.update(isResize);
     }
 }
