@@ -20,7 +20,7 @@ interface PathConfig { // 地址配置
  * 加载
  */
 export default class Loader implements Controller {
-    private loader: object = null; // 加载器对象
+    private loader: PIXI.Loader = null; // 加载器对象
     private path: PathConfig[] = []; // 资源地址
     private data: object = {}; // 资源对象
     private finish: number = 0; // 完成总数
@@ -88,15 +88,16 @@ export default class Loader implements Controller {
         
         _this.loader
             .add(_this.path)
-            .on('progress', () => {
+            .use((resource, next) => {
                 _this.finish++;
                 _this.loadedCallback && _this.loadedCallback(
                     _this.finish, length,
                     parseInt(String(_this.finish / length * 100), 10)
                 );
+                next();
             })
-            .load((load, res) => {
-                _this.data = res;
+            .load((loader, resources) => {
+                _this.data = resources;
                 _this.finishCallback && _this.finishCallback(_this.data);
             });
     }

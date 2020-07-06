@@ -26,7 +26,7 @@ export default class Global {
     public static readonly Dom: HTMLElement = GlobalFunction.getDom();
     public static Width: number = Global.Dom.clientWidth;
     public static Height: number = Global.Dom.clientHeight;
-    public static mouseP: Position = { // 鼠标位置
+    public static FocusP: Position = { // 焦点位置
         x: Global.Width / 2,
         y: Global.Height / 2
     };

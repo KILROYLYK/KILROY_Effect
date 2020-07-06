@@ -17,12 +17,15 @@ export default class Background implements Component {
     private container: PIXI.Container = null; // 容器
     private texture: Texture = null; // 纹理
     
-    private centerP: object = Global.Function.getDomCenter(); // 中心位置
-    private readonly speed: number = 0.05; // 速度
     private readonly width: number = 1400; // 宽度
     private readonly height: number = 900; // 高度
+    private readonly speed: number = 0.05; // 速度
     private spriteB: PIXI.Sprite = null; // 背景
     private spriteBS: PIXI.Sprite = null; // 背景阴影
+    private readonly moveP: object = { // 移动位置
+        x: 0,
+        y: 0
+    };
     
     private instance: PIXI.filters.DisplacementFilter = null; // 过滤器
     
@@ -51,10 +54,10 @@ export default class Background implements Component {
             bg = _this.texture.bg,
             bgShadow = _this.texture.bg_shadow;
         
-        _this.spriteB = new PIXI.Sprite.from(bg.texture);
+        _this.spriteB = new PIXI.Sprite(bg.texture);
         _this.spriteB.position.set(-(_this.spriteB.width - _this.width) / 2, -(_this.spriteB.height - _this.height) / 2);
         
-        _this.spriteBS = new PIXI.Sprite.from(bgShadow.texture);
+        _this.spriteBS = new PIXI.Sprite(bgShadow.texture);
         _this.spriteBS.position.set(-(_this.spriteBS.width - _this.width) / 2, -(_this.spriteBS.height - _this.height) / 2);
         _this.spriteBS.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
         
@@ -101,24 +104,24 @@ export default class Background implements Component {
      */
     private animation(e: MouseEvent): void {
         const _this = this,
+            centerP = Global.Function.getDomCenter(),
             TweenMax = Global.GSAP.TweenMax,
             Sine = Global.GSAP.Sine,
-            x = (Global.mouseP.x - _this.centerP.x) * _this.speed,
-            y = (Global.mouseP.y - _this.centerP.y) * _this.speed;
+            x = (Global.FocusP.x - centerP.x) * _this.speed,
+            y = (Global.FocusP.y - centerP.y) * _this.speed;
         
-        if (Global.mouseP.x === e.clientX &&
-            Global.mouseP.y === e.clientY) return;
+        if (Global.FocusP.x === e.clientX &&
+            Global.FocusP.y === e.clientY) return;
         
         TweenMax
-            .to(Global.mouseP, 2, {
-                x: e.clientX,
-                y: e.clientY,
+            .to(_this.moveP, 1, {
+                x, y,
                 ease: Sine.easeOut,
                 onUpdate() {
                     _this.container.filters = [ _this.instance ];
-                    _this.spriteB.position.set(x - (_this.spriteB.width - _this.width) / 2, y - (_this.spriteB.height - _this.height) / 2);
-                    _this.spriteBS.position.set(x - (_this.spriteB.width - _this.width) / 2, y - (_this.spriteB.height - _this.height) / 2);
-                    _this.instance.scale.set(-x, -y);
+                    _this.spriteB.position.set(_this.moveP.x - (_this.spriteB.width - _this.width) / 2, _this.moveP.y - (_this.spriteB.height - _this.height) / 2);
+                    _this.spriteBS.position.set(_this.moveP.x - (_this.spriteB.width - _this.width) / 2, _this.moveP.y - (_this.spriteB.height - _this.height) / 2);
+                    _this.instance.scale.set(-_this.moveP.x, -_this.moveP.y);
                 }
             });
     }

@@ -135,21 +135,31 @@ export default class GlobalFunction {
     }
     
     /**
-     * 更新鼠标位置
+     * 更新焦点位置
      * @return {void}
      */
-    public static updateMouse(): void {
+    public static updateFocusPosition(): void {
         const _this = this;
         
+        // Mouse
         Global.W.addEventListener('mousemove', (e: MouseEvent) => {
-            Global.mouseP.x = e.clientX;
-            Global.mouseP.y = e.clientY;
+            Global.FocusP.x = e.clientX;
+            Global.FocusP.y = e.clientY;
         }, false);
-        
         Global.W.addEventListener('mouseout', (e: MouseEvent) => {
             const centerP = _this.getDomCenter();
-            Global.mouseP.x = centerP.x;
-            Global.mouseP.y = centerP.y;
+            Global.FocusP.x = centerP.x;
+            Global.FocusP.y = centerP.y;
+        }, false);
+        
+        // Touch
+        Global.W.addEventListener('touchstart', (e: TouchEvent) => {
+            Global.FocusP.x = e.touches[0].clientX;
+            Global.FocusP.y = e.touches[0].clientY;
+        }, false);
+        Global.W.addEventListener('touchmove', (e: TouchEvent) => {
+            Global.FocusP.x = e.touches[0].clientX;
+            Global.FocusP.y = e.touches[0].clientY;
         }, false);
     }
 }

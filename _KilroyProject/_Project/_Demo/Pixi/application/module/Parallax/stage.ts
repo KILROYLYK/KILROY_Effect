@@ -93,6 +93,7 @@ export default class Stage implements _Stage {
         _this.app.stage.addChild(_this.container);
         
         Global.Dom.appendChild(_this.app.view);
+        Global.Function.updateFocusPosition();
     }
     
     /**
