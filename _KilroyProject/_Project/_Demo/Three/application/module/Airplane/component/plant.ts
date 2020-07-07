@@ -93,23 +93,6 @@ export default class Plant implements Component {
     }
     
     /**
-     * 获取植物位置
-     * @return {number} z轴位置
-     */
-    private getPlantPosition(): number {
-        const _this = this,
-            position = Global.Base.getRandomInt(-350, 500),
-            plant = _this.plant.find((v, i, a) => {
-                return v.cycle < 0.7 && Math.abs(position - v.z) <= 50
-            });
-        if (plant) {
-            return 0;
-        } else {
-            return position;
-        }
-    }
-    
-    /**
      * 创建树木
      * @return {void}
      */
@@ -265,5 +248,22 @@ export default class Plant implements Component {
             object: flower
         });
         _this.instance.add(flower);
+    }
+    
+    /**
+     * 获取植物位置
+     * @return {number} z轴位置
+     */
+    private getPlantPosition(): number {
+        const _this = this,
+            position = Global.Base.getRandomInt(-350, 500),
+            plant = _this.plant.find((v, i, a) => {
+                return v.cycle < 0.7 && Math.abs(position - v.z) <= 50
+            });
+        if (plant) {
+            return 0;
+        } else {
+            return position;
+        }
     }
 }
