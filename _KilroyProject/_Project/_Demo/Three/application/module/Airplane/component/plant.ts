@@ -56,8 +56,6 @@ export default class Plant implements Component {
         const _this = this;
         
         _this.scene.add(_this.instance);
-        
-        _this.createFlower();
     }
     
     /**
@@ -78,7 +76,8 @@ export default class Plant implements Component {
         const _this = this,
             cycleS = 0.003; // 周期速度
         
-        if (Math.random() > 0.85) _this.createTree();
+        if (Math.random() > 0.8) _this.createTree();
+        if (Math.random() > 0.9) _this.createFlower();
         
         _this.plant = _this.plant.filter((v, i, a) => {
             v.cycle += cycleS;
@@ -104,7 +103,7 @@ export default class Plant implements Component {
                 return v.cycle < 0.7 && Math.abs(position - v.z) <= 50
             });
         if (plant) {
-            return _this.getPlantPosition();
+            return 0;
         } else {
             return position;
         }
@@ -120,6 +119,8 @@ export default class Plant implements Component {
             scale = Global.Base.getRandomInt(2, 5) * 0.3,
             y = _this.track + height * scale / 2 - 2,
             z = _this.getPlantPosition();
+        
+        if (z === 0) return;
         
         const trunkG = new THREE.CylinderGeometry(
             10, 10, height,
@@ -187,8 +188,6 @@ export default class Plant implements Component {
      */
     private createFlower(): void {
         const _this = this,
-            height = 52, // 花枝高
-            scale = 2 || Global.Base.getRandomInt(1, 2) / 3,
             color = [
                 '#f25346',
                 '#edeb27',
@@ -196,8 +195,13 @@ export default class Plant implements Component {
                 '#68c3c0',
                 '#551a8b'
             ],
+            petalD = 12,
+            height = Global.Base.getRandomInt(30, 50) + 2, // 花枝高
+            scale = Global.Base.getRandomInt(2, 4) * 0.1,
             y = _this.track + height * scale / 2 - 2,
             z = _this.getPlantPosition();
+        
+        if (z === 0) return;
         
         const trunkG = new THREE.CylinderGeometry(
             3, 3, height,
@@ -215,42 +219,39 @@ export default class Plant implements Component {
                 color: color[Global.Base.getRandomInt(0, 4)],
                 flatShading: true
             }),
-            petalBox = new THREE.Group();
-        
-        let petalG = null;
-        
-        if (Math.random() > 0.5) {
             petalG = new THREE.BoxGeometry(
                 15, 20, 5,
                 1, 1, 1
-            );
-            petalG.vertices[5].y -= 4;
-            petalG.vertices[4].y -= 4;
-            petalG.vertices[7].y += 4;
-            petalG.vertices[6].y += 4;
-        } else {
-            petalG = new THREE.CircleGeometry(
-                15, 20, 5,
-                1, 1, 1
-            );
+            ),
+            petalBox = new THREE.Group();
+        petalG.vertices[5].y -= 4;
+        petalG.vertices[4].y -= 4;
+        petalG.vertices[7].y += 4;
+        petalG.vertices[6].y += 4;
+        petalBox.position.set(0, height - 15, 3);
+        
+        for (let i = 0; i < 4; i++) {
+            const petal = new THREE.Mesh(petalG, petalM);
+            if (i === 0) petal.position.set(petalD, 0, 0);
+            if (i === 1) petal.position.set(0, petalD, 0);
+            if (i === 2) petal.position.set(-petalD, 0, 0);
+            if (i === 3) petal.position.set(0, -petalD, 0);
+            petal.rotation.z = i * Math.PI / 2;
+            petal.castShadow = true;
+            petal.receiveShadow = true;
+            petalBox.add(petal);
         }
-        
-        for (var i = 0; i < 4; i++) {
-        
-        }
-        
-        // petal = new THREE.Mesh(petalG, petalM);
-        // petal.position.set(0, 30, 0);
         
         const flower = new THREE.Object3D();
         flower.position.set(0, y, z);
         flower.scale.setScalar(scale);
         flower.add(trunk);
-        // _this.plant.push({
-        //     cycle: Math.PI * _this.range,
-        //     y, z,
-        //     object: flower
-        // });
+        flower.add(petalBox);
+        _this.plant.push({
+            cycle: Math.PI * _this.range,
+            y, z,
+            object: flower
+        });
         _this.instance.add(flower);
     }
 }

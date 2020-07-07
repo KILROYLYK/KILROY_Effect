@@ -36,7 +36,7 @@ export default class Camera implements Layout {
         _this.instance.position.set(0, 1150, 550);
         _this.instance.rotation.set(Math.PI * -0.05, 0, 0);
         
-        _this.createController();
+        // _this.createController();
     }
     
     /**
@@ -67,7 +67,7 @@ export default class Camera implements Layout {
         
         if (!_this.instance) return;
         
-        _this.controller.update();
+        // _this.controller.update();
         
         if (isResize) { // 屏幕变化
             _this.instance.aspect = Global.Function.getDomAspect();
