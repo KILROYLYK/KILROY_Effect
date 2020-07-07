@@ -215,20 +215,32 @@ export default class Plant implements Component {
         trunk.castShadow = true;
         trunk.receiveShadow = true;
         
-        const petalM = new THREE.MeshBasicMaterial({
+        const stamenG = new THREE.BoxGeometry(
+            8, 8, 5,
+            1, 1, 1
+            ),
+            stamenM = new THREE.MeshBasicMaterial({
                 color: color[Global.Base.getRandomInt(0, 4)],
                 flatShading: true
             }),
+            stamen = new THREE.Mesh(stamenG, stamenM),
             petalG = new THREE.BoxGeometry(
                 15, 20, 5,
                 1, 1, 1
             ),
+            petalM = new THREE.MeshBasicMaterial({
+                color: color[Global.Base.getRandomInt(0, 4)],
+                flatShading: true
+            }),
             petalBox = new THREE.Group();
+        stamen.position.set(0, 0, 2);
         petalG.vertices[5].y -= 4;
         petalG.vertices[4].y -= 4;
         petalG.vertices[7].y += 4;
         petalG.vertices[6].y += 4;
         petalBox.position.set(0, height - 15, 3);
+        petalBox.rotation.set(0, 0, Math.random() * Math.PI * 2);
+        petalBox.add(stamen);
         
         for (let i = 0; i < 4; i++) {
             const petal = new THREE.Mesh(petalG, petalM);
