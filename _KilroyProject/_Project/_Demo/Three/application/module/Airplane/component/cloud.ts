@@ -80,18 +80,18 @@ export default class Cloud implements Component {
      */
     public update(): void {
         const _this = this,
-            cycleS = 0.002; // 周期速度
+            cycleS = 0.0015; // 周期速度
         
-        if (Math.random() > 0.96) _this.createCloud();
+        if (Math.random() > 0.98) _this.createCloud();
         
         _this.cloud = _this.cloud.filter((v, i, a) => {
             v.cycle += cycleS;
             v.mesh.position.x = Math.cos(v.cycle) * v.y;
             v.mesh.position.y = Math.sin(v.cycle) * v.y;
             v.mesh.rotateX(cycleS);
-            v.mesh.rotateY(cycleS);
+            v.mesh.rotateY(-cycleS);
             v.mesh.rotateZ(cycleS);
-            if (v.cycle >= Math.PI * (1- _this.range)) {
+            if (v.cycle >= Math.PI * (1 - _this.range)) {
                 _this.instance.remove(v.mesh);
                 return false;
             }
@@ -108,13 +108,13 @@ export default class Cloud implements Component {
             track = 1000, // 轨道
             range = 350, // 范围
             n = Global.Base.getRandomInt(1, 4),
-            y = Global.Base.getRandomInt(track + 100, track + 200),
+            y = Global.Base.getRandomInt(track + 150, track + 300),
             z = Global.Base.getRandomInt(-range, range);
         
         let cycle = Math.PI * _this.range; // 周期
         
         for (let i = 0; i < n; i++) {
-            const scale = Global.Base.getRandomInt(1, 9) / 10,
+            const scale = Global.Base.getRandomInt(2, 9) * 0.1,
                 radius = scale * _this.radius * 0.8 / y;
             
             if (i !== 0) cycle += radius;

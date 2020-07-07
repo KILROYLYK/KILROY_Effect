@@ -44,7 +44,7 @@ export default class Ground implements Component {
         geometry.applyMatrix4(matrix.makeRotationX(-Math.PI / 2));
         
         const material = new THREE.MeshPhongMaterial({
-            color: '#629265',
+            color: '#27c433',
             flatShading: true
         });
         

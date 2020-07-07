@@ -11,6 +11,7 @@ export default class Plant implements Component {
     
     private scene: THREE.Scene = null; // 场景
     
+    private readonly track: number = 1000; // 轨道
     private readonly range: number = 0.2; // 范围
     private plant: {
         cycle: number,
@@ -55,6 +56,8 @@ export default class Plant implements Component {
         const _this = this;
         
         _this.scene.add(_this.instance);
+        
+        _this.createFlower();
     }
     
     /**
@@ -113,13 +116,14 @@ export default class Plant implements Component {
      */
     private createTree(): void {
         const _this = this,
-            track = 1000, // 轨道
-            height = 10, // 树干高
-            scale = Global.Base.getRandomInt(2, 4) / 3,
-            y = track + height * scale / 2 - 2,
+            height = 12, // 树干高
+            scale = Global.Base.getRandomInt(2, 5) * 0.3,
+            y = _this.track + height * scale / 2 - 2,
             z = _this.getPlantPosition();
         
-        const trunkG = new THREE.BoxGeometry(10, height, 10),
+        const trunkG = new THREE.CylinderGeometry(
+            10, 10, height,
+            6, 6),
             trunkM = new THREE.MeshBasicMaterial({
                 color: '#59332e',
                 flatShading: true
@@ -182,7 +186,71 @@ export default class Plant implements Component {
      * @return {void}
      */
     private createFlower(): void {
-        const _this = this;
+        const _this = this,
+            height = 52, // 花枝高
+            scale = 2 || Global.Base.getRandomInt(1, 2) / 3,
+            color = [
+                '#f25346',
+                '#edeb27',
+                '#f5986e',
+                '#68c3c0',
+                '#551a8b'
+            ],
+            y = _this.track + height * scale / 2 - 2,
+            z = _this.getPlantPosition();
         
+        const trunkG = new THREE.CylinderGeometry(
+            3, 3, height,
+            6, 6),
+            trunkM = new THREE.MeshBasicMaterial({
+                color: '#157218',
+                flatShading: true
+            }),
+            trunk = new THREE.Mesh(trunkG, trunkM);
+        trunk.position.set(0, 0, 0);
+        trunk.castShadow = true;
+        trunk.receiveShadow = true;
+        
+        const petalM = new THREE.MeshBasicMaterial({
+                color: color[Global.Base.getRandomInt(0, 4)],
+                flatShading: true
+            }),
+            petalBox = new THREE.Group();
+        
+        let petalG = null;
+        
+        if (Math.random() > 0.5) {
+            petalG = new THREE.BoxGeometry(
+                15, 20, 5,
+                1, 1, 1
+            );
+            petalG.vertices[5].y -= 4;
+            petalG.vertices[4].y -= 4;
+            petalG.vertices[7].y += 4;
+            petalG.vertices[6].y += 4;
+        } else {
+            petalG = new THREE.CircleGeometry(
+                15, 20, 5,
+                1, 1, 1
+            );
+        }
+        
+        for (var i = 0; i < 4; i++) {
+        
+        }
+        
+        // petal = new THREE.Mesh(petalG, petalM);
+        // petal.position.set(0, 30, 0);
+        
+        const flower = new THREE.Object3D();
+        flower.position.set(0, y, z);
+        flower.scale.setScalar(scale);
+        flower.add(trunk);
+        // _this.plant.push({
+        //     cycle: Math.PI * _this.range,
+        //     y, z,
+        //     object: flower
+        // });
+        _this.instance.add(flower);
     }
 }

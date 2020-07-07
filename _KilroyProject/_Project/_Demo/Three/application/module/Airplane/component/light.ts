@@ -82,13 +82,13 @@ export default class Light implements Component {
      */
     private createLight(): void {
         const _this = this,
-            distance = 650,
+            distance = 1000,
             size = 2048;
     
-        _this.lightAmbient = new THREE.AmbientLight('#ffffff', 0.2);
+        _this.lightAmbient = new THREE.AmbientLight('#ffffff', 0.1);
         _this.lightAmbient.position.set(0, 0, 0);
         
-        _this.lightDirectional = new THREE.DirectionalLight('#ffffff', 1.2);
+        _this.lightDirectional = new THREE.DirectionalLight('#ffffff', 1.5);
         _this.lightDirectional.position.set(0, 1500, 400);
         _this.lightDirectional.castShadow = true;
         _this.lightDirectional.shadow.camera.top = distance;
