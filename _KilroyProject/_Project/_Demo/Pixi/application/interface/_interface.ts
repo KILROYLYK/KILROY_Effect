@@ -2,8 +2,6 @@
  * 接口
  */
 export default interface Interface {
-    instance?: any; // 实例
-    
     /**
      * 创建
      * @return {void}
@@ -15,12 +13,6 @@ export default interface Interface {
      * @return {void}
      */
     init(): void;
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    destroy?(): void;
     
     /**
      * 更新

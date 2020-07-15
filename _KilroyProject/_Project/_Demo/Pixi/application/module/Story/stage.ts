@@ -37,7 +37,7 @@ export default class Stage implements _Stage {
                 },
                 finishCallback(data) {
                     _this.resource.data = data;
-
+                    
                     _this.create();
                     _this.init();
                 }
@@ -56,7 +56,7 @@ export default class Stage implements _Stage {
         _this.app = new PIXI.Application({
             transparent: true
         });
-
+        
         _this.container = new PIXI.Container();
     }
     
@@ -70,7 +70,7 @@ export default class Stage implements _Stage {
         _this.isInit = true;
         
         _this.app.stage.addChild(_this.container);
-
+        
         Global.Dom.appendChild(_this.app.view);
     }
     

@@ -52,14 +52,14 @@ export default class Stage implements _Stage {
     private controller: object = { // 控制器
         loader: null as Loader // 加载
     };
-    
+
     /**
      * 构造函数
      * @constructor Stage
      */
     constructor() {
         const _this = this;
-        
+
         _this.controller.loader = new Loader(_this.resource.path, {
             loadedCallback(index, total, progress) {
                 // console.log(`加载进度：${ index } ${ total } ${ progress }`);
@@ -72,7 +72,7 @@ export default class Stage implements _Stage {
             }
         });
     }
-    
+
     /**
      * 创建
      * @return {void}
@@ -80,11 +80,11 @@ export default class Stage implements _Stage {
     private create(): void {
         const _this = this,
             resource = _this.resource.data;
-        
+
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
-        
+
         _this.component.mountain = new Mountain(_this.scene, resource.image_mountain);
         _this.component.ground = new Ground(_this.scene);
         _this.component.star = new Star(_this.scene, resource.image_star);
@@ -94,16 +94,16 @@ export default class Stage implements _Stage {
             spaceship: resource.obj_spaceship
         });
     }
-    
+
     /**
      * 初始化
      * @return {void}
      */
     private init(): void {
         const _this = this;
-        
+
         _this.isInit = true;
-        
+
         Global.Dom.appendChild(_this.renderer.instance.domElement);
         Global.Function.showCursor(false);
         Global.Function.updateFocusPosition();
@@ -115,18 +115,18 @@ export default class Stage implements _Stage {
             _this.update(true);
         });
     }
-    
+
     /**
      * 销毁
      * @return {void}
      */
     public destroy(): void {
         const _this = this;
-        
+
         if (!_this.isInit) return;
         _this.isInit = false;
     }
-    
+
     /**
      * 更新
      * @param {boolean} isResize 是否调整大小
@@ -134,18 +134,18 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-        
+
         if (!_this.isInit) return;
-        
+
         _this.component.mountain.update();
         _this.component.ground.update();
         _this.component.star.update();
         _this.component.meteor.update();
         _this.component.spaceship.update();
-        
+
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
-        
+
         _this.renderer.instance.clear();
         _this.renderer.instance.render(
             _this.scene.instance,

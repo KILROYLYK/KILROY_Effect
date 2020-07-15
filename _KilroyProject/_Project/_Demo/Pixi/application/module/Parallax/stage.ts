@@ -12,6 +12,18 @@ import '../.././../static/css/Parallax/index.less';
  * 场景
  */
 export default class Stage implements _Stage {
+    private static instance = null; // 单例
+    
+    /**
+     * 实例
+     * @return {Stage} 单例
+     */
+    public static Instance(): Stage {
+        const _this = this;
+        if (_this.instance == null) _this.instance = new Stage();
+        return _this.instance;
+    }
+    
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: [
@@ -96,18 +108,10 @@ export default class Stage implements _Stage {
         
         Global.Dom.appendChild(_this.app.view);
         Global.Function.showCursor(false);
+        Global.Function.updateResize(() => {
+            Global.Function.resizeDom();
+        });
         Global.Function.updateFocusPosition();
-    }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.isInit) return;
-        _this.isInit = false;
     }
     
     /**
