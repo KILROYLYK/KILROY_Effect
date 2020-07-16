@@ -63,14 +63,4 @@ export default class Panoramic implements Component {
         
         _this.scene.add(_this.instance);
     }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-    }
 }

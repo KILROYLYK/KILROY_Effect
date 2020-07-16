@@ -2,6 +2,8 @@
  * 接口
  */
 export default interface Interface {
+    instance?: any; // 实例
+    
     /**
      * 创建
      * @return {void}

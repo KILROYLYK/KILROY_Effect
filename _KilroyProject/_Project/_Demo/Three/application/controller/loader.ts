@@ -88,14 +88,6 @@ export default class Loader implements Controller {
     }
     
     /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-    }
-    
-    /**
      * 加载
      * @param {PathConfig} path 地址
      * @return {void}

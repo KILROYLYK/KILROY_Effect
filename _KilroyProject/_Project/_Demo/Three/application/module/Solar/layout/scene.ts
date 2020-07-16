@@ -40,14 +40,4 @@ export default class Scene implements Layout {
     private init(): void {
         const _this = this;
     }
-    
-    /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-    }
 }

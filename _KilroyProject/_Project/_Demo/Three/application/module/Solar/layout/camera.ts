@@ -51,16 +51,6 @@ export default class Camera implements Layout {
     }
     
     /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-    }
-    
-    /**
      * 更新
      * @param {boolean} isResize 屏幕是否变化
      * @return {void}

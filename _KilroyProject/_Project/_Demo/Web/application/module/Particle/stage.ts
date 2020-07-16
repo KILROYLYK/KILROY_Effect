@@ -68,14 +68,6 @@ export default class Stage implements _Stage {
     }
 
     /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-    }
-
-    /**
      * 更新
      * @param {boolean} isResize 是否调整大小
      * @return {void}

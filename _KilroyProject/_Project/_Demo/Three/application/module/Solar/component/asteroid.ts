@@ -63,16 +63,6 @@ export default class Asteroid implements Component {
     }
     
     /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-    }
-    
-    /**
      * 更新
      * @return {void}
      */

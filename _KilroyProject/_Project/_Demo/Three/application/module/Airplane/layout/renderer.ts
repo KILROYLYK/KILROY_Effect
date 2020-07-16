@@ -44,16 +44,6 @@ export default class Renderer implements Layout {
     }
     
     /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.instance) return;
-    }
-    
-    /**
      * 更新
      * @param {boolean} isResize 是否调整大小
      * @return {void}

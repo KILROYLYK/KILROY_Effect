@@ -105,14 +105,6 @@ export default class Particle implements Component {
     }
     
     /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-    }
-    
-    /**
      * 清理画布
      * @return {void}
      */

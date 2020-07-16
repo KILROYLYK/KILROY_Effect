@@ -65,14 +65,6 @@ export default class Loader implements Controller {
     }
     
     /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-    }
-    
-    /**
      * 加载素材
      * @return {void}
      */

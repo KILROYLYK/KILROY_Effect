@@ -17,12 +17,6 @@ export default interface Interface {
     init(): void;
     
     /**
-     * 销毁
-     * @return {void}
-     */
-    destroy?(): void;
-    
-    /**
      * 更新
      * @return {void}
      */

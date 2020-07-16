@@ -103,16 +103,6 @@ export default class Look implements Controller {
     }
     
     /**
-     * 销毁
-     * @return {void}
-     */
-    public destroy(): void {
-        const _this = this;
-        
-        if (!_this.camera) return;
-    }
-    
-    /**
      * 根据设备绑定方法
      * @return {void}
      */
