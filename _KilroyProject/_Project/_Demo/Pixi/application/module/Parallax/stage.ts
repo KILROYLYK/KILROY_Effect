@@ -12,18 +12,6 @@ import '../.././../static/css/Parallax/index.less';
  * 场景
  */
 export default class Stage implements _Stage {
-    private static instance = null; // 单例
-    
-    /**
-     * 实例
-     * @return {Stage} 单例
-     */
-    public static Instance(): Stage {
-        const _this = this;
-        if (_this.instance == null) _this.instance = new Stage();
-        return _this.instance;
-    }
-    
     private isInit: boolean = false; // 是否初始化
     private readonly resource: object = { // 资源
         path: [
@@ -91,7 +79,7 @@ export default class Stage implements _Stage {
         _this.component.background = new Background(
             _this.container, {
                 bg: resource.image_bg,
-                bg_shadow: resource.image_bg_shadow,
+                bg_shadow: resource.image_bg_shadow
             });
     }
     

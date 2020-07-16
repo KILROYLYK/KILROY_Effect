@@ -102,7 +102,7 @@ export default class Background implements Component {
         const _this = this,
             centerP = Global.Function.getDomCenter();
         
-        if (Global.Width >= Global.Height) {
+        if (Global.Width <= Global.Height) {
             _this.width = Global.Width * 1.2;
             _this.height = _this.width / _this.ratio;
         } else {
