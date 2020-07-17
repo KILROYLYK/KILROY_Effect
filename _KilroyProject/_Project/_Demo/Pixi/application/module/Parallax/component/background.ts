@@ -12,43 +12,35 @@ interface Texture { // 纹理
  * 背景
  */
 export default class Background implements Component {
-    public static instance: Background = null; // 单例
-    
-    /**
-     * 获取实例
-     * @return {Background} 实例
-     */
-    public static get Instance(): Background {
-        const _this = this;
-        !_this.instance && (_this.instance = new Background());
-        return _this.instance;
-    };
-    
     private readonly name: string = 'Background-背景';
-    private isInit: boolean = false; // 是否初始化
+    
     private container: PIXI.Container = null; // 容器
-    private resource: Texture = null; // 纹理
-    private width: number = 0; // 宽
-    private height: number = 0; // 高
+    private texture: Texture = null; // 纹理
+    
     private readonly speed: number = 0.05; // 速度
     private readonly ratio: number = 1652 / 1074; // 宽高比值
+    private width: number = 0; // 宽
+    private height: number = 0; // 高
+    private spriteB: PIXI.Sprite = null; // 背景
+    private spriteBS: PIXI.Sprite = null; // 背景阴影
     private readonly moveP: object = { // 移动位置
         x: 0,
         y: 0
     };
-    private spriteB: PIXI.Sprite = null; // 背景
-    private spriteBS: PIXI.Sprite = null; // 背景阴影
-    private filter: PIXI.filters.DisplacementFilter = null; // 过滤器
+    
+    private instance: PIXI.filters.DisplacementFilter = null; // 过滤器
     
     /**
      * 构造函数
      * @constructor Background
+     * @param {PIXI.Container} container 场景
+     * @param {Texture} texture 纹理
      */
-    constructor() {
+    constructor(container: object, texture: Texture) {
         const _this = this;
         
-        _this.container = Global.Config.container;
-        _this.resource = Global.Config.resource;
+        _this.container = container;
+        _this.texture = texture;
         
         _this.create();
         _this.init();
@@ -60,13 +52,14 @@ export default class Background implements Component {
      */
     private create(): void {
         const _this = this,
-            bg = _this.resource.bg,
-            bgShadow = _this.resource.bg_shadow;
+            bg = _this.texture.bg,
+            bgShadow = _this.texture.bg_shadow;
         
         _this.spriteB = new PIXI.Sprite(bg.texture);
         _this.spriteBS = new PIXI.Sprite(bgShadow.texture);
         _this.spriteBS.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
-        _this.filter = new PIXI.filters.DisplacementFilter(_this.spriteBS);
+        
+        _this.instance = new PIXI.filters.DisplacementFilter(_this.spriteBS);
         
         _this.setSize();
     }
@@ -77,8 +70,6 @@ export default class Background implements Component {
      */
     private init(): void {
         const _this = this;
-    
-        _this.isInit = true;
         
         _this.container.addChild(_this.spriteB);
         _this.container.addChild(_this.spriteBS);
@@ -96,7 +87,7 @@ export default class Background implements Component {
     public update(isResize: boolean = false): void {
         const _this = this;
         
-        if (!_this.isInit) return;
+        if (!_this.instance) return;
         
         if (isResize) {
             _this.setSize();
@@ -109,14 +100,21 @@ export default class Background implements Component {
      */
     private setSize(): void {
         const _this = this,
-            centerP = Global.Function.getDomCenter();
+            centerP = Global.Function.getDomCenter(),
+            ratio = Global.Width / Global.Height;
         
-        if (Global.Width <= Global.Height) {
-            _this.width = Global.Width * 1.2;
-            _this.height = _this.width / _this.ratio;
-        } else {
-            _this.height = Global.Height * 1.2;
-            _this.width = _this.height * _this.ratio;
+        switch (true) {
+            case ratio >= 1 && ratio >= _this.ratio:
+            case ratio <= 1 && ratio >= _this.ratio:
+                _this.width = Global.Width * 1.2;
+                _this.height = _this.width / _this.ratio;
+                break;
+            case ratio >= 1 && ratio <= _this.ratio:
+            case ratio <= 1 && ratio <= _this.ratio:
+            default:
+                _this.height = Global.Height * 1.2;
+                _this.width = _this.height * _this.ratio;
+                break
         }
         
         _this.spriteB.width = _this.width;
@@ -149,10 +147,10 @@ export default class Background implements Component {
                 x, y,
                 ease: Sine.easeOut,
                 onUpdate() {
-                    _this.container.filters = [ _this.filter ];
+                    _this.container.filters = [ _this.instance ];
                     _this.spriteB.position.set(centerP.x - _this.width / 2 + _this.moveP.x, centerP.y - _this.height / 2 + _this.moveP.y);
                     _this.spriteBS.position.set(centerP.x - _this.width / 2 + _this.moveP.x, centerP.y - _this.height / 2 + _this.moveP.y);
-                    _this.filter.scale.set(-_this.moveP.x, -_this.moveP.y);
+                    _this.instance.scale.set(-_this.moveP.x, -_this.moveP.y);
                 }
             });
     }

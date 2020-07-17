@@ -20,20 +20,8 @@ interface PathConfig { // 地址配置
  * 加载
  */
 export default class Loader implements Controller {
-    public static instance: Loader = null; // 单例
-    
-    /**
-     * 获取实例
-     * @return {Loader} 实例
-     */
-    public static get Instance(): Loader {
-        const _this = this;
-        !_this.instance && (_this.instance = new Loader());
-        return _this.instance;
-    };
-    
-    private readonly name: string = 'Loader-加载';
     private loader: PIXI.Loader = null; // 加载器对象
+    private path: PathConfig[] = []; // 资源地址
     private data: object = {}; // 资源对象
     private finish: number = 0; // 完成总数
     private loadedCallback: Function = null; // 加载完成（单个资源）
@@ -42,9 +30,15 @@ export default class Loader implements Controller {
     /**
      * 原型对象
      * @constructor Loader
+     * @param {PathConfig[]} path 资源列表
+     * @param {object} config 配置
      */
-    constructor() {
+    constructor(path: PathConfig[] = [], config: LoadConfig = {}) {
         const _this = this;
+        
+        _this.path = path;
+        _this.loadedCallback = config.loadedCallback || null;
+        _this.finishCallback = config.finishCallback || null;
         
         _this.create();
         _this.init();
@@ -66,20 +60,17 @@ export default class Loader implements Controller {
      */
     private init(): void {
         const _this = this;
+        
+        _this.load();
     }
     
     /**
      * 加载素材
-     * @param {PathConfig[]} path 资源列表
-     * @param {object} config 配置
      * @return {void}
      */
-    public load(path: PathConfig[] = [], config: LoadConfig = {}): void {
+    private load(): void {
         const _this = this,
-            length = path.length;
-        
-        _this.loadedCallback = config.loadedCallback || null;
-        _this.finishCallback = config.finishCallback || null;
+            length = _this.path.length;
         
         if (length === 0) {
             _this.loadedCallback && _this.loadedCallback(0, 0, 100);
@@ -88,7 +79,7 @@ export default class Loader implements Controller {
         }
         
         _this.loader
-            .add(path)
+            .add(_this.path)
             .use((resource, next) => {
                 _this.finish++;
                 _this.loadedCallback && _this.loadedCallback(
