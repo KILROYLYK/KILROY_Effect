@@ -1,5 +1,5 @@
 /**
  * Style
  */
-import '../../../../_Base/css/common.less'
-import '../../static/css/main.less';
+import '../../../../_Base/Resource/css/common.less'
+import '../../resource/css/main.less';

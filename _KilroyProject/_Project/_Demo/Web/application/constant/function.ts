@@ -1,4 +1,4 @@
-import { D, Base } from '../../../../_Base/typescript/window';
+import { D, Base } from '../../../../_Base/Asset/typescript/window';
 import Global from './global';
 
 interface Position { // 位置

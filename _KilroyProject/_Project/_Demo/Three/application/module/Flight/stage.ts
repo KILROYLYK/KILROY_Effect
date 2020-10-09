@@ -11,7 +11,7 @@ import Meteor from './component/meteor';
 import Spaceship from './component/spaceship';
 import Loader from '../../controller/loader';
 
-import '../../../static/css/Flight/index.less';
+import '../../../resource/css/Flight/index.less';
 
 /**
  * 场景

@@ -6,7 +6,7 @@ import * as PIXI from 'pixi.js';
 import Background from './component/background';
 import Loader from '../../controller/loader';
 
-import '../.././../static/css/Parallax/index.less';
+import '../../../resource/css/Parallax/index.less';
 
 /**
  * 场景

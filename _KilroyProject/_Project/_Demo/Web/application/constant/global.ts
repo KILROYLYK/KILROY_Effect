@@ -1,6 +1,6 @@
 import './style';
 
-import { W, D, Base, GSAP, Tween } from '../../../../_Base/typescript/window';
+import { W, D, Base, GSAP, Tween } from '../../../../_Base/Asset/typescript/window';
 
 import GlobalConfig from './config'; // 配置
 import GlobalFunction from './function'; // 函数
