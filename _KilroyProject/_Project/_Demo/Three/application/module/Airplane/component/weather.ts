@@ -62,7 +62,7 @@ export default class Weather implements Component {
         
         _this.switchDay();
         
-        Global.W.addEventListener('keyup', (e: KeyboardEvent) => {
+        Global.Window.addEventListener('keyup', (e: KeyboardEvent) => {
             if (e.code === 'Space') _this.switchDay();
         }, false);
     }

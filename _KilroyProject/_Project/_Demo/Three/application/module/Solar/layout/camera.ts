@@ -103,11 +103,11 @@ export default class Camera implements Layout {
                 _this.openController();
             })
             .onStop(() => {
-                Global.W.addEventListener('mousedown', () => {
+                Global.Window.addEventListener('mousedown', () => {
                     _this.setTime && clearTimeout(_this.setTime);
                     _this.closeRotate();
                 }, false);
-                Global.W.addEventListener('mouseup', () => {
+                Global.Window.addEventListener('mouseup', () => {
                     _this.setTime = setTimeout(() => {
                         _this.openRotate();
                     }, 10000);

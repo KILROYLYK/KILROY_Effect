@@ -120,7 +120,7 @@ export default class Look implements Controller {
      */
     private mouseMove(): void {
         const _this = this,
-            W = Global.W,
+            W = Global.Window,
             mouse = { // 鼠标
                 /**
                  * 按下
@@ -189,7 +189,7 @@ export default class Look implements Controller {
      */
     private touchMove() {
         const _this = this,
-            W = Global.W,
+            W = Global.Window,
             touch = { // 触摸
                 /**
                  * 开始

@@ -15,7 +15,7 @@ interface Position { // 位置
  * 全局
  */
 export default class Global {
-    public static readonly W: Window = W;
+    public static readonly Window: Window = W;
     public static readonly Document: Document = D;
     
     public static readonly Base: any = Base;

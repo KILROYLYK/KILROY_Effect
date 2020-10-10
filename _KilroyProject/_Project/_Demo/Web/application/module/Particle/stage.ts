@@ -35,7 +35,7 @@ export default class Stage implements _Stage {
     private create(): void {
         const _this = this;
 
-        _this.canvas = Global.D.createElement('canvas');
+        _this.canvas = Global.Document.createElement('canvas');
         _this.canvas.width = Global.Width;
         _this.canvas.height = Global.Height;
 

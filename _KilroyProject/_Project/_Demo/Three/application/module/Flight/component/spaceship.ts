@@ -82,14 +82,14 @@ export default class Spaceship implements Component {
         _this.instance.add(_this.fire);
         _this.scene.add(_this.instance);
 
-        Global.W.addEventListener('wheel', (e: WheelEvent) => {
+        Global.Window.addEventListener('wheel', (e: WheelEvent) => {
             const z = _this.moveP.z;
             let d = z + (e.deltaY | 0);
             d = (d < -20) ? -20 : d;
             d = (d > 20) ? 20 : d;
             _this.moveP.z = d;
         });
-        Global.W.addEventListener('click', (e: MouseEvent) => {
+        Global.Window.addEventListener('click', (e: MouseEvent) => {
             _this.createBullet();
         });
     }

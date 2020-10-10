@@ -143,28 +143,28 @@ export default class GlobalFunction {
         const _this = this;
         
         // Mouse
-        Global.W.addEventListener('mousemove', (e: MouseEvent) => {
+        Global.Window.addEventListener('mousemove', (e: MouseEvent) => {
             Global.FocusP.x = e.clientX;
             Global.FocusP.y = e.clientY;
         }, false);
         
         // Touch
-        Global.W.addEventListener('touchstart', (e: TouchEvent) => {
+        Global.Window.addEventListener('touchstart', (e: TouchEvent) => {
             Global.FocusP.x = e.touches[0].clientX;
             Global.FocusP.y = e.touches[0].clientY;
         }, false);
-        Global.W.addEventListener('touchmove', (e: TouchEvent) => {
+        Global.Window.addEventListener('touchmove', (e: TouchEvent) => {
             Global.FocusP.x = e.touches[0].clientX;
             Global.FocusP.y = e.touches[0].clientY;
         }, false);
         
         if (isReset) {
-            Global.W.addEventListener('mouseout', (e: MouseEvent) => {
+            Global.Window.addEventListener('mouseout', (e: MouseEvent) => {
                 const centerP = _this.getDomCenter();
                 Global.FocusP.x = centerP.x;
                 Global.FocusP.y = centerP.y;
             }, false);
-            Global.W.addEventListener('touchend', (e: TouchEvent) => {
+            Global.Window.addEventListener('touchend', (e: TouchEvent) => {
                 const centerP = _this.getDomCenter();
                 Global.FocusP.x = centerP.x;
                 Global.FocusP.y = centerP.y;
