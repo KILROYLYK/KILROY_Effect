@@ -74,7 +74,9 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-
+    
+        if (!_this.isInit) return;
+        
         _this.canvas.width = Global.Width;
         _this.canvas.height = Global.Height;
 
