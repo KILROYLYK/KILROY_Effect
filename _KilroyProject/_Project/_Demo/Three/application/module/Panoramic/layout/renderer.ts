@@ -31,7 +31,7 @@ export default class Renderer implements Layout {
             logarithmicDepthBuffer: true
         });
         _this.instance.setSize(Global.Width, Global.Height);
-        _this.instance.setPixelRatio(Global.W.devicePixelRatio);
+        _this.instance.setPixelRatio(Global.Window.devicePixelRatio);
         _this.instance.sortObjects = false;
         _this.instance.autoClear = false;
     }
