@@ -1,4 +1,3 @@
-// import GlobalStage from '../module/Story/stage'; // 故事
 import GlobalStage from '../module/Parallax/stage'; // 视差
 
 /**

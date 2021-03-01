@@ -5,6 +5,8 @@ import * as PIXI from 'pixi.js';
 
 import Loader from '../../controller/loader';
 
+import '../../../resource/css/PlantTree/index.less';
+
 /**
  * 场景
  */
@@ -51,10 +53,16 @@ export default class Stage implements _Stage {
      */
     private create(): void {
         const _this = this,
+            canvas = Global.Function.getCanvas(),
             resource = _this.resource.data;
         
         _this.app = new PIXI.Application({
-            transparent: true
+            autoStart: true,
+            width: Global.Width,
+            height: Global.Height,
+            view: canvas,
+            transparent: true,
+            resizeTo: canvas
         });
         
         _this.container = new PIXI.Container();
@@ -72,6 +80,10 @@ export default class Stage implements _Stage {
         _this.app.stage.addChild(_this.container);
         
         Global.Dom.appendChild(_this.app.view);
+        Global.Function.updateResize(() => {
+            Global.Function.resizeDom();
+            _this.update(true);
+        });
     }
     
     /**
@@ -83,5 +95,10 @@ export default class Stage implements _Stage {
         const _this = this;
         
         if (!_this.isInit) return;
+        
+        if (isResize) {
+            Global.Width = Global.Dom.clientWidth;
+            Global.Height = Global.Dom.clientHeight;
+        }
     }
 }

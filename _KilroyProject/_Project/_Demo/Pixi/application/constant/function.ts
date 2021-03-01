@@ -21,12 +21,35 @@ export default class GlobalFunction {
             body = D.getElementsByTagName('body')[0], // Body
             lastChild = body.lastChild; // Body的最后一个节点
         
-        let dom = D.getElementById(id) || null as HTMLElement;
+        let dom = (D.getElementById(id) || null) as HTMLElement;
         
         if (!dom) { // 不存在则创建
-            dom = D.createElement('div');
+            dom = D.createElement('div') as HTMLElement;
             dom.id = id;
-            dom.setAttribute('data-name', 'AppContainer');
+            dom.setAttribute('data-name', 'App');
+            lastChild ? body.insertBefore(dom, lastChild) : body.append(dom);
+        }
+        
+        return dom;
+    }
+    
+    /**
+     * 获取画布
+     * @overview 获取画布，不存在则创建
+     * @param {string} id 节点ID
+     * @return {HTMLElement} 节点
+     */
+    public static getCanvas(id: string = 'appCanvas'): HTMLCanvasElement {
+        const _this = this,
+            body = D.getElementsByTagName('body')[0], // Body
+            lastChild = body.lastChild; // Body的最后一个节点
+        
+        let dom = (D.getElementById(id) || null) as HTMLCanvasElement;
+        
+        if (!dom) { // 不存在则创建
+            dom = D.createElement('Canvas') as HTMLCanvasElement;
+            dom.id = id;
+            dom.setAttribute('data-name', 'AppCanvas');
             lastChild ? body.insertBefore(dom, lastChild) : body.append(dom);
         }
         
