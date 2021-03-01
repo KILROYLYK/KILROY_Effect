@@ -33,7 +33,7 @@ export default class Renderer implements Layout {
             precision: 'mediump'
         });
         _this.instance.setSize(Global.Width, Global.Height);
-        _this.instance.setPixelRatio(Global.W.devicePixelRatio);
+        _this.instance.setPixelRatio(Global.Window.devicePixelRatio);
         _this.instance.setClearColor('#000000', 0);
         _this.instance.sortObjects = true;
     }
