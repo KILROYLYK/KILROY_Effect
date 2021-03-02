@@ -1,39 +1,52 @@
 @import 'base';
 
+@color_3: #222222;
+@color_4: #ddbc5b;
+@color_5: #722121;
+
+body {
+  overflow: hidden;
+}
+
 #app {
   overflow: hidden;
   background-color: @color_3;
   .bg('bg.jpg');
   background-size: cover;
-
-  #appCanvas {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
+  font-family: '思源黑体' !important;
 }
 
-.icon_1 {
+.i_1 {
+  position: relative;
+
   &:before {
     @w: 20*@px;
     @h: 26*@px;
 
     content: '';
     display: block;
-    .position(absolute, 0, auto, 0, -(@w+5*@px));
+    .position(left, -(@w+10*@px));
     margin: auto 0;
     .bg('icon_water.png', @w, @h, true);
   }
 }
 
-.text_1 {
-  @style: -1px 0 @color_2, 0 1px @color_2, 1px 0 @color_2, 0 -1px @color_2;
-  .font(center, 30*@px, @color_1, 22*@px, true);
-  .fontShadow(@style);
+.t_1 {
+  @w: 1px;
+  @style_1: -@w 0 @color_5, 0 @w @color_5, @w 0 @color_5, 0 -@w @color_5;
+  @style_2: -@w 0 @color_2, 0 @w @color_2, @w 0 @color_2, 0 -@w @color_2;
+
+  .font(center, 30*@px, @color_4, 22*@px, true);
+  .fontShadow(@style_1);
+
+  span {
+    .font(center, 30*@px, @color_1, 22*@px, true);
+    .fontShadow(@style_2);
+  }
 }
 
 .box_progress {
-  .position(absolute, 50*@px);
+  .position(top, 50*@px);
   margin: 0 auto;
   .bg('progress.png', 620*@px, 93*@px, true);
 
@@ -45,13 +58,12 @@
   }
 
   .progress_bar {
-    @w: 580*@px;
-    @h: 20*@px;
+    @w: 588*@px;
+    @h: 25*@px;
     @br: 30px;
 
     overflow: hidden;
-    .position(absolute, 55*@px);
-    margin: 0 auto;
+    .position(absolute, 53*@px, auto, auto, 18*@px);
     width: @w;
     height: @h;
     border-radius: @br;
@@ -60,15 +72,14 @@
       content: '';
       display: block;
       .position(absolute);
-      width: 10%;
+      width: 0;
       height: 100%;
       .bg('progress_bar.png');
       border-radius: @br;
     }
 
     .text {
-      .position(absolute);
-      line-height: @h;
+      .position(absolute, -2*@px);
     }
   }
 
@@ -77,22 +88,200 @@
   }
 }
 
+.box_water_info {
+  .position(bottom, 70*@px);
+  width: 300*@px;
+  height: 270*@px;
+  margin: 0 auto;
+  text-align: center;
+
+  .text {
+    .position(top);
+    font-size: 24*@px;
+    line-height: 30*@px;
+
+    &:nth-child(2) {
+      top: 40*@px;
+    }
+
+    &:nth-child(3) {
+      .position(bottom);
+    }
+  }
+}
+
+.bg_bottom {
+  .position(bottom);
+  margin: 0 auto;
+  .bg('bg_bottom.png', 100%, 207*@px, true);
+}
+
+.button {
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &.button_water {
+    .position(bottom, 130*@px);
+    margin: 0 auto;
+    .bg('button_water.png', 312*@px, 102*@px, true);
+  }
+
+  &.button_explain {
+    .position(absolute, auto, auto, 30*@px, 50*@px);
+    .bg('button_explain.png', 145*@px, 159*@px, true);
+  }
+
+  &.button_share {
+    .position(absolute, auto, 50*@px, 30*@px, auto);
+    .bg('button_share.png', 145*@px, 160*@px, true);
+  }
+}
+
 .box_tree {
   overflow-x: hidden;
   overflow-y: auto;
   .position();
+  padding-top: 500*@px;
 
   .tree {
-    &.tree_1 {
+    position: relative;
+    width: 100%;
 
+    &:before {
+      content: '';
+      display: block;
+      .position(top);
+    }
+
+    &.tree_t {
+      @h: 1219*@px;
+
+      height: @h;
+
+      &:before {
+        .bg('tree_top.png', 750*@px, @h, true);
+      }
+    }
+
+    &.tree_b {
+      @h: 1612*@px;
+
+      height: @h;
+
+      &:before {
+        .bg('tree_bottom.png', 750*@px, @h, true);
+      }
+    }
+
+    &.tree_1 {
+      @h: 1219*@px;
+      @ht: -16*@px;
+
+      height: @h+@ht;
+
+      &:before {
+        top: @ht;
+        .bg('tree_1.png', 750*@px, @h, true);
+      }
     }
 
     &.tree_2 {
+      @h: 1201*@px;
 
+      height: @h;
+
+      &:before {
+        .bg('tree_2.png', 750*@px, @h, true);
+      }
     }
 
     &.tree_3 {
+      @h: 1201*@px;
 
+      height: @h;
+
+      &:before {
+        .bg('tree_3.png', 750*@px, @h, true);
+      }
+    }
+  }
+}
+
+.box_user {
+  .position(absolute, 0, 0, 0, 0);
+  margin: 0 auto;
+
+  //.position(absolute, auto, auto, auto, auto);
+  width: 0;
+  height: 0;
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    .position(absolute, 0, auto, auto, 50%);
+    .transform(translate(-50%, 0));
+  }
+
+  &:before {
+    @wh: 88*@px;
+    top: -@wh;
+    width: @wh;
+    height: @wh;
+    background-color: white;
+    border-radius: 50%;
+  }
+
+  &.u {
+    &:after {
+      @wh: 112*@px;
+      top: -@wh + 12*@px;
+      .bg('avatar.png', @wh, @wh, true);
+    }
+  }
+
+  &.u_1 {
+    &:after {
+      @w: 112*@px;
+      @h: 156*@px;
+      top: -@h + 12*@px;
+      .bg('avatar_1.png', @w, @h, true);
+    }
+  }
+
+  &.u_2 {
+    &:after {
+      @w: 112*@px;
+      @h: 138*@px;
+      top: -@h + 12*@px;
+      .bg('avatar_2.png', @w, @h, true);
+    }
+  }
+
+  &.u_3 {
+    &:after {
+      @w: 112*@px;
+      @h: 139*@px;
+      top: -@h + 12*@px;
+      .bg('avatar_3.png', @w, @h, true);
+    }
+  }
+
+  .text {
+    .position(absolute, 0, auto, auto, 50%);
+    .transform(translate(-50%, 0));
+    width: 250*@px;
+    height: 40*@px;
+    line-height: 40*@px;
+
+    &:nth-child(1) {
+      top: 10*@px;
+    }
+
+    &:nth-child(2) {
+      top: 40*@px;
+      padding-left: 30*@px;
     }
   }
 }
