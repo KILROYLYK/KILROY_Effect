@@ -12,13 +12,10 @@ export default class Stage implements _Stage {
     private template: object = { // 模板对象
         base: `<div id="box_tree" class="box_tree">
                 <div class="tree tree_t"></div>
-                <div class="tree tree_1"></div>
-                <div class="tree tree_2"></div>
-                <div class="tree tree_3"></div>
                 <div class="tree tree_b"></div>
             </div>
             <div class="bg_bottom"></div>
-            <div id="box_progress" class="box_progress">
+            <div id="box_progress" class="box_progress l_1">
                 <div class="progress_bar">
                     <div class="text t_1"><span>0 / 0</span></div>
                 </div>
@@ -35,7 +32,7 @@ export default class Stage implements _Stage {
         user: `<div class="box_user">
                 <div class="text t_1">昵称</div>
                 <div class="text t_1"><span class="i_1"> 0 次</span></div>
-            </div>`,
+            </div>`
     };
     
     /**

@@ -53,8 +53,27 @@ body {
   &:after {
     content: '';
     display: block;
-    .position(absolute, 30*@px, -58*@px, auto, auto);
-    .bg('progress_tree.png', 84*@px, 61*@px, true);
+    .position(absolute, 30*@px, -30*@px, auto, auto);
+  }
+
+  &.l_1:after {
+    .bg('icon_tree_1.png', 84*@px, 61*@px, true);
+  }
+
+  &.l_2:after {
+    .bg('icon_tree_2.png', 84*@px, 61*@px, true);
+  }
+
+  &.l_3:after {
+    .bg('icon_tree_3.png', 84*@px, 61*@px, true);
+  }
+
+  &.l_4:after {
+    .bg('icon_tree_4.png', 84*@px, 61*@px, true);
+  }
+
+  &.l_5:after {
+    .bg('icon_tree_5.png', 84*@px, 61*@px, true);
   }
 
   .progress_bar {
@@ -209,10 +228,7 @@ body {
 }
 
 .box_user {
-  .position(absolute, 0, 0, 0, 0);
-  margin: 0 auto;
-
-  //.position(absolute, auto, auto, auto, auto);
+  .position(top);
   width: 0;
   height: 0;
 
