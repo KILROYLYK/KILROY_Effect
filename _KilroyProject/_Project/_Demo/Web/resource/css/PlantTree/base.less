@@ -1,0 +1,428 @@
+// ----- Base ----- //
+
+// --- 全局变量 --- //
+// PC
+//@px: 1px;
+//@min_width: 1200px;
+//@max_width: 1920px;
+
+// Mobile
+@px: 0.01rem;
+@min_width: 300px;
+@max_width: 750px;
+
+@src_img: '../../image/PlantTree/';
+
+@opacity: 0.75;
+@scale: 2;
+@time: 0.5s;
+
+@color_1: #ffffff;
+@color_2: #000000;
+@color_3: #222222;
+
+//@gradient_1: transparent 0%, rgba(50, 41, 24, 1) 30%, url('') 70%, transparent 100%;
+//@gradient_config_1: ~'1 / 1 / 0' stretch;
+//@gradient_config_2: ~'', url('') no-repeat center;
+
+// --- 全局函数 --- //
+// --- 定位类 --- //
+// 定位-绝对定位
+.position(@p:absolute,@t:0,@r:0,@b:0,@l:0) when (@p=absolute) {
+  position: absolute;
+  top: @t;
+  left: @l;
+  right: @r;
+  bottom: @b;
+}
+
+// 定位-绝对定位-Top
+.position(@p:absolute,@t:0) when (@p=top) {
+  position: absolute;
+  top: @t;
+  left: 0;
+  right: 0;
+  bottom: auto;
+}
+
+// 定位-绝对定位-Left
+.position(@p:absolute,@l:0) when (@p=left) {
+  position: absolute;
+  top: 0;
+  left: @l;
+  right: auto;
+  bottom: 0;
+}
+
+// 定位-绝对定位-Right
+.position(@p:absolute,@r:0) when (@p=right) {
+  position: absolute;
+  top: 0;
+  left: auto;
+  right: @r;
+  bottom: 0;
+}
+
+// 定位-绝对定位-Bottom
+.position(@p:absolute,@b:0) when (@p=bottom) {
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: @b;
+}
+
+// 定位-相对定位
+.position(@p:absolute,@t:0,@r:0,@b:0,@l:0) when (@p=relative) {
+  position: relative;
+  top: @t;
+  left: @l;
+  right: @r;
+  bottom: @b;
+}
+
+// 定位-浮动定位
+.position(@p:absolute,@t:0,@r:0,@b:0,@l:0) when (@p=fixed) {
+  position: fixed;
+  top: @t;
+  left: @l;
+  right: @r;
+  bottom: @b;
+}
+
+// --- 背景类 --- //
+// 背景
+.bg(@img,@w:auto,@h:auto,@set_wh:false) when (@set_wh=false) {
+  background: url('@{src_img}@{img}') center no-repeat;
+  background-size: @w @h;
+}
+
+// 背景（设置宽高）
+.bg(@img,@w:auto,@h:auto,@set_wh:false) when (@set_wh=true) {
+  width: @w;
+  height: @h;
+  background: url('@{src_img}@{img}') center no-repeat;
+  background-size: @w @h;
+}
+
+// 懒加载背景
+.bgLazy(@w:auto,@h:auto,@set_wh:false) when (@set_wh=false) {
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: @w @h !important;
+}
+
+// 懒加载背景（设置宽高）
+.bgLazy(@w:auto,@h:auto,@set_wh:false) when (@set_wh=true) {
+  width: @w;
+  height: @h;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: @w @h !important;
+}
+
+// 背景径向渐变
+.gradientLinear(@deg:0deg,@style,@config:~'') {
+  background: -webkit-linear-gradient(@deg, @style) @config;
+  background: -moz-linear-gradient(@deg, @style) @config;
+  background: -o-linear-gradient(@deg, @style) @config;
+  background: -ms-linear-gradient(@deg, @style) @config;
+  background: linear-gradient(@deg, @style) @config;
+}
+
+// 背景圆形渐变
+.gradientRadial(@style,@config:~'') {
+  background: -webkit-radial-gradient(@style) @config;
+  background: -moz-radial-gradient(@style) @config;
+  background: -o-radial-gradient(@style) @config;
+  background: -ms-radial-gradient(@style) @config;
+  background: radial-gradient(@style) @config;
+}
+
+// --- 文案类 --- //
+// 隐藏文案
+.fontHidden() {
+  font-family: a, sans-serif;
+  line-height: 0;
+  color: transparent;
+  font-size: 0;
+  text-shadow: none;
+}
+
+// 文案
+.font(@a:initial,@h:1,@c:@color_2,@s:12*@px,@w:false) when (@w=false) {
+  text-align: @a;
+  line-height: @h;
+  color: @c;
+  font-size: @s;
+}
+
+// 文案（加粗）
+.font(@a:initial,@h:1,@c:@color_2,@s:12*@px,@w:false) when (@w=true) {
+  text-align: @a;
+  line-height: @h;
+  color: @c;
+  font-size: @s;
+  font-weight: 600;
+}
+
+// 文案渐变
+.fontClip(@deg:0deg,@style,@config:~'') {
+  .gradientLinear(@deg, @style, @config);
+  -webkit-background-clip: text;
+  color: transparent !important;
+}
+
+// 文案阴影
+.fontShadow(@style:0 0 20*@px fade(@color_2,10)) {
+  text-shadow: @style;
+}
+
+// 文案间距
+.fontSpacing(@w) {
+  text-indent: @w;
+  letter-spacing: @w;
+}
+
+// 英文和数字换行
+.wordBreak() {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+// 文案省略
+.ellipsis(@line:1) when (@line=1) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// 文案省略(多行)
+.ellipsis(@line:1) when (@line>1) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: @line;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+
+// 禁止选中文案
+.noSelectText() {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// 输入框文案颜色
+.inputPlaceholder(@color) {
+  input::-webkit-input-placeholder,
+  textarea::-webkit-input-placeholder {
+    color: @color;
+  }
+
+  input:-moz-placeholder,
+  textarea:-moz-placeholder {
+    color: @color;
+  }
+
+  input:-ms-input-placeholder,
+  textarea:-ms-input-placeholder {
+    color: @color;
+  }
+}
+
+// --- 边框类 --- //
+// 边框
+.border(@slice,@width,@img) {
+  border-width: @width;
+  border-style: solid;
+  border-image-source: url('@{src_img}@{img}');
+  border-image-repeat: round;
+  border-image-slice: @slice;
+  border-image-outset: 0;
+}
+
+// 渐变边框
+.borderGradientLinear(@width,@deg,@style,@config) {
+  border-width: @width;
+  border-style: solid;
+  border-image: -webkit-linear-gradient(@deg, @style) @config;
+  border-image: -moz-linear-gradient(@deg, @style) @config;
+  border-image: -o-linear-gradient(@deg, @style) @config;
+  border-image: -ms-linear-gradient(@deg, @style) @config;
+  border-image: linear-gradient(@deg, @style) @config;
+}
+
+// --- 阴影类 --- //
+// 阴影
+.shadow(@style:0 0 10*@px fade(@color_2,10),@inset:false) when (@inset=false) {
+  -webkit-box-shadow: @style;
+  -moz-box-shadow: @style;
+  -o-box-shadow: @style;
+  -ms-box-shadow: @style;
+  box-shadow: @style;
+}
+
+// 内阴影
+.shadow(@style:0 0 10*@px fade(@color_2,10),@inset:false) when (@inset=true) {
+  -webkit-box-shadow: inset @style;
+  -moz-box-shadow: inset @style;
+  -o-box-shadow: inset @style;
+  -ms-box-shadow: inset @style;
+  box-shadow: inset @style;
+}
+
+// --- 动画类 --- //
+// 偏移原点
+.transformOrigin(@x:center,@y:center) {
+  -webkit-transform-origin: @x @y;
+  -moz-transform-origin: @x @y;
+  -o-transform-origin: @x @y;
+  -ms-transform-origin: @x @y;
+  transform-origin: @x @y;
+}
+
+// 偏移
+.transform(@style:translate(0,0)) {
+  -webkit-transform: @style;
+  -moz-transform: @style;
+  -o-transform: @style;
+  -ms-transform: @style;
+  transform: @style;
+}
+
+// 过度
+.transition(@style:all @time) {
+  -webkit-transition: @style;
+  -moz-transition: @style;
+  -o-transition: @style;
+  -ms-transition: @style;
+  transition: @style;
+}
+
+// 自动过渡
+.autoTransition(@x:0,@y:0,@t:1s,@delay:~'') {
+  @transition: opacity @t @delay, transform @t @delay;
+  opacity: 0;
+  .transform(translate(@x, @y));
+  .transition(@transition);
+  pointer-events: none;
+}
+
+// 开启自动过渡
+.autoTransitionActive() {
+  opacity: 1 !important;
+  .transform(translate(0, 0)) !important;
+  pointer-events: all !important;
+}
+
+// 创建动画
+.creatAnimation(@am_name,@am_fun) {
+  @keyframes @am_name {
+    @am_fun();
+  }
+
+  @-moz-keyframes @am_name {
+    @am_fun();
+  }
+
+  @-webkit-keyframes @am_name {
+    @am_fun();
+  }
+
+  @-o-keyframes @am_name {
+    @am_fun();
+  }
+}
+
+// 动画
+.animation(@style) {
+  -webkit-animation: @style;
+  -moz-animation: @style;
+  -o-animation: @style;
+  -ms-animation: @style;
+  animation: @style;
+}
+
+// 3D效果
+.preserve(@perspective:800*@px,@x:center,@y:center) {
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-perspective: @perspective;
+  -moz-perspective: @perspective;
+  -o-perspective: @perspective;
+  -ms-perspective: @perspective;
+  perspective: @perspective;
+  perspective-origin: @x @y;
+}
+
+// 隐藏翻转后的背景
+.visibility() {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+// --- 其他类 --- //
+// 抵消居中法
+.center() {
+  .position(absolute, 50%, auto, auto, 50%);
+  .transform(translate(-50%, -50%));
+}
+
+// 防止内边距撑开盒子
+.borderBox() {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+// 滤镜
+.filter(@style) {
+  // 滤镜方法：
+  // blur(px) 高斯模糊
+  // brightness(%) 明暗
+  // contrast(%) 对比度
+  // drop-shadow(h-shadow v-shadow blur spread color) 阴影
+  // grayscale(%) 灰色
+  // hue-rotate(deg) 色相旋转
+  // invert(%) 反转图像
+  // opacity(%) 透明度
+  // saturate(%) 饱和度
+  // sepia(%) 深褐色
+  // url() XML
+  -webkit-filter: @style;
+  -moz-filter: @style;
+  -o-filter: @style;
+  -ms-filter: @style;
+  filter: @style;
+}
+
+// 隐藏页面滚动条
+.scroll() {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
+}
+
+// --- 精灵图类 --- //
+@public_w: 0;
+@public_h: 0;
+.spritePublic(@sprite:false) when (@sprite=false) {
+  .bg('public.png', @public_w, @public_h);
+}
+
+.spritePublic(@sprite:false) when (@sprite=true) {
+  .bg('public.png', @public_w*@scale, @public_h*@scale);
+}

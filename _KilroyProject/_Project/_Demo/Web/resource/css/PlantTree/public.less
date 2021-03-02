@@ -1,0 +1,156 @@
+// ----- Public ----- //
+@import 'base';
+
+// --- 默认 --- //
+html,
+body {
+  position: relative;
+}
+
+body {
+  font-size: 12*@px;
+  color: @color_2;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a:link,
+a:active,
+a:visited,
+a:hover,
+a:visited:hover {
+  color: @color_1;
+}
+
+audio {
+  opacity: 0;
+  display: block;
+  .position(absolute, 0, auto, auto, 0);
+  z-index: -99;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.inputPlaceholder(@color_2);
+
+// --- 拓展 --- //
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+.disabled {
+  .filter(grayscale(100));
+  pointer-events: none;
+}
+
+.hover {
+  &:hover {
+    .filter(brightness(130%));
+  }
+}
+
+.box_scale {
+  display: block;
+  .position(absolute, 50%, 0, 0, 50%);
+  width: 100%*@scale;
+  height: 100%*@scale;
+  .borderBox();
+  .transform(translate(-50%, -50%) scale(1/@scale));
+}
+
+.box_vertical {
+  display: table;
+  position: relative;
+  height: 100%;
+
+  .box_middle {
+    display: table-cell;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+  }
+}
+
+.box_scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rotate_screen {
+  @style: fade(#303136, 100), fade(black, 100);
+  display: none;
+  .position(fixed);
+  z-index: 100;
+  .gradientRadial(@style);
+
+  &:before {
+    content: '';
+    display: block;
+    .position();
+    margin: auto;
+    .bg('@{src_img}rotate_screen.png', 200*@px, 200*@px, true);
+    pointer-events: none;
+  }
+
+  &.active {
+    display: block;
+  }
+}
+
+.body {
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+  //min-width: @min_width;
+  //max-width: @max_width;
+  //height: 100%;
+  //margin: 0 auto;
+
+  > .container {
+    position: relative;
+    z-index: 0;
+    //height: 100%;
+  }
+}
+
+// --- 移动端适配 --- //
+@media screen and (min-width: 320px) {
+}
+
+@media screen and (min-width: 360px) {
+}
+
+@media screen and (min-width: 375px) {
+}
+
+@media screen and (min-width: 414px) {
+}
+
+@media screen and (min-width: 480px) {
+}
+
+@media screen and (min-width: 640px) {
+}
+
+@media screen and (min-width: 750px) {
+}
+
+// --- 横竖屏适配 --- //
+// 竖屏
+@media only screen and (orientation: portrait) {
+}
+
+// 横屏
+@media screen and (orientation: landscape) {
+}

@@ -1,11 +1,9 @@
-@import '../../../../../_Base/Resource/css/base';
-
-@color_3: #222222;
-@image_path: '../../image/PlantTree/';
+@import 'base';
 
 #app {
   overflow: hidden;
-  background: @color_3 url('@{image_path}bg.jpg');
+  background-color: @color_3;
+  .bg('bg.jpg');
   background-size: cover;
 
   #appCanvas {
@@ -15,9 +13,68 @@
   }
 }
 
-.box_progress
-{
+.icon_1 {
+  &:before {
+    @w: 20*@px;
+    @h: 26*@px;
 
+    content: '';
+    display: block;
+    .position(absolute, 0, auto, 0, -(@w+5*@px));
+    margin: auto 0;
+    .bg('icon_water.png', @w, @h, true);
+  }
+}
+
+.text_1 {
+  @style: -1px 0 @color_2, 0 1px @color_2, 1px 0 @color_2, 0 -1px @color_2;
+  .font(center, 30*@px, @color_1, 22*@px, true);
+  .fontShadow(@style);
+}
+
+.box_progress {
+  .position(absolute, 50*@px);
+  margin: 0 auto;
+  .bg('progress.png', 620*@px, 93*@px, true);
+
+  &:after {
+    content: '';
+    display: block;
+    .position(absolute, 30*@px, -58*@px, auto, auto);
+    .bg('progress_tree.png', 84*@px, 61*@px, true);
+  }
+
+  .progress_bar {
+    @w: 580*@px;
+    @h: 20*@px;
+    @br: 30px;
+
+    overflow: hidden;
+    .position(absolute, 55*@px);
+    margin: 0 auto;
+    width: @w;
+    height: @h;
+    border-radius: @br;
+
+    &:before {
+      content: '';
+      display: block;
+      .position(absolute);
+      width: 10%;
+      height: 100%;
+      .bg('progress_bar.png');
+      border-radius: @br;
+    }
+
+    .text {
+      .position(absolute);
+      line-height: @h;
+    }
+  }
+
+  .progress_add {
+    .position(absolute, auto, 10*@px, -40*@px, auto);
+  }
 }
 
 .box_tree {
