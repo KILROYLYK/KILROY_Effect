@@ -15,8 +15,7 @@ export default class Stage implements _Stage {
     };
     private controller: object = { // 控制器
     };
-
-
+    
     /**
      * 构造函数
      * @constructor Stage

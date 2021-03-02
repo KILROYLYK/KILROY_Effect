@@ -2,18 +2,27 @@ import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 
 import '../../../resource/css/PlantTree/index.less';
-import Particle from "../Particle/component/particle";
 
 /**
  * 场景
  */
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
-    private component: object = { // 组件
+    private template: object = { // 模板对象
+        base: `<div id="box_tree" class="box_tree"></div>
+            <div id="box_progress" class="box_progress">
+                <div class="progress"></div>
+                <div class="text">0/0</div>
+            </div>
+            <div id="box_water_info" class="box_water_info">
+                <div class="text"><span>已浇水：</span>0次</div>
+                <div class="text"><span>当前排名：</span>未上榜</div>
+                <div class="text">可浇水0次</div>
+            </div>
+            <div id="button_water" class="button_water"></div>
+            <div id="button_explain" class="button_explain"></div>
+            <div id="button_share" class="button_share"></div>`
     };
-    private controller: object = { // 控制器
-    };
-    
     
     /**
      * 构造函数
@@ -32,6 +41,7 @@ export default class Stage implements _Stage {
      */
     private create(): void {
         const _this = this;
+        Global.Dom.innerHTML = _this.template.base;
     }
     
     /**
@@ -43,17 +53,6 @@ export default class Stage implements _Stage {
         
         _this.isInit = true;
         
-    }
-    
-    /**
-     * 更新
-     * @param {boolean} isResize 是否调整大小
-     * @return {void}
-     */
-    public update(isResize: boolean = false): void {
-        const _this = this;
-        
-        if (!_this.isInit) return;
     }
 }
 
