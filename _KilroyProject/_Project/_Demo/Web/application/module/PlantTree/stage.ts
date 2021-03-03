@@ -4,14 +4,24 @@ import _Stage from '../../interface/stage';
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/index.less';
 
+interface UserInfo { // 用户信息
+    user_id: number,
+    nick_name: string,
+    photo: string,
+    exp: number
+}
+
 /**
  * 场景
  */
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private template: any = { // 模板对象
-        base: `<div id="box_tree" class="box_tree">
+        base: `<div id="box_tree" class="box_tree l_1">
                 <div class="tree tree_t"></div>
+                <div class="tree tree_1"></div>
+                <div class="tree tree_2"></div>
+                <div class="tree tree_3"></div>
                 <div class="tree tree_b"></div>
             </div>
             <div class="bg_bottom"></div>
@@ -37,9 +47,15 @@ export default class Stage implements _Stage {
                 <div class="image"></div>
             </div>`
     };
-    private Popup: any = { // 弹窗对象
+    private popup: any = { // 弹窗对象
         explain: null // 说明弹窗
     };
+    private userId: number = 0; // 用户ID
+    private fraction: number = 0; // 分数
+    private level: number = 1; // 等级
+    private propWater: number = 0; // 可以浇水次数
+    private countWater: number = 0; // 已经浇水浇水次数
+    private rankList: UserInfo[] = []; // 排名列表
     
     /**
      * 构造函数
@@ -61,7 +77,7 @@ export default class Stage implements _Stage {
         
         Global.Adaptation.openRem();
         Global.Dom.innerHTML = _this.template.base;
-        _this.Popup.explain = new Global.Popup('popup_explain', {
+        _this.popup.explain = new Global.Popup('popup_explain', {
             content: _this.template.popup
         });
     }
@@ -80,14 +96,14 @@ export default class Stage implements _Stage {
             _this.addWater();
         });
         $('#button_explain').click(() => {
-            _this.Popup.explain.open();
+            _this.popup.explain.open();
         });
         $('#button_share').click(() => {
         
         });
         
         $('#popup_explain').click(() => {
-            _this.Popup.explain.close();
+            _this.popup.explain.close();
         });
         $('#popup_explain .box_popup').click((e: any) => {
             e.stopPropagation();

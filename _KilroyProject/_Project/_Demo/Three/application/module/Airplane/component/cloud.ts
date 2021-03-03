@@ -7,21 +7,21 @@ import * as THREE from 'three';
  * 云
  */
 export default class Cloud implements Component {
-    private readonly name: string = 'Cloud-云';
+    public readonly name: string = 'Cloud-云';
     
-    private scene: THREE.Scene = null; // 场景
+    private scene: THREE.Scene | null = null; // 场景
     
     private readonly radius: number = 20; // 半径
     private readonly range: number = 0.2; // 范围
-    private geometry: THREE.DodecahedronGeometry = null; // 几何
-    private material: THREE.MeshPhongMaterial = null; // 纹理
+    private geometry: THREE.DodecahedronGeometry | null = null; // 几何
+    private material: THREE.MeshPhongMaterial | null = null; // 纹理
     private cloud: {
         cycle: number,
         y: number,
         mesh: THREE.Mesh
     }[] = []; // 云
     
-    public instance: THREE.Group = null; // 实例
+    public instance: THREE.Group | null = null; // 实例
     
     /**
      * 构造函数
@@ -31,7 +31,7 @@ export default class Cloud implements Component {
     constructor(scene: object) {
         const _this = this;
         
-        _this.scene = scene.instance;
+        // _this.scene = scene.instance;
         
         _this.create();
         _this.init();
@@ -41,7 +41,7 @@ export default class Cloud implements Component {
      * 创建
      * @return {void}
      */
-    private create(): void {
+    public create(): void {
         const _this = this;
         
         _this.instance = new THREE.Group();
@@ -58,10 +58,10 @@ export default class Cloud implements Component {
      * 初始化
      * @return {void}
      */
-    private init(): void {
+    public init(): void {
         const _this = this;
         
-        _this.scene.add(_this.instance);
+        // _this.scene.add(_this.instance);
     }
     
     /**
@@ -82,7 +82,7 @@ export default class Cloud implements Component {
             v.mesh.rotateY(-cycleS);
             v.mesh.rotateZ(cycleS);
             if (v.cycle >= Math.PI * (1 - _this.range)) {
-                _this.instance.remove(v.mesh);
+                // _this.instance.remove(v.mesh);
                 return false;
             }
             return true;
@@ -109,18 +109,18 @@ export default class Cloud implements Component {
             
             if (i !== 0) cycle += radius;
             
-            const cloud = new THREE.Mesh(_this.geometry, _this.material);
-            cloud.position.set(0, y, z);
-            cloud.rotation.x = Math.random() * Math.PI * 2;
-            cloud.rotation.y = Math.random() * Math.PI * 2;
-            cloud.rotation.z = Math.random() * Math.PI * 2;
-            cloud.scale.setScalar(scale);
-            cloud.castShadow = true;
-            _this.cloud.push({
-                cycle, y,
-                mesh: cloud
-            });
-            _this.instance.add(cloud);
+            // const cloud = new THREE.Mesh(_this.geometry, _this.material);
+            // cloud.position.set(0, y, z);
+            // cloud.rotation.x = Math.random() * Math.PI * 2;
+            // cloud.rotation.y = Math.random() * Math.PI * 2;
+            // cloud.rotation.z = Math.random() * Math.PI * 2;
+            // cloud.scale.setScalar(scale);
+            // cloud.castShadow = true;
+            // _this.cloud.push({
+            //     cycle, y,
+            //     mesh: cloud
+            // });
+            // _this.instance.add(cloud);
             
             cycle += radius;
         }
