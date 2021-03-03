@@ -12,11 +12,11 @@ interface UserInfo { // 用户信息
 }
 
 /**
- * 场景
+ * 首页
  */
-export default class Stage implements _Stage {
+export default class Index implements _Stage {
     private isInit: boolean = false; // 是否初始化
-    private template: any = { // 模板对象
+    private readonly template: any = { // 模板对象
         base: `<div id="box_tree" class="box_tree l_1">
                 <div class="tree tree_t"></div>
                 <div class="tree tree_1"></div>
@@ -47,14 +47,35 @@ export default class Stage implements _Stage {
                 <div class="image"></div>
             </div>`
     };
-    private popup: any = { // 弹窗对象
+    private readonly popup: any = { // 弹窗对象
         explain: null // 说明弹窗
     };
+    private readonly fractionList: number[] = [ 5000, 10000, 30000, 50000 ]; // 分数界限
+    private readonly levelList: number[] = [ 10, 30, 50, 80, 100 ]; // 等级人数
+    private avatar: object = { // 头像在树上的位置
+        l1: {
+            tt: [
+                { top: 0, left: 0 },
+                { top: 0, left: 0 },
+                { top: 0, left: 0 },
+                { top: 0, left: 0 },
+                { top: 0, left: 0 }
+            ],
+            tb: [
+                { top: 0, left: 0 },
+                { top: 0, left: 0 },
+                { top: 0, left: 0 },
+                { top: 0, left: 0 },
+                { top: 0, left: 0 }
+            ]
+        }
+    };
+    private tree: string[] = []; // 树排序
     private userId: number = 0; // 用户ID
-    private fraction: number = 0; // 分数
-    private level: number = 1; // 等级
+    private fraction: number = 0; // 用户已浇水次数
     private propWater: number = 0; // 可以浇水次数
-    private countWater: number = 0; // 已经浇水浇水次数
+    private count: number = 0; // 世界已浇水次数
+    private level: number = 0; // 世界等级
     private rankList: UserInfo[] = []; // 排名列表
     
     /**
@@ -119,10 +140,65 @@ export default class Stage implements _Stage {
     }
     
     /**
+     * 更新世界等级
+     * @return {void}
+     */
+    private updateLevel(): void {
+        const _this = this;
+        
+        let level = 0;
+        if (_this.fraction >= 0 && _this.fraction < _this.fractionList[0]) level = 1;
+        if (_this.fraction >= _this.fractionList[0] && _this.fraction < _this.fractionList[1]) level = 2;
+        if (_this.fraction >= _this.fractionList[1] && _this.fraction < _this.fractionList[2]) level = 3;
+        if (_this.fraction >= _this.fractionList[2] && _this.fraction < _this.fractionList[3]) level = 4;
+        if (_this.fraction >= _this.fractionList[3]) level = 5;
+        
+        _this.level = level;
+    }
+    
+    /**
+     * 更新树
+     * @return {void}
+     */
+    private updateTree(): void {
+        const _this = this,
+            tree = [ 't' ],
+            count = _this.levelList[_this.level] - 5;
+        
+        let prev = 0;
+        
+        if (_this.level === 1) {
+            tree.push('b');
+            return;
+        }
+        
+        for (const i = 5; i < count; i + 5) {
+            prev = _this.getRandomTree(prev);
+            tree.push(prev.toString());
+        }
+        
+        tree.push('b');
+        
+        console.log('树排序：' + tree.toString());
+    }
+    
+    /**
      * 浇水
      * @return {void}
      */
     private addWater(): void {
     
+    }
+    
+    /**
+     * 获取随机数
+     * 结果不与上次相同
+     * @param {number} prev 上一次结果
+     * @private
+     */
+    private getRandomTree(prev: number): number {
+        const _this = this,
+            n = Global.FN.getRandomInt(1, 3);
+        return n === prev ? _this.getRandomTree(prev) : n;
     }
 }
