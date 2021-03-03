@@ -109,7 +109,7 @@ export default class Look implements Controller {
     private switchPlatform(): void {
         const _this = this;
         
-        Global.Base.isPSB.platform() === 'PC'
+        Global.FN.isPSB.platform() === 'PC'
             ? _this.mouseMove()
             : _this.touchMove();
     }

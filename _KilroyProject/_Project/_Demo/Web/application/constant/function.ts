@@ -1,4 +1,4 @@
-import { D, Base } from '../../../../_Base/Asset/typescript/window';
+import { D, FN } from '../../../../_Base/Asset/_Global/Global';
 import Global from './global';
 
 interface Position { // 位置
@@ -152,7 +152,7 @@ export default class GlobalFunction {
         
         if (!callback) return;
         
-        Base.resize(() => {
+        FN.resize(() => {
             callback && callback();
         });
     }

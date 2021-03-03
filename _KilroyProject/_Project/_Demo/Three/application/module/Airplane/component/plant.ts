@@ -89,7 +89,7 @@ export default class Plant implements Component {
     private createTree(): void {
         const _this = this,
             height = 12, // 树干高
-            scale = Global.Base.getRandomInt(2, 5) * 0.3,
+            scale = Global.FN.getRandomInt(2, 5) * 0.3,
             y = _this.track + height * scale / 2 - 2,
             z = _this.getPlantPosition();
         
@@ -169,8 +169,8 @@ export default class Plant implements Component {
                 '#551a8b'
             ],
             petalD = 12,
-            height = Global.Base.getRandomInt(30, 50) + 2, // 花枝高
-            scale = Global.Base.getRandomInt(2, 4) * 0.1,
+            height = Global.FN.getRandomInt(30, 50) + 2, // 花枝高
+            scale = Global.FN.getRandomInt(2, 4) * 0.1,
             y = _this.track + height * scale / 2 - 2,
             z = _this.getPlantPosition();
         
@@ -193,7 +193,7 @@ export default class Plant implements Component {
             1, 1, 1
             ),
             stamenM = new THREE.MeshBasicMaterial({
-                color: color[Global.Base.getRandomInt(0, 4)],
+                color: color[Global.FN.getRandomInt(0, 4)],
                 flatShading: true
             }),
             stamen = new THREE.Mesh(stamenG, stamenM),
@@ -202,7 +202,7 @@ export default class Plant implements Component {
                 1, 1, 1
             ),
             petalM = new THREE.MeshBasicMaterial({
-                color: color[Global.Base.getRandomInt(0, 4)],
+                color: color[Global.FN.getRandomInt(0, 4)],
                 flatShading: true
             }),
             petalBox = new THREE.Group();
@@ -246,7 +246,7 @@ export default class Plant implements Component {
      */
     private getPlantPosition(): number {
         const _this = this,
-            position = Global.Base.getRandomInt(-350, 500),
+            position = Global.FN.getRandomInt(-350, 500),
             plant = _this.plant.find((v, i, a) => {
                 return v.cycle < 0.7 && Math.abs(position - v.z) <= 50
             });

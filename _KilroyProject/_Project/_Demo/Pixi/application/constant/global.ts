@@ -1,6 +1,6 @@
 import './style';
 
-import { W, D, Base, $, VConsole, GSAP, Tween } from '../../../../_Base/Asset/typescript/window';
+import { W, D, FN, Adaptation, Popup, $, VConsole, GSAP, Tween } from '../../../../_Base/Asset/_Global/Global';
 
 import GlobalConfig from './config'; // 配置
 import GlobalFunction from './function'; // 函数
@@ -18,9 +18,11 @@ export default class Global {
     public static readonly Window: Window = W;
     public static readonly Document: Document = D;
     
-    public static readonly Base: any = Base;
+    public static readonly FN: any = FN;
+    public static readonly Adaptation: any = Adaptation;
+    public static readonly Popup: any = Popup;
     
-    // public static readonly $: any = $;
+    public static readonly $: any = $;
     // public static readonly VConsole: any = VConsole;
     public static readonly GSAP: any = GSAP;
     public static readonly Tween: any = Tween;

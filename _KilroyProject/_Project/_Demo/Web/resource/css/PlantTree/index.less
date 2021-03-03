@@ -160,6 +160,7 @@ body {
 .box_tree {
   overflow-x: hidden;
   overflow-y: auto;
+  .scroll();
   .position();
   padding-top: 500*@px;
 
@@ -301,3 +302,42 @@ body {
     }
   }
 }
+
+.popup_explain {
+  .box_popup {
+    background: fade(@color_1, 0);
+
+    .btn_close {
+      display: none;
+    }
+
+    .box_content {
+      overflow: initial;
+      .bg('popup_bg.png', 723*@px, 950*@px, true);
+
+      &:after {
+        content: '点击空白区域返回';
+        display: block;
+        .position(bottom, -50*@px);
+        margin: 0 auto;
+        .font(center, 30*@px, @color_1, 22*@px, true);
+      }
+
+      .popup_content {
+        overflow-y: auto;
+        .scroll();
+        .position(top, 160*@px);
+        height: 720*@px;
+        margin: 0 auto;
+        background-repeat: repeat-y;
+
+        .image {
+          position: relative;
+          margin-left: 35*@px;
+          .bg('popup_content.png', 603*@px, 948*@px, true);
+        }
+      }
+    }
+  }
+}
+

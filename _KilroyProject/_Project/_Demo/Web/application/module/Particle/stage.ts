@@ -22,36 +22,36 @@ export default class Stage implements _Stage {
      */
     constructor() {
         const _this = this;
-
+        
         _this.create();
         _this.init();
     }
-
+    
     /**
      * 创建
      * @return {void}
      */
     private create(): void {
         const _this = this;
-
+        
         _this.canvas = Global.Document.createElement('canvas');
         _this.canvas.width = Global.Width;
         _this.canvas.height = Global.Height;
-
+        
         _this.context = _this.canvas.getContext('2d');
-
+        
         _this.component.particle = new Particle(_this.context);
     }
-
+    
     /**
      * 初始化
      * @return {void}
      */
     private init(): void {
         const _this = this;
-
+        
         _this.isInit = true;
-
+        
         Global.Dom.appendChild(_this.canvas);
         Global.Function.updateFocusPosition(false);
         Global.Function.updateFrame(() => {
@@ -61,11 +61,11 @@ export default class Stage implements _Stage {
             Global.Function.resizeDom();
             _this.update(true);
         });
-
+        
         _this.component.particle.writeText('♥');
         _this.component.particle.writeText('KILROY');
     }
-
+    
     /**
      * 更新
      * @param {boolean} isResize 是否调整大小
@@ -73,12 +73,12 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-    
+        
         if (!_this.isInit) return;
         
         _this.canvas.width = Global.Width;
         _this.canvas.height = Global.Height;
-
+        
         _this.component.particle.update(isResize);
     }
 }

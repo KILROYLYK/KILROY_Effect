@@ -97,14 +97,14 @@ export default class Cloud implements Component {
         const _this = this,
             track = 1000, // 轨道
             range = 350, // 范围
-            n = Global.Base.getRandomInt(1, 4),
-            y = Global.Base.getRandomInt(track + 150, track + 300),
-            z = Global.Base.getRandomInt(-range, range);
+            n = Global.FN.getRandomInt(1, 4),
+            y = Global.FN.getRandomInt(track + 150, track + 300),
+            z = Global.FN.getRandomInt(-range, range);
         
         let cycle = Math.PI * _this.range; // 周期
         
         for (let i = 0; i < n; i++) {
-            const scale = Global.Base.getRandomInt(2, 9) * 0.1,
+            const scale = Global.FN.getRandomInt(2, 9) * 0.1,
                 radius = scale * _this.radius * 0.8 / y;
             
             if (i !== 0) cycle += radius;

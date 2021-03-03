@@ -9,7 +9,7 @@ import '../../../resource/css/PlantTree/index.less';
  */
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
-    private template: object = { // 模板对象
+    private template: any = { // 模板对象
         base: `<div id="box_tree" class="box_tree">
                 <div class="tree tree_t"></div>
                 <div class="tree tree_b"></div>
@@ -32,7 +32,13 @@ export default class Stage implements _Stage {
         user: `<div class="box_user">
                 <div class="text t_1">昵称</div>
                 <div class="text t_1"><span class="i_1"> 0 次</span></div>
+            </div>`,
+        popup: `<div class="popup_content">
+                <div class="image"></div>
             </div>`
+    };
+    private Popup: any = { // 弹窗对象
+        explain: null // 说明弹窗
     };
     
     /**
@@ -42,8 +48,6 @@ export default class Stage implements _Stage {
     constructor() {
         const _this = this;
         
-        new Global.Rem();
-        
         _this.create();
         _this.init();
     }
@@ -52,21 +56,57 @@ export default class Stage implements _Stage {
      * 创建
      * @return {void}
      */
-    private create(): void {
+    public create(): void {
         const _this = this;
         
+        Global.Adaptation.openRem();
         Global.Dom.innerHTML = _this.template.base;
+        _this.Popup.explain = new Global.Popup('popup_explain', {
+            content: _this.template.popup
+        });
     }
     
     /**
      * 初始化
      * @return {void}
      */
-    private init(): void {
-        const _this = this;
+    public init(): void {
+        const _this = this,
+            $ = Global.$;
         
         _this.isInit = true;
         
+        $('#button_water').click(() => {
+            _this.addWater();
+        });
+        $('#button_explain').click(() => {
+            _this.Popup.explain.open();
+        });
+        $('#button_share').click(() => {
+        
+        });
+        
+        $('#popup_explain').click(() => {
+            _this.Popup.explain.close();
+        });
+        $('#popup_explain .box_popup').click((e: any) => {
+            e.stopPropagation();
+        });
+    }
+    
+    /**
+     * 更新
+     * @return {void}
+     */
+    public update(): void {
+        const _this = this;
+    }
+    
+    /**
+     * 浇水
+     * @return {void}
+     */
+    private addWater(): void {
+    
     }
 }
-

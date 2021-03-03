@@ -1,7 +1,6 @@
+import { W, D, FN, Adaptation, Popup, $, VConsole, GSAP, Tween } from '../../../../_Base/Asset/_Global/Global';
+
 import './style';
-
-import { W, D, Base, Rem, Popup, $, VConsole, GSAP, Tween } from '../../../../_Base/Asset/typescript/window';
-
 import GlobalConfig from './config'; // 配置
 import GlobalFunction from './function'; // 函数
 import GlobalStage from './stage'; // 场景
@@ -18,13 +17,13 @@ export default class Global {
     public static readonly Window: Window = W;
     public static readonly Document: Document = D;
     
-    public static readonly Base: any = Base;
-    public static readonly Rem: any = Rem;
+    public static readonly FN: any = FN;
+    public static readonly Adaptation: any = Adaptation;
     public static readonly Popup: any = Popup;
     
-    // public static readonly $: any = $;
+    public static readonly $: any = $;
     // public static readonly VConsole: any = VConsole;
-    public static readonly GSAP: any = GSAP;
+    // public static readonly GSAP: any = GSAP;
     public static readonly Tween: any = Tween;
     
     public static readonly Dom: HTMLElement = GlobalFunction.getDom();
@@ -37,5 +36,5 @@ export default class Global {
     
     public static readonly Config: any = GlobalConfig; // 配置
     public static readonly Function: any = GlobalFunction; // 函数
-    public static readonly Stage: Function = GlobalStage; // 场景
+    public static readonly Stage: any = GlobalStage; // 场景
 }

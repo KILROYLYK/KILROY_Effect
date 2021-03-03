@@ -100,8 +100,8 @@ export default class Asteroid implements Component {
     private getPosition(min: number, max: number): object {
         const _this = this,
             position = {
-                x: Global.Base.getRandomInt(-max, max),
-                z: Global.Base.getRandomInt(-max, max)
+                x: Global.FN.getRandomInt(-max, max),
+                z: Global.FN.getRandomInt(-max, max)
             },
             x = Math.pow(position.x, 2),
             z = Math.pow(position.z, 2),

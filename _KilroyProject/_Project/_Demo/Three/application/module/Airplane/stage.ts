@@ -35,14 +35,14 @@ export default class Stage implements _Stage {
     private controller: object = { // 控制器
         loader: null as Loader // 加载
     };
-
+    
     /**
      * 构造函数
      * @constructor Stage
      */
     constructor() {
         const _this = this;
-
+        
         _this.controller.loader = new Loader(
             _this.resource.path,
             {
@@ -51,14 +51,14 @@ export default class Stage implements _Stage {
                 },
                 finishCallback(data) {
                     _this.resource.data = data;
-
+                    
                     _this.create();
                     _this.init();
                 }
             }
         );
     }
-
+    
     /**
      * 创建
      * @return {void}
@@ -66,11 +66,11 @@ export default class Stage implements _Stage {
     private create(): void {
         const _this = this,
             resource = _this.resource.data;
-
+        
         _this.renderer = new Renderer();
         _this.scene = new Scene();
         _this.camera = new Camera();
-
+        
         _this.component.light = new Light(_this.scene);
         _this.component.weather = new Weather(_this.scene);
         _this.component.ground = new Ground(_this.scene);
@@ -78,16 +78,16 @@ export default class Stage implements _Stage {
         _this.component.plant = new Plant(_this.scene);
         _this.component.airplane = new Airplane(_this.scene);
     }
-
+    
     /**
      * 初始化
      * @return {void}
      */
     private init(): void {
         const _this = this;
-
+        
         _this.isInit = true;
-
+        
         Global.Dom.appendChild(_this.renderer.instance.domElement);
         Global.Function.showCursor(false);
         Global.Function.updateFocusPosition();
@@ -99,7 +99,7 @@ export default class Stage implements _Stage {
             _this.update(true);
         });
     }
-
+    
     /**
      * 更新
      * @param {boolean} isResize 是否调整大小
@@ -107,20 +107,20 @@ export default class Stage implements _Stage {
      */
     public update(isResize: boolean = false): void {
         const _this = this;
-
+        
         if (!_this.isInit) return;
-
+        
         Global.Tween.update();
-
+        
         _this.component.weather.update();
         _this.component.ground.update();
         _this.component.cloud.update();
         _this.component.plant.update();
         _this.component.airplane.update();
-
+        
         _this.camera.update(isResize);
         _this.renderer.update(isResize);
-
+        
         _this.renderer.instance.clear();
         _this.renderer.instance.render(
             _this.scene.instance,
