@@ -1,8 +1,8 @@
-import { W, D, FN, Adaptation, Popup, $, VConsole, GSAP, Tween } from '../../../../_Base/Asset/_Global/Global';
+import { W, D, FN, Adaptation, Popup, $, VConsole, GSAP, Tween } from '../../../../_Base/Asset/_Global/global';
 
 import './style';
 import GlobalConfig from './config'; // 配置
-import GlobalFunction from './function'; // 函数
+import GlobalFN from './function'; // 函数
 import GlobalStage from './stage'; // 场景
 
 interface Position { // 位置
@@ -26,7 +26,7 @@ export default class Global {
     // public static readonly GSAP: any = GSAP;
     public static readonly Tween: any = Tween;
     
-    public static readonly Dom: HTMLElement = GlobalFunction.getDom();
+    public static readonly Dom: HTMLElement = GlobalFN.getDom();
     public static Width: number = Global.Dom.clientWidth;
     public static Height: number = Global.Dom.clientHeight;
     public static FocusP: Position = { // 焦点位置
@@ -35,6 +35,6 @@ export default class Global {
     };
     
     public static readonly Config: any = GlobalConfig; // 配置
-    public static readonly Function: any = GlobalFunction; // 函数
+    public static readonly Function: any = GlobalFN; // 函数
     public static readonly Stage: any = GlobalStage; // 场景
 }

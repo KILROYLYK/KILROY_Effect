@@ -3,7 +3,6 @@ import _Stage from '../../interface/stage';
 
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/index.less';
-import { D } from "../../../../../_Base/Asset/_Global/Global";
 
 interface UserInfo { // 用户信息
     user_id: number,
@@ -42,11 +41,18 @@ export default class Index implements _Stage {
     };
     private treeList: string[] = []; // 树列表
     private rankList: UserInfo[] = []; // 排名列表
-    private fraction: number = 500000; // 世界已浇水次数
+    private fraction: number = 500; // 世界已浇水次数
     private level: number = 0; // 世界等级
-    private userId: number = 0; // 用户ID
-    private userWater: number = 0; // 用户可以浇水次数
-    private userFraction: number = 0; // 用户已浇水总次数
+    private server: any = { // 服务器
+        domain: 'yd-active.gaeamobile-inc.net',
+        id: 'arbor_day_2021'
+    };
+    private user: any = { // 用户信息
+        token: '',
+        id: 0,
+        fraction: 0, // 已浇水总次数
+        prop: 0 // 可以浇水次数
+    };
     
     /**
      * 构造函数
@@ -174,14 +180,11 @@ export default class Index implements _Stage {
         
         let prev = 0;
         
-        if (_this.level === 1) {
-            tree.push('b');
-            return;
-        }
-        
-        for (let i = 5; i < count; i += 5) {
-            prev = _this.getRandomTree(prev);
-            tree.push(prev.toString());
+        if (_this.level > 1) {
+            for (let i = 5; i < count; i += 5) {
+                prev = _this.getRandomTree(prev);
+                tree.push(prev.toString());
+            }
         }
         
         tree.push('b');
@@ -216,6 +219,17 @@ export default class Index implements _Stage {
     }
     
     /**
+     * 滚动到当前用户
+     * @return {void}
+     */
+    private scrollUser(): void {
+        const _this = this,
+            $tree = Global.$('#box_tree');
+        
+        $tree.scrollTop(500);
+    }
+    
+    /**
      * 浇水
      * @return {void}
      */
@@ -233,5 +247,29 @@ export default class Index implements _Stage {
         const _this = this,
             n = Global.FN.getRandomInt(1, 3);
         return n === prev ? _this.getRandomTree(prev) : n;
+    }
+    
+    /**
+     * 获取用户信息
+     * @return {void}
+     */
+    private getUserInfo(): void {
+        const _this = this;
+        
+        // Global.$.ajax({
+        //     url: _this.server.domain + '/tree/info',
+        //     data: config.data,
+        //     dataType: 'jsonp',
+        //     jsonp: 'jsoncallback',
+        //     cache: config.cache,
+        //     async: config.async,
+        //     beforeSend: (xhr: any) => {
+        //         xhr.setRequestHeader("X-Custom-Header1", "Bar");
+        //     },
+        //     success: (result: any) => {
+        //     },
+        //     error: (e: Event) => {
+        //     }
+        // });
     }
 }

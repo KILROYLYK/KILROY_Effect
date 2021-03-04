@@ -1,4 +1,4 @@
-import { D, FN } from '../../../../_Base/Asset/_Global/Global';
+import { D, FN } from '../../../../_Base/Asset/_Global/global';
 import Global from './global';
 
 interface Position { // 位置
@@ -9,7 +9,7 @@ interface Position { // 位置
 /**
  * 函数
  */
-export default class GlobalFunction {
+export default class GlobalFN {
     /**
      * 获取节点
      * @overview 获取节点，不存在则创建

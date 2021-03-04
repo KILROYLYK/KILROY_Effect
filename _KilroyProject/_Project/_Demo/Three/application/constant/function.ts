@@ -1,4 +1,4 @@
-import { D, FN } from '../../../../_Base/Asset/_Global/Global';
+import { D, FN } from '../../../../_Base/Asset/_Global/global';
 import Global from './global';
 
 interface Position { // 位置
@@ -9,7 +9,7 @@ interface Position { // 位置
 /**
  * 函数
  */
-export default class GlobalFunction {
+export default class GlobalFN {
     /**
      * 获取节点
      * @overview 获取节点，不存在则创建
@@ -119,7 +119,7 @@ export default class GlobalFunction {
      * @param {number} ease 缓冲系数
      * @return {void}
      */
-    public static setEase(position: object, targetP: object, ease: number): void {
+    public static setEase(position: any, targetP: any, ease: number): void {
         const _this = this;
         position.x += (targetP.x - position.x) / ease;
         position.y += (targetP.y - position.y) / ease;
@@ -131,7 +131,7 @@ export default class GlobalFunction {
      * @param {function} callback 回调
      * @return {void}
      */
-    public static updateFrame(callback: Function = null): void {
+    public static updateFrame(callback: Function): void {
         const _this = this;
         
         if (!callback) return;
@@ -147,7 +147,7 @@ export default class GlobalFunction {
      * @param {function} callback 回调
      * @return {void}
      */
-    public static updateResize(callback: Function = null): void {
+    public static updateResize(callback: Function): void {
         const _this = this;
         
         if (!callback) return;
