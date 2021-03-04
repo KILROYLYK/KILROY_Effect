@@ -19,8 +19,9 @@ export default class Index implements _Stage {
     private readonly template: any = { // 模板对象
         base: `<div id="box_tree" class="box_tree l_3">
 <!--                <div class="tree tree_t"></div>-->
-                <div class="tree tree_1">
-                 <div class="box_user u">
+<!--                <div class="tree tree_1"></div>-->
+                <div class="tree tree_2">
+                <div class="box_user u">
                         <div class="text t_1">昵称</div>
                         <div class="text t_1"><span class="i_1"> 0 次</span></div>
                     </div>
@@ -41,7 +42,6 @@ export default class Index implements _Stage {
                         <div class="text t_1"><span class="i_1"> 0 次</span></div>
                     </div>
 </div>
-<!--                <div class="tree tree_2"></div>-->
 <!--                <div class="tree tree_3"></div>-->
 <!--                <div class="tree tree_b"></div>-->
             </div>
