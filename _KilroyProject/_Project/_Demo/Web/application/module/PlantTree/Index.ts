@@ -42,7 +42,7 @@ export default class Index implements _Stage {
     };
     private treeList: string[] = []; // 树列表
     private rankList: UserInfo[] = []; // 排名列表
-    private fraction: number = 50000; // 世界已浇水次数
+    private fraction: number = 500000; // 世界已浇水次数
     private level: number = 0; // 世界等级
     private userId: number = 0; // 用户ID
     private userWater: number = 0; // 用户可以浇水次数
@@ -156,8 +156,8 @@ export default class Index implements _Stage {
         }
         
         _this.level = level;
-        $tree.removeClass(levelClass).addClass(level);
-        $progress.removeClass(levelClass).addClass(level);
+        $tree.removeClass(levelClass).addClass('l_' + level);
+        $progress.removeClass(levelClass).addClass('l_' + level);
         
         $progress.find('.progress_bar i').width(progress * 100 + '%');
         $progress.find('.progress_bar .text span').text(_this.fraction + ' / ' + fraction);
@@ -170,7 +170,7 @@ export default class Index implements _Stage {
     private updateTree(): void {
         const _this = this,
             tree = [ 't' ],
-            count = _this.levelList[_this.level] - 5;
+            count = _this.levelList[_this.level - 1] - 5;
         
         let prev = 0;
         
@@ -185,8 +185,7 @@ export default class Index implements _Stage {
         }
         
         tree.push('b');
-        
-        console.log('树排序：' + tree.toString());
+        _this.treeList = tree;
     }
     
     /**
@@ -198,6 +197,7 @@ export default class Index implements _Stage {
             $tree = Global.$('#box_tree');
         
         $tree.html('');
+        
         for (let i = 0, ii = 0, n = _this.treeList.length; i < n; i++, ii += 5) {
             const tree = Global.$(`<div class="tree tree_${ _this.treeList[i] }"></div`),
                 userList = _this.rankList.slice(ii, ii + 4);
