@@ -18,7 +18,28 @@ export default class Index implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly template: any = { // 模板对象
         base: `<div id="box_tree" class="box_tree l_1">
-                <div class="tree tree_t"></div>
+                <div class="tree tree_t">
+                 <div class="box_user u">
+                        <div class="text t_1">昵称</div>
+                        <div class="text t_1"><span class="i_1"> 0 次</span></div>
+                    </div>
+                    <div class="box_user u">
+                        <div class="text t_1">昵称</div>
+                        <div class="text t_1"><span class="i_1"> 0 次</span></div>
+                    </div>
+                    <div class="box_user u">
+                        <div class="text t_1">昵称</div>
+                        <div class="text t_1"><span class="i_1"> 0 次</span></div>
+                    </div>
+                    <div class="box_user u">
+                        <div class="text t_1">昵称</div>
+                        <div class="text t_1"><span class="i_1"> 0 次</span></div>
+                    </div>
+                    <div class="box_user u">
+                        <div class="text t_1">昵称</div>
+                        <div class="text t_1"><span class="i_1"> 0 次</span></div>
+                    </div>
+                </div>
                 <div class="tree tree_1"></div>
                 <div class="tree tree_2"></div>
                 <div class="tree tree_3"></div>
@@ -39,36 +60,16 @@ export default class Index implements _Stage {
             <div id="button_explain" class="button button_explain"></div>
             <div id="button_share" class="button button_share"></div>`,
         add: `<div class="progress_add t_1 i_1"><span>+1</span></div>`,
-        user: `<div class="box_user">
+        user: `<div class="box_user u">
                 <div class="text t_1">昵称</div>
                 <div class="text t_1"><span class="i_1"> 0 次</span></div>
             </div>`,
-        popup: `<div class="popup_content">
-                <div class="image"></div>
-            </div>`
-    };
-    private readonly popup: any = { // 弹窗对象
-        explain: null // 说明弹窗
+        popup: `<div class="popup_content"><div class="image"></div></div>`
     };
     private readonly fractionList: number[] = [ 5000, 10000, 30000, 50000 ]; // 分数界限
     private readonly levelList: number[] = [ 10, 30, 50, 80, 100 ]; // 等级人数
-    private avatar: object = { // 头像在树上的位置
-        l1: {
-            tt: [
-                { top: 0, left: 0 },
-                { top: 0, left: 0 },
-                { top: 0, left: 0 },
-                { top: 0, left: 0 },
-                { top: 0, left: 0 }
-            ],
-            tb: [
-                { top: 0, left: 0 },
-                { top: 0, left: 0 },
-                { top: 0, left: 0 },
-                { top: 0, left: 0 },
-                { top: 0, left: 0 }
-            ]
-        }
+    private readonly popupLsit: any = { // 弹窗对象
+        explain: null // 说明弹窗
     };
     private tree: string[] = []; // 树排序
     private userId: number = 0; // 用户ID
@@ -98,7 +99,7 @@ export default class Index implements _Stage {
         
         Global.Adaptation.openRem();
         Global.Dom.innerHTML = _this.template.base;
-        _this.popup.explain = new Global.Popup('popup_explain', {
+        _this.popupLsit.explain = new Global.Popup('popup_explain', {
             content: _this.template.popup
         });
     }
@@ -117,14 +118,14 @@ export default class Index implements _Stage {
             _this.addWater();
         });
         $('#button_explain').click(() => {
-            _this.popup.explain.open();
+            _this.popupLsit.explain.open();
         });
         $('#button_share').click(() => {
         
         });
         
         $('#popup_explain').click(() => {
-            _this.popup.explain.close();
+            _this.popupLsit.explain.close();
         });
         $('#popup_explain .box_popup').click((e: any) => {
             e.stopPropagation();

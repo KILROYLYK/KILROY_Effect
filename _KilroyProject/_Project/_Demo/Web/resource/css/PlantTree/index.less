@@ -174,6 +174,26 @@ body {
         .position(absolute, 0, 0, auto, 120*@px);
         .bg('tree_1_top.png', 554*@px, @h, true);
       }
+
+      .box_user:nth-child(1) {
+        .transform(translate(-10*@px, 30*@px));
+      }
+
+      .box_user:nth-child(2) {
+        .transform(translate(200*@px, 250*@px));
+      }
+
+      .box_user:nth-child(3) {
+        .transform(translate(170*@px, 595*@px));
+      }
+
+      .box_user:nth-child(4) {
+        .transform(translate(-110*@px, 695*@px));
+      }
+
+      .box_user:nth-child(5) {
+        .transform(translate(175*@px, 900*@px));
+      }
     }
 
     .tree_b {
@@ -183,6 +203,26 @@ body {
 
       &:before {
         .bg('tree_1_bottom.png', 750*@px, @h, true);
+      }
+
+      .box_user:nth-child(1) {
+        .transform(translate(-140*@px, 200*@px));
+      }
+
+      .box_user:nth-child(2) {
+        .transform(translate(170*@px, 250*@px));
+      }
+
+      .box_user:nth-child(3) {
+        .transform(translate(-110*@px, 440*@px));
+      }
+
+      .box_user:nth-child(4) {
+        .transform(translate(160*@px, 580*@px));
+      }
+
+      .box_user:nth-child(5) {
+        .transform(translate(-140*@px, 730*@px));
       }
     }
   }
@@ -420,6 +460,7 @@ body {
   .position(top);
   width: 0;
   height: 0;
+  margin: 0 auto;
 
   &:before,
   &:after {
