@@ -18,7 +18,7 @@ export default class Index implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly template: any = { // 模板对象
         base: `<div id="box_tree" class="box_tree l_5">
-                <div class="tree tree_t">
+                <div class="tree tree_3">
                     <div class="box_user u">
                             <div class="text t_1">昵称</div>
                             <div class="text t_1"><span class="i_1"> 0 次</span></div>
