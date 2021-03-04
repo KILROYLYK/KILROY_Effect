@@ -5,6 +5,7 @@ import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/index.less';
 
 interface UserInfo { // 用户信息
+    rank: number,
     user_id: number,
     nick_name: string,
     photo: string,
@@ -44,14 +45,20 @@ export default class Index implements _Stage {
     private fraction: number = 500; // 世界已浇水次数
     private level: number = 0; // 世界等级
     private server: any = { // 服务器
-        domain: 'yd-active.gaeamobile-inc.net',
-        id: 'arbor_day_2021'
+        domain: 'http://yd-active.gaeamobile-inc.net',
+        id: 'arbor_day_2021',
+        key: '8ed81f4eed31633b1ab1dd67a0234188'
     };
     private user: any = { // 用户信息
-        token: '',
+        token: '235a5c694d8b4a11b832f483d45c5548',
         id: 0,
         fraction: 0, // 已浇水总次数
         prop: 0 // 可以浇水次数
+    };
+    private platform: any = {
+        version: '',
+        system: Global.FN.isPSB.system(),
+        browser: Global.FN.isPSB.browser()
     };
     
     /**
@@ -61,10 +68,12 @@ export default class Index implements _Stage {
     constructor() {
         const _this = this;
         
-        _this.create();
-        _this.init();
+        _this.getUserInfo();
         
-        _this.update();
+        // _this.create();
+        // _this.init();
+        //
+        // _this.update();
     }
     
     /**
@@ -104,7 +113,7 @@ export default class Index implements _Stage {
         $('#popup_explain').click(() => {
             _this.popupList.explain.close();
         });
-        $('#popup_explain .box_popup').click((e: any) => {
+        $('#popup_explain .box_popup').click((e: Event) => {
             e.stopPropagation();
         });
     }
@@ -115,10 +124,6 @@ export default class Index implements _Stage {
      */
     public update(): void {
         const _this = this;
-        
-        _this.updateLevel();
-        _this.updateTree();
-        _this.updateTreeDom();
     }
     
     /**
@@ -254,22 +259,67 @@ export default class Index implements _Stage {
      * @return {void}
      */
     private getUserInfo(): void {
+        const _this = this,
+            level = _this.level;
+        
+        _this.ajax(
+            '/tree/info',
+            {
+                sing: _this.server.key,
+                timestamp: new Date().valueOf()
+            },
+            (result: any) => {
+                const data = result.data;
+                
+                if (result.reCode !== 0) {
+                    alert(result.retMsg);
+                    return;
+                }
+                
+                console.log(result);
+                _this.user.id = data.user_id;
+                _this.user.fraction = 0; // 已浇水总次数
+                _this.user.prop = 0; // 可以浇水次数
+                _this.rankList = data.rank_data;
+                
+                _this.updateLevel();
+                if (_this.level !== level) _this.updateTree();
+                _this.updateTreeDom();
+            },
+            (e: Event) => {
+            }
+        );
+    }
+    
+    /**
+     * Ajax请求
+     * @param {string} url
+     * @param {object} data
+     * @param {Function} successCallback
+     * @param {Function} errorCallback
+     * @return {void}
+     */
+    private ajax(url: string, data: object, successCallback: Function, errorCallback: Function): void {
         const _this = this;
         
-        // Global.$.ajax({
-        //     url: _this.server.domain + '/tree/info',
-        //     data: config.data,
-        //     dataType: 'jsonp',
-        //     jsonp: 'jsoncallback',
-        //     cache: config.cache,
-        //     async: config.async,
-        //     beforeSend: (xhr: any) => {
-        //         xhr.setRequestHeader("X-Custom-Header1", "Bar");
-        //     },
-        //     success: (result: any) => {
-        //     },
-        //     error: (e: Event) => {
-        //     }
-        // });
+        Global.$.ajax({
+            url: _this.server.domain + url,
+            data,
+            dataType: 'jsonp',
+            jsonp: 'jsoncallback',
+            cache: false,
+            async: true,
+            beforeSend: (xhr: any) => {
+                xhr.setRequestHeader('Login-Token', _this.user.token);
+                xhr.setRequestHeader('Activity-Id', _this.server.id);
+            },
+            success: (result: any) => {
+                successCallback(result);
+            },
+            error: (e: Event) => {
+                console.log(e);
+                errorCallback(e);
+            }
+        });
     }
 }
