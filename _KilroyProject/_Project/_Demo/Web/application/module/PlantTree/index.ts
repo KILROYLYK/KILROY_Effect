@@ -1,9 +1,9 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
+import Platform from './platform';
 
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/index.less';
-import { set } from "animejs";
 
 /**
  * 首页
@@ -26,8 +26,10 @@ export default class Index implements _Stage {
             <div id="button_explain" class="button button_explain"></div>
             <div id="button_share" class="button button_share"></div>
             <div id="box_water" class="box_water">
-                <i></i><i></i><i></i><i></i><i></i><i></i>
+                <i></i><i></i><i></i><i></i><i></i>
+                <i></i><i></i><i></i><i></i><i></i>
             </div>`,
+        login: `<a id="login" class="login" href="wanxiu://innerlink?type=weblogin"></a>`,
         add: `<div class="progress_add t_1 i_1"><span>+1</span></div>`,
         popup: `<div class="popup_content"><div class="image"></div></div>`
     };
@@ -38,11 +40,12 @@ export default class Index implements _Stage {
     };
     private readonly switchList: any = { // 开关列表
         info: true, // 获取信息
-        water: true // 浇水
+        water: true, // 浇水
     };
     private readonly setTimeList: any = { // 定时器列表
         info: null, // 获取信息
-        water: null // 浇水
+        water: null, // 浇水
+        waterAnim: null // 浇水动画
     };
     private treeList: string[] = []; // 树列表
     private rankList: any[] = []; // 排名列表
@@ -54,16 +57,18 @@ export default class Index implements _Stage {
         key: '8ed81f4eed31633b1ab1dd67a0234188'
     };
     private user: any = { // 用户信息
-        token: '235a5c694d8b4a11b832f483d45c5548',
+        token: Global.FN.url.getParam('login_token'),
+        // token: '235a5c694d8b4a11b832f483d45c5548',
         id: 0,
         fraction: 0, // 已浇水总次数
         water: 0 // 可以浇水次数
     };
     private platform: any = {
-        version: '',
-        system: Global.FN.isPSB.system(),
+        version: Global.FN.url.getParam('app_version'),
+        system: Global.FN.url.getParam('platform'),
         browser: Global.FN.isPSB.browser()
     };
+    private share: string = ''; // 分享链接
     
     /**
      * 构造函数
@@ -72,8 +77,9 @@ export default class Index implements _Stage {
     constructor() {
         const _this = this;
         
+        Global.Adaptation.openRem();
+        
         _this.create();
-        _this.init();
     }
     
     /**
@@ -83,11 +89,17 @@ export default class Index implements _Stage {
     public create(): void {
         const _this = this;
         
-        Global.Adaptation.openRem();
-        Global.Dom.innerHTML = _this.template.base;
-        _this.popupList.explain = new Global.Popup('popup_explain', {
-            content: _this.template.popup
-        });
+        if (_this.user.token === '') {
+            Global.Dom.innerHTML = _this.template.login;
+        } else {
+            Global.Dom.innerHTML = _this.template.base;
+            
+            if (_this.popupList.explain === null) {
+                _this.popupList.explain = new Global.Popup('popup_explain', {
+                    content: _this.template.popup
+                });
+            }
+        }
     }
     
     /**
@@ -269,7 +281,34 @@ export default class Index implements _Stage {
      * @return {void}
      */
     private waterAnimation(): void {
+        const _this = this,
+            $boxWater = Global.$('#box_water');
+        
+        let i = 0;
+        
+        if (_this.setTimeList.waterAnim) clearInterval(_this.setTimeList.waterAnim);
+        _this.setTimeList.waterAnim = setInterval(() => {
+            if (i >= 10) {
+                $boxWater.children('i').removeClass('show');
+                clearInterval(_this.setTimeList.waterAnim);
+                return;
+            }
+            
+            $boxWater
+                .children('i').removeClass('show')
+                .eq(i).addClass('show');
+            i++;
+        }, 150);
+    }
+    
+    /**
+     * 登录
+     * @return {void}
+     */
+    private login(): void {
         const _this = this;
+        
+        Global.$('#login').click();
     }
     
     /**
@@ -368,6 +407,8 @@ export default class Index implements _Stage {
                 _this.updateUserInfo();
                 
                 _this.getInfo();
+                
+                _this.waterAnimation();
             },
             (e: Event) => {
             }
