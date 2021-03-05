@@ -301,82 +301,6 @@ export default class Index implements _Stage {
     }
     
     /**
-     * 浇水
-     * @return {void}
-     */
-    private addWater(): void {
-        const _this = this;
-        
-        if (_this.user.water === 0) {
-            alert('可浇水次数不足');
-            return;
-        }
-        
-        if (!_this.switchList.water) return;
-        _this.switchList.water = false;
-        _this.setTimeList.water = setTimeout(() => {
-            _this.switchList.water = true;
-        }, 2000);
-        
-        _this.ajax(
-            '/tree/water',
-            {},
-            (result: any) => {
-                const data = result.data;
-                
-                if (!_this.isInit) return;
-                if (result.retCode !== 0) {
-                    alert(result.retMsg);
-                    return;
-                }
-                
-                _this.user.fraction++;
-                _this.user.water--;
-                _this.updateUserInfo();
-                
-                _this.getInfo();
-                
-                _this.waterAnimation();
-            },
-            (e: Event) => {
-            }
-        );
-    }
-    
-    /**
-     * 获取分享链接
-     * @return {void}
-     */
-    private getShare(): void {
-        const _this = this;
-        
-        if (!_this.switchList.share) return;
-        _this.switchList.share = false;
-        
-        _this.ajax(
-            '/tree/share',
-            {},
-            (result: any) => {
-                const data = result.data;
-                
-                _this.switchList.share = true;
-                
-                if (!_this.isInit) return;
-                if (result.retCode !== 0) {
-                    alert(result.retMsg);
-                    return;
-                }
-                
-                _this.user.share = data.url;
-                Platform.data.share = data.url;
-            },
-            (e: Event) => {
-                _this.switchList.share = true;
-            }
-        );
-    }
-    
-    /**
      * 滚动到当前用户
      * @return {void}
      */
@@ -472,6 +396,82 @@ export default class Index implements _Stage {
             },
             (e: Event) => {
                 _this.switchList.info = true;
+            }
+        );
+    }
+    
+    /**
+     * 浇水
+     * @return {void}
+     */
+    private addWater(): void {
+        const _this = this;
+        
+        if (_this.user.water === 0) {
+            alert('可浇水次数不足');
+            return;
+        }
+        
+        if (!_this.switchList.water) return;
+        _this.switchList.water = false;
+        _this.setTimeList.water = setTimeout(() => {
+            _this.switchList.water = true;
+        }, 2000);
+        
+        _this.ajax(
+            '/tree/water',
+            {},
+            (result: any) => {
+                const data = result.data;
+                
+                if (!_this.isInit) return;
+                if (result.retCode !== 0) {
+                    alert(result.retMsg);
+                    return;
+                }
+                
+                _this.user.fraction++;
+                _this.user.water--;
+                _this.updateUserInfo();
+                
+                _this.getInfo();
+                
+                _this.waterAnimation();
+            },
+            (e: Event) => {
+            }
+        );
+    }
+    
+    /**
+     * 获取分享链接
+     * @return {void}
+     */
+    private getShare(): void {
+        const _this = this;
+        
+        if (!_this.switchList.share) return;
+        _this.switchList.share = false;
+        
+        _this.ajax(
+            '/tree/share',
+            {},
+            (result: any) => {
+                const data = result.data;
+                
+                _this.switchList.share = true;
+                
+                if (!_this.isInit) return;
+                if (result.retCode !== 0) {
+                    alert(result.retMsg);
+                    return;
+                }
+                
+                _this.user.share = data.url;
+                Platform.data.share = data.url;
+            },
+            (e: Event) => {
+                _this.switchList.share = true;
             }
         );
     }
