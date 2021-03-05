@@ -52,12 +52,12 @@ export default class Index implements _Stage {
     private rankList: any[] = []; // 排名列表
     private fraction: number = 0; // 世界已浇水次数
     private level: number = 0; // 世界等级
-    private server: any = { // 服务器
-        domain: 'http://yd-active.gaeamobile-inc.net',
+    private serverData: any = { // 服务器
+        domain: 'http://activity.iyingdi.com',
         id: 'arbor_day_2021',
         key: '8ed81f4eed31633b1ab1dd67a0234188'
     };
-    private user: any = { // 用户信息
+    private userData: any = { // 用户信息
         // token: Global.FN.url.getParam('login_token') || '',
         token: '235a5c694d8b4a11b832f483d45c5548',
         id: 0,
@@ -65,7 +65,7 @@ export default class Index implements _Stage {
         water: 0, // 可以浇水次数
         share: '' // 分享链接
     };
-    private platform: any = {
+    private platformData: any = {
         version: Global.FN.url.getParam('app_version') || '',
         system: Global.FN.url.getParam('platform') || '',
         browser: Global.FN.isPSB.browser()
@@ -81,13 +81,13 @@ export default class Index implements _Stage {
         Global.Adaptation.openRem();
         
         Platform.updateDataCB = () => { // 平台登录对接
-            const token = _this.user.token;
+            const token = _this.userData.token;
             
-            _this.user.token = Platform.data.token;
-            _this.platform.version = Platform.data.version;
-            _this.platform.system = Platform.data.platform;
+            _this.userData.token = Platform.data.token;
+            _this.platformData.version = Platform.data.version;
+            _this.platformData.system = Platform.data.platform;
             
-            if (_this.user.token !== token) _this.create(); // 重新登录
+            if (_this.userData.token !== token) _this.create(); // 重新登录
         };
         
         _this.create();
@@ -100,7 +100,7 @@ export default class Index implements _Stage {
     public create(): void {
         const _this = this;
         
-        if (_this.user.token === '') { // 未登录
+        if (_this.userData.token === '') { // 未登录
             _this.clear();
             Global.Dom.innerHTML = _this.template.login;
         } else { // 已登录
@@ -169,10 +169,10 @@ export default class Index implements _Stage {
         
         Global.Dom.innerHTML = '';
         
-        _this.user.id = 0;
-        _this.user.fraction = 0;
-        _this.user.water = 0;
-        _this.user.share = '';
+        _this.userData.id = 0;
+        _this.userData.fraction = 0;
+        _this.userData.water = 0;
+        _this.userData.share = '';
         
         _this.switchList.info = true;
         _this.switchList.water = true;
@@ -292,12 +292,12 @@ export default class Index implements _Stage {
         let rank = 0;
         
         _this.rankList.forEach((v, i, a) => {
-            if (_this.user.id === v.user_id) rank = v.rank;
+            if (_this.userData.id === v.user_id) rank = v.rank;
         });
         
-        $boxInfo.children('.text').eq(0).find('span').text(' ' + _this.user.fraction + ' 次');
+        $boxInfo.children('.text').eq(0).find('span').text(' ' + _this.userData.fraction + ' 次');
         $boxInfo.children('.text').eq(1).find('span').text(rank === 0 ? '未上榜' : '第 ' + rank + ' 名');
-        $boxInfo.children('.text').eq(2).find('span').text('可浇水 ' + _this.user.water + ' 次');
+        $boxInfo.children('.text').eq(2).find('span').text('可浇水 ' + _this.userData.water + ' 次');
     }
     
     /**
@@ -307,7 +307,7 @@ export default class Index implements _Stage {
     private scrollUser(): void {
         const _this = this,
             $tree = Global.$('#box_tree'),
-            $user = Global.$('.box_user[data-id=' + _this.user.id + ']');
+            $user = Global.$('.box_user[data-id=' + _this.userData.id + ']');
         
         if ($user.length === 0) return;
         
@@ -367,7 +367,9 @@ export default class Index implements _Stage {
         
         _this.ajax(
             '/tree/info',
-            {},
+            {
+                timestamp: Global.FN.getTimestamp()
+            },
             (result: any) => {
                 const data = result.data;
                 
@@ -382,9 +384,9 @@ export default class Index implements _Stage {
                 _this.fraction = data.global_exp;
                 _this.rankList = Global.FN.sortArray(data.rank_data, 'rank');
                 
-                _this.user.id = data.user_id;
-                _this.user.fraction = data.exp;
-                _this.user.water = data.props;
+                _this.userData.id = data.user_id;
+                _this.userData.fraction = data.exp;
+                _this.userData.water = data.props;
                 
                 _this.updateLevel();
                 if (_this.level !== level) _this.updateTree();
@@ -407,7 +409,7 @@ export default class Index implements _Stage {
     private addWater(): void {
         const _this = this;
         
-        if (_this.user.water === 0) {
+        if (_this.userData.water === 0) {
             alert('可浇水次数不足');
             return;
         }
@@ -420,7 +422,9 @@ export default class Index implements _Stage {
         
         _this.ajax(
             '/tree/water',
-            {},
+            {
+                timestamp: Global.FN.getTimestamp()
+            },
             (result: any) => {
                 const data = result.data;
                 
@@ -430,8 +434,8 @@ export default class Index implements _Stage {
                     return;
                 }
                 
-                _this.user.fraction++;
-                _this.user.water--;
+                _this.userData.fraction++;
+                _this.userData.water--;
                 _this.updateUserInfo();
                 
                 _this.getInfo();
@@ -455,7 +459,9 @@ export default class Index implements _Stage {
         
         _this.ajax(
             '/tree/share',
-            {},
+            {
+                timestamp: Global.FN.getTimestamp()
+            },
             (result: any) => {
                 const data = result.data;
                 
@@ -467,7 +473,7 @@ export default class Index implements _Stage {
                     return;
                 }
                 
-                _this.user.share = data.url;
+                _this.userData.share = data.url;
                 Platform.data.share = data.url;
             },
             (e: Event) => {
@@ -486,28 +492,25 @@ export default class Index implements _Stage {
      */
     private ajax(url: string, data: any, successCallback: Function, errorCallback: Function): void {
         const _this = this,
-            timestamp = Date.parse(new Date().toString()) / 1000,
-            encrypt = {
-                timestamp,
-                key: _this.server.key
-            },
-            encryptData = Object.assign(Global.FN.unlinkObject(data), encrypt),
-            encryptParam = Global.FN.url.conversion(encryptData);
+            sortData = Global.FN.sortObject(data);
+        
+        let encryptParam = '';
+        
+        sortData.key = _this.serverData.key;
+        encryptParam = Global.FN.url.conversion(sortData);
+        data.sign = Global.CryptoJS.MD5(encryptParam).toString();
         
         Global.$.ajax({
-            url: _this.server.domain + url,
-            data: Object.assign(data, {
-                sign: Global.CryptoJS.MD5(encryptParam).toString(),
-                timestamp
-            }),
+            url: _this.serverData.domain + url,
+            data,
             dataType: 'json',
             type: 'post',
             cache: false,
             async: true,
             beforeSend: (xhr: any) => {
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.setRequestHeader('Login-Token', _this.user.token);
-                xhr.setRequestHeader('Activity-Id', _this.server.id);
+                xhr.setRequestHeader('Login-Token', _this.userData.token);
+                xhr.setRequestHeader('Activity-Id', _this.serverData.id);
             },
             success: (result: any) => {
                 successCallback(result);
