@@ -4,6 +4,7 @@ import Platform from './platform';
 
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/index.less';
+import Plant from "../../../../Three/application/module/Airplane/component/plant";
 
 /**
  * 首页
@@ -11,7 +12,7 @@ import '../../../resource/css/PlantTree/index.less';
 export default class Index implements _Stage {
     private isInit: boolean = false; // 是否初始化
     private readonly template: any = { // 模板对象
-        base: `<div id="box_tree" class="box_tree"></div>
+        main: `<div id="box_tree" class="box_tree"></div>
             <div id="box_progress" class="box_progress">
                 <div class="progress_bar">
                     <i></i><div class="text t_1"><span>0 / 0</span></div>
@@ -41,6 +42,7 @@ export default class Index implements _Stage {
     private readonly switchList: any = { // 开关列表
         info: true, // 获取信息
         water: true, // 浇水
+        share: true, // 分享
     };
     private readonly setTimeList: any = { // 定时器列表
         info: null, // 获取信息
@@ -57,18 +59,18 @@ export default class Index implements _Stage {
         key: '8ed81f4eed31633b1ab1dd67a0234188'
     };
     private user: any = { // 用户信息
-        token: Global.FN.url.getParam('login_token'),
-        // token: '235a5c694d8b4a11b832f483d45c5548',
+        // token: Global.FN.url.getParam('login_token') || '',
+        token: '235a5c694d8b4a11b832f483d45c5548',
         id: 0,
         fraction: 0, // 已浇水总次数
-        water: 0 // 可以浇水次数
+        water: 0, // 可以浇水次数
+        share: '' // 分享链接
     };
     private platform: any = {
-        version: Global.FN.url.getParam('app_version'),
-        system: Global.FN.url.getParam('platform'),
+        version: Global.FN.url.getParam('app_version') || '',
+        system: Global.FN.url.getParam('platform') || '',
         browser: Global.FN.isPSB.browser()
     };
-    private share: string = ''; // 分享链接
     
     /**
      * 构造函数
@@ -78,6 +80,16 @@ export default class Index implements _Stage {
         const _this = this;
         
         Global.Adaptation.openRem();
+        
+        Platform.updateDataCB = () => { // 平台登录对接
+            const token = _this.user.token;
+            
+            _this.user.token = Platform.data.token;
+            _this.platform.version = Platform.data.version;
+            _this.platform.system = Platform.data.platform;
+            
+            if (_this.user.token !== token) _this.create(); // 重新登录
+        };
         
         _this.create();
     }
@@ -89,16 +101,19 @@ export default class Index implements _Stage {
     public create(): void {
         const _this = this;
         
-        if (_this.user.token === '') {
+        if (_this.user.token === '') { // 未登录
+            _this.clear();
             Global.Dom.innerHTML = _this.template.login;
-        } else {
-            Global.Dom.innerHTML = _this.template.base;
+        } else { // 已登录
+            Global.Dom.innerHTML = _this.template.main;
             
             if (_this.popupList.explain === null) {
                 _this.popupList.explain = new Global.Popup('popup_explain', {
                     content: _this.template.popup
                 });
             }
+            
+            _this.init();
         }
     }
     
@@ -130,6 +145,8 @@ export default class Index implements _Stage {
         });
         
         _this.getInfo(true);
+        _this.getShare();
+        
         _this.setTimeList.info = setInterval(() => {
             _this.getInfo();
         }, 60 * 1000);
@@ -141,6 +158,31 @@ export default class Index implements _Stage {
      */
     public update(): void {
         const _this = this;
+    }
+    
+    /**
+     * 清理
+     * @return {void}
+     */
+    private clear(): void {
+        const _this = this;
+        
+        _this.isInit = false;
+        
+        Global.Dom.innerHTML = '';
+        
+        _this.user.id = 0;
+        _this.user.fraction = 0;
+        _this.user.water = 0;
+        _this.user.share = '';
+        
+        _this.switchList.info = true;
+        _this.switchList.water = true;
+        clearTimeout(_this.setTimeList.info);
+        clearTimeout(_this.setTimeList.water);
+        clearInterval(_this.setTimeList.waterAnim);
+    
+        Platform.data.share = '';
     }
     
     /**
@@ -302,16 +344,6 @@ export default class Index implements _Stage {
     }
     
     /**
-     * 登录
-     * @return {void}
-     */
-    private login(): void {
-        const _this = this;
-        
-        Global.$('#login').click();
-    }
-    
-    /**
      * 获取随机数
      * 结果不与上次相同
      * @param {number} prev 上一次结果
@@ -346,6 +378,7 @@ export default class Index implements _Stage {
                 
                 _this.switchList.info = true;
                 
+                if (!_this.isInit) return;
                 if (result.retCode !== 0) {
                     alert(result.retMsg);
                     return;
@@ -397,6 +430,9 @@ export default class Index implements _Stage {
                 timestamp: new Date().valueOf()
             },
             (result: any) => {
+                const data = result.data;
+                
+                if (!_this.isInit) return;
                 if (result.retCode !== 0) {
                     alert(result.retMsg);
                     return;
@@ -411,6 +447,44 @@ export default class Index implements _Stage {
                 _this.waterAnimation();
             },
             (e: Event) => {
+            }
+        );
+    }
+    
+    /**
+     * 获取分享链接
+     * @return {void}
+     */
+    private getShare(): void {
+        const _this = this;
+        
+        if (!_this.switchList.share) return;
+        _this.switchList.share = false;
+        
+        _this.ajax(
+            '/tree/share',
+            {
+                sing: _this.server.key,
+                timestamp: new Date().valueOf()
+            },
+            (result: any) => {
+                const data = result.data;
+                
+                _this.switchList.share = true;
+                
+                if (!_this.isInit) return;
+                if (result.retCode !== 0) {
+                    alert(result.retMsg);
+                    return;
+                }
+                
+                _this.user.share = data.url;
+                Platform.data.share = data.url;
+                
+                console.log(Platform.data.share);
+            },
+            (e: Event) => {
+                _this.switchList.share = true;
             }
         );
     }

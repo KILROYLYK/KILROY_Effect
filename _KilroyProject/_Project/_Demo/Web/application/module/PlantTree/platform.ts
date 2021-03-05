@@ -11,6 +11,8 @@ export default class Platform {
         share: ''
     };
     
+    public static updateDataCB: Function = null; // 更新数据回调
+    
     /**
      * App调用显示
      * @return {void}
@@ -40,6 +42,8 @@ export default class Platform {
             _this.data.version = version;
             _this.data.platform = platform;
             _this.data.traditional = (useTraditional === 'yes') || false;
+            
+            _this.updateDataCB && _this.updateDataCB();
         } catch (error) {
         }
     }
