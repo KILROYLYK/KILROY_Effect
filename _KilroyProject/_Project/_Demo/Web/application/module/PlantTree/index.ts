@@ -79,9 +79,7 @@ export default class Index implements _Stage {
         _this.create();
         _this.init();
         
-        _this.getInfo();
-        
-        _this.scrollUser();
+        _this.getInfo(true);
     }
     
     /**
@@ -212,7 +210,7 @@ export default class Index implements _Stage {
         const _this = this,
             $tree = Global.$('#box_tree');
         
-        $tree.html('');
+        $tree.empty();
         
         for (let i = 0, ii = 0, n = _this.treeList.length; i < n; i++, ii += 5) {
             const tree = Global.$(`<div class="tree tree_${ _this.treeList[i] }"></div`),
@@ -220,7 +218,7 @@ export default class Index implements _Stage {
             
             userList.forEach((v, iii) => {
                 const u = (ii === 0 && iii < 3) ? 'u_' + (iii + 1) : 'u',
-                    user = `<div class="box_user ${ u }" data-rank="${ v.rank }">
+                    user = `<div class="box_user ${ u }" data-id="${ v.user_id }" data-rank="${ v.rank }">
                         <i style="background-image:url('${ v.photo }');"></i>
                         <div class="text t_1">${ v.nick_name }</div>
                         <div class="text t_1"><span class="i_1"> ${ v.exp } 次</span></div>
@@ -257,9 +255,14 @@ export default class Index implements _Stage {
      */
     private scrollUser(): void {
         const _this = this,
-            $tree = Global.$('#box_tree');
+            $tree = Global.$('#box_tree'),
+            $user = Global.$('.box_user[data-id=' + _this.user.id + ']');
         
-        $tree.scrollTop(500);
+        if ($user.length === 0) return;
+        
+        $tree.animate({
+            scrollTop: $user.offset().top - 300
+        }, 1000);
     }
     
     /**
@@ -276,9 +279,10 @@ export default class Index implements _Stage {
     
     /**
      * 获取信息
+     * @param {boolean} isScroll 是否滚动到用户位置
      * @return {void}
      */
-    private getInfo(): void {
+    private getInfo(isScroll: boolean = false): void {
         const _this = this,
             level = _this.level;
         
@@ -313,6 +317,8 @@ export default class Index implements _Stage {
                 _this.updateTreeDom();
                 
                 _this.updateUserInfo();
+                
+                if (isScroll) _this.scrollUser();
             },
             (e: Event) => {
                 _this.switchList.updateData = true;
