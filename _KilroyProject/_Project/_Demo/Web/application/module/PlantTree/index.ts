@@ -4,7 +4,6 @@ import Platform from './platform';
 
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/index.less';
-import Plant from "../../../../Three/application/module/Airplane/component/plant";
 
 /**
  * 首页

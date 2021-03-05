@@ -1,0 +1,148 @@
+@import 'base';
+
+@color_3: #222222;
+@color_4: #ddbc5b;
+@color_5: #722121;
+
+body {
+  overflow: hidden;
+}
+
+#app {
+  overflow: hidden;
+  background-color: @color_3;
+  .bg('bg.jpg');
+  background-size: cover;
+  font-family: '思源黑体' !important;
+}
+
+.button {
+  margin: 0 auto;
+
+  //&:hover {
+  //  opacity: 0.7;
+  //}
+
+  &.button_help {
+    .position(absolute, auto, 0, 200*@px, 0);
+    .bg('button_help.png', 248*@px, 102*@px, true);
+  }
+
+  &.button_index {
+    .position(absolute, auto, 0, 200*@px, 0);
+    .bg('button_index.png', 248*@px, 102*@px, true);
+  }
+}
+
+.box_tree {
+  .position();
+  padding-top: 300*@px;
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+  }
+
+  &:before {
+    .position(fixed, 0, 0, auto, 0);
+    margin: 0 auto;
+    .bg('bg_light.png', 750*@px, 303*@px, true);
+  }
+
+  &:after {
+    .position(fixed, auto, 0, 0, 0);
+    margin: 0 auto;
+    .bg('bg_bottom.png', 750*@px, 207*@px, true);
+  }
+
+  .tree {
+    position: relative;
+    .bg('tree_5_top.png', 750*@px, 1219*@px, true);
+  }
+}
+
+.box_user {
+  .position(top, 150*@px);
+  margin: 0 auto;
+  .bg('avatar_share.png', 146*@px, 146*@px, true);
+
+  &:before {
+    content: '';
+    display: block;
+    .position(absolute, auto, 0, -80*@px, 50%);
+    .transform(translate(-50%, 0));
+    margin: 0 auto;
+    .bg('share_text.png', 403*@px, 62*@px, true);
+  }
+
+  i {
+    display: block;
+    .position(absolute, 15.5*@px, auto, auto, 50%);
+    width: 115*@px;
+    height: 115*@px;
+    .transform(translate(-50%, 0));
+    background-color: white;
+    border-radius: 50%;
+  }
+}
+
+.box_water {
+  @w: 576*@px;
+  @h: 380*@px;
+  .position(fixed, 0, 0, 0, 0);
+  width: @w;
+  height: @h;
+  margin: auto;
+  pointer-events: none;
+
+  i {
+    .position();
+    opacity: 0;
+
+    &:nth-child(1) {
+      .bg('water_1.png', @w, @h, true);
+    }
+
+    &:nth-child(2) {
+      .bg('water_2.png', @w, @h, true);
+    }
+
+    &:nth-child(3) {
+      .bg('water_3.png', @w, @h, true);
+    }
+
+    &:nth-child(4) {
+      .bg('water_4.png', @w, @h, true);
+    }
+
+    &:nth-child(5) {
+      .bg('water_5.png', @w, @h, true);
+    }
+
+    &:nth-child(6) {
+      .bg('water_6.png', @w, @h, true);
+    }
+
+    &:nth-child(7) {
+      .bg('water_4.png', @w, @h, true);
+    }
+
+    &:nth-child(8) {
+      .bg('water_5.png', @w, @h, true);
+    }
+
+    &:nth-child(9) {
+      .bg('water_6.png', @w, @h, true);
+    }
+
+    &:nth-child(10) {
+      .bg('water_4.png', @w, @h, true);
+    }
+  }
+
+  .show {
+    opacity: 1;
+  }
+}
+
