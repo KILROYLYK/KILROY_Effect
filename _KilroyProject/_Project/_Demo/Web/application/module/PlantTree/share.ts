@@ -16,11 +16,7 @@ export default class Share implements _Stage {
             </div>
             <div id="box_user" class="box_user"><i></i></div>
             <div id="button_help" class="button button_help"></div>
-            <div id="button_index" class="button button_index"></div>
-            <div id="box_water" class="box_water">
-                <i></i><i></i><i></i><i></i><i></i>
-                <i></i><i></i><i></i><i></i><i></i>
-            </div>`,
+            <div id="button_index" class="button button_index"></div>`,
     };
     private readonly switchList: any = { // 开关列表
     };

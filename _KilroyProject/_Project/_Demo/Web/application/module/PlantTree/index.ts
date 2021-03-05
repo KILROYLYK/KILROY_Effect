@@ -121,25 +121,24 @@ export default class Index implements _Stage {
      * @return {void}
      */
     public init(): void {
-        const _this = this,
-            $ = Global.$;
+        const _this = this;
         
         _this.isInit = true;
         
-        $('#button_water').click(() => {
+        Global.$('#button_water').click(() => {
             _this.addWater();
         });
-        $('#button_explain').click(() => {
+        Global.$('#button_explain').click(() => {
             _this.popupList.explain.open();
         });
-        $('#button_share').click(() => {
-        
+        Global.$('#button_share').click(() => {
+            Global.Window.location.href = 'wanxiu://innerlink?type=webshareurl&parameters=' + Platform.onShare();
         });
         
-        $('#popup_explain').click(() => {
+        Global.$('#popup_explain').click(() => {
             _this.popupList.explain.close();
         });
-        $('#popup_explain .box_popup').click((e: Event) => {
+        Global.$('#popup_explain .box_popup').click((e: Event) => {
             e.stopPropagation();
         });
         
