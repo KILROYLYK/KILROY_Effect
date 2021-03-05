@@ -410,7 +410,7 @@ export default class Index implements _Stage {
         const _this = this;
         
         if (_this.userData.water === 0) {
-            alert('可浇水次数不足');
+            alert('浇水次数不足');
             return;
         }
         

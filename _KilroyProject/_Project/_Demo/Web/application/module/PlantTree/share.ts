@@ -24,6 +24,7 @@ export default class Share implements _Stage {
     };
     private readonly switchList: any = { // 开关列表
         info: true,
+        help: true,
         authorization: true,
         share: true
     };
@@ -36,9 +37,16 @@ export default class Share implements _Stage {
         appId: 'wxa54a0fb1c7856283'
     };
     private userData: any = { // 用户数据
-        code: Global.FN.url.getParam('code') || Global.FN.cookie.get('yd_code') || '',
-        id: '',
-        share: Global.FN.url.getParam('uid') || '',
+        // code: Global.FN.url.getParam('code') || Global.FN.cookie.get('yd_code') || '',
+        code: '1123123123',
+        id: '123123123123',
+        // share: Global.FN.url.getParam('uid') || '',
+        // share: Global.FN.url.getParam('key') || '',
+        share: '11381211',
+        key: '705efaf36b1dd51f76e311bbbfa8c88d',
+        name: '',
+        photo: '',
+        help: false
     };
     private shareData: any = { // 分享数据
         appId: '',
@@ -70,7 +78,7 @@ export default class Share implements _Stage {
     public create(): void {
         const _this = this;
         
-        if (_this.userData.share) {
+        if (_this.userData.share === '') {
             alert('参数错误，链接失效');
             return;
         }
@@ -99,9 +107,14 @@ export default class Share implements _Stage {
     public init(): void {
         const _this = this;
         
-        _this.getInfo();
+        Global.$('#button_help').click(() => {
+            _this.addHelp();
+        });
+        
         // _this.authorization();
-        // _this.share();
+        _this.share();
+        
+        _this.getInfo();
     }
     
     /**
@@ -110,6 +123,16 @@ export default class Share implements _Stage {
      */
     public update(): void {
         const _this = this;
+    }
+    
+    /**
+     * 更新用户信息
+     * @return {void}
+     */
+    private updateUserInfo(): void {
+        const _this = this;
+        
+        Global.$('#box_user').children('i').css('background-image', 'url(' + _this.userData.photo + ')');
     }
     
     /**
@@ -133,8 +156,6 @@ export default class Share implements _Stage {
             (result: any) => {
                 const data = result.data;
                 
-                console.log(data);
-                
                 _this.switchList.info = true;
                 
                 if (result.retCode !== 0) {
@@ -142,10 +163,51 @@ export default class Share implements _Stage {
                     return;
                 }
                 
+                _this.userData.name = data.nick_name;
+                _this.userData.photo = data.photo;
+                _this.userData.help = data.is_help;
                 
+                _this.updateUserInfo();
             },
             (e: Event) => {
                 _this.switchList.info = true;
+            }
+        );
+    }
+    
+    /**
+     * 助力
+     * @return {void}
+     */
+    private addHelp(): void {
+        const _this = this;
+        
+        if (!_this.switchList.help) return;
+        _this.switchList.help = false;
+        
+        _this.ajax(
+            '/tree/help',
+            {
+                uid: _this.userData.share,
+                key: _this.userData.key,
+                source: 'wechat',
+                form_user_id: _this.userData.id,
+                timestamp: Global.FN.getTimestamp()
+            },
+            (result: any) => {
+                const data = result.data;
+                
+                _this.switchList.help = true;
+                
+                if (result.retCode !== 0) {
+                    alert(result.retMsg);
+                    return;
+                }
+                
+                alert('助力成功');
+            },
+            (e: Event) => {
+                _this.switchList.help = true;
             }
         );
     }
@@ -179,6 +241,8 @@ export default class Share implements _Stage {
                 }
                 
                 _this.userData.id = data.openid;
+                
+                _this.getInfo();
             },
             (e: Event) => {
                 _this.switchList.authorization = true;
