@@ -24,7 +24,7 @@ export default class Index implements _Stage {
                     <i></i><div class="text t_1"><span>0 / 0</span></div>
                 </div>
             </div>
-            <div id="box_water_info" class="box_water_info">
+            <div id="box_info" class="box_info">
                 <div class="text t_1">已浇水：<span> 0 次</span></div>
                 <div class="text t_1">当前排名：<span>未上榜</span></div>
                 <div class="text t_1"><span>可浇水 0 次</span></div>
@@ -40,6 +40,14 @@ export default class Index implements _Stage {
     private readonly popupList: any = { // 弹窗对象
         explain: null // 说明弹窗
     };
+    private readonly switchList: any = { // 开关列表
+        updateData: true, // 更新数据
+        water: true // 浇水
+    };
+    private readonly setTimeList: any = { // 定时器列表
+        updateData: null, // 更新数据
+        water: null // 浇水
+    };
     private treeList: string[] = []; // 树列表
     private rankList: UserInfo[] = []; // 排名列表
     private fraction: number = 0; // 世界已浇水次数
@@ -53,7 +61,7 @@ export default class Index implements _Stage {
         token: '235a5c694d8b4a11b832f483d45c5548',
         id: 0,
         fraction: 0, // 已浇水总次数
-        prop: 0 // 可以浇水次数
+        water: 0 // 可以浇水次数
     };
     private platform: any = {
         version: '',
@@ -67,12 +75,13 @@ export default class Index implements _Stage {
      */
     constructor() {
         const _this = this;
-    
+        
         _this.create();
         _this.init();
         
-        _this.getUserInfo();
-        // _this.update();
+        _this.getInfo();
+        
+        _this.scrollUser();
     }
     
     /**
@@ -147,17 +156,17 @@ export default class Index implements _Stage {
         if (_this.fraction >= _this.fractionList[0] && _this.fraction < _this.fractionList[1]) {
             level = 2;
             progress = _this.fraction / _this.fractionList[1];
-            fraction = _this.fraction + ' / ' +_this.fractionList[1];
+            fraction = _this.fraction + ' / ' + _this.fractionList[1];
         }
         if (_this.fraction >= _this.fractionList[1] && _this.fraction < _this.fractionList[2]) {
             level = 3;
             progress = _this.fraction / _this.fractionList[2];
-            fraction = _this.fraction + ' / ' +_this.fractionList[2];
+            fraction = _this.fraction + ' / ' + _this.fractionList[2];
         }
         if (_this.fraction >= _this.fractionList[2] && _this.fraction < _this.fractionList[3]) {
             level = 4;
             progress = _this.fraction / _this.fractionList[3];
-            fraction = _this.fraction + ' / ' +_this.fractionList[3];
+            fraction = _this.fraction + ' / ' + _this.fractionList[3];
         }
         if (_this.fraction >= _this.fractionList[3]) {
             level = 5;
@@ -211,7 +220,8 @@ export default class Index implements _Stage {
             
             userList.forEach((v, iii) => {
                 const u = (ii === 0 && iii < 3) ? 'u_' + (iii + 1) : 'u',
-                    user = `<div class="box_user u"><i></i>
+                    user = `<div class="box_user ${ u }" data-rank="${ v.rank }">
+                        <i style="background-image:url('${ v.photo }');"></i>
                         <div class="text t_1">${ v.nick_name }</div>
                         <div class="text t_1"><span class="i_1"> ${ v.exp } 次</span></div>
                     </div>`;
@@ -223,6 +233,25 @@ export default class Index implements _Stage {
     }
     
     /**
+     * 更新用户信息
+     * @return {void}
+     */
+    private updateUserInfo(): void {
+        const _this = this,
+            $boxInfo = Global.$('#box_info');
+        
+        let rank = 0;
+        
+        _this.rankList.forEach((v, i, a) => {
+            if (_this.user.id === v.user_id) rank = v.rank;
+        });
+        
+        $boxInfo.children('.text').eq(0).find('span').text(' ' + _this.user.fraction + ' 次');
+        $boxInfo.children('.text').eq(1).find('span').text(rank === 0 ? '未上榜' : '第 ' + rank + ' 名');
+        $boxInfo.children('.text').eq(2).find('span').text('可浇水 ' + _this.user.water + ' 次');
+    }
+    
+    /**
      * 滚动到当前用户
      * @return {void}
      */
@@ -231,14 +260,6 @@ export default class Index implements _Stage {
             $tree = Global.$('#box_tree');
         
         $tree.scrollTop(500);
-    }
-    
-    /**
-     * 浇水
-     * @return {void}
-     */
-    private addWater(): void {
-    
     }
     
     /**
@@ -254,12 +275,15 @@ export default class Index implements _Stage {
     }
     
     /**
-     * 获取用户信息
+     * 获取信息
      * @return {void}
      */
-    private getUserInfo(): void {
+    private getInfo(): void {
         const _this = this,
             level = _this.level;
+        
+        if (!_this.switchList.updateData) return;
+        _this.switchList.updateData = false;
         
         _this.ajax(
             '/tree/info',
@@ -270,21 +294,67 @@ export default class Index implements _Stage {
             (result: any) => {
                 const data = result.data;
                 
+                _this.switchList.updateData = true;
+                
                 if (result.retCode !== 0) {
                     alert(result.retMsg);
                     return;
                 }
-    
+                
                 _this.fraction = data.global_exp;
-                _this.rankList = data.rank_data;
+                _this.rankList = Global.FN.sortArray(data.rank_data, 'rank');
                 
                 _this.user.id = data.user_id;
                 _this.user.fraction = data.exp;
-                _this.user.prop = data.props;
+                _this.user.water = data.props;
                 
                 _this.updateLevel();
                 if (_this.level !== level) _this.updateTree();
                 _this.updateTreeDom();
+                
+                _this.updateUserInfo();
+            },
+            (e: Event) => {
+                _this.switchList.updateData = true;
+            }
+        );
+    }
+    
+    /**
+     * 浇水
+     * @return {void}
+     */
+    private addWater(): void {
+        const _this = this;
+        
+        if (_this.user.water === 0) {
+            alert('可浇水次数不足');
+            return;
+        }
+        
+        if (!_this.switchList.water) return;
+        _this.switchList.water = false;
+        _this.setTimeList.water = setTimeout(() => {
+            _this.switchList.water = true;
+        }, 2000);
+        
+        _this.ajax(
+            '/tree/water',
+            {
+                sing: _this.server.key,
+                timestamp: new Date().valueOf()
+            },
+            (result: any) => {
+                if (result.retCode !== 0) {
+                    alert(result.retMsg);
+                    return;
+                }
+                
+                _this.user.fraction++;
+                _this.user.water--;
+                _this.updateUserInfo();
+                
+                _this.getInfo();
             },
             (e: Event) => {
             }
