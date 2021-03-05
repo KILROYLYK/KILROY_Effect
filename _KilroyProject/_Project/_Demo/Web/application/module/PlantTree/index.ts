@@ -42,7 +42,7 @@ export default class Index implements _Stage {
     };
     private treeList: string[] = []; // 树列表
     private rankList: UserInfo[] = []; // 排名列表
-    private fraction: number = 500; // 世界已浇水次数
+    private fraction: number = 0; // 世界已浇水次数
     private level: number = 0; // 世界等级
     private server: any = { // 服务器
         domain: 'http://yd-active.gaeamobile-inc.net',
@@ -67,12 +67,11 @@ export default class Index implements _Stage {
      */
     constructor() {
         const _this = this;
+    
+        _this.create();
+        _this.init();
         
         _this.getUserInfo();
-        
-        // _this.create();
-        // _this.init();
-        //
         // _this.update();
     }
     
@@ -137,33 +136,33 @@ export default class Index implements _Stage {
             levelClass = 'l_1 l_2 l_3 l_4 l_5';
         
         let level = 0,
-            fraction = 0,
-            progress = 0;
+            progress = 0,
+            fraction = '';
         
         if (_this.fraction >= 0 && _this.fraction < _this.fractionList[0]) {
             level = 1;
-            fraction = _this.fractionList[0];
             progress = _this.fraction / _this.fractionList[0];
+            fraction = _this.fraction + ' / ' + _this.fractionList[0];
         }
         if (_this.fraction >= _this.fractionList[0] && _this.fraction < _this.fractionList[1]) {
             level = 2;
-            fraction = _this.fractionList[1];
             progress = _this.fraction / _this.fractionList[1];
+            fraction = _this.fraction + ' / ' +_this.fractionList[1];
         }
         if (_this.fraction >= _this.fractionList[1] && _this.fraction < _this.fractionList[2]) {
             level = 3;
-            fraction = _this.fractionList[2];
             progress = _this.fraction / _this.fractionList[2];
+            fraction = _this.fraction + ' / ' +_this.fractionList[2];
         }
         if (_this.fraction >= _this.fractionList[2] && _this.fraction < _this.fractionList[3]) {
             level = 4;
-            fraction = _this.fractionList[3];
             progress = _this.fraction / _this.fractionList[3];
+            fraction = _this.fraction + ' / ' +_this.fractionList[3];
         }
         if (_this.fraction >= _this.fractionList[3]) {
             level = 5;
-            fraction = _this.fractionList[3];
             progress = 1;
+            fraction = _this.fraction.toString();
         }
         
         _this.level = level;
@@ -171,7 +170,7 @@ export default class Index implements _Stage {
         $progress.removeClass(levelClass).addClass('l_' + level);
         
         $progress.find('.progress_bar i').width(progress * 100 + '%');
-        $progress.find('.progress_bar .text span').text(_this.fraction + ' / ' + fraction);
+        $progress.find('.progress_bar .text span').text(fraction);
     }
     
     /**
@@ -271,16 +270,17 @@ export default class Index implements _Stage {
             (result: any) => {
                 const data = result.data;
                 
-                if (result.reCode !== 0) {
+                if (result.retCode !== 0) {
                     alert(result.retMsg);
                     return;
                 }
-                
-                console.log(result);
-                _this.user.id = data.user_id;
-                _this.user.fraction = 0; // 已浇水总次数
-                _this.user.prop = 0; // 可以浇水次数
+    
+                _this.fraction = data.global_exp;
                 _this.rankList = data.rank_data;
+                
+                _this.user.id = data.user_id;
+                _this.user.fraction = data.exp;
+                _this.user.prop = data.props;
                 
                 _this.updateLevel();
                 if (_this.level !== level) _this.updateTree();
@@ -305,11 +305,12 @@ export default class Index implements _Stage {
         Global.$.ajax({
             url: _this.server.domain + url,
             data,
-            dataType: 'jsonp',
-            jsonp: 'jsoncallback',
+            dataType: 'json',
+            type: 'post',
             cache: false,
             async: true,
             beforeSend: (xhr: any) => {
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.setRequestHeader('Login-Token', _this.user.token);
                 xhr.setRequestHeader('Activity-Id', _this.server.id);
             },
