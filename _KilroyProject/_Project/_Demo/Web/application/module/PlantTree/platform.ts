@@ -1,5 +1,12 @@
-// @ts-nocheck
 import Global from '../../constant/global';
+
+declare global {
+    interface Window {
+        platform: any; // 旅法师营地App平台对接SDK
+        setParametersByApp: Function; // 传递参数
+        appGetShareInfo: Function; // 获取分享参数
+    }
+}
 
 export default class Platform {
     public static data: any = { // 数据

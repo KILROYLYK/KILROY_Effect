@@ -486,21 +486,20 @@ export default class Index implements _Stage {
      */
     private ajax(url: string, data: any, successCallback: Function, errorCallback: Function): void {
         const _this = this,
-            timestamp = new Date().valueOf();
-        
-        let param = '';
-        
-        data.timestamp = timestamp;
-        data.key = _this.server.key;
-        
-        for (const item in data) param += (param === '' ? '' : '&') + item + '=' + data[item];
+            timestamp = Date.parse(new Date().toString()) / 1000,
+            encrypt = {
+                timestamp,
+                key: _this.server.key
+            },
+            encryptData = Object.assign(Global.FN.unlinkObject(data), encrypt),
+            encryptParam = Global.FN.url.conversion(encryptData);
         
         Global.$.ajax({
             url: _this.server.domain + url,
-            data: {
-                sign: Global.CryptoJS.MD5(param).toString(),
+            data: Object.assign(data, {
+                sign: Global.CryptoJS.MD5(encryptParam).toString(),
                 timestamp
-            },
+            }),
             dataType: 'json',
             type: 'post',
             cache: false,

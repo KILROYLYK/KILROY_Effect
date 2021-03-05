@@ -5,6 +5,12 @@ import Platform from './platform';
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/share.less';
 
+declare global {
+    interface Window {
+        wx: any; // 微信分享SDK
+    }
+}
+
 /**
  * 分享页
  */
@@ -18,23 +24,28 @@ export default class Share implements _Stage {
             <div id="button_index" class="button button_index"></div>`,
     };
     private readonly switchList: any = { // 开关列表
-        authorization: true
+        authorization: true,
+        share: true
     };
     private readonly setTimeList: any = { // 定时器列表
     };
-    private server: any = { // 服务器
+    private serverData: any = { // 服务器数据
         domain: 'http://yd-active.gaeamobile-inc.net',
         id: 'arbor_day_2021',
         key: '8ed81f4eed31633b1ab1dd67a0234188',
         appId: 'wxa54a0fb1c7856283'
     };
-    private user: any = { // 用户信息
+    private userData: any = { // 用户数据
         // code: Global.FN.url.getParam('code') || Global.FN.cookie.get('yd_code') || '',
-        code: '081Eik100xMZiL1pu4400NqJx23Eik1p',
+        code: '091epdll2LyfD646cAll2gZ4zt0epdlU',
         id: '',
+        share: Global.FN.url.getParam('uid')
     };
-    private share: any = { // 分享
-        id: Global.FN.url.getParam('uid')
+    private shareData: any = { // 分享数据
+        appId: '',
+        timestamp: '',
+        nonceStr: '',
+        signature: ''
     };
     
     /**
@@ -56,16 +67,22 @@ export default class Share implements _Stage {
     public create(): void {
         const _this = this;
         
-        if (_this.user.code === '') {
+        if (_this.userData.share) {
+            alert('参数错误，链接失效');
+            return;
+        }
+        
+        if (_this.userData.code === '') {
             Global.Window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' +
-                '?appid=' + _this.server.appId +
+                '?appid=' + _this.serverData.appId +
                 '&redirect_uri=' + encodeURIComponent(Global.Window.location.href) +
+                // '&redirect_uri=' + encodeURIComponent('http://activity-test.iyingdi.com') +
                 '&response_type=code' +
                 '&scope=snsapi_userinfo' +
                 '&state=yd' +
                 '#wechat_redirect';
         } else {
-            Global.FN.cookie.set('yd_code', _this.user.code);
+            Global.FN.cookie.set('yd_code', _this.userData.code);
             
             Global.Dom.innerHTML = _this.template.main;
             
@@ -80,7 +97,8 @@ export default class Share implements _Stage {
     public init(): void {
         const _this = this;
         
-        _this.authorization();
+        // _this.authorization();
+        _this.share();
     }
     
     /**
@@ -92,7 +110,7 @@ export default class Share implements _Stage {
     }
     
     /**
-     * 微信授权
+     * 授权
      * @return {void}
      */
     private authorization(): void {
@@ -104,7 +122,7 @@ export default class Share implements _Stage {
         _this.ajax(
             '/tree/wechat-auth',
             {
-                code: _this.user.code
+                code: _this.userData.code
             },
             (result: any) => {
                 const data = result.data;
@@ -118,10 +136,97 @@ export default class Share implements _Stage {
                     return;
                 }
                 
-                _this.user.id = data.openid;
+                _this.userData.id = data.openid;
             },
             (e: Event) => {
                 _this.switchList.authorization = true;
+            }
+        );
+    }
+    
+    /**
+     * 分享
+     * @return {void}
+     */
+    private share(): void {
+        const _this = this;
+        
+        if (!_this.switchList.share) return;
+        _this.switchList.share = false;
+        
+        _this.ajax(
+            '/tree/wechat-share',
+            {
+                url: encodeURIComponent(Global.Window.location.href)
+            },
+            (result: any) => {
+                const data = result.data;
+                
+                _this.switchList.share = true;
+                
+                if (result.retCode !== 0) {
+                    alert(result.retMsg);
+                    return;
+                }
+                
+                _this.shareData.appId = result.appId;
+                _this.shareData.timestamp = result.timestamp;
+                _this.shareData.nonceStr = result.nonceStr;
+                _this.shareData.signature = result.signature;
+                
+                Global.$.getScript('https://res.wx.qq.com/open/js/jweixin-1.4.0.js', () => {
+                    const WX = window.wx || null;
+                    
+                    if (!WX) return;
+                    
+                    WX.config({
+                        debug: false,
+                        appId: _this.shareData.appId,
+                        timestamp: _this.shareData.timestamp,
+                        nonceStr: _this.shareData.nonceStr,
+                        signature: _this.shareData.signature,
+                        jsApiList: [ 'checkJsApi', 'onMenuShareAppMessage', 'onMenuShareTimeline' ]
+                    });
+                    
+                    WX.ready(() => {
+                        // 分享给好友
+                        WX.onMenuShareAppMessage({
+                            title: _this.shareData.title,
+                            desc: _this.shareData.description,
+                            link: _this.shareData.url,
+                            imgUrl: _this.shareData.img,
+                            type: 'link',
+                            dataUrl: '',
+                            success: () => {
+                            },
+                            cancel: () => {
+                            }
+                        });
+                        
+                        // 分享至朋友圈
+                        WX.onMenuShareTimeline({
+                            title: _this.shareData.title,
+                            link: _this.shareData.url,
+                            imgUrl: _this.shareData.img,
+                            trigger: (res: any) => {
+                            },
+                            success: (res: any) => {
+                            },
+                            cancel: (res: any) => {
+                            },
+                            fail: (res: any) => {
+                            }
+                        });
+                        
+                        // 报错
+                        WX.error((res: any) => {
+                            console.log(res);
+                        });
+                    });
+                });
+            },
+            (e: Event) => {
+                _this.switchList.share = true;
             }
         );
     }
@@ -136,21 +241,18 @@ export default class Share implements _Stage {
      */
     private ajax(url: string, data: any, successCallback: Function, errorCallback: Function): void {
         const _this = this,
-            timestamp = new Date().valueOf(),
+            timestamp = Date.parse(new Date().toString()) / 1000,
             encrypt = {
                 timestamp,
-                key: _this.server.key
+                key: _this.serverData.key
             },
-            encryptData = Object.assign(Global.FN.unlinkObject(data), encrypt);
-        
-        let param = '';
-        
-        for (const item in encryptData) param += (param === '' ? '' : '&') + item + '=' + encryptData[item];
+            encryptData = Object.assign(Global.FN.unlinkObject(data), encrypt),
+            encryptParam = Global.FN.url.conversion(encryptData);
         
         Global.$.ajax({
-            url: _this.server.domain + url,
+            url: _this.serverData.domain + url,
             data: Object.assign(data, {
-                sign: Global.CryptoJS.MD5(param).toString(),
+                sign: Global.CryptoJS.MD5(encryptParam).toString(),
                 timestamp
             }),
             dataType: 'json',
@@ -159,8 +261,8 @@ export default class Share implements _Stage {
             async: true,
             beforeSend: (xhr: any) => {
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.setRequestHeader('Login-Token', _this.user.token);
-                xhr.setRequestHeader('Activity-Id', _this.server.id);
+                xhr.setRequestHeader('Login-Token', _this.userData.token);
+                xhr.setRequestHeader('Activity-Id', _this.serverData.id);
             },
             success: (result: any) => {
                 successCallback(result);
