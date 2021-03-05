@@ -1,5 +1,5 @@
 // @ts-nocheck
-import CryptoJS from '/usr/local/lib/node_modules/crypto-js';
+import Global from '../../constant/global';
 
 export default class Platform {
     public static data: any = { // 数据
@@ -11,7 +11,7 @@ export default class Platform {
         share: ''
     };
     
-    public static updateDataCB: Function = null; // 更新数据回调
+    public static updateDataCB: Function | null = null; // 更新数据回调
     
     /**
      * App调用显示
@@ -69,8 +69,8 @@ export default class Platform {
      * @return string
      */
     public static encryptParam(content: string): string {
-        const encodedWord = CryptoJS.enc.Utf8.parse(content),
-            base64Str = CryptoJS.enc.Base64.stringify(encodedWord);
+        const encodedWord = Global.CryptoJS.enc.Utf8.parse(content),
+            base64Str = Global.CryptoJS.enc.Base64.stringify(encodedWord);
         return encodeURIComponent(base64Str);
     }
 }

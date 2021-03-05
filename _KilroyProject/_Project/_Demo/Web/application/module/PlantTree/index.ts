@@ -181,7 +181,7 @@ export default class Index implements _Stage {
         clearTimeout(_this.setTimeList.info);
         clearTimeout(_this.setTimeList.water);
         clearInterval(_this.setTimeList.waterAnim);
-    
+        
         Platform.data.share = '';
     }
     
@@ -303,6 +303,82 @@ export default class Index implements _Stage {
     }
     
     /**
+     * 浇水
+     * @return {void}
+     */
+    private addWater(): void {
+        const _this = this;
+        
+        if (_this.user.water === 0) {
+            alert('可浇水次数不足');
+            return;
+        }
+        
+        if (!_this.switchList.water) return;
+        _this.switchList.water = false;
+        _this.setTimeList.water = setTimeout(() => {
+            _this.switchList.water = true;
+        }, 2000);
+        
+        _this.ajax(
+            '/tree/water',
+            {},
+            (result: any) => {
+                const data = result.data;
+                
+                if (!_this.isInit) return;
+                if (result.retCode !== 0) {
+                    alert(result.retMsg);
+                    return;
+                }
+                
+                _this.user.fraction++;
+                _this.user.water--;
+                _this.updateUserInfo();
+                
+                _this.getInfo();
+                
+                _this.waterAnimation();
+            },
+            (e: Event) => {
+            }
+        );
+    }
+    
+    /**
+     * 获取分享链接
+     * @return {void}
+     */
+    private getShare(): void {
+        const _this = this;
+        
+        if (!_this.switchList.share) return;
+        _this.switchList.share = false;
+        
+        _this.ajax(
+            '/tree/share',
+            {},
+            (result: any) => {
+                const data = result.data;
+                
+                _this.switchList.share = true;
+                
+                if (!_this.isInit) return;
+                if (result.retCode !== 0) {
+                    alert(result.retMsg);
+                    return;
+                }
+                
+                _this.user.share = data.url;
+                Platform.data.share = data.url;
+            },
+            (e: Event) => {
+                _this.switchList.share = true;
+            }
+        );
+    }
+    
+    /**
      * 滚动到当前用户
      * @return {void}
      */
@@ -369,10 +445,7 @@ export default class Index implements _Stage {
         
         _this.ajax(
             '/tree/info',
-            {
-                sing: _this.server.key,
-                timestamp: new Date().valueOf()
-            },
+            {},
             (result: any) => {
                 const data = result.data;
                 
@@ -406,90 +479,6 @@ export default class Index implements _Stage {
     }
     
     /**
-     * 浇水
-     * @return {void}
-     */
-    private addWater(): void {
-        const _this = this;
-        
-        if (_this.user.water === 0) {
-            alert('可浇水次数不足');
-            return;
-        }
-        
-        if (!_this.switchList.water) return;
-        _this.switchList.water = false;
-        _this.setTimeList.water = setTimeout(() => {
-            _this.switchList.water = true;
-        }, 2000);
-        
-        _this.ajax(
-            '/tree/water',
-            {
-                sing: _this.server.key,
-                timestamp: new Date().valueOf()
-            },
-            (result: any) => {
-                const data = result.data;
-                
-                if (!_this.isInit) return;
-                if (result.retCode !== 0) {
-                    alert(result.retMsg);
-                    return;
-                }
-                
-                _this.user.fraction++;
-                _this.user.water--;
-                _this.updateUserInfo();
-                
-                _this.getInfo();
-                
-                _this.waterAnimation();
-            },
-            (e: Event) => {
-            }
-        );
-    }
-    
-    /**
-     * 获取分享链接
-     * @return {void}
-     */
-    private getShare(): void {
-        const _this = this;
-        
-        if (!_this.switchList.share) return;
-        _this.switchList.share = false;
-        
-        _this.ajax(
-            '/tree/share',
-            {
-                sing: _this.server.key,
-                timestamp: new Date().valueOf()
-            },
-            (result: any) => {
-                const data = result.data;
-                
-                _this.switchList.share = true;
-                
-                if (!_this.isInit) return;
-                if (result.retCode !== 0) {
-                    alert(result.retMsg);
-                    return;
-                }
-                
-                _this.user.share = data.url;
-                Platform.data.share = data.url;
-                
-                console.log(Platform.data.share);
-            },
-            (e: Event) => {
-                _this.switchList.share = true;
-            }
-        );
-    }
-    
-    /**
      * Ajax请求
      * @param {string} url
      * @param {object} data
@@ -497,12 +486,23 @@ export default class Index implements _Stage {
      * @param {Function} errorCallback
      * @return {void}
      */
-    private ajax(url: string, data: object, successCallback: Function, errorCallback: Function): void {
-        const _this = this;
+    private ajax(url: string, data: any, successCallback: Function, errorCallback: Function): void {
+        const _this = this,
+            timestamp = new Date().valueOf();
+        
+        let param = '';
+        
+        data.timestamp = timestamp;
+        data.key = _this.server.key;
+        
+        for (const item in data) param += (param === '' ? '' : '&') + item + '=' + data[item];
         
         Global.$.ajax({
             url: _this.server.domain + url,
-            data,
+            data: {
+                sign: Global.CryptoJS.MD5(param).toString(),
+                timestamp
+            },
             dataType: 'json',
             type: 'post',
             cache: false,

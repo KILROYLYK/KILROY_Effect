@@ -1,4 +1,4 @@
-import { W, D, FN, Adaptation, Popup, $, VConsole, GSAP, Tween } from '../../../../_Base/Asset/_Global/global';
+import _Global from '../../../../_Base/Asset/_Global/global';
 
 import './style';
 import GlobalConfig from './config'; // 配置
@@ -14,17 +14,18 @@ interface Position { // 位置
  * 全局
  */
 export default class Global {
-    public static readonly Window: Window = W;
-    public static readonly Document: Document = D;
+    public static readonly Window: Window = _Global.W;
+    public static readonly Document: Document = _Global.D;
     
-    public static readonly FN: any = FN;
-    public static readonly Adaptation: any = Adaptation;
-    public static readonly Popup: any = Popup;
+    public static readonly FN: any = _Global.FN;
+    public static readonly Adaptation: any = _Global.Adaptation;
+    public static readonly Popup: any = _Global.Popup;
     
-    public static readonly $: any = $;
-    // public static readonly VConsole: any = VConsole;
-    // public static readonly GSAP: any = GSAP;
-    public static readonly Tween: any = Tween;
+    public static readonly $: any = _Global.$;
+    public static readonly CryptoJS: any = _Global.CryptoJS;
+    // public static readonly VConsole: any = _Global.VConsole;
+    // public static readonly GSAP: any = _Global.GSAP;
+    public static readonly Tween: any = _Global.Tween;
     
     public static readonly Dom: HTMLElement = GlobalFN.getDom();
     public static Width: number = Global.Dom.clientWidth;
