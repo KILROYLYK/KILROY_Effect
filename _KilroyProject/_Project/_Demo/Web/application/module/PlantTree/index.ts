@@ -3,14 +3,7 @@ import _Stage from '../../interface/stage';
 
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/index.less';
-
-interface UserInfo { // 用户信息
-    rank: number,
-    user_id: number,
-    nick_name: string,
-    photo: string,
-    exp: number
-}
+import { set } from "animejs";
 
 /**
  * 首页
@@ -31,7 +24,10 @@ export default class Index implements _Stage {
             </div>
             <div id="button_water" class="button button_water"></div>
             <div id="button_explain" class="button button_explain"></div>
-            <div id="button_share" class="button button_share"></div>`,
+            <div id="button_share" class="button button_share"></div>
+            <div id="box_water" class="box_water">
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>`,
         add: `<div class="progress_add t_1 i_1"><span>+1</span></div>`,
         popup: `<div class="popup_content"><div class="image"></div></div>`
     };
@@ -41,15 +37,15 @@ export default class Index implements _Stage {
         explain: null // 说明弹窗
     };
     private readonly switchList: any = { // 开关列表
-        updateData: true, // 更新数据
+        info: true, // 获取信息
         water: true // 浇水
     };
     private readonly setTimeList: any = { // 定时器列表
-        updateData: null, // 更新数据
+        info: null, // 获取信息
         water: null // 浇水
     };
     private treeList: string[] = []; // 树列表
-    private rankList: UserInfo[] = []; // 排名列表
+    private rankList: any[] = []; // 排名列表
     private fraction: number = 0; // 世界已浇水次数
     private level: number = 0; // 世界等级
     private server: any = { // 服务器
@@ -78,8 +74,6 @@ export default class Index implements _Stage {
         
         _this.create();
         _this.init();
-        
-        _this.getInfo(true);
     }
     
     /**
@@ -122,6 +116,11 @@ export default class Index implements _Stage {
         $('#popup_explain .box_popup').click((e: Event) => {
             e.stopPropagation();
         });
+        
+        _this.getInfo(true);
+        _this.setTimeList.info = setInterval(() => {
+            _this.getInfo();
+        }, 60 * 1000);
     }
     
     /**
@@ -181,7 +180,7 @@ export default class Index implements _Stage {
     }
     
     /**
-     * 更新树
+     * 更新树列表
      * @return {void}
      */
     private updateTree(): void {
@@ -266,6 +265,14 @@ export default class Index implements _Stage {
     }
     
     /**
+     * 浇水动画
+     * @return {void}
+     */
+    private waterAnimation(): void {
+        const _this = this;
+    }
+    
+    /**
      * 获取随机数
      * 结果不与上次相同
      * @param {number} prev 上一次结果
@@ -286,8 +293,8 @@ export default class Index implements _Stage {
         const _this = this,
             level = _this.level;
         
-        if (!_this.switchList.updateData) return;
-        _this.switchList.updateData = false;
+        if (!_this.switchList.info) return;
+        _this.switchList.info = false;
         
         _this.ajax(
             '/tree/info',
@@ -298,7 +305,7 @@ export default class Index implements _Stage {
             (result: any) => {
                 const data = result.data;
                 
-                _this.switchList.updateData = true;
+                _this.switchList.info = true;
                 
                 if (result.retCode !== 0) {
                     alert(result.retMsg);
@@ -321,7 +328,7 @@ export default class Index implements _Stage {
                 if (isScroll) _this.scrollUser();
             },
             (e: Event) => {
-                _this.switchList.updateData = true;
+                _this.switchList.info = true;
             }
         );
     }

@@ -45,6 +45,28 @@ body {
   }
 }
 
+.button {
+  //&:hover {
+  //  opacity: 0.7;
+  //}
+
+  &.button_water {
+    .position(bottom, 130*@px);
+    margin: 0 auto;
+    .bg('button_water.png', 312*@px, 102*@px, true);
+  }
+
+  &.button_explain {
+    .position(absolute, auto, auto, 30*@px, 50*@px);
+    .bg('button_explain.png', 145*@px, 159*@px, true);
+  }
+
+  &.button_share {
+    .position(absolute, auto, 50*@px, 30*@px, auto);
+    .bg('button_share.png', 145*@px, 160*@px, true);
+  }
+}
+
 .box_progress {
   .position(top, 50*@px);
   margin: 0 auto;
@@ -125,28 +147,6 @@ body {
     &:nth-child(3) {
       .position(bottom);
     }
-  }
-}
-
-.button {
-  &:hover {
-    opacity: 0.7;
-  }
-
-  &.button_water {
-    .position(bottom, 130*@px);
-    margin: 0 auto;
-    .bg('button_water.png', 312*@px, 102*@px, true);
-  }
-
-  &.button_explain {
-    .position(absolute, auto, auto, 30*@px, 50*@px);
-    .bg('button_explain.png', 145*@px, 159*@px, true);
-  }
-
-  &.button_share {
-    .position(absolute, auto, 50*@px, 30*@px, auto);
-    .bg('button_share.png', 145*@px, 160*@px, true);
   }
 }
 
@@ -936,6 +936,45 @@ body {
   }
 }
 
+.box_water {
+  @w: 576*@px;
+  @h: 380*@px;
+  .position(fixed, 0, 0, 0, 0);
+  width: @w;
+  height: @h;
+  margin: auto;
+  pointer-events: none;
+
+  i {
+    .position();
+    opacity: 0;
+
+    &:nth-child(1) {
+      .bg('water_1.png', @w, @h, true);
+    }
+
+    &:nth-child(2) {
+      .bg('water_2.png', @w, @h, true);
+    }
+
+    &:nth-child(3) {
+      .bg('water_3.png', @w, @h, true);
+    }
+
+    &:nth-child(4) {
+      .bg('water_4.png', @w, @h, true);
+    }
+
+    &:nth-child(5) {
+      .bg('water_5.png', @w, @h, true);
+    }
+
+    &:nth-child(6) {
+      .bg('water_6.png', @w, @h, true);
+    }
+  }
+}
+
 .popup_explain {
   .box_popup {
     background: fade(@color_1, 0);
@@ -958,17 +997,15 @@ body {
       }
 
       .popup_content {
-        overflow-y: auto;
-        .scroll();
         .position(top, 160*@px);
-        height: 720*@px;
+        height: 725*@px;
         margin: 0 auto;
         background-repeat: repeat-y;
 
         .image {
           position: relative;
           margin-left: 35*@px;
-          .bg('popup_content.png', 603*@px, 948*@px, true);
+          .bg('popup_content.png', 603*@px, 725*@px, true);
         }
       }
     }
