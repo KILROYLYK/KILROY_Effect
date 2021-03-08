@@ -15,16 +15,17 @@ declare global {
  */
 export default class Share implements _Stage {
     private readonly template: any = { // 模板对象
-        main: `<div id="box_tree" class="box_tree">
+        main: `
+            <div id="box_tree" class="box_tree">
                 <div class="tree"></div>
             </div>
             <div id="box_user" class="box_user"><i></i></div>
             <div id="button_help" class="button button_help"></div>
-            <wx-open-launch-app
+           <wx-open-launch-app
                 id="launch-btn"
                 appid="wxa54a0fb1c7856283"
                 extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
-                <div id="button_index" class="button button_index"></div>
+                <button id="button_index" class="button button_index"></button>
             </wx-open-launch-app>`,
     };
     private readonly switchList: any = { // 开关列表
@@ -134,6 +135,10 @@ export default class Share implements _Stage {
         $buttonHelp.click(() => {
             _this.addHelp();
         });
+        // $buttonIndex.click(() => {
+        //     // Global.Window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.gonlan.iplaymtg';
+        //     // Global.Window.location.href = 'https://itunes.apple.com/app/id716483205';
+        // });
         
         if (_this.userData.help) {
             $buttonHelp.show()
@@ -324,6 +329,14 @@ export default class Share implements _Stage {
                     });
                     
                     WX.ready(() => {
+                        WX.checkJsApi({
+                            jsApiList: [ 'wx-open-launch-app' ],
+                            success: (res: any) => {
+                            },
+                            fail: (err: any) => {
+                            }
+                        })
+                        
                         // 分享给好友
                         WX.onMenuShareAppMessage({
                             title: _this.shareData.title,
@@ -332,9 +345,9 @@ export default class Share implements _Stage {
                             imgUrl: _this.shareData.img,
                             type: 'link',
                             dataUrl: '',
-                            success: () => {
+                            success: (res: any) => {
                             },
-                            cancel: () => {
+                            cancel: (res: any) => {
                             }
                         });
                         

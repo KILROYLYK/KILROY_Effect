@@ -61,7 +61,8 @@ export default class Index implements _Stage {
         key: '8ed81f4eed31633b1ab1dd67a0234188'
     };
     private userData: any = { // 用户信息
-        token: Global.FN.url.getParam('login_token') || '',
+        // token: Global.FN.url.getParam('login_token') || '',
+        token: '235a5c694d8b4a11b832f483d45c5548',
         id: 0,
         fraction: 0, // 已浇水总次数
         water: 0, // 可以浇水次数
@@ -79,7 +80,7 @@ export default class Index implements _Stage {
      */
     constructor() {
         const _this = this;
-    
+        
         new Global.Console();
         
         Global.Adaptation.openRem();
@@ -91,7 +92,7 @@ export default class Index implements _Stage {
             _this.platformData.version = Platform.data.version;
             _this.platformData.system = Platform.data.platform;
             
-            if (_this.userData.token !== token) _this.create(); // 重新登录
+            if (_this.userData.token !== token) Global.Window.location.reload();
         };
         
         _this.create();
@@ -105,7 +106,8 @@ export default class Index implements _Stage {
         const _this = this;
         
         if (_this.userData.token === '') { // 未登录
-            Global.Dom.innerHTML = _this.template.login;
+            // Global.Dom.innerHTML = _this.template.login;
+            Global.Dom.innerHTML = _this.template.main;
         } else { // 已登录
             Global.Dom.innerHTML = _this.template.main;
             
@@ -245,12 +247,13 @@ export default class Index implements _Stage {
         
         for (let i = 0, ii = 0, n = _this.treeList.length; i < n; i++, ii += 5) {
             const tree = Global.$(`<div class="tree tree_${ _this.treeList[i] }"></div`),
-                userList = _this.rankList.slice(ii, ii + 4);
+                userList = _this.rankList.slice(ii, ii + 5);
             
             userList.forEach((v, iii) => {
                 const u = (ii === 0 && iii < 3) ? 'u_' + (iii + 1) : 'u',
+                    rank = u === 'u' ? _this.getRank(v.rank) : '',
                     user = `<div class="box_user ${ u }" data-id="${ v.user_id }" data-rank="${ v.rank }">
-                        <i style="background-image:url('${ v.photo }');"></i>
+                        <i style="background-image:url('${ v.photo }');"></i>${ rank }
                         <div class="text t_1">${ v.nick_name }</div>
                         <div class="text t_1"><span class="i_1"> ${ v.exp } 次</span></div>
                     </div>`;
@@ -259,6 +262,21 @@ export default class Index implements _Stage {
             
             $tree.append(tree);
         }
+    }
+    
+    /**
+     * 获取排名节点
+     * @param {number} rank 排名
+     * @return {string} 节点字符串
+     */
+    private getRank(rank: number): string {
+        const str = rank.toString();
+        
+        let dom = `<div class="rank">`;
+        
+        for (let i = 0, n = str.length; i < n; i++) dom += `<i class="n_${ str[i] }"></i>`;
+        
+        return dom + `</div>`;
     }
     
     /**

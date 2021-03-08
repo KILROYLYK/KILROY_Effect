@@ -885,18 +885,6 @@ body {
     .transform(translate(-50%, 0));
   }
 
-  i {
-    @wh: 88*@px;
-    display: block;
-    .position(absolute, -@wh, auto, auto, 50%);
-    width: @wh;
-    height: @wh;
-    .transform(translate(-50%, 0));
-    background-size: @wh;
-    background-color: white;
-    border-radius: 50%;
-  }
-
   &.u {
     &:after {
       @wh: 112*@px;
@@ -932,6 +920,78 @@ body {
     }
   }
 
+  > i {
+    @wh: 88*@px;
+    display: block;
+    .position(absolute, -@wh, auto, auto, 50%);
+    width: @wh;
+    height: @wh;
+    .transform(translate(-50%, 0));
+    background-size: @wh;
+    background-color: white;
+    border-radius: 50%;
+  }
+
+  .rank {
+    @h: 38*@px;
+    .position(absolute, -115*@px, auto, auto, 50%);
+    z-index: 5;
+    width: 88*@px;
+    height: @h;
+    .transform(translate(-50%, 0));
+    text-align: center;
+    vertical-align: top;
+
+    i {
+      @w: 30*@px;
+      @h: 38*@px;
+      display: inline-block;
+      width: @w;
+      height: 38*@px;
+      .bg('font_number.png', @w, @h*10);
+
+      &.n_0 {
+        background-position: 0 0;
+      }
+
+      &.n_1 {
+        background-position: 0 -@h;
+      }
+
+      &.n_2 {
+        background-position: 0 -@h*2;
+      }
+
+      &.n_3 {
+        background-position: 0 -@h*3;
+      }
+
+      &.n_4 {
+        background-position: 0 -@h*4;
+      }
+
+      &.n_5 {
+        background-position: 0 -@h*5;
+      }
+
+      &.n_6 {
+        background-position: 0 -@h*6;
+      }
+
+      &.n_7 {
+        background-position: 0 -@h*7;
+      }
+
+      &.n_8 {
+        background-position: 0 -@h*8;
+      }
+
+      &.n_9 {
+        background-position: 0 -@h*9;
+      }
+    }
+  }
+
   .text {
     .position(absolute, 0, auto, auto, 50%);
     .transform(translate(-50%, 0));
@@ -939,11 +999,11 @@ body {
     height: 40*@px;
     line-height: 40*@px;
 
-    &:nth-child(2) {
+    &:nth-child(3) {
       top: 10*@px;
     }
 
-    &:nth-child(3) {
+    &:nth-child(4) {
       top: 40*@px;
       padding-left: 30*@px;
     }
