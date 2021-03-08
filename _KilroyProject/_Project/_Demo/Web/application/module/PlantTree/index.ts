@@ -7,6 +7,7 @@ import '../../../resource/css/PlantTree/index.less';
 
 /**
  * 首页
+ * https://activity-test.iyingdi.com/PlantTree/
  */
 export default class Index implements _Stage {
     private isInit: boolean = false; // 是否初始化
@@ -53,13 +54,13 @@ export default class Index implements _Stage {
     private fraction: number = 0; // 世界已浇水次数
     private level: number = 0; // 世界等级
     private serverData: any = { // 服务器
-        domain: 'http://activity.iyingdi.com',
+        // domain: 'https://activity.iyingdi.com',
+        domain: 'https://activity-test.iyingdi.com/',
         id: 'arbor_day_2021',
         key: '8ed81f4eed31633b1ab1dd67a0234188'
     };
     private userData: any = { // 用户信息
-        // token: Global.FN.url.getParam('login_token') || '',
-        token: '235a5c694d8b4a11b832f483d45c5548',
+        token: Global.FN.url.getParam('login_token') || '',
         id: 0,
         fraction: 0, // 已浇水总次数
         water: 0, // 可以浇水次数
@@ -473,8 +474,10 @@ export default class Index implements _Stage {
                     return;
                 }
                 
-                _this.userData.share = data.url;
-                Platform.data.share = data.url;
+                const share = Global.Window.location.origin +
+                    Global.Window.location.pathname +
+                    'share.html?uid=' + data.uid + '&key=' + data.key;
+                _this.userData.share = Platform.data.share = share;
             },
             (e: Event) => {
                 _this.switchList.share = true;
@@ -491,22 +494,13 @@ export default class Index implements _Stage {
      * @return {void}
      */
     private ajax(url: string, data: any, successCallback: Function, errorCallback: Function): void {
-        const _this = this,
-            sortData = Global.FN.sortObject(data);
+        const _this = this;
         
-        let encryptParam = '';
-        
-        sortData.key = _this.serverData.key;
-        encryptParam = Global.FN.url.conversion(sortData);
-        data.sign = Global.CryptoJS.MD5(encryptParam).toString();
-        
-        Global.$.ajax({
-            url: _this.serverData.domain + url,
-            data,
-            dataType: 'json',
+        Global.Ajax.encryptMD5Ajax({
             type: 'post',
-            cache: false,
-            async: true,
+            url: _this.serverData.domain + url,
+            dataType: 'json',
+            data,
             beforeSend: (xhr: any) => {
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.setRequestHeader('Login-Token', _this.userData.token);
@@ -519,6 +513,8 @@ export default class Index implements _Stage {
                 console.log(e);
                 errorCallback(e);
             }
+        }, {
+            key: _this.serverData.key
         });
     }
 }

@@ -60,7 +60,24 @@ body {
 
   .tree {
     position: relative;
-    .bg('tree_5_top.png', 750*@px, 1219*@px, true);
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+    &:before,
+    &:after {
+      content: '';
+      display: block;
+      position: relative;
+    }
+
+    &:before {
+      .bg('tree_5_top.png', 750*@px, 1219*@px, true);
+    }
+
+    &:after {
+      .bg('tree_5_bottom.png', 750*@px, 1612*@px, true);
+    }
   }
 }
 

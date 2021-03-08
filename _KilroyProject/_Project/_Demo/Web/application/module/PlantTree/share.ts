@@ -31,19 +31,17 @@ export default class Share implements _Stage {
     private readonly setTimeList: any = { // 定时器列表
     };
     private serverData: any = { // 服务器数据
-        domain: 'http://activity.iyingdi.com',
+        // domain: 'https://activity.iyingdi.com',
+        domain: 'https://activity-test.iyingdi.com/',
         id: 'arbor_day_2021',
         key: '8ed81f4eed31633b1ab1dd67a0234188',
         appId: 'wxa54a0fb1c7856283'
     };
     private userData: any = { // 用户数据
-        // code: Global.FN.url.getParam('code') || Global.FN.cookie.get('yd_code') || '',
-        code: '1123123123',
-        id: '123123123123',
-        // share: Global.FN.url.getParam('uid') || '',
-        // share: Global.FN.url.getParam('key') || '',
-        share: '11381211',
-        key: '705efaf36b1dd51f76e311bbbfa8c88d',
+        code: Global.FN.url.getParam('code') || Global.FN.cookie.get('yd_code') || '',
+        id: '',
+        share: Global.FN.url.getParam('uid') || '',
+        key: Global.FN.url.getParam('key') || '',
         name: '',
         photo: '',
         help: false
@@ -78,7 +76,7 @@ export default class Share implements _Stage {
     public create(): void {
         const _this = this;
         
-        if (_this.userData.share === '') {
+        if (_this.userData.share === '' || _this.userData.key === '') {
             alert('参数错误，链接失效');
             return;
         }
@@ -111,7 +109,7 @@ export default class Share implements _Stage {
             _this.addHelp();
         });
         
-        // _this.authorization();
+        _this.authorization();
         _this.share();
         
         _this.getInfo();
@@ -347,22 +345,13 @@ export default class Share implements _Stage {
      * @return {void}
      */
     private ajax(url: string, data: any, successCallback: Function, errorCallback: Function): void {
-        const _this = this,
-            sortData = Global.FN.sortObject(data);
+        const _this = this;
         
-        let encryptParam = '';
-        
-        sortData.key = _this.serverData.key;
-        encryptParam = Global.FN.url.conversion(sortData);
-        data.sign = Global.CryptoJS.MD5(encryptParam).toString();
-        
-        Global.$.ajax({
-            url: _this.serverData.domain + url,
-            data,
-            dataType: 'json',
+        Global.Ajax.encryptMD5Ajax({
             type: 'post',
-            cache: false,
-            async: true,
+            url: _this.serverData.domain + url,
+            dataType: 'json',
+            data,
             beforeSend: (xhr: any) => {
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.setRequestHeader('Login-Token', _this.userData.token);
@@ -375,6 +364,8 @@ export default class Share implements _Stage {
                 console.log(e);
                 errorCallback(e);
             }
+        }, {
+            key: _this.serverData.key
         });
     }
 }

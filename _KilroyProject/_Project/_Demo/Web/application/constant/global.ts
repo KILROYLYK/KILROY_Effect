@@ -19,6 +19,7 @@ export default class Global {
     
     public static readonly FN: any = _Global.FN;
     public static readonly Adaptation: any = _Global.Adaptation;
+    public static readonly Ajax: any = _Global.Ajax;
     public static readonly Popup: any = _Global.Popup;
     
     public static readonly $: any = _Global.$;
