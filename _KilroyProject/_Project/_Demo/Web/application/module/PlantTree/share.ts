@@ -31,8 +31,8 @@ export default class Share implements _Stage {
     private readonly setTimeList: any = { // 定时器列表
     };
     private serverData: any = { // 服务器数据
-        // domain: 'https://activity.iyingdi.com',
-        domain: 'https://activity-test.iyingdi.com/',
+        // domain: 'https://activity-api.iyingdi.com/',
+        domain: 'https://activity-api-test.iyingdi.com/',
         id: 'arbor_day_2021',
         key: '8ed81f4eed31633b1ab1dd67a0234188',
         appId: 'wxa54a0fb1c7856283'

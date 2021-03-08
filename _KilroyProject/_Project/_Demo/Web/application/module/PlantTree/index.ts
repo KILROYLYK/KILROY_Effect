@@ -55,7 +55,8 @@ export default class Index implements _Stage {
     private level: number = 0; // 世界等级
     private serverData: any = { // 服务器
         // domain: 'https://activity.iyingdi.com',
-        domain: 'https://activity-test.iyingdi.com/',
+        // domain: 'https://activity-api.iyingdi.com/',
+        domain: 'https://activity-api-test.iyingdi.com/',
         id: 'arbor_day_2021',
         key: '8ed81f4eed31633b1ab1dd67a0234188'
     };
@@ -102,7 +103,6 @@ export default class Index implements _Stage {
         const _this = this;
         
         if (_this.userData.token === '') { // 未登录
-            _this.clear();
             Global.Dom.innerHTML = _this.template.login;
         } else { // 已登录
             Global.Dom.innerHTML = _this.template.main;
@@ -157,31 +157,6 @@ export default class Index implements _Stage {
      */
     public update(): void {
         const _this = this;
-    }
-    
-    /**
-     * 清理
-     * @return {void}
-     */
-    private clear(): void {
-        const _this = this;
-        
-        _this.isInit = false;
-        
-        Global.Dom.innerHTML = '';
-        
-        _this.userData.id = 0;
-        _this.userData.fraction = 0;
-        _this.userData.water = 0;
-        _this.userData.share = '';
-        
-        _this.switchList.info = true;
-        _this.switchList.water = true;
-        clearTimeout(_this.setTimeList.info);
-        clearTimeout(_this.setTimeList.water);
-        clearInterval(_this.setTimeList.waterAnim);
-        
-        Platform.data.share = '';
     }
     
     /**
