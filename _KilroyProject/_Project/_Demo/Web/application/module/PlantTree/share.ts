@@ -20,7 +20,12 @@ export default class Share implements _Stage {
             </div>
             <div id="box_user" class="box_user"><i></i></div>
             <div id="button_help" class="button button_help"></div>
-            <div id="button_index" class="button button_index"></div>`,
+            <wx-open-launch-app
+                id="launch-btn"
+                appid="wxa54a0fb1c7856283"
+                extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
+                <div id="button_index" class="button button_index"></div>
+            </wx-open-launch-app>`,
     };
     private readonly switchList: any = { // 开关列表
         info: true,
@@ -99,10 +104,13 @@ export default class Share implements _Stage {
     public init(): void {
         const _this = this;
         
-        if (_this.userData.code) _this.authorization();
-        _this.share();
+        if (_this.userData.id) {
+            _this.getInfo();
+        } else if (_this.userData.code) {
+            _this.authorization();
+        }
         
-        _this.getInfo();
+        _this.share();
     }
     
     /**
@@ -118,16 +126,19 @@ export default class Share implements _Stage {
      * @return {void}
      */
     private updateUserInfo(): void {
-        const _this = this;
+        const _this = this,
+            $buttonHelp = Global.$('#button_help'),
+            $buttonIndex = Global.$('#button_index');
         
         Global.$('#box_user').children('i').css('background-image', 'url(' + _this.userData.photo + ')');
+        $buttonHelp.click(() => {
+            _this.addHelp();
+        });
         
         if (_this.userData.help) {
-            Global.$('#button_help').show().click(() => {
-                _this.addHelp();
-            });
+            $buttonHelp.show()
         } else {
-            Global.$('#button_index').show();
+            $buttonIndex.show();
         }
     }
     
@@ -308,7 +319,8 @@ export default class Share implements _Stage {
                         timestamp: _this.shareData.timestamp,
                         nonceStr: _this.shareData.nonceStr,
                         signature: _this.shareData.signature,
-                        jsApiList: [ 'checkJsApi', 'onMenuShareAppMessage', 'onMenuShareTimeline' ]
+                        jsApiList: [ 'checkJsApi', 'onMenuShareAppMessage', 'onMenuShareTimeline' ],
+                        openTagList: [ 'wx-open-launch-app' ]
                     });
                     
                     WX.ready(() => {

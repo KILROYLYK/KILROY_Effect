@@ -62,8 +62,8 @@ export default class Platform {
     public static onShare(): string {
         const _this = this,
             share = {
-                title: '只要帮我浇一下树，绿的就是别人',
-                content: '一个有温度的玩家社区，国内超具影响力的卡牌和桌游玩家聚集地，快来加入营地的大家庭吧~',
+                title: '老哥一起来，让营地头上添点绿！',
+                content: '旅法师营地2021年度爬树比赛，现在开始！',
                 image: 'https://image.gaeamobile.net/image/20210305/114814/share.jpg',
                 url: _this.data.share
             };

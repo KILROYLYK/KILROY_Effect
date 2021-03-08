@@ -7,7 +7,8 @@ import '../../../resource/css/PlantTree/index.less';
 
 /**
  * 首页
- * https://activity-test.iyingdi.com/PlantTree/
+ * https://activity-test.iyingdi.com/planttree/home/
+ * https://activity-test.iyingdi.com/planttree/share/
  */
 export default class Index implements _Stage {
     private isInit: boolean = false; // 是否初始化
