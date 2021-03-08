@@ -21,12 +21,13 @@ export default class Share implements _Stage {
             </div>
             <div id="box_user" class="box_user"><i></i></div>
             <div id="button_help" class="button button_help"></div>
-           <wx-open-launch-app
+            <div id="button_index" class="button button_index"></div>
+        <!--<wx-open-launch-app
                 id="launch-btn"
                 appid="wxa54a0fb1c7856283"
                 extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
                 <button id="button_index" class="button button_index"></button>
-            </wx-open-launch-app>`,
+            </wx-open-launch-app>-->`,
     };
     private readonly switchList: any = { // 开关列表
         info: true,
@@ -135,10 +136,17 @@ export default class Share implements _Stage {
         $buttonHelp.click(() => {
             _this.addHelp();
         });
-        // $buttonIndex.click(() => {
-        //     // Global.Window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.gonlan.iplaymtg';
-        //     // Global.Window.location.href = 'https://itunes.apple.com/app/id716483205';
-        // });
+        $buttonIndex.click(() => {
+            let href = '';
+            
+            if (Global.FN.isPSB.system() === 'iOS') {
+                href = 'https://itunes.apple.com/app/id716483205'
+            } else {
+                href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.gonlan.iplaymtg'
+            }
+    
+            Global.Window.location.href = href;
+        });
         
         if (_this.userData.help) {
             $buttonHelp.show()
