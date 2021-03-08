@@ -936,7 +936,7 @@ body {
     @h: 38*@px;
     .position(absolute, -115*@px, auto, auto, 50%);
     z-index: 5;
-    width: 88*@px;
+    width: 100*@px;
     height: @h;
     .transform(translate(-50%, 0));
     text-align: center;
@@ -947,15 +947,16 @@ body {
       @h: 38*@px;
       display: inline-block;
       width: @w;
-      height: 38*@px;
+      height: @h;
+      margin-left: -5*@px;
       .bg('font_number.png', @w, @h*10);
 
       &.n_0 {
-        background-position: 0 0;
+        background-position: 2*@px 0;
       }
 
       &.n_1 {
-        background-position: 0 -@h;
+        background-position: 2*@px -@h;
       }
 
       &.n_2 {
@@ -963,31 +964,31 @@ body {
       }
 
       &.n_3 {
-        background-position: 0 -@h*3;
+        background-position: 0 -@h*3+-1*@px;
       }
 
       &.n_4 {
-        background-position: 0 -@h*4;
+        background-position: 0 -@h*4+-2*@px;
       }
 
       &.n_5 {
-        background-position: 0 -@h*5;
+        background-position: 0 -@h*5+-3*@px;
       }
 
       &.n_6 {
-        background-position: 0 -@h*6;
+        background-position: 0 -@h*6+-4*@px;
       }
 
       &.n_7 {
-        background-position: 0 -@h*7;
+        background-position: 0 -@h*7+-5*@px;
       }
 
       &.n_8 {
-        background-position: 0 -@h*8;
+        background-position: 0 -@h*8+-6*@px;
       }
 
       &.n_9 {
-        background-position: 0 -@h*9;
+        background-position: 0 -@h*9+-7*@px;
       }
     }
   }

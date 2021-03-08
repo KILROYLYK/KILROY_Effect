@@ -251,9 +251,9 @@ export default class Index implements _Stage {
             
             userList.forEach((v, iii) => {
                 const u = (ii === 0 && iii < 3) ? 'u_' + (iii + 1) : 'u',
-                    rank = u === 'u' ? _this.getRank(v.rank) : '',
                     user = `<div class="box_user ${ u }" data-id="${ v.user_id }" data-rank="${ v.rank }">
-                        <i style="background-image:url('${ v.photo }');"></i>${ rank }
+                        <i style="background-image:url('${ v.photo }');"></i>
+                        ${ _this.getRank(v.rank) }
                         <div class="text t_1">${ v.nick_name }</div>
                         <div class="text t_1"><span class="i_1"> ${ v.exp } 次</span></div>
                     </div>`;
@@ -273,6 +273,8 @@ export default class Index implements _Stage {
         const str = rank.toString();
         
         let dom = `<div class="rank">`;
+        
+        if (rank < 4) return dom + `</div>`;
         
         for (let i = 0, n = str.length; i < n; i++) dom += `<i class="n_${ str[i] }"></i>`;
         
