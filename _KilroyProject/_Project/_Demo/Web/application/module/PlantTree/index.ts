@@ -61,8 +61,8 @@ export default class Index implements _Stage {
         key: '8ed81f4eed31633b1ab1dd67a0234188'
     };
     private userData: any = { // 用户信息
-        // token: Global.FN.url.getParam('login_token') || '',
-        token: '235a5c694d8b4a11b832f483d45c5548',
+        token: Global.FN.url.getParam('login_token') || '',
+        // token: '235a5c694d8b4a11b832f483d45c5548',
         id: 0,
         fraction: 0, // 已浇水总次数
         water: 0, // 可以浇水次数
