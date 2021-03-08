@@ -60,14 +60,15 @@ export default class Platform {
      * @return {void}
      */
     public static onShare(): string {
-        const _this = this;
+        const _this = this,
+            share = {
+                title: '只要帮我浇一下树，绿的就是别人',
+                content: '一个有温度的玩家社区，国内超具影响力的卡牌和桌游玩家聚集地，快来加入营地的大家庭吧~',
+                image: 'https://image.gaeamobile.net/image/20210305/114814/share.jpg',
+                url: _this.data.share
+            };
         
-        return Platform.encryptParam({
-            title: '只要帮我浇一下树，绿的就是别人',
-            content: '一个有温度的玩家社区，国内超具影响力的卡牌和桌游玩家聚集地，快来加入营地的大家庭吧~',
-            image: 'https://image.gaeamobile.net/image/20210305/114814/share.jpg',
-            url: _this.data.share
-        }.toString());
+        return _this.encryptParam(JSON.stringify(share));
     }
     
     /**

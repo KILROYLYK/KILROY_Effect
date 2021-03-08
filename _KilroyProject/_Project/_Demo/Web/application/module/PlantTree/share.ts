@@ -31,15 +31,15 @@ export default class Share implements _Stage {
     private readonly setTimeList: any = { // 定时器列表
     };
     private serverData: any = { // 服务器数据
-        // domain: 'https://activity-api.iyingdi.com/',
-        domain: 'https://activity-api-test.iyingdi.com/',
+        // domain: 'https://activity-api.iyingdi.com',
+        domain: 'https://activity-api-test.iyingdi.com',
         id: 'arbor_day_2021',
         key: '8ed81f4eed31633b1ab1dd67a0234188',
         appId: 'wxa54a0fb1c7856283'
     };
     private userData: any = { // 用户数据
-        code: Global.FN.url.getParam('code') || Global.FN.cookie.get('yd_code') || '',
-        id: '',
+        code: Global.FN.url.getParam('code') || '',
+        id: Global.FN.cookie.get('wx_id') || '',
         share: Global.FN.url.getParam('uid') || '',
         key: Global.FN.url.getParam('key') || '',
         name: '',
@@ -64,6 +64,8 @@ export default class Share implements _Stage {
     constructor() {
         const _this = this;
         
+        new Global.Console();
+        
         Global.Adaptation.openRem();
         
         _this.create();
@@ -81,17 +83,9 @@ export default class Share implements _Stage {
             return;
         }
         
-        if (_this.userData.code === '') {
-            Global.Window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' +
-                '?appid=' + _this.serverData.appId +
-                '&redirect_uri=' + encodeURIComponent(Global.Window.location.href) +
-                '&response_type=code' +
-                '&scope=snsapi_userinfo' +
-                '&state=yd' +
-                '#wechat_redirect';
-        } else {
-            Global.FN.cookie.set('yd_code', _this.userData.code);
-            
+        if (_this.userData.code === '' && _this.userData.id === '') { // 未登录
+            _this.goAuthorization();
+        } else { // 已登录 | 已授权
             Global.Dom.innerHTML = _this.template.main;
             
             _this.init();
@@ -105,11 +99,7 @@ export default class Share implements _Stage {
     public init(): void {
         const _this = this;
         
-        Global.$('#button_help').click(() => {
-            _this.addHelp();
-        });
-        
-        _this.authorization();
+        if (_this.userData.code) _this.authorization();
         _this.share();
         
         _this.getInfo();
@@ -131,6 +121,30 @@ export default class Share implements _Stage {
         const _this = this;
         
         Global.$('#box_user').children('i').css('background-image', 'url(' + _this.userData.photo + ')');
+        
+        if (_this.userData.help) {
+            Global.$('#button_help').show().click(() => {
+                _this.addHelp();
+            });
+        } else {
+            Global.$('#button_index').show();
+        }
+    }
+    
+    /**
+     * 去授权
+     * @return {void}
+     */
+    private goAuthorization(): void {
+        const _this = this;
+        
+        Global.Window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' +
+            '?appid=' + _this.serverData.appId +
+            '&redirect_uri=' + encodeURIComponent(Global.Window.location.href) +
+            '&response_type=code' +
+            '&scope=snsapi_userinfo' +
+            '&state=yd' +
+            '#wechat_redirect';
     }
     
     /**
@@ -147,6 +161,7 @@ export default class Share implements _Stage {
             '/tree/user',
             {
                 uid: _this.userData.share,
+                key: _this.userData.key,
                 source: 'wechat',
                 form_user_id: _this.userData.id,
                 timestamp: Global.FN.getTimestamp()
@@ -202,6 +217,9 @@ export default class Share implements _Stage {
                     return;
                 }
                 
+                Global.$('#button_help').hide();
+                Global.$('#button_index').show();
+                
                 alert('助力成功');
             },
             (e: Event) => {
@@ -229,16 +247,16 @@ export default class Share implements _Stage {
             (result: any) => {
                 const data = result.data;
                 
-                console.log(result);
-                
                 _this.switchList.authorization = true;
                 
                 if (result.retCode !== 0) {
-                    alert(result.retMsg);
+                    // alert(result.retMsg);
+                    _this.goAuthorization();
                     return;
                 }
                 
                 _this.userData.id = data.openid;
+                Global.FN.cookie.set('wx_id', _this.userData.id);
                 
                 _this.getInfo();
             },
