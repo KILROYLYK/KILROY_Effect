@@ -106,8 +106,7 @@ export default class Index implements _Stage {
         const _this = this;
         
         if (_this.userData.token === '') { // 未登录
-            // Global.Dom.innerHTML = _this.template.login;
-            Global.Dom.innerHTML = _this.template.main;
+            Global.Dom.innerHTML = _this.template.login;
         } else { // 已登录
             Global.Dom.innerHTML = _this.template.main;
             
