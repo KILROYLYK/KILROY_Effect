@@ -137,9 +137,7 @@ export default class Index implements _Stage {
             _this.popupList.explain.open();
         });
         Global.$('#button_share').click(() => {
-            const share = Platform.onShare();
-            console.log(share);
-            Global.Window.location.href = 'wanxiu://innerlink?type=webshareurl&parameters=' + share;
+            Global.Window.location.href = 'wanxiu://innerlink?type=webshareurl&parameters=' + Platform.onShare();
         });
         
         Global.$('#popup_explain').click(() => {
