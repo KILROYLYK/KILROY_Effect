@@ -20,7 +20,11 @@ export default class Share implements _Stage {
     private readonly template: any = { // 模板对象
         main: `
             <div id="box_tree" class="box_tree">
-                <div class="tree"></div>
+                <div class="tree">
+                <div class="box_avatar"><i></i></div>
+                <div class="box_avatar"><i></i></div>
+                <div class="box_avatar"><i></i></div>
+                <div class="box_avatar"><i></i></div>
             </div>
             <div id="box_user" class="box_user"><i></i></div>
             <div id="button_help" class="button button_help"></div>

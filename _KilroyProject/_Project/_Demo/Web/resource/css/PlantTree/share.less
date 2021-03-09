@@ -28,19 +28,19 @@ body {
 
   &.button_help {
     .position(absolute, auto, 0, 200*@px, 0);
-    .bg('button_help.png', 248*@px, 102*@px, true);
+    .bg('button_help.png', 320*@px, 160*@px, true);
   }
 
   &.button_app {
     .position(absolute, auto, 0, 200*@px, 0);
-    .bg('button_app.png', 248*@px, 102*@px, true);
+    .bg('button_app.png', 384*@px, 158*@px, true);
     border: none;
   }
 }
 
 .box_tree {
   .position();
-  padding-top: 300*@px;
+  padding-top: 400*@px;
 
   &:before,
   &:after {
@@ -62,7 +62,6 @@ body {
 
   .tree {
     position: relative;
-    overflow: hidden;
     width: 100%;
     height: 100%;
 
@@ -80,20 +79,85 @@ body {
     &:after {
       .bg('tree_5_bottom.png', 750*@px, 1612*@px, true);
     }
+
+    .box_avatar {
+      .position(top);
+      width: 0;
+      height: 0;
+      margin: 0 auto;
+
+      &:after {
+        @wh: 112*@px;
+        content: '';
+        display: block;
+        .position(absolute, -@wh + 12*@px, auto, auto, 50%);
+        .transform(translate(-50%, 0));
+        .bg('avatar.png', @wh, @wh, true);
+      }
+
+      i {
+        @wh: 88*@px;
+        display: block;
+        .position(absolute, -@wh, auto, auto, 50%);
+        width: @wh;
+        height: @wh;
+        .transform(translate(-50%, 0));
+        background-size: @wh;
+        background-color: fade(@color_1, 50);
+        border-radius: 50%;
+
+        &:before {
+          content: '';
+          display: block;
+          .center();
+        }
+      }
+    }
+
+    .box_avatar:nth-child(1) {
+      .transform(translate(0*@px, 20*@px));
+
+      i:before {
+        .bg('avatar_t_1.png', 47*@px, 58*@px, true);
+      }
+    }
+
+    .box_avatar:nth-child(2) {
+      .transform(translate(160*@px, 170*@px));
+
+      i:before {
+        .bg('avatar_t_2.png', 47*@px, 58*@px, true);
+      }
+    }
+
+    .box_avatar:nth-child(3) {
+      .transform(translate(-230*@px, 420*@px));
+
+      i:before {
+        .bg('avatar_t_3.png', 47*@px, 58*@px, true);
+      }
+    }
+
+    .box_avatar:nth-child(4) {
+      .transform(translate(190*@px, 470*@px));
+
+      i:before {
+        .bg('avatar_t_4.png', 47*@px, 58*@px, true);
+      }
+    }
   }
 }
 
 .box_user {
-  .position(top, 150*@px);
+  .position(absolute, 130*@px, 0, auto, -470*@px);
   margin: 0 auto;
   .bg('avatar_share.png', 146*@px, 146*@px, true);
 
   &:before {
     content: '';
     display: block;
-    .position(absolute, auto, 0, -80*@px, 50%);
-    .transform(translate(-50%, 0));
-    margin: 0 auto;
+    .position(right, -430*@px);
+    margin: auto 0;
     .bg('share_text.png', 403*@px, 62*@px, true);
   }
 
