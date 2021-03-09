@@ -35,7 +35,7 @@ export default class Index implements _Stage {
         add: `<div class="progress_add t_1 i_1"><span>+1</span></div>`,
         popup: `<div class="popup_content"><div class="image"></div></div>`
     };
-    private readonly fractionList: number[] = [ 5000, 10000, 30000, 50000 ]; // 分数界限
+    private readonly fractionList: number[] = [ 5000, 10000, 15000, 20000 ]; // 分数界限
     private readonly levelList: number[] = [ 10, 30, 50, 80, 100 ]; // 等级人数
     private readonly popupList: any = { // 弹窗对象
         explain: null // 说明弹窗
