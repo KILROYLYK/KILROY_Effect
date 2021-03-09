@@ -172,21 +172,9 @@ body {
   .position();
   padding-top: 500*@px;
 
-  &:before,
   &:after {
     content: '';
     display: block;
-  }
-
-  &:before {
-    @h: 500*@px;
-    .position(bottom, -@h);
-    height: @h;
-    .bg('tree_bottom.png', 750*@px, auto, true);
-    background-repeat: repeat-y;
-  }
-
-  &:after {
     .position(fixed, auto, 0, 0, 0);
     .bg('bg_bottom.png', 750*@px, 207*@px, true);
   }
@@ -557,7 +545,7 @@ body {
       }
 
       .box_user:nth-child(4) {
-        .transform(translate(180*@px, 920*@px));
+        .transform(translate(-180*@px, 920*@px));
       }
 
       .box_user:nth-child(5) {
@@ -1080,26 +1068,6 @@ body {
 
   .show {
     opacity: 1;
-  }
-}
-
-.popup_toast {
-  background: fade(@color_2, 0);
-  pointer-events: none;
-
-  .box_popup {
-    width: 350*@px;
-    padding: 20*@px;
-    background: fade(@color_2, 75);
-
-    .btn_close {
-      display: none;
-    }
-
-    .popup_content {
-      position: relative;
-      .font(center, 34*@px, @color_1, 34*@px, true);
-    }
   }
 }
 

@@ -13,6 +13,7 @@ declare global {
 
 /**
  * 分享页
+ * https://activity-test.iyingdi.com/planttree/share/
  * 微信开放平台绑定的移动应用的AppId
  * 传递给App的参数
  */
@@ -66,8 +67,7 @@ export default class Share implements _Stage {
         share: Global.FN.url.getParam('uid') || '',
         key: Global.FN.url.getParam('key') || '',
         name: '',
-        photo: '',
-        help: false
+        photo: ''
     };
     private shareData: any = { // 分享数据
         appId: '',
@@ -86,10 +86,6 @@ export default class Share implements _Stage {
      */
     constructor() {
         const _this = this;
-        
-        new Global.Console();
-        
-        Global.Adaptation.openRem();
         
         _this.create();
         
@@ -193,11 +189,7 @@ export default class Share implements _Stage {
             Global.Window.location.href = href;
         });
         
-        if (_this.userData.help) {
-            $buttonHelp.show()
-        } else {
-            $buttonApp.show();
-        }
+        $buttonHelp.show()
     }
     
     /**
@@ -247,7 +239,6 @@ export default class Share implements _Stage {
                 
                 _this.userData.name = data.nick_name;
                 _this.userData.photo = data.photo;
-                _this.userData.help = data.is_help;
                 
                 _this.updateUserInfo();
             },
@@ -282,6 +273,11 @@ export default class Share implements _Stage {
                 _this.switchList.help = true;
                 
                 if (result.retCode !== 0) {
+                    if (result.retCode === 810004 || result.retCode === 810005) {
+                        Global.$('#button_help').hide();
+                        Global.$('#button_app').show();
+                    }
+                    
                     _this.popupList.toast.open(result.retMsg);
                     return;
                 }

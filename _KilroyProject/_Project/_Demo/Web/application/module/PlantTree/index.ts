@@ -9,7 +9,6 @@ import '../../../resource/css/PlantTree/index.less';
 /**
  * 首页
  * https://activity-test.iyingdi.com/planttree/home/
- * https://activity-test.iyingdi.com/planttree/share/
  */
 export default class Index implements _Stage {
     private readonly template: any = { // 模板对象
@@ -83,10 +82,6 @@ export default class Index implements _Stage {
      */
     constructor() {
         const _this = this;
-        
-        new Global.Console();
-        
-        Global.Adaptation.openRem();
         
         _this.create();
         
@@ -440,7 +435,7 @@ export default class Index implements _Stage {
         const _this = this;
         
         if (_this.userData.water === 0) {
-            _this.popupList.toast.open('浇水次数不足');
+            _this.popupList.toast.open('分享给好友获得更多次数吧');
             return;
         }
         

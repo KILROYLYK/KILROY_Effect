@@ -42,8 +42,6 @@ export default class Platform {
      * @return {void}
      */
     public static updateData(token: string = '', preid: string = '', version: string = '', platform: string = '', userId: string = '', useTraditional: string = '', extJson: string = '') {
-        console.log('Platform-UpdateData');
-        
         Platform.data.token = token;
         Platform.data.preid = preid;
         Platform.data.version = version;
@@ -58,8 +56,6 @@ export default class Platform {
      * @return {void}
      */
     public static onShare(): string {
-        console.log('Platform-Share');
-        
         const share = {
             title: '老哥一起来，让营地添点绿！',
             content: '旅法师营地2021年度爬树比赛，现在开始！',
