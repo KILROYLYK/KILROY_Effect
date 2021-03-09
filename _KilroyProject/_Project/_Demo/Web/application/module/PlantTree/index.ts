@@ -450,7 +450,7 @@ export default class Index implements _Stage {
     
                 AnalysysAgent.track('worldtree_plant', {
                     user_id: String(_this.userData.id),
-                    times: data.today_exp
+                    today_total: data.today_exp
                 });
             },
             (e: Event) => {
