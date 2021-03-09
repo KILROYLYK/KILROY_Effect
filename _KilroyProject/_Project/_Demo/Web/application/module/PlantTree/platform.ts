@@ -42,18 +42,15 @@ export default class Platform {
      * @return {void}
      */
     public static updateData(token: string = '', preid: string = '', version: string = '', platform: string = '', userId: string = '', useTraditional: string = '', extJson: string = '') {
-        const _this = this;
+        console.log('Platform-UpdateData');
         
-        try {
-            _this.data.token = token;
-            _this.data.preid = preid;
-            _this.data.version = version;
-            _this.data.platform = platform;
-            _this.data.traditional = (useTraditional === 'yes') || false;
-            
-            _this.updateDataCB && _this.updateDataCB();
-        } catch (error) {
-        }
+        Platform.data.token = token;
+        Platform.data.preid = preid;
+        Platform.data.version = version;
+        Platform.data.platform = platform;
+        Platform.data.traditional = (useTraditional === 'yes') || false;
+        
+        Platform.updateDataCB && Platform.updateDataCB();
     }
     
     /**
@@ -61,17 +58,18 @@ export default class Platform {
      * @return {void}
      */
     public static onShare(): string {
-        const _this = this,
-            share = {
-                title: '老哥一起来，让营地头上添点绿！',
-                content: '旅法师营地2021年度爬树比赛，现在开始！',
-                image: 'https://image.gaeamobile.net/image/20210305/114814/share.jpg',
-                url: _this.data.share
-            };
-    
-        _this.shareCB && _this.shareCB();
+        console.log('Platform-Share');
         
-        return _this.encryptParam(JSON.stringify(share));
+        const share = {
+            title: '老哥一起来，让营地头上添点绿！',
+            content: '旅法师营地2021年度爬树比赛，现在开始！',
+            image: 'https://image.gaeamobile.net/image/20210305/114814/share.jpg',
+            url: Platform.data.share
+        };
+        
+        Platform.shareCB && Platform.shareCB();
+        
+        return Platform.encryptParam(JSON.stringify(share));
     }
     
     /**
