@@ -458,8 +458,9 @@ export default class Share implements _Stage {
             success: (result: any) => {
                 successCallback(result);
             },
-            error: (e: Event) => {
+            error: (e: any) => {
                 console.log(e);
+                _this.popupList.toast.open(e.responseJSON.retMsg);
                 errorCallback(e);
             }
         }, {
