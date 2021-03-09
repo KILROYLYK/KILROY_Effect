@@ -38,7 +38,8 @@ export default class Share implements _Stage {
         <div class="btn">打开</div>
     </script>
 </wx-open-launch-app>-->
-`,
+        `,
+        popupToast: `<div class="popup_content"></div>`,
     };
     private readonly switchList: any = { // 开关列表
         info: true,
@@ -47,6 +48,10 @@ export default class Share implements _Stage {
         share: true
     };
     private readonly setTimeList: any = { // 定时器列表
+        toast: null // 提示弹窗
+    };
+    private readonly popupList: any = { // 弹窗对象
+        toast: null // 提示弹窗
     };
     private serverData: any = { // 服务器数据
         // domain: 'https://activity-api.iyingdi.com',
@@ -102,8 +107,27 @@ export default class Share implements _Stage {
     public create(): void {
         const _this = this;
         
+        if (_this.popupList.toast === null) {
+            _this.popupList.toast = new Global.Popup('popup_toast', {
+                content: _this.template.popupToast,
+                openCallback: (data: any) => {
+                    _this.popupList.toast.$content.find('.popup_content').text(data);
+                    
+                    if (_this.setTimeList.toast) clearTimeout(_this.setTimeList.toast);
+                    _this.setTimeList.toast = setTimeout(() => {
+                        _this.popupList.toast.close();
+                    }, 2500);
+                },
+                closeCallback: () => {
+                    _this.popupList.toast.$content.find('.popup_content').text('');
+                    
+                    clearTimeout(_this.setTimeList.toast);
+                }
+            });
+        }
+        
         if (_this.userData.share === '' || _this.userData.key === '') {
-            alert('参数错误，链接失效');
+            _this.popupList.toast.open('参数错误，链接失效');
             return;
         }
         
@@ -217,7 +241,7 @@ export default class Share implements _Stage {
                 _this.switchList.info = true;
                 
                 if (result.retCode !== 0) {
-                    alert(result.retMsg);
+                    _this.popupList.toast.open(result.retMsg);
                     return;
                 }
                 
@@ -258,7 +282,7 @@ export default class Share implements _Stage {
                 _this.switchList.help = true;
                 
                 if (result.retCode !== 0) {
-                    alert(result.retMsg);
+                    _this.popupList.toast.open(result.retMsg);
                     return;
                 }
                 
@@ -269,7 +293,7 @@ export default class Share implements _Stage {
                     user_id: String(_this.userData.id)
                 });
                 
-                alert('助力成功');
+                _this.popupList.toast.open('助力成功');
             },
             (e: Event) => {
                 _this.switchList.help = true;
@@ -299,7 +323,7 @@ export default class Share implements _Stage {
                 _this.switchList.authorization = true;
                 
                 if (result.retCode !== 0) {
-                    // alert(result.retMsg);
+                    _this.popupList.toast.open(result.retMsg);
                     _this.goAuthorization();
                     return;
                 }
@@ -337,7 +361,7 @@ export default class Share implements _Stage {
                 _this.switchList.share = true;
                 
                 if (result.retCode !== 0) {
-                    alert(result.retMsg);
+                    _this.popupList.toast.open(result.retMsg);
                     return;
                 }
                 

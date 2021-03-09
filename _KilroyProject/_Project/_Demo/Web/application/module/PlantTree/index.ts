@@ -13,7 +13,7 @@ import '../../../resource/css/PlantTree/index.less';
  */
 export default class Index implements _Stage {
     private readonly template: any = { // 模板对象
-        main: `<div id="box_tree" class="box_tree l_1"></div>
+        main: `<div id="box_tree" class="box_tree"></div>
             <div id="box_progress" class="box_progress">
                 <div class="progress_bar">
                     <i></i><div class="text t_1"><span>0 / 0</span></div>
@@ -33,22 +33,25 @@ export default class Index implements _Stage {
             </div>`,
         login: `<a id="login" class="login" href="wanxiu://innerlink?type=weblogin"></a>`,
         add: `<div class="progress_add t_1 i_1"><span>+1</span></div>`,
-        popup: `<div class="popup_content"><div class="image"></div></div>`
+        popupToast: `<div class="popup_content"></div>`,
+        popupExplain: `<div class="popup_content"><div class="image"></div></div>`
     };
     private readonly fractionList: number[] = [ 5000, 10000, 15000, 20000 ]; // 分数界限
     private readonly levelList: number[] = [ 10, 30, 50, 80, 100 ]; // 等级人数
-    private readonly popupList: any = { // 弹窗对象
-        explain: null // 说明弹窗
-    };
     private readonly switchList: any = { // 开关列表
         info: true, // 获取信息
         water: true, // 浇水
         share: true, // 分享
     };
     private readonly setTimeList: any = { // 定时器列表
+        toast: null, // 提示弹窗
         info: null, // 获取信息
         water: null, // 浇水
         waterAnim: null // 浇水动画
+    };
+    private readonly popupList: any = { // 弹窗对象
+        toast: null, // 提示弹窗
+        explain: null // 说明弹窗
     };
     private treeList: string[] = []; // 树列表
     private rankList: any[] = []; // 排名列表
@@ -118,17 +121,36 @@ export default class Index implements _Stage {
     public create(): void {
         const _this = this;
         
+        if (_this.popupList.toast === null) {
+            _this.popupList.toast = new Global.Popup('popup_toast', {
+                content: _this.template.popupToast,
+                openCallback: (data: any) => {
+                    _this.popupList.toast.$content.find('.popup_content').text(data);
+                    
+                    if (_this.setTimeList.toast) clearTimeout(_this.setTimeList.toast);
+                    _this.setTimeList.toast = setTimeout(() => {
+                        _this.popupList.toast.close();
+                    }, 2500);
+                },
+                closeCallback: () => {
+                    _this.popupList.toast.$content.find('.popup_content').text('');
+                    
+                    clearTimeout(_this.setTimeList.toast);
+                }
+            });
+        }
+        
+        if (_this.popupList.explain === null) {
+            _this.popupList.explain = new Global.Popup('popup_explain', {
+                content: _this.template.popupExplain
+            });
+        }
+        
         if (_this.userData.token === '') { // 未登录
             Global.Dom.innerHTML = _this.template.login;
             // Global.Dom.innerHTML = _this.template.main;
         } else { // 已登录
             Global.Dom.innerHTML = _this.template.main;
-            
-            if (_this.popupList.explain === null) {
-                _this.popupList.explain = new Global.Popup('popup_explain', {
-                    content: _this.template.popup
-                });
-            }
             
             _this.init();
         }
@@ -385,7 +407,7 @@ export default class Index implements _Stage {
                 _this.switchList.info = true;
                 
                 if (result.retCode !== 0) {
-                    alert(result.retMsg);
+                    _this.popupList.toast.open(result.retMsg);
                     return;
                 }
                 
@@ -418,7 +440,7 @@ export default class Index implements _Stage {
         const _this = this;
         
         if (_this.userData.water === 0) {
-            alert('浇水次数不足');
+            _this.popupList.toast.open('浇水次数不足');
             return;
         }
         
@@ -437,7 +459,7 @@ export default class Index implements _Stage {
                 const data = result.data;
                 
                 if (result.retCode !== 0) {
-                    alert(result.retMsg);
+                    _this.popupList.toast.open(result.retMsg);
                     return;
                 }
                 
@@ -480,7 +502,7 @@ export default class Index implements _Stage {
                 _this.switchList.share = true;
                 
                 if (result.retCode !== 0) {
-                    alert(result.retMsg);
+                    _this.popupList.toast.open(result.retMsg);
                     return;
                 }
                 

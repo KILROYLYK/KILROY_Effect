@@ -173,3 +173,23 @@ body {
   }
 }
 
+.popup_toast {
+  background: fade(@color_2, 0);
+  pointer-events: none;
+
+  .box_popup {
+    width: 350*@px;
+    padding: 20*@px;
+    background: fade(@color_2, 75);
+
+    .btn_close {
+      display: none;
+    }
+
+    .popup_content {
+      position: relative;
+      .font(center, 34*@px, @color_1, 34*@px, true);
+    }
+  }
+}
+

@@ -61,7 +61,7 @@ export default class Platform {
         console.log('Platform-Share');
         
         const share = {
-            title: '老哥一起来，让营地头上添点绿！',
+            title: '老哥一起来，让营地添点绿！',
             content: '旅法师营地2021年度爬树比赛，现在开始！',
             image: 'https://image.gaeamobile.net/image/20210305/114814/share.jpg',
             url: Platform.data.share
