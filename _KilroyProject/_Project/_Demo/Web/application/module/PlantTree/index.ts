@@ -13,15 +13,7 @@ import '../../../resource/css/PlantTree/index.less';
  */
 export default class Index implements _Stage {
     private readonly template: any = { // 模板对象
-        main: `<div id="box_tree" class="box_tree">
-<!--                <div class="tree tree_t">-->
-<!--                    <div class="box_user u"><i></i></div>-->
-<!--                    <div class="box_user u"><i></i></div>-->
-<!--                    <div class="box_user u"><i></i></div>-->
-<!--                    <div class="box_user u"><i></i></div>-->
-<!--                    <div class="box_user u"><i></i></div>-->
-<!--                </div>-->
-            </div>
+        main: `<div id="box_tree" class="box_tree l_1"></div>
             <div id="box_progress" class="box_progress">
                 <div class="progress_bar">
                     <i></i><div class="text t_1"><span>0 / 0</span></div>
