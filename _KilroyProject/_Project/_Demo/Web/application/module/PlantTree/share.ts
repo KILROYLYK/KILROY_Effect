@@ -1,5 +1,6 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
+import AnalysysAgent from './AnalysysAgent';
 
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/share.less';
@@ -12,6 +13,8 @@ declare global {
 
 /**
  * 分享页
+ * 微信开放平台绑定的移动应用的AppId
+ * 传递给App的参数
  */
 export default class Share implements _Stage {
     private readonly template: any = { // 模板对象
@@ -21,13 +24,17 @@ export default class Share implements _Stage {
             </div>
             <div id="box_user" class="box_user"><i></i></div>
             <div id="button_help" class="button button_help"></div>
-            <div id="button_index" class="button button_index"></div>
-        <!--<wx-open-launch-app
-                id="launch-btn"
-                appid="wxa54a0fb1c7856283"
-                extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
-                <button id="button_index" class="button button_index"></button>
-            </wx-open-launch-app>-->`,
+            <div id="button_app" class="button button_app"></div>
+<!--<wx-open-launch-app
+    id="launch-btn"
+    appid="wx49314fe3c5b5402b"
+    extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
+    <script type="text/wxtag-template">
+        <style>.btn { color: #fff; font-size: 10px; text-align:center; line-height:23px}</style>
+        <div class="btn">打开</div>
+    </script>
+</wx-open-launch-app>-->
+`,
     };
     private readonly switchList: any = { // 开关列表
         info: true,
@@ -76,6 +83,12 @@ export default class Share implements _Stage {
         Global.Adaptation.openRem();
         
         _this.create();
+        
+        AnalysysAgent.init({
+            appkey: '01cfd55a0542cd89',
+            uploadURL: 'https://yingdidatacollect.gaeadata.com',
+            sendType: 'post'
+        });
     }
     
     /**
@@ -130,13 +143,13 @@ export default class Share implements _Stage {
     private updateUserInfo(): void {
         const _this = this,
             $buttonHelp = Global.$('#button_help'),
-            $buttonIndex = Global.$('#button_index');
+            $buttonApp = Global.$('#button_app');
         
         Global.$('#box_user').children('i').css('background-image', 'url(' + _this.userData.photo + ')');
         $buttonHelp.click(() => {
             _this.addHelp();
         });
-        $buttonIndex.click(() => {
+        $buttonApp.click(() => {
             let href = '';
             
             if (Global.FN.isPSB.system() === 'iOS') {
@@ -145,13 +158,17 @@ export default class Share implements _Stage {
                 href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.gonlan.iplaymtg'
             }
     
+            AnalysysAgent.track('worldtree_share_app', {
+                user_id: String(_this.userData.id)
+            });
+            
             Global.Window.location.href = href;
         });
         
         if (_this.userData.help) {
             $buttonHelp.show()
         } else {
-            $buttonIndex.show();
+            $buttonApp.show();
         }
     }
     
@@ -242,7 +259,11 @@ export default class Share implements _Stage {
                 }
                 
                 Global.$('#button_help').hide();
-                Global.$('#button_index').show();
+                Global.$('#button_app').show();
+                
+                AnalysysAgent.track('worldtree_share_help', {
+                    user_id: String(_this.userData.id)
+                });
                 
                 alert('助力成功');
             },
@@ -321,7 +342,7 @@ export default class Share implements _Stage {
                 _this.shareData.nonceStr = result.nonceStr;
                 _this.shareData.signature = result.signature;
                 
-                Global.$.getScript('https://res.wx.qq.com/open/js/jweixin-1.4.0.js', () => {
+                Global.$.getScript('https://res.wx.qq.com/open/js/jweixin-1.6.0.js', () => {
                     const WX = window.wx || null;
                     
                     if (!WX) return;
@@ -340,8 +361,10 @@ export default class Share implements _Stage {
                         WX.checkJsApi({
                             jsApiList: [ 'wx-open-launch-app' ],
                             success: (res: any) => {
+                                console.log('微信开放接口可用');
                             },
                             fail: (err: any) => {
+                                console.log('微信开放接口不可用');
                             }
                         })
                         

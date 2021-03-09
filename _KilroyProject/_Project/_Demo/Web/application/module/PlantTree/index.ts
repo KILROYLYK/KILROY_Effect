@@ -1,6 +1,7 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 import Platform from './platform';
+import AnalysysAgent from './AnalysysAgent';
 
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/index.less';
@@ -11,7 +12,6 @@ import '../../../resource/css/PlantTree/index.less';
  * https://activity-test.iyingdi.com/planttree/share/
  */
 export default class Index implements _Stage {
-    private isInit: boolean = false; // 是否初始化
     private readonly template: any = { // 模板对象
         main: `<div id="box_tree" class="box_tree"></div>
             <div id="box_progress" class="box_progress">
@@ -85,17 +85,30 @@ export default class Index implements _Stage {
         
         Global.Adaptation.openRem();
         
-        Platform.updateDataCB = () => { // 平台登录对接
+        _this.create();
+    
+        // 平台
+        Platform.updateDataCB = () => { // 平台更新数据回调
             const token = _this.userData.token;
-            
+        
             _this.userData.token = Platform.data.token;
             _this.platformData.version = Platform.data.version;
             _this.platformData.system = Platform.data.platform;
-            
+        
             if (_this.userData.token !== token) Global.Window.location.reload();
         };
-        
-        _this.create();
+        Platform.shareCB = ()=>{ // 平台分享回调
+            AnalysysAgent.track('worldtree_share', {
+                user_id: String(_this.userData.id)
+            });
+        }
+    
+        // 统计
+        AnalysysAgent.init({
+            appkey: '01cfd55a0542cd89',
+            uploadURL: 'https://yingdidatacollect.gaeadata.com',
+            sendType: 'post'
+        });
     }
     
     /**
@@ -126,8 +139,6 @@ export default class Index implements _Stage {
      */
     public init(): void {
         const _this = this;
-        
-        _this.isInit = true;
         
         Global.$('#button_water').click(() => {
             _this.addWater();
@@ -372,7 +383,6 @@ export default class Index implements _Stage {
                 
                 _this.switchList.info = true;
                 
-                if (!_this.isInit) return;
                 if (result.retCode !== 0) {
                     alert(result.retMsg);
                     return;
@@ -425,7 +435,6 @@ export default class Index implements _Stage {
             (result: any) => {
                 const data = result.data;
                 
-                if (!_this.isInit) return;
                 if (result.retCode !== 0) {
                     alert(result.retMsg);
                     return;
@@ -438,6 +447,11 @@ export default class Index implements _Stage {
                 _this.getInfo();
                 
                 _this.waterAnimation();
+    
+                AnalysysAgent.track('worldtree_plant', {
+                    user_id: String(_this.userData.id),
+                    times: data.today_exp
+                });
             },
             (e: Event) => {
             }
@@ -464,7 +478,6 @@ export default class Index implements _Stage {
                 
                 _this.switchList.share = true;
                 
-                if (!_this.isInit) return;
                 if (result.retCode !== 0) {
                     alert(result.retMsg);
                     return;

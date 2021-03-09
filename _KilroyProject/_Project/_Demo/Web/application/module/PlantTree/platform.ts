@@ -19,6 +19,7 @@ export default class Platform {
     };
     
     public static updateDataCB: Function | null = null; // 更新数据回调
+    public static shareCB: Function | null = null; // 分享回调
     
     /**
      * App调用显示
@@ -67,6 +68,8 @@ export default class Platform {
                 image: 'https://image.gaeamobile.net/image/20210305/114814/share.jpg',
                 url: _this.data.share
             };
+    
+        _this.shareCB && _this.shareCB();
         
         return _this.encryptParam(JSON.stringify(share));
     }
