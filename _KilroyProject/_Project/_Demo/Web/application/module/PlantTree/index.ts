@@ -13,7 +13,15 @@ import '../../../resource/css/PlantTree/index.less';
  */
 export default class Index implements _Stage {
     private readonly template: any = { // 模板对象
-        main: `<div id="box_tree" class="box_tree"></div>
+        main: `<div id="box_tree" class="box_tree">
+<!--                <div class="tree tree_t">-->
+<!--                    <div class="box_user u"><i></i></div>-->
+<!--                    <div class="box_user u"><i></i></div>-->
+<!--                    <div class="box_user u"><i></i></div>-->
+<!--                    <div class="box_user u"><i></i></div>-->
+<!--                    <div class="box_user u"><i></i></div>-->
+<!--                </div>-->
+            </div>
             <div id="box_progress" class="box_progress">
                 <div class="progress_bar">
                     <i></i><div class="text t_1"><span>0 / 0</span></div>
@@ -86,23 +94,23 @@ export default class Index implements _Stage {
         Global.Adaptation.openRem();
         
         _this.create();
-    
+        
         // 平台
         Platform.updateDataCB = () => { // 平台更新数据回调
             const token = _this.userData.token;
-        
+            
             _this.userData.token = Platform.data.token;
             _this.platformData.version = Platform.data.version;
             _this.platformData.system = Platform.data.platform;
-        
+            
             if (_this.userData.token !== token) Global.Window.location.reload();
         };
-        Platform.shareCB = ()=>{ // 平台分享回调
+        Platform.shareCB = () => { // 平台分享回调
             AnalysysAgent.track('worldtree_share', {
                 user_id: String(_this.userData.id)
             });
         }
-    
+        
         // 统计
         AnalysysAgent.init({
             appkey: '01cfd55a0542cd89',
@@ -120,6 +128,7 @@ export default class Index implements _Stage {
         
         if (_this.userData.token === '') { // 未登录
             Global.Dom.innerHTML = _this.template.login;
+            // Global.Dom.innerHTML = _this.template.main;
         } else { // 已登录
             Global.Dom.innerHTML = _this.template.main;
             
@@ -254,7 +263,7 @@ export default class Index implements _Stage {
         $tree.empty();
         
         for (let i = 0, ii = 0, n = _this.treeList.length; i < n; i++, ii += 5) {
-            const tree = Global.$(`<div class="tree tree_${ _this.treeList[i] }"></div`),
+            const tree = Global.$(`<div class="tree tree_${ _this.treeList[i] }"></div>`),
                 userList = _this.rankList.slice(ii, ii + 5);
             
             userList.forEach((v, iii) => {
@@ -447,7 +456,7 @@ export default class Index implements _Stage {
                 _this.getInfo();
                 
                 _this.waterAnimation();
-    
+                
                 AnalysysAgent.track('worldtree_plant', {
                     user_id: String(_this.userData.id),
                     today_total: data.today_exp
