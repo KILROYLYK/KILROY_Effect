@@ -157,7 +157,7 @@ export default class Share implements _Stage {
             } else {
                 href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.gonlan.iplaymtg'
             }
-    
+            
             AnalysysAgent.track('worldtree_share_app', {
                 user_id: String(_this.userData.id)
             });
