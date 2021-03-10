@@ -8,7 +8,7 @@ import '../../../resource/css/PlantTree/index.less';
 
 /**
  * 首页
- * https://activity-test.iyingdi.com/planttree/home/
+ * https://activity-api-test.iyingdi.com/planttree/home/
  */
 export default class Index implements _Stage {
     private readonly template: any = { // 模板对象
@@ -143,7 +143,6 @@ export default class Index implements _Stage {
         
         if (_this.userData.token === '') { // 未登录
             Global.Dom.innerHTML = _this.template.login;
-            // Global.Dom.innerHTML = _this.template.main;
         } else { // 已登录
             Global.Dom.innerHTML = _this.template.main;
             
@@ -434,11 +433,6 @@ export default class Index implements _Stage {
     private addWater(): void {
         const _this = this;
         
-        if (_this.userData.water === 0) {
-            _this.popupList.toast.open('分享给好友获得更多次数吧');
-            return;
-        }
-        
         if (!_this.switchList.water) return;
         _this.switchList.water = false;
         _this.setTimeList.water = setTimeout(() => {
@@ -454,6 +448,11 @@ export default class Index implements _Stage {
                 const data = result.data;
                 
                 if (result.retCode !== 0) {
+                    if (_this.userData.water === 0) { // 浇水次数不足
+                        _this.popupList.toast.open('分享给好友获得更多次数吧');
+                        return;
+                    }
+                    
                     _this.popupList.toast.open(result.retMsg);
                     return;
                 }
@@ -537,7 +536,7 @@ export default class Index implements _Stage {
             },
             error: (e: any) => {
                 console.log(e);
-                _this.popupList.toast.open(e.responseJSON.retMsg);
+                e.responseJSON && _this.popupList.toast.open(e.responseJSON.retMsg);
                 errorCallback(e);
             }
         }, {

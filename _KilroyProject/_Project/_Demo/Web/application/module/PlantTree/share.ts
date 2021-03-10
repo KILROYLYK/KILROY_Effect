@@ -233,6 +233,15 @@ export default class Share implements _Stage {
                 _this.switchList.info = true;
                 
                 if (result.retCode !== 0) {
+                    if (result.retCode === 810003 ||
+                        result.retCode === 900001 ||
+                        result.retCode === 900002 ||
+                        result.retCode === 900003) { // 账号认证失败
+                        Global.FN.cookie.del('wx_id');
+                        _this.goAuthorization();
+                        return;
+                    }
+                    
                     _this.popupList.toast.open(result.retMsg);
                     return;
                 }
@@ -273,7 +282,16 @@ export default class Share implements _Stage {
                 _this.switchList.help = true;
                 
                 if (result.retCode !== 0) {
-                    if (result.retCode === 810004 || result.retCode === 810005) {
+                    if (result.retCode === 810003 ||
+                        result.retCode === 900001 ||
+                        result.retCode === 900002 ||
+                        result.retCode === 900003) { // 账号认证失败
+                        Global.FN.cookie.del('wx_id');
+                        _this.goAuthorization();
+                        return;
+                    }
+                    
+                    if (result.retCode === 810004 || result.retCode === 810005) { // 达到助力上限 | 已助力
                         Global.$('#button_help').hide();
                         Global.$('#button_app').show();
                     }
@@ -325,7 +343,7 @@ export default class Share implements _Stage {
                 }
                 
                 _this.userData.id = data.openid;
-                Global.FN.cookie.set('wx_id', _this.userData.id);
+                Global.FN.cookie.set('wx_id', data.openid);
                 
                 _this.getInfo();
             },
@@ -460,7 +478,7 @@ export default class Share implements _Stage {
             },
             error: (e: any) => {
                 console.log(e);
-                _this.popupList.toast.open(e.responseJSON.retMsg);
+                e.responseJSON && _this.popupList.toast.open(e.responseJSON.retMsg);
                 errorCallback(e);
             }
         }, {
