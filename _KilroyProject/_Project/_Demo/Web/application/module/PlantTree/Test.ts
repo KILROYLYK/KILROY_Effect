@@ -17,27 +17,33 @@ declare global {
 export default class Share implements _Stage {
     private readonly isCallApp: boolean = false;
     private readonly template: any = { // 模板对象
-        main: `<wx-open-launch-app
-                id="launch-btn"
+        main: `
+            <div class="box_call_app">
+            <wx-open-launch-app
+                id="button_app"
                 appid="wx49314fe3c5b5402b"
                 extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
-                <style type="text/css">
-                .button_app {
-                  position: absolute;
-                  top: auto;
-                  left: 0;
-                  right: 0;
-                  bottom: 2rem;
-                  width: 3.84rem;
-                  height: 1.58rem;
-                  margin: 0 auto;
-                  background: url(https://image.gaeamobile.net/image/20210310/134814/button_app.png);
-                  background-size: 3.84rem 1.58rem;
-                  border: none;
-                }
-                </style>
-                <button id="button_app" class="button_app"></button>
-            </wx-open-launch-app>`,
+                <!-- 微信内置窗口 Start -->
+                <template>
+                    <style>
+                    div {
+                      padding: 0;
+                    }
+                    
+                    .button_app {
+                      position: relative;
+                      width: 100px;
+                      height: 100px;
+                      padding: 0;
+                      background-color: white;
+                      border: none;
+                    }
+                    </style>
+                    <button class="button_app"></button>
+                </template>
+                <!-- 微信内置窗口 End -->
+            </wx-open-launch-app>
+            </div>`,
         popupToast: `<div class="popup_content"></div>`,
     };
     private readonly switchList: any = { // 开关列表
@@ -73,7 +79,7 @@ export default class Share implements _Stage {
      */
     constructor() {
         const _this = this;
-    
+        
         new Global.Console({ // 日志
             maxLogNumber: 1000,
             theme: 'dark'
@@ -119,17 +125,16 @@ export default class Share implements _Stage {
      */
     public init(): void {
         const _this = this,
-            $buttonApp = Global.$('#button_app');
+            button = document.getElementById('button_app');
         
-        $buttonApp.click(() => {
-            console.log('点击唤起App');
-        });
-        $buttonApp[0].addEventListener('launch', (e: any) => {
-            console.log('success');
-        });
-        $buttonApp[0].addEventListener('error', (e: any) => {
-            console.log('fail', e.detail);
-        });
+        if (button) {
+            button.addEventListener('launch', (e: any) => {
+                console.log('success');
+            });
+            button.addEventListener('error', (e: any) => {
+                console.log('fail', e.detail);
+            });
+        }
         
         _this.share();
     }
@@ -159,7 +164,7 @@ export default class Share implements _Stage {
                 timestamp: Global.FN.getTimestamp()
             },
             (result: any) => {
-                const data = result.data;
+                const data = Global.$.parseJSON(result.data);
                 
                 _this.switchList.share = true;
                 
@@ -168,10 +173,10 @@ export default class Share implements _Stage {
                     return;
                 }
                 
-                _this.shareData.appId = result.appId;
-                _this.shareData.timestamp = result.timestamp;
-                _this.shareData.nonceStr = result.nonceStr;
-                _this.shareData.signature = result.signature;
+                _this.shareData.appId = data.appId;
+                _this.shareData.timestamp = data.timestamp;
+                _this.shareData.nonceStr = data.nonceStr;
+                _this.shareData.signature = data.signature;
                 
                 Global.$.getScript('https://res.wx.qq.com/open/js/jweixin-1.6.0.js', () => {
                     const WX = window.wx || null;
@@ -192,7 +197,6 @@ export default class Share implements _Stage {
                         WX.checkJsApi({
                             jsApiList: [ 'wx-open-launch-app' ],
                             success: (res: any) => {
-                                console.log('微信开放接口可用');
                             },
                             fail: (err: any) => {
                                 console.log('微信开放接口不可用');

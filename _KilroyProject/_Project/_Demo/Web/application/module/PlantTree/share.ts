@@ -27,30 +27,35 @@ export default class Share implements _Stage {
             </div>
             <div id="box_user" class="box_user"><i></i></div>
             <div id="button_help" class="button button_help"></div>
-        ${ this.isCallApp // 微信开放平台绑定的移动应用的AppId & 传递给App的参数
-            ? `<wx-open-launch-app
-                    id="launch-btn"
+            <div id="button_app" class="button button_app"></div>
+            ${ this.isCallApp // 唤起App
+            ? `<div class="box_call_app">
+                <wx-open-launch-app
+                    id="button_call_app"
                     appid="wx49314fe3c5b5402b"
                     extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
-                    <style type="text/css">
-                    .button_app {
-                      display: none;
-                      position: absolute;
-                      top: auto;
-                      left: 0;
-                      right: 0;
-                      bottom: 2rem;
-                      width: 3.84rem;
-                      height: 1.58rem;
-                      margin: 0 auto;
-                      background: url(https://image.gaeamobile.net/image/20210310/134814/button_app.png);
-                      background-size: 3.84rem 1.58rem;
-                      border: none;
-                    }
-                    </style>
-                    <button id="button_app" class="button_app"></button>
-                </wx-open-launch-app>`
-            : `<div id="button_app" class="button button_app"></div>`
+                    <!-- 微信内置窗口 Start -->
+                    <template>
+                        <style>
+                        div {
+                          padding: 0;
+                        }
+                        
+                        .button {
+                          position: relative;
+                          width: 100px;
+                          height: 100px;
+                          padding: 0;
+                          background-color: transparent;
+                          border: none;
+                        }
+                        </style>
+                        <button class="button"></button>
+                    </template>
+                    <!-- 微信内置窗口 End -->
+                </wx-open-launch-app>
+                </div>`
+            : ``
         }`,
         popupToast: `<div class="popup_content"></div>`,
     };
@@ -179,21 +184,30 @@ export default class Share implements _Stage {
     private updateUserInfo(): void {
         const _this = this,
             $buttonHelp = Global.$('#button_help'),
-            $buttonApp = Global.$('#button_app');
+            $buttonApp = Global.$('#button_app'),
+            $buttonCallApp = Global.$('#button_call_app'),
+            $boxCallApp = Global.$('.box_call_app');
         
         Global.$('#box_user').children('i').css('background-image', 'url(' + _this.userData.photo + ')');
         $buttonHelp.click(() => {
             _this.addHelp();
         });
         
-        if (_this.isCallApp) {
-            $buttonApp[0].addEventListener('launch', (e: any) => {
+        if (_this.isCallApp) { // 唤起App
+            $buttonCallApp.bind('launch', (e: any) => {
                 console.log('success');
             });
-            $buttonApp[0].addEventListener('error', (e: any) => {
+            $buttonCallApp.bind('error', (e: any) => {
                 console.log('fail', e.detail);
             });
-        } else {
+            Global.FN.resize(() => {
+                const font = parseFloat(Global.$('html').css('font-size')) / 100,
+                    width = 248 / 100 * font,
+                    height = 101 / 100 * font;
+                
+                $boxCallApp.css('transform', 'scale(' + width + ',' + height + ')');
+            });
+        } else { // 去往商城
             $buttonApp.click(() => {
                 let href = '';
                 
@@ -296,17 +310,18 @@ export default class Share implements _Stage {
                 _this.switchList.help = true;
                 
                 if (result.retCode !== 0) {
-                    if (result.retCode === 810004 || result.retCode === 810005) { // 达到助力上限 | 已助力
-                        Global.$('#button_help').hide();
-                        Global.$('#button_app').show();
+                    if (result.retCode === 810004 ||
+                        result.retCode === 810005) { // 达到助力上限 | 已助力
+                        Global.$('#button_help').addClass('gray');
+                        Global.$('#button_app').addClass('text');
                     }
                     
                     _this.popupList.toast.open(result.retMsg);
                     return;
                 }
                 
-                Global.$('#button_help').hide();
-                Global.$('#button_app').show();
+                Global.$('#button_help').addClass('gray');
+                Global.$('#button_app').addClass('text');
                 
                 AnalysysAgent.track('worldtree_share_help', {
                     user_id: String(_this.userData.id)
@@ -374,7 +389,7 @@ export default class Share implements _Stage {
                 timestamp: Global.FN.getTimestamp()
             },
             (result: any) => {
-                const data = result.data;
+                const data = Global.$.parseJSON(result.data);
                 
                 _this.switchList.share = true;
                 
@@ -383,10 +398,10 @@ export default class Share implements _Stage {
                     return;
                 }
                 
-                _this.shareData.appId = result.appId;
-                _this.shareData.timestamp = result.timestamp;
-                _this.shareData.nonceStr = result.nonceStr;
-                _this.shareData.signature = result.signature;
+                _this.shareData.appId = data.appId;
+                _this.shareData.timestamp = data.timestamp;
+                _this.shareData.nonceStr = data.nonceStr;
+                _this.shareData.signature = data.signature;
                 
                 Global.$.getScript('https://res.wx.qq.com/open/js/jweixin-1.6.0.js', () => {
                     const WX = window.wx || null;
@@ -474,7 +489,6 @@ export default class Share implements _Stage {
             data,
             beforeSend: (xhr: any) => {
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                // xhr.setRequestHeader('Login-Token', _this.userData.token);
                 xhr.setRequestHeader('Activity-Id', _this.serverData.id);
             },
             success: (result: any) => {

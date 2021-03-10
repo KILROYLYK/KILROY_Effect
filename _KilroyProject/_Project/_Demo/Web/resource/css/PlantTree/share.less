@@ -19,22 +19,53 @@ body {
 }
 
 .button {
-  display: none;
   margin: 0 auto;
+
+  &:before {
+    content: '';
+    display: block;
+  }
 
   //&:hover {
   //  opacity: 0.7;
   //}
 
   &.button_help {
-    .position(absolute, auto, 0, 200*@px, 0);
-    .bg('button_help.png', 320*@px, 160*@px, true);
+    .position(absolute, auto, 300*@px, 200*@px, 0);
+    .bg('button_help.png', 248*@px, 101*@px, true);
+
+    &:before {
+      .position(absolute, auto, auto, -40*@px, 50%);
+      .transform(translate(-50%, 0));
+      .bg('button_help_text.png', 320*@px, 34*@px, true);
+    }
+
+    &.gray {
+      pointer-events: none;
+      .filter(grayscale(100%));
+
+      &:before {
+        display: none;
+      }
+    }
   }
 
   &.button_app {
-    .position(absolute, auto, 0, 200*@px, 0);
-    .bg('button_app.png', 384*@px, 158*@px, true);
-    border: none;
+    .position(absolute, auto, 0, 200*@px, 300*@px);
+    .bg('button_app.png', 248*@px, 101*@px, true);
+
+    &:before {
+      display: none;
+      .position(absolute, auto, auto, -40*@px, 50%);
+      .transform(translate(-50%, 0));
+      .bg('button_app_text.png', 384*@px, 34*@px, true);
+    }
+
+    &.text {
+      &:before {
+        display: block;
+      }
+    }
   }
 }
 
@@ -171,5 +202,13 @@ body {
     background-color: white;
     border-radius: 50%;
   }
+}
+
+.box_call_app {
+  .position(absolute, auto, 0, -45*@px+200*@px, 300*@px);
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
