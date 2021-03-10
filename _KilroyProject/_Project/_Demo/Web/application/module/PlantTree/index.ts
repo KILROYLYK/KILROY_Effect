@@ -57,8 +57,8 @@ export default class Index implements _Stage {
     private fraction: number = 0; // 世界已浇水次数
     private level: number = 0; // 世界等级
     private serverData: any = { // 服务器
-        // domain: 'https://activity-api.iyingdi.com',
-        domain: 'https://activity-api-test.iyingdi.com',
+        domain: 'https://activity-api.iyingdi.com',
+        // domain: 'https://activity-api-test.iyingdi.com',
         id: 'arbor_day_2021',
         key: '8ed81f4eed31633b1ab1dd67a0234188'
     };

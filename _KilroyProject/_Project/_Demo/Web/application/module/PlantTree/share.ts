@@ -14,13 +14,11 @@ declare global {
 /**
  * 分享页
  * https://activity.iyingdi.com/planttree/share/
- * 微信开放平台绑定的移动应用的AppId
- * 传递给App的参数
  */
 export default class Share implements _Stage {
+    private readonly isCallApp: boolean = false;
     private readonly template: any = { // 模板对象
-        main: `
-            <div id="box_tree" class="box_tree">
+        main: `<div id="box_tree" class="box_tree">
                 <div class="tree">
                 <div class="box_avatar"><i></i></div>
                 <div class="box_avatar"><i></i></div>
@@ -29,17 +27,31 @@ export default class Share implements _Stage {
             </div>
             <div id="box_user" class="box_user"><i></i></div>
             <div id="button_help" class="button button_help"></div>
-            <div id="button_app" class="button button_app"></div>
-<!--<wx-open-launch-app
-    id="launch-btn"
-    appid="wx49314fe3c5b5402b"
-    extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
-    <script type="text/wxtag-template">
-        <style>.btn { color: #fff; font-size: 10px; text-align:center; line-height:23px}</style>
-        <div class="btn">打开</div>
-    </script>
-</wx-open-launch-app>-->
-        `,
+        ${ this.isCallApp // 微信开放平台绑定的移动应用的AppId & 传递给App的参数
+            ? `<wx-open-launch-app
+                    id="launch-btn"
+                    appid="wx49314fe3c5b5402b"
+                    extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
+                    <style type="text/css">
+                    .button_app {
+                      display: none;
+                      position: absolute;
+                      top: auto;
+                      left: 0;
+                      right: 0;
+                      bottom: 2rem;
+                      width: 3.84rem;
+                      height: 1.58rem;
+                      margin: 0 auto;
+                      background: url(https://image.gaeamobile.net/image/20210310/134814/button_app.png);
+                      background-size: 3.84rem 1.58rem;
+                      border: none;
+                    }
+                    </style>
+                    <button id="button_app" class="button_app"></button>
+                </wx-open-launch-app>`
+            : `<div id="button_app" class="button button_app"></div>`
+        }`,
         popupToast: `<div class="popup_content"></div>`,
     };
     private readonly switchList: any = { // 开关列表
@@ -55,8 +67,8 @@ export default class Share implements _Stage {
         toast: null // 提示弹窗
     };
     private serverData: any = { // 服务器数据
-        // domain: 'https://activity-api.iyingdi.com',
-        domain: 'https://activity-api-test.iyingdi.com',
+        domain: 'https://activity-api.iyingdi.com',
+        // domain: 'https://activity-api-test.iyingdi.com',
         id: 'arbor_day_2021',
         key: '8ed81f4eed31633b1ab1dd67a0234188',
         appId: 'wxa54a0fb1c7856283'
@@ -74,10 +86,10 @@ export default class Share implements _Stage {
         timestamp: '',
         nonceStr: '',
         signature: '',
-        title: '只要帮我浇一下树，绿的就是别人',
-        desc: '一个有温度的玩家社区，国内超具影响力的卡牌和桌游玩家聚集地，快来加入营地的大家庭吧~',
+        title: '老哥一起来，让营地添点绿！',
+        description: '旅法师营地2021年度爬树比赛，现在开始！',
         img: 'https://image.gaeamobile.net/image/20210305/114814/share.jpg',
-        url: Global.Window.location.href
+        url: Global.FN.url.delParam([ 'code' ])
     };
     
     /**
@@ -173,21 +185,31 @@ export default class Share implements _Stage {
         $buttonHelp.click(() => {
             _this.addHelp();
         });
-        $buttonApp.click(() => {
-            let href = '';
-            
-            if (Global.FN.isPSB.system() === 'iOS') {
-                href = 'https://itunes.apple.com/app/id716483205'
-            } else {
-                href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.gonlan.iplaymtg'
-            }
-            
-            AnalysysAgent.track('worldtree_share_app', {
-                user_id: String(_this.userData.id)
+        
+        if (_this.isCallApp) {
+            $buttonApp[0].addEventListener('launch', (e: any) => {
+                console.log('success');
             });
-            
-            Global.Window.location.href = href;
-        });
+            $buttonApp[0].addEventListener('error', (e: any) => {
+                console.log('fail', e.detail);
+            });
+        } else {
+            $buttonApp.click(() => {
+                let href = '';
+                
+                if (Global.FN.isPSB.system() === 'iOS') {
+                    href = 'https://itunes.apple.com/app/id716483205'
+                } else {
+                    href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.gonlan.iplaymtg'
+                }
+                
+                AnalysysAgent.track('worldtree_share_app', {
+                    user_id: String(_this.userData.id)
+                });
+                
+                Global.Window.location.href = href;
+            });
+        }
         
         $buttonHelp.show()
     }
@@ -452,7 +474,7 @@ export default class Share implements _Stage {
             data,
             beforeSend: (xhr: any) => {
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.setRequestHeader('Login-Token', _this.userData.token);
+                // xhr.setRequestHeader('Login-Token', _this.userData.token);
                 xhr.setRequestHeader('Activity-Id', _this.serverData.id);
             },
             success: (result: any) => {
