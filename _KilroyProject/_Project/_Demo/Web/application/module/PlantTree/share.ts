@@ -13,7 +13,7 @@ declare global {
 
 /**
  * 分享页
- * https://activity-test.iyingdi.com/planttree/share/
+ * https://activity.iyingdi.com/planttree/share/
  * 微信开放平台绑定的移动应用的AppId
  * 传递给App的参数
  */
@@ -197,11 +197,12 @@ export default class Share implements _Stage {
      * @return {void}
      */
     private goAuthorization(): void {
-        const _this = this;
+        const _this = this,
+            url = Global.FN.url.delParam([ 'code' ]);
         
         Global.Window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' +
             '?appid=' + _this.serverData.appId +
-            '&redirect_uri=' + encodeURIComponent(Global.Window.location.href) +
+            '&redirect_uri=' + encodeURIComponent(url) +
             '&response_type=code' +
             '&scope=snsapi_userinfo' +
             '&state=yd' +
@@ -233,15 +234,6 @@ export default class Share implements _Stage {
                 _this.switchList.info = true;
                 
                 if (result.retCode !== 0) {
-                    if (result.retCode === 810003 ||
-                        result.retCode === 900001 ||
-                        result.retCode === 900002 ||
-                        result.retCode === 900003) { // 账号认证失败
-                        Global.FN.cookie.del('wx_id');
-                        _this.goAuthorization();
-                        return;
-                    }
-                    
                     _this.popupList.toast.open(result.retMsg);
                     return;
                 }
@@ -282,15 +274,6 @@ export default class Share implements _Stage {
                 _this.switchList.help = true;
                 
                 if (result.retCode !== 0) {
-                    if (result.retCode === 810003 ||
-                        result.retCode === 900001 ||
-                        result.retCode === 900002 ||
-                        result.retCode === 900003) { // 账号认证失败
-                        Global.FN.cookie.del('wx_id');
-                        _this.goAuthorization();
-                        return;
-                    }
-                    
                     if (result.retCode === 810004 || result.retCode === 810005) { // 达到助力上限 | 已助力
                         Global.$('#button_help').hide();
                         Global.$('#button_app').show();
@@ -338,7 +321,6 @@ export default class Share implements _Stage {
                 
                 if (result.retCode !== 0) {
                     _this.popupList.toast.open(result.retMsg);
-                    _this.goAuthorization();
                     return;
                 }
                 
@@ -474,6 +456,15 @@ export default class Share implements _Stage {
                 xhr.setRequestHeader('Activity-Id', _this.serverData.id);
             },
             success: (result: any) => {
+                if (result.retCode === 810003 ||
+                    result.retCode === 900001 ||
+                    result.retCode === 900002 ||
+                    result.retCode === 900003) { // 账号认证失败
+                    Global.FN.cookie.del('wx_id');
+                    _this.goAuthorization();
+                    return;
+                }
+                
                 successCallback(result);
             },
             error: (e: any) => {

@@ -8,7 +8,7 @@ import '../../../resource/css/PlantTree/index.less';
 
 /**
  * 首页
- * https://activity-api-test.iyingdi.com/planttree/home/
+ * https://activity.iyingdi.com/planttree/home/
  */
 export default class Index implements _Stage {
     private readonly template: any = { // 模板对象

@@ -23,8 +23,8 @@ export default class Global {
     public static readonly Popup: any = _Global.Popup;
     
     public static readonly $: any = _Global.$;
-    public static readonly CryptoJS: any = _Global.CryptoJS;
-    public static readonly Console: any = _Global.VConsole;
+    public static readonly CryptoJS: any = _Global.Crypto;
+    public static readonly Console: any = _Global.Console;
     // public static readonly GSAP: any = _Global.GSAP;
     public static readonly Tween: any = _Global.Tween;
     
