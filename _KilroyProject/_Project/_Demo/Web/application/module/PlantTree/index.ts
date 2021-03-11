@@ -1,7 +1,7 @@
 import Global from '../../constant/global';
 import _Stage from '../../interface/stage';
 import Platform from './platform';
-import AnalysysAgent from './AnalysysAgent';
+import AnalysysAgent from '../../plugin/AnalysysAgent';
 
 import '../../../resource/css/PlantTree/public.less';
 import '../../../resource/css/PlantTree/index.less';
