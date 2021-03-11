@@ -15,14 +15,13 @@ declare global {
  * https://activity.iyingdi.com/planttree/share/
  */
 export default class Share implements _Stage {
-    private readonly isCallApp: boolean = false;
     private readonly template: any = { // 模板对象
         main: `
             <div class="box_call_app">
             <wx-open-launch-app
                 id="button_app"
                 appid="wx49314fe3c5b5402b"
-                extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
+                extinfo="wanxiu://innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity.iyingdi.com/planttree/home/index.html') }">
                 <!-- 微信内置窗口 Start -->
                 <template>
                     <style>
@@ -130,9 +129,14 @@ export default class Share implements _Stage {
         if (button) {
             button.addEventListener('launch', (e: any) => {
                 console.log('success');
+    
+                // 安卓App不支持调起，直接跳转至商城
+                if (Global.FN.isPSB.system() !== 'iOS') _this.goDownload();
             });
             button.addEventListener('error', (e: any) => {
                 console.log('fail', e.detail);
+    
+                _this.goDownload();
             });
         }
         
@@ -145,6 +149,24 @@ export default class Share implements _Stage {
      */
     public update(): void {
         const _this = this;
+    }
+    
+    /**
+     * 去下载
+     * @return {void}
+     */
+    private goDownload(): void {
+        const _this = this;
+        
+        let href = '';
+        
+        if (Global.FN.isPSB.system() === 'iOS') {
+            href = 'https://itunes.apple.com/app/id716483205'
+        } else {
+            href = 'https://www.iyingdi.com/spread/index.html'
+        }
+        
+        Global.Window.location.href = href;
     }
     
     /**

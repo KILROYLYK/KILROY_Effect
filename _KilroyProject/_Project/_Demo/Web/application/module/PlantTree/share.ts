@@ -16,7 +16,7 @@ declare global {
  * https://activity.iyingdi.com/planttree/share/
  */
 export default class Share implements _Stage {
-    private readonly isCallApp: boolean = false;
+    private readonly isCallApp: boolean = true;
     private readonly template: any = { // 模板对象
         main: `<div id="box_tree" class="box_tree">
                 <div class="tree">
@@ -33,7 +33,7 @@ export default class Share implements _Stage {
                 <wx-open-launch-app
                     id="button_call_app"
                     appid="wx49314fe3c5b5402b"
-                    extinfo="innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity-test.iyingdi.com/planttree/home/') }">
+                    extinfo="wanxiu://innerlink?type=miniprogram&url=${ encodeURIComponent('https://activity.iyingdi.com/planttree/home/index.html') }">
                     <!-- 微信内置窗口 Start -->
                     <template>
                         <style>
@@ -196,9 +196,22 @@ export default class Share implements _Stage {
         if (_this.isCallApp) { // 唤起App
             $buttonCallApp.bind('launch', (e: any) => {
                 console.log('success');
+                
+                AnalysysAgent.track('worldtree_share_app', {
+                    user_id: String(_this.userData.id)
+                });
+                
+                // 安卓App不支持调起，直接跳转至商城
+                if (Global.FN.isPSB.system() !== 'iOS') _this.goDownload();
             });
             $buttonCallApp.bind('error', (e: any) => {
                 console.log('fail', e.detail);
+                
+                AnalysysAgent.track('worldtree_share_app', {
+                    user_id: String(_this.userData.id)
+                });
+                
+                _this.goDownload();
             });
             Global.FN.resize(() => {
                 const font = parseFloat(Global.$('html').css('font-size')) / 100,
@@ -209,23 +222,33 @@ export default class Share implements _Stage {
             });
         } else { // 去往商城
             $buttonApp.click(() => {
-                let href = '';
-                
-                if (Global.FN.isPSB.system() === 'iOS') {
-                    href = 'https://itunes.apple.com/app/id716483205'
-                } else {
-                    href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.gonlan.iplaymtg'
-                }
-                
                 AnalysysAgent.track('worldtree_share_app', {
                     user_id: String(_this.userData.id)
                 });
                 
-                Global.Window.location.href = href;
+                _this.goDownload();
             });
         }
         
         $buttonHelp.show()
+    }
+    
+    /**
+     * 去下载
+     * @return {void}
+     */
+    private goDownload(): void {
+        const _this = this;
+        
+        let href = '';
+        
+        if (Global.FN.isPSB.system() === 'iOS') {
+            href = 'https://itunes.apple.com/app/id716483205';
+        } else {
+            href = 'https://www.iyingdi.com/spread/index.html';
+        }
+        
+        Global.Window.location.href = href;
     }
     
     /**
