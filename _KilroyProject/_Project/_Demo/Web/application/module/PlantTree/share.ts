@@ -62,7 +62,7 @@ export default class Share implements _Stage {
     private readonly switchList: any = { // 开关列表
         info: true,
         help: true,
-        authorization: true,
+        authorize: true,
         share: true
     };
     private readonly setTimeList: any = { // 定时器列表
@@ -145,7 +145,7 @@ export default class Share implements _Stage {
         }
         
         if (_this.userData.code === '' && _this.userData.id === '') { // 未登录
-            _this.goAuthorization();
+            _this.goAuthorize();
         } else { // 已登录 | 已授权
             Global.Dom.innerHTML = _this.template.main;
             
@@ -163,7 +163,7 @@ export default class Share implements _Stage {
         if (_this.userData.id) {
             _this.getInfo();
         } else if (_this.userData.code) {
-            _this.authorization();
+            _this.authorize();
         }
         
         _this.share();
@@ -255,7 +255,7 @@ export default class Share implements _Stage {
      * 去授权
      * @return {void}
      */
-    private goAuthorization(): void {
+    private goAuthorize(): void {
         const _this = this,
             url = Global.FN.url.delParam([ 'code' ]);
         
@@ -362,11 +362,11 @@ export default class Share implements _Stage {
      * 授权
      * @return {void}
      */
-    private authorization(): void {
+    private authorize(): void {
         const _this = this;
         
-        if (!_this.switchList.authorization) return;
-        _this.switchList.authorization = false;
+        if (!_this.switchList.authorize) return;
+        _this.switchList.authorize = false;
         
         _this.ajax(
             '/tree/wechat-auth',
@@ -377,7 +377,7 @@ export default class Share implements _Stage {
             (result: any) => {
                 const data = result.data;
                 
-                _this.switchList.authorization = true;
+                _this.switchList.authorize = true;
                 
                 if (result.retCode !== 0) {
                     _this.popupList.toast.open(result.retMsg);
@@ -390,7 +390,7 @@ export default class Share implements _Stage {
                 _this.getInfo();
             },
             (e: Event) => {
-                _this.switchList.authorization = true;
+                _this.switchList.authorize = true;
             }
         );
     }
@@ -520,7 +520,7 @@ export default class Share implements _Stage {
                     result.retCode === 900002 ||
                     result.retCode === 900003) { // 账号认证失败
                     Global.FN.cookie.del('wx_id');
-                    _this.goAuthorization();
+                    _this.goAuthorize();
                     return;
                 }
                 
