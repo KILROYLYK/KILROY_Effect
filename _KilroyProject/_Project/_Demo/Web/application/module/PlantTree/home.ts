@@ -4,13 +4,13 @@ import Platform from './platform';
 import AnalysysAgent from '../../plugin/AnalysysAgent';
 
 import '../../../resource/css/PlantTree/public.less';
-import '../../../resource/css/PlantTree/index.less';
+import '../../../resource/css/PlantTree/home.less';
 
 /**
  * 首页
  * https://activity.iyingdi.com/planttree/home/
  */
-export default class Index implements _Stage {
+export default class Home implements _Stage {
     private readonly template: any = { // 模板对象
         main: `<div id="box_tree" class="box_tree"></div>
             <div id="box_progress" class="box_progress">
