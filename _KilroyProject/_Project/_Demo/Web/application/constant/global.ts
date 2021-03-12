@@ -1,14 +1,10 @@
 import _Global from '../../../../_Base/Asset/_Global/global';
 
 import './style';
+import { Vector2 } from './base'; // 基础
 import GlobalConfig from './config'; // 配置
 import GlobalFN from './function'; // 函数
 import GlobalStage from './stage'; // 场景
-
-interface Position { // 位置
-    x: number,
-    y: number
-}
 
 /**
  * 全局
@@ -31,7 +27,7 @@ export default class Global {
     public static readonly Dom: HTMLElement = GlobalFN.getDom();
     public static Width: number = Global.Dom.clientWidth;
     public static Height: number = Global.Dom.clientHeight;
-    public static FocusP: Position = { // 焦点位置
+    public static Focus: Vector2 = { // 焦点位置
         x: Global.Width / 2,
         y: Global.Height / 2
     };
