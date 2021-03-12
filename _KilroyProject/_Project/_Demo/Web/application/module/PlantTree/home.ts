@@ -35,7 +35,7 @@ export default class Home implements _Stage {
         popupToast: `<div class="popup_content"></div>`,
         popupExplain: `<div class="popup_content"><div class="image"></div></div>`
     };
-    private readonly fractionList: number[] = [ 5000, 10000, 15000, 20000 ]; // 分数界限
+    private readonly fractionList: number[] = [ 5000, 6000, 7000, 8000 ]; // 分数界限
     private readonly levelList: number[] = [ 10, 30, 50, 80, 100 ]; // 等级人数
     private readonly switchList: any = { // 开关列表
         info: true, // 获取信息
