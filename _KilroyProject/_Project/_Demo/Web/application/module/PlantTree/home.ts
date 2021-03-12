@@ -24,6 +24,7 @@ export default class Home implements _Stage {
                 <div class="text t_1"><span>可浇水 0 次</span></div>
             </div>
             <div id="button_water" class="button button_water"></div>
+            <div id="button_article" class="button button_article"></div>
             <div id="button_explain" class="button button_explain"></div>
             <div id="button_share" class="button button_share"></div>
             <div id="box_water" class="box_water">
@@ -159,6 +160,13 @@ export default class Home implements _Stage {
         
         Global.$('#button_water').click(() => {
             _this.addWater();
+        });
+        Global.$('#button_article').click(() => {
+            AnalysysAgent.track('worldtree_article', {
+                user_id: String(_this.userData.id)
+            });
+            
+            Global.Window.location.href = 'wanxiu://innerlink?type=bbspost_url&id=2356751';
         });
         Global.$('#button_explain').click(() => {
             _this.popupList.explain.open();
