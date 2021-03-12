@@ -23,10 +23,10 @@ export default class Global {
     public static readonly Popup: any = _Global.Popup;
     
     public static readonly $: any = _Global.$;
-    public static readonly CryptoJS: any = _Global.Crypto;
+    public static readonly Crypto: any = _Global.Crypto;
     public static readonly Console: any = _Global.Console;
     // public static readonly GSAP: any = _Global.GSAP;
-    public static readonly Tween: any = _Global.Tween;
+    // public static readonly Tween: any = _Global.Tween;
     
     public static readonly Dom: HTMLElement = GlobalFN.getDom();
     public static Width: number = Global.Dom.clientWidth;

@@ -65,18 +65,7 @@ export default class Platform {
         
         Platform.shareCB && Platform.shareCB();
         
-        return Platform.encryptParam(JSON.stringify(share));
-    }
-    
-    /**
-     * 参数加密
-     * @param {string} content 内容
-     * @return string
-     */
-    public static encryptParam(content: string): string {
-        const encodedWord = Global.CryptoJS.enc.Utf8.parse(content),
-            base64Str = Global.CryptoJS.enc.Base64.stringify(encodedWord);
-        return encodeURIComponent(base64Str);
+        return Global.Crypto.encryptBase64(share);
     }
 }
 
