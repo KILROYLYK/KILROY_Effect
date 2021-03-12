@@ -1,16 +1,11 @@
 import Global from '../../../constant/global';
 import Component from '../../../interface/component';
 
-interface Position { // 位置
-    x: number // X 轴
-    y: number // Y 轴
-}
-
 interface Point { // 点
     show: boolean // 显示
-    position: Position // 当前位置
-    target: Position // 目标位置
-    speed: Position // 速度
+    position: any // 当前位置
+    target: any // 目标位置
+    speed: any // 速度
     color: number // 颜色
     opacity: number // 不透明度
     radius: number // 半径
@@ -21,7 +16,7 @@ interface Point { // 点
  * 粒子
  */
 export default class Particle implements Component {
-    private context: CanvasRenderingContext2D = null; // 语境
+    private context: CanvasRenderingContext2D | null = null; // 语境
     
     private text: string = ''; // 文案
     private readonly size: number = 150; // 字体大小
@@ -34,12 +29,12 @@ export default class Particle implements Component {
         '255,237,0'
     ];
     private readonly colorS: number = 0.05; // 颜色变化速度
-    private readonly radius: object = { // 半径变化
+    private readonly radius: any = { // 半径变化
         min: 1,
         max: 3,
         speed: 0.5
     };
-    private readonly mouse: object = { // 鼠标
+    private readonly mouse: any = { // 鼠标
         radius: 50, // 推离半径
         speed: 100 // 鼠标推动速度（越大速度越慢）
     };
@@ -128,7 +123,9 @@ export default class Particle implements Component {
         const _this = this,
             centerP = Global.Function.getDomCenter(),
             cList = _this.list,
-            list = [];
+            list = [] as any[];
+    
+        if (!_this.context) return;
         
         _this.clearCanvas();
         
@@ -214,7 +211,7 @@ export default class Particle implements Component {
      * 创建点
      * @param {Position} target 目标位置
      */
-    private createPoint(target: Position): Point {
+    private createPoint(target: any): Point {
         const _this = this,
             sign = [ 1, -1 ]; // 放大或缩小
         
@@ -243,6 +240,8 @@ export default class Particle implements Component {
      */
     private drawPoint(point: Point): void {
         const _this = this;
+    
+        if (!_this.context) return;
         
         _this.context.beginPath();
         _this.context.fillStyle = `rgba(${ _this.color[point.color] },${ point.opacity })`;
@@ -263,8 +262,8 @@ export default class Particle implements Component {
      */
     private updatePoint(point: Point): void {
         const _this = this,
-            mouseX = Global.FocusP.x,
-            mouseY = Global.FocusP.y,
+            mouseX = Global.Focus.x,
+            mouseY = Global.Focus.y,
             distance = _this.getDistance({
                 x1: point.position.x,
                 y1: point.position.y,

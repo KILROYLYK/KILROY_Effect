@@ -74,7 +74,7 @@ export default class Share implements _Stage {
     
     /**
      * 构造函数
-     * @constructor Stage
+     * @constructor Test
      */
     constructor() {
         const _this = this;
@@ -91,7 +91,7 @@ export default class Share implements _Stage {
      * 创建
      * @return {void}
      */
-    public create(): void {
+    private create(): void {
         const _this = this;
         
         if (_this.popupList.toast === null) {
@@ -122,7 +122,7 @@ export default class Share implements _Stage {
      * 初始化
      * @return {void}
      */
-    public init(): void {
+    private init(): void {
         const _this = this,
             button = document.getElementById('button_app');
         
@@ -141,14 +141,6 @@ export default class Share implements _Stage {
         }
         
         _this.share();
-    }
-    
-    /**
-     * 更新
-     * @return {void}
-     */
-    public update(): void {
-        const _this = this;
     }
     
     /**

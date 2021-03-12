@@ -8,10 +8,10 @@ import Particle from './component/particle';
  */
 export default class Stage implements _Stage {
     private isInit: boolean = false; // 是否初始化
-    private canvas: HTMLCanvasElement = null; // 画布
-    private context: CanvasRenderingContext2D = null; // 语境
-    private component: object = { // 组件
-        particle: null as Particle // 粒子对象
+    private canvas: HTMLCanvasElement | null = null; // 画布
+    private context: CanvasRenderingContext2D | null = null; // 语境
+    private component: any = { // 组件
+        particle: null // 粒子对象
     };
     private controller: object = { // 控制器
     };
@@ -40,7 +40,7 @@ export default class Stage implements _Stage {
         
         _this.context = _this.canvas.getContext('2d');
         
-        _this.component.particle = new Particle(_this.context);
+        _this.component.particle = new Particle(_this.context as CanvasRenderingContext2D);
     }
     
     /**
@@ -52,7 +52,7 @@ export default class Stage implements _Stage {
         
         _this.isInit = true;
         
-        Global.Dom.appendChild(_this.canvas);
+        Global.Dom.appendChild(_this.canvas as HTMLCanvasElement);
         Global.Function.updateFocusPosition(false);
         Global.Function.updateFrame(() => {
             _this.update();
@@ -74,6 +74,7 @@ export default class Stage implements _Stage {
     public update(isResize: boolean = false): void {
         const _this = this;
         
+        if (!_this.canvas) return;
         if (!_this.isInit) return;
         
         _this.canvas.width = Global.Width;

@@ -79,7 +79,7 @@ export default class Home implements _Stage {
     
     /**
      * 构造函数
-     * @constructor Stage
+     * @constructor Home
      */
     constructor() {
         const _this = this;
@@ -114,7 +114,7 @@ export default class Home implements _Stage {
      * 创建
      * @return {void}
      */
-    public create(): void {
+    private create(): void {
         const _this = this;
         
         if (_this.popupList.toast === null) {
@@ -155,7 +155,7 @@ export default class Home implements _Stage {
      * 初始化
      * @return {void}
      */
-    public init(): void {
+    private init(): void {
         const _this = this;
         
         Global.$('#button_water').click(() => {
@@ -188,14 +188,6 @@ export default class Home implements _Stage {
         _this.setTimeList.info = setInterval(() => {
             _this.getInfo();
         }, 60 * 1000);
-    }
-    
-    /**
-     * 更新
-     * @return {void}
-     */
-    public update(): void {
-        const _this = this;
     }
     
     /**
